@@ -1,0 +1,161 @@
+$C = "Common.ui";
+@SideIconSize = 64;
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 440, Height: 600);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Basic Cable";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+      Group {
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 8, Right: 8);
+
+        Label #CableEnergy {
+          Style: (
+            FontSize: 16,
+            RenderBold: true,
+            TextColor: #d6cfb2
+          );
+          Text: "Energy: 0 / 0";
+        }
+
+        Label #SideHeader {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Padding: (Top: 10);
+          Text: "Sides";
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+
+          ItemSlot #SideEastIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideEast {
+            Text: "East: Off";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideWestIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideWest {
+            Text: "West: Off";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideUpIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideUp {
+            Text: "Up: Off";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideDownIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideDown {
+            Text: "Down: Off";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideSouthIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideSouth {
+            Text: "South: Off";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideNorthIcon {
+            Anchor: (Width: @SideIconSize, Height: @SideIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideNorth {
+            Text: "North: Off";
+          }
+        }
+
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

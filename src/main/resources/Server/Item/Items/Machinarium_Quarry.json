@@ -1,0 +1,82 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.Machinarium_Quarry.name",
+    "Description": "server.items.Machinarium_Quarry.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/machinarium_quarry.png",
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": "Block_Secondary"
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "Metadata": {
+    "BlockState": {
+      "Type": "container"
+    }
+  },
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/Machinarium/Quarry/Quarry_T0.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/Quarry_T0.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#c9c9b0",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "BlockEntity": {
+      "Components": {
+        "machinarium:energy_node": {
+          "NodeType": "Machine",
+          "Energy": 0,
+          "Capacity": 5000,
+          "MaxTransfer": 2000,
+          "Consumption": 2000,
+          "InputMask": 63,
+          "OutputMask": 0,
+          "Enabled": true
+        }
+      }
+    },
+    "State": {
+      "Id": "container",
+      "Definitions": {
+        "Quarry_T0": {
+          "CustomModel": "Blocks/Machinarium/Quarry/Quarry_T0.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/Quarry_T0.png",
+              "Weight": 1
+            }
+          ]
+        }
+      }
+    },
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "machinarium_open_ui_with_windows",
+            "Page": {
+              "Id": "machinarium_quarry_page"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

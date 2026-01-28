@@ -1,0 +1,7 @@
+{
+  "Group": "com.example",
+  "Name": "HyProTech",
+  "Version": "1.2.0",
+  "Main": "com.example.plugin.Machinarium",
+  "IncludesAssetPack": true
+}

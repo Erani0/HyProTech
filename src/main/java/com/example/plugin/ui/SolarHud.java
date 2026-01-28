@@ -1,0 +1,28 @@
+package com.example.plugin.ui;
+
+import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
+import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+
+public class SolarHud extends CustomUIHud {
+    private int lastOutput = Integer.MIN_VALUE;
+
+    public SolarHud(PlayerRef playerRef) {
+        super(playerRef);
+    }
+
+    @Override
+    protected void build(UICommandBuilder uiCommandBuilder) {
+        uiCommandBuilder.append("Machinarium_SolarHud.ui");
+    }
+
+    public void updateOutput(int output) {
+        if (output == lastOutput) {
+            return;
+        }
+        lastOutput = output;
+        UICommandBuilder builder = new UICommandBuilder();
+        builder.set("#SolarOutput.Text", "Solar Output: " + output);
+        update(false, builder);
+    }
+}

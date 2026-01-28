@@ -1,0 +1,765 @@
+package com.example.plugin.ui;
+
+import com.example.plugin.MachinariumIds;
+import com.example.plugin.TieredIdUtil;
+import com.example.plugin.UpgradePersistence;
+import com.example.plugin.energy.EnergyNodeComponent;
+import com.example.plugin.energy.EnergyUnits;
+import com.example.plugin.machine.QuarryConfig;
+import com.example.plugin.machine.MachineComponent;
+import com.example.plugin.machine.MachineItemAccess;
+import com.example.plugin.machine.QuarryAreaManager;
+import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.math.util.ChunkUtil;
+import com.hypixel.hytale.math.vector.Vector3i;
+import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
+import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.inventory.Inventory;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
+import com.hypixel.hytale.server.core.inventory.transaction.ItemStackTransaction;
+import com.hypixel.hytale.server.core.inventory.transaction.ListTransaction;
+import com.hypixel.hytale.server.core.ui.builder.EventData;
+import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
+import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
+import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import java.util.ArrayList;
+import java.util.List;
+
+public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
+    private static final String ACTION_UPGRADE = "Upgrade";
+    private static final String PAGE_LAYOUT = "Machinarium_Quarry.ui";
+    private static final long UPDATE_INTERVAL_MS = 250L;
+    private static final int STORAGE_SLOT_COUNT = 10;
+    private static final String[] STORAGE_SLOT_IDS = buildSlotIds("#StorageSlot");
+    private static final String[] STORAGE_QTY_IDS = buildSlotIds("#StorageQty");
+    private static final int DEFAULT_AREA = 5;
+    private static final int MIN_AREA = 2;
+    private static final String SHOW_AREA_LABEL = "SHOW AREA";
+    private static final String HIDE_AREA_LABEL = "HIDE AREA";
+    private static final String ENABLE_LABEL = "TURN ON";
+    private static final String DISABLE_LABEL = "TURN OFF";
+    private static final String[] UPGRADE_ROW_IDS = {
+            "#UpgradeReqRow1",
+            "#UpgradeReqRow2",
+            "#UpgradeReqRow3",
+            "#UpgradeReqRow4"
+    };
+    private static final String[] UPGRADE_SLOT_IDS = {
+            "#UpgradeReqSlot1",
+            "#UpgradeReqSlot2",
+            "#UpgradeReqSlot3",
+            "#UpgradeReqSlot4"
+    };
+    private static final String[] UPGRADE_NAME_IDS = {
+            "#UpgradeReqName1",
+            "#UpgradeReqName2",
+            "#UpgradeReqName3",
+            "#UpgradeReqName4"
+    };
+    private static final String[] UPGRADE_QTY_IDS = {
+            "#UpgradeReqQty1",
+            "#UpgradeReqQty2",
+            "#UpgradeReqQty3",
+            "#UpgradeReqQty4"
+    };
+
+    private final Ref<ChunkStore> blockRef;
+    private final ComponentType<ChunkStore, EnergyNodeComponent> energyType;
+    private final ComponentType<ChunkStore, MachineComponent> machineType;
+    private Vector3i blockPosition;
+    private int lastEnergy = Integer.MIN_VALUE;
+    private int lastCapacity = Integer.MIN_VALUE;
+    private int lastConsumption = Integer.MIN_VALUE;
+    private int lastTier = Integer.MIN_VALUE;
+    private String lastReqKey = "";
+    private String lastButtonText = "";
+    private String lastStorageKey = "";
+    private String lastSlotsText = "";
+    private int lastAreaWidth = Integer.MIN_VALUE;
+    private int lastAreaDepth = Integer.MIN_VALUE;
+    private Boolean lastAreaVisible;
+    private Boolean lastEnabled;
+    private long lastUpdateMs;
+
+    public QuarryPage(
+            PlayerRef playerRef,
+            Ref<ChunkStore> blockRef,
+            ComponentType<ChunkStore, EnergyNodeComponent> energyType,
+            ComponentType<ChunkStore, MachineComponent> machineType) {
+        super(playerRef, CustomPageLifetime.CanDismiss, SideToggleEvent.CODEC);
+        this.blockRef = blockRef;
+        this.energyType = energyType;
+        this.machineType = machineType;
+    }
+
+    public Ref<ChunkStore> getBlockRef() {
+        return blockRef;
+    }
+
+    @Override
+    public void build(
+            Ref<EntityStore> playerRef,
+            UICommandBuilder uiCommandBuilder,
+            UIEventBuilder uiEventBuilder,
+            Store<EntityStore> store) {
+        uiCommandBuilder.append(PAGE_LAYOUT);
+        initStaticUi(uiCommandBuilder);
+        bindButtons(uiEventBuilder);
+
+        World world = getWorld(store);
+        ItemContainer inventory = getPlayerInventory(store);
+        updateForWorld(uiCommandBuilder, world, inventory);
+    }
+
+    @Override
+    public void handleDataEvent(Ref<EntityStore> playerRef, Store<EntityStore> store, SideToggleEvent data) {
+        if (data == null || data.getAction() == null) {
+            return;
+        }
+
+        World world = getWorld(store);
+        if (world == null) {
+            return;
+        }
+
+        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+        MachineComponent machine = chunkStore.getComponent(blockRef, machineType);
+        if (machine == null) {
+            machine = new MachineComponent();
+        }
+        EnergyNodeComponent node = chunkStore.getComponent(blockRef, energyType);
+
+        int tier = QuarryConfig.clampTier(machine.getTier());
+        int maxArea = QuarryConfig.getMaxAreaForTier(tier);
+        int width = clampArea(normalizeArea(machine.getAreaWidth()), maxArea);
+        int depth = clampArea(normalizeArea(machine.getAreaDepth()), maxArea);
+        boolean visible = machine.isAreaVisible();
+        int newWidth = width;
+        int newDepth = depth;
+        boolean newVisible = visible;
+
+        String action = data.getAction();
+        if (ACTION_UPGRADE.equalsIgnoreCase(action)) {
+            handleUpgrade(playerRef, store, world, machine, node);
+            return;
+        } else if ("WidthMinus".equalsIgnoreCase(action)) {
+            newWidth = clampArea(width - 1, maxArea);
+        } else if ("WidthPlus".equalsIgnoreCase(action)) {
+            newWidth = clampArea(width + 1, maxArea);
+        } else if ("DepthMinus".equalsIgnoreCase(action)) {
+            newDepth = clampArea(depth - 1, maxArea);
+        } else if ("DepthPlus".equalsIgnoreCase(action)) {
+            newDepth = clampArea(depth + 1, maxArea);
+        } else if ("ToggleArea".equalsIgnoreCase(action)) {
+            newVisible = !visible;
+        } else if ("ToggleEnabled".equalsIgnoreCase(action)) {
+            machine.setEnabled(!machine.isEnabled());
+            machine.setProgress(0);
+            chunkStore.putComponent(blockRef, machineType, machine);
+            UICommandBuilder update = new UICommandBuilder();
+            updateControls(update, machine);
+            sendUpdate(update);
+            return;
+        } else {
+            return;
+        }
+
+        Vector3i pos = resolveBlockPosition(world);
+        boolean changed = false;
+        if (newWidth != width || newDepth != depth) {
+            machine.setAreaWidth(newWidth);
+            machine.setAreaDepth(newDepth);
+            chunkStore.putComponent(blockRef, machineType, machine);
+            changed = true;
+            if (visible && pos != null) {
+                QuarryAreaManager.updateArea(world, pos, width, depth, newWidth, newDepth);
+            }
+        }
+
+        if (newVisible != visible) {
+            machine.setAreaVisible(newVisible);
+            chunkStore.putComponent(blockRef, machineType, machine);
+            changed = true;
+            if (pos != null) {
+                if (newVisible) {
+                    QuarryAreaManager.showArea(world, pos, newWidth, newDepth);
+                } else {
+                    QuarryAreaManager.hideArea(world, pos, newWidth, newDepth);
+                }
+            }
+        }
+
+        if (changed) {
+            UICommandBuilder update = new UICommandBuilder();
+            updateArea(update, machine);
+            updateControls(update, machine);
+            String reqKey = updateUpgradePanel(update, machine, getPlayerInventory(store));
+            if (!reqKey.equals(lastReqKey)) {
+                lastReqKey = reqKey;
+            }
+            sendUpdate(update);
+        }
+    }
+
+    public void update(EnergyNodeComponent node) {
+        update(node, null, false);
+    }
+
+    public void update(EnergyNodeComponent node, MachineComponent machine) {
+        update(node, machine, false);
+    }
+
+    private void update(EnergyNodeComponent node, MachineComponent machine, boolean force) {
+        if (node == null) {
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if (!force && lastUpdateMs != 0L && now - lastUpdateMs < UPDATE_INTERVAL_MS) {
+            return;
+        }
+
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        Store<EntityStore> store = playerEntityRef == null ? null : playerEntityRef.getStore();
+        ItemContainer inventory = store == null ? null : getPlayerInventory(store);
+
+        UICommandBuilder update = new UICommandBuilder();
+        boolean changed = updateEnergy(update, node);
+        changed |= updateArea(update, machine);
+        changed |= updateControls(update, machine);
+        String reqKey = updateUpgradePanel(update, machine, inventory);
+        if (!reqKey.equals(lastReqKey)) {
+            lastReqKey = reqKey;
+            changed = true;
+        }
+        changed |= updateStorage(update);
+
+        if (changed) {
+            sendUpdate(update);
+        }
+        lastUpdateMs = now;
+    }
+
+    private void initStaticUi(UICommandBuilder update) {
+        update.set("#QuarryTier.Text", "Tier: " + QuarryConfig.getTierName(QuarryConfig.MIN_TIER));
+        update.set("#QuarryArea.Text", "Area: " + DEFAULT_AREA + " x " + DEFAULT_AREA);
+        update.set("#QuarryWidthValue.Text", Integer.toString(DEFAULT_AREA));
+        update.set("#QuarryDepthValue.Text", Integer.toString(DEFAULT_AREA));
+        update.set("#ShowAreaButton.Text", SHOW_AREA_LABEL);
+        update.set("#QuarryStatus.Text", "Status: ON");
+        update.set("#QuarryToggleButton.Text", DISABLE_LABEL);
+        updateUpgradePanel(update, null, null);
+    }
+
+    private boolean updateForWorld(UICommandBuilder update, World world, ItemContainer inventory) {
+        if (world == null) {
+            return false;
+        }
+        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+        EnergyNodeComponent node = chunkStore.getComponent(blockRef, energyType);
+        MachineComponent machine = chunkStore.getComponent(blockRef, machineType);
+        if (node == null) {
+            return false;
+        }
+        boolean changed = updateEnergy(update, node);
+        changed |= updateArea(update, machine);
+        changed |= updateControls(update, machine);
+        String reqKey = updateUpgradePanel(update, machine, inventory);
+        if (!reqKey.equals(lastReqKey)) {
+            lastReqKey = reqKey;
+            changed = true;
+        }
+        changed |= updateStorage(update);
+        return changed;
+    }
+
+    private boolean updateEnergy(UICommandBuilder update, EnergyNodeComponent node) {
+        boolean changed = false;
+
+        int energy = node.getEnergy();
+        int capacity = node.getCapacity();
+        if (energy != lastEnergy || capacity != lastCapacity) {
+            update.set("#QuarryEnergy.Text",
+                    "Energy: " + EnergyUnits.formatEnergyWithCapacity(energy, capacity));
+            lastEnergy = energy;
+            lastCapacity = capacity;
+            changed = true;
+        }
+
+        int consumption = node.getConsumption();
+        if (consumption != lastConsumption) {
+            update.set("#QuarryConsumption.Text",
+                    "Consumption: " + EnergyUnits.formatJoulesPerSecond(consumption));
+            lastConsumption = consumption;
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private boolean updateStorage(UICommandBuilder update) {
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        if (playerEntityRef == null) {
+            return false;
+        }
+        Store<EntityStore> store = playerEntityRef.getStore();
+        World world = getWorld(store);
+        Vector3i pos = resolveBlockPosition(world);
+        if (world == null || pos == null) {
+            return false;
+        }
+
+        ItemContainer container = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
+        if (container == null) {
+            return updateEmptyStorage(update);
+        }
+
+        short capacity = container.getCapacity();
+        int used = 0;
+        StringBuilder key = new StringBuilder();
+        key.append("cap=").append(capacity).append('|');
+
+        for (int i = 0; i < STORAGE_SLOT_COUNT; i++) {
+            String itemId = "";
+            String qtyText = "";
+            if (i < capacity) {
+                ItemStack stack = container.getItemStack((short) i);
+                if (stack != null && !ItemStack.isEmpty(stack)) {
+                    itemId = stack.getItemId();
+                    int qty = stack.getQuantity();
+                    qtyText = qty > 1 ? Integer.toString(qty) : "";
+                    used++;
+                }
+            }
+            key.append(itemId).append(':').append(qtyText).append('|');
+        }
+
+        String slotsText = "Slots: " + used + "/" + capacity;
+        boolean changed = false;
+        if (!slotsText.equals(lastSlotsText)) {
+            update.set("#QuarryStorageSlots.Text", slotsText);
+            lastSlotsText = slotsText;
+            changed = true;
+        }
+
+        String newKey = key.toString();
+        if (!newKey.equals(lastStorageKey)) {
+            for (int i = 0; i < STORAGE_SLOT_COUNT; i++) {
+                String itemId = "";
+                String qtyText = "";
+                if (i < capacity) {
+                    ItemStack stack = container.getItemStack((short) i);
+                    if (stack != null && !ItemStack.isEmpty(stack)) {
+                        itemId = stack.getItemId();
+                        int qty = stack.getQuantity();
+                        qtyText = qty > 1 ? Integer.toString(qty) : "";
+                    }
+                }
+                update.set(STORAGE_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(itemId));
+                update.set(STORAGE_QTY_IDS[i] + ".Text", qtyText);
+            }
+            lastStorageKey = newKey;
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private boolean updateEmptyStorage(UICommandBuilder update) {
+        boolean changed = false;
+        String slotsText = "Slots: 0/0";
+        if (!slotsText.equals(lastSlotsText)) {
+            update.set("#QuarryStorageSlots.Text", slotsText);
+            lastSlotsText = slotsText;
+            changed = true;
+        }
+        if (!"empty".equals(lastStorageKey)) {
+            for (int i = 0; i < STORAGE_SLOT_COUNT; i++) {
+                update.set(STORAGE_SLOT_IDS[i] + ".ItemId", "");
+                update.set(STORAGE_QTY_IDS[i] + ".Text", "");
+            }
+            lastStorageKey = "empty";
+            changed = true;
+        }
+        return changed;
+    }
+
+    private boolean updateArea(UICommandBuilder update, MachineComponent machine) {
+        int tier = machine == null ? QuarryConfig.MIN_TIER : QuarryConfig.clampTier(machine.getTier());
+        int maxArea = QuarryConfig.getMaxAreaForTier(tier);
+        int width = clampArea(normalizeArea(machine == null ? 0 : machine.getAreaWidth()), maxArea);
+        int depth = clampArea(normalizeArea(machine == null ? 0 : machine.getAreaDepth()), maxArea);
+        boolean visible = machine != null && machine.isAreaVisible();
+
+        boolean changed = false;
+        if (width != lastAreaWidth || depth != lastAreaDepth) {
+            update.set("#QuarryArea.Text", "Area: " + width + " x " + depth);
+            update.set("#QuarryWidthValue.Text", Integer.toString(width));
+            update.set("#QuarryDepthValue.Text", Integer.toString(depth));
+            lastAreaWidth = width;
+            lastAreaDepth = depth;
+            changed = true;
+        }
+        if (lastAreaVisible == null || visible != lastAreaVisible) {
+            update.set("#ShowAreaButton.Text", visible ? HIDE_AREA_LABEL : SHOW_AREA_LABEL);
+            lastAreaVisible = visible;
+            changed = true;
+        }
+        return changed;
+    }
+
+    private boolean updateControls(UICommandBuilder update, MachineComponent machine) {
+        boolean changed = false;
+        boolean enabled = machine == null || machine.isEnabled();
+        if (lastEnabled == null || enabled != lastEnabled) {
+            update.set("#QuarryStatus.Text", enabled ? "Status: ON" : "Status: OFF");
+            update.set("#QuarryToggleButton.Text", enabled ? DISABLE_LABEL : ENABLE_LABEL);
+            lastEnabled = enabled;
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private String updateUpgradePanel(UICommandBuilder update, MachineComponent machine, ItemContainer inventory) {
+        int tier = machine == null ? QuarryConfig.MIN_TIER : QuarryConfig.clampTier(machine.getTier());
+        if (tier != lastTier) {
+            update.set("#QuarryTier.Text", "Tier: " + QuarryConfig.getTierName(tier));
+            lastTier = tier;
+        }
+
+        boolean hasNextTier = QuarryConfig.hasNextTier(tier);
+        String nextText = hasNextTier
+                ? "Next: " + QuarryConfig.getTierName(tier + 1)
+                : "Next: Max";
+        update.set("#QuarryNextTier.Text", nextText);
+
+        String statsText = hasNextTier
+                ? "Capacity: " + EnergyUnits.formatJoules(QuarryConfig.getCapacityForTier(tier + 1))
+                        + " | Consumption: "
+                        + EnergyUnits.formatJoulesPerSecond(QuarryConfig.getConsumptionPerSecond(tier + 1))
+                        + " | Speed: " + String.format(java.util.Locale.US, "%.2fs",
+                                QuarryConfig.getMiningSecondsForTier(tier + 1))
+                        + " | Max Area: " + QuarryConfig.getMaxAreaForTier(tier + 1)
+                        + "x" + QuarryConfig.getMaxAreaForTier(tier + 1)
+                : "Max tier reached.";
+        update.set("#QuarryUpgradeStats.Text", statsText);
+
+        QuarryConfig.Requirement[] requirements =
+                hasNextTier ? QuarryConfig.getUpgradeRequirements(tier)
+                        : new QuarryConfig.Requirement[0];
+        int[] owned = new int[requirements.length];
+        boolean canUpgrade = hasNextTier && inventory != null;
+        StringBuilder reqKey = new StringBuilder();
+        for (int i = 0; i < requirements.length; i++) {
+            QuarryConfig.Requirement requirement = requirements[i];
+            owned[i] = inventory == null ? 0 : countItem(inventory, requirement.getItemId());
+            if (owned[i] < requirement.getQuantity()) {
+                canUpgrade = false;
+            }
+            reqKey.append(requirement.getItemId())
+                    .append('=')
+                    .append(owned[i])
+                    .append('/');
+        }
+
+        String buttonText = hasNextTier
+                ? (canUpgrade ? "Upgrade" : "Missing Items")
+                : "Max Tier";
+        update.set("#UpgradeButton.Text", buttonText);
+        if (!buttonText.equals(lastButtonText)) {
+            lastButtonText = buttonText;
+        }
+
+        update.set("#UpgradeReqEmpty.Text", "No further upgrades.");
+        update.set("#UpgradeReqEmpty.Visible", !hasNextTier);
+        for (int i = 0; i < UPGRADE_ROW_IDS.length; i++) {
+            boolean visible = hasNextTier && i < requirements.length;
+            update.set(UPGRADE_ROW_IDS[i] + ".Visible", visible);
+            if (visible) {
+                QuarryConfig.Requirement requirement = requirements[i];
+                update.set(UPGRADE_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(requirement.getItemId()));
+                update.set(UPGRADE_NAME_IDS[i] + ".Text", formatRequirementName(requirement.getItemId()));
+                update.set(UPGRADE_QTY_IDS[i] + ".Text", owned[i] + "/" + requirement.getQuantity());
+            } else {
+                update.set(UPGRADE_SLOT_IDS[i] + ".ItemId", "");
+                update.set(UPGRADE_NAME_IDS[i] + ".Text", "");
+                update.set(UPGRADE_QTY_IDS[i] + ".Text", "");
+            }
+        }
+
+        reqKey.append("tier=").append(tier).append("|button=").append(buttonText);
+        return reqKey.toString();
+    }
+
+    private void handleUpgrade(
+            Ref<EntityStore> playerRef,
+            Store<EntityStore> store,
+            World world,
+            MachineComponent machine,
+            EnergyNodeComponent node) {
+        if (world == null || machine == null || node == null) {
+            return;
+        }
+        int currentTier = QuarryConfig.clampTier(machine.getTier());
+        if (!QuarryConfig.hasNextTier(currentTier)) {
+            sendPlayerMessage(playerRef, store, "Quarry is already at max tier.");
+            return;
+        }
+
+        ItemContainer inventory = getPlayerInventory(store);
+        if (inventory == null) {
+            return;
+        }
+
+        QuarryConfig.Requirement[] requirements =
+                QuarryConfig.getUpgradeRequirements(currentTier);
+        List<ItemStack> stacks = new ArrayList<>(requirements.length);
+        for (QuarryConfig.Requirement requirement : requirements) {
+            stacks.add(new ItemStack(requirement.getItemId(), requirement.getQuantity()));
+        }
+
+        if (!stacks.isEmpty() && !inventory.canRemoveItemStacks(stacks)) {
+            sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
+            return;
+        }
+
+        if (!stacks.isEmpty()) {
+            ListTransaction<ItemStackTransaction> transaction = inventory.removeItemStacks(stacks);
+            if (transaction == null || !transaction.succeeded()) {
+                sendPlayerMessage(playerRef, store, "Upgrade failed.");
+                return;
+            }
+        }
+
+        int nextTier = currentTier + 1;
+        machine.setTier(nextTier);
+        applyTier(machine, node, nextTier);
+
+        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+        chunkStore.putComponent(blockRef, machineType, machine);
+        chunkStore.putComponent(blockRef, energyType, node);
+
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos != null) {
+            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_QUARRY, nextTier);
+            BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
+            String blockId = blockType == null ? null : blockType.getId();
+            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_QUARRY, upgradedId);
+            UpgradePersistence.queueBlockSwapWithContainer(world, pos, upgradedId, node);
+        }
+
+        sendPlayerMessage(
+                playerRef,
+                store,
+                "Upgraded quarry to " + QuarryConfig.getTierName(nextTier) + ".");
+        update(node, machine, true);
+    }
+
+    private void applyTier(MachineComponent machine, EnergyNodeComponent node, int tier) {
+        int capacity = QuarryConfig.getCapacityForTier(tier);
+        node.setCapacity(capacity);
+        if (node.getEnergy() > capacity) {
+            node.setEnergy(capacity);
+        }
+        node.setConsumption(QuarryConfig.getConsumptionPerSecond(tier));
+        node.setMaxTransfer(QuarryConfig.getMaxTransferForTier(tier));
+
+        int progressMax = QuarryConfig.getMiningDelayTicks(tier);
+        machine.setProgressMax(progressMax);
+        if (machine.getProgress() > progressMax) {
+            machine.setProgress(progressMax);
+        }
+    }
+
+    private ItemContainer getPlayerInventory(Store<EntityStore> store) {
+        if (store == null) {
+            return null;
+        }
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        if (playerEntityRef == null) {
+            return null;
+        }
+        Player player = store.getComponent(playerEntityRef, Player.getComponentType());
+        if (player == null) {
+            return null;
+        }
+        Inventory inventory = player.getInventory();
+        return inventory == null ? null : inventory.getStorage();
+    }
+
+    private int countItem(ItemContainer container, String itemId) {
+        if (container == null || itemId == null) {
+            return 0;
+        }
+        short capacity = container.getCapacity();
+        int total = 0;
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            if (itemId.equals(stack.getItemId())) {
+                total += stack.getQuantity();
+            }
+        }
+        return total;
+    }
+
+    private String formatRequirementName(String itemId) {
+        if (itemId == null) {
+            return "";
+        }
+        String name = itemId;
+        String barPrefix = "Ingredient_Bar_";
+        if (name.startsWith(barPrefix)) {
+            name = name.substring(barPrefix.length()) + " Bar";
+        }
+        String hidePrefix = "Ingredient_Hide_";
+        if (name.startsWith(hidePrefix)) {
+            name = name.substring(hidePrefix.length()) + " Hide";
+        }
+        String leatherPrefix = "Ingredient_Leather_";
+        if (name.startsWith(leatherPrefix)) {
+            name = name.substring(leatherPrefix.length()) + " Leather";
+        }
+        String ingredientPrefix = "Ingredient_";
+        if (name.startsWith(ingredientPrefix)) {
+            name = name.substring(ingredientPrefix.length());
+        }
+        return name.replace('_', ' ');
+    }
+
+    private void sendPlayerMessage(Ref<EntityStore> playerRef, Store<EntityStore> store, String text) {
+        if (store == null || playerRef == null) {
+            return;
+        }
+        Player player = store.getComponent(playerRef, Player.getComponentType());
+        if (player == null) {
+            return;
+        }
+        player.sendMessage(Message.raw(text));
+    }
+
+    private Vector3i resolveBlockPosition(World world) {
+        if (world == null) {
+            return null;
+        }
+        if (blockPosition != null) {
+            return blockPosition;
+        }
+
+        ChunkStore chunkStoreResource = world.getChunkStore();
+        for (long chunkIndex : chunkStoreResource.getChunkIndexes()) {
+            BlockComponentChunk blockComponents =
+                    chunkStoreResource.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+            if (blockComponents == null) {
+                continue;
+            }
+
+            int blockIndex = findBlockIndex(blockComponents);
+            if (blockIndex == Integer.MIN_VALUE) {
+                continue;
+            }
+
+            int chunkX = ChunkUtil.xOfChunkIndex(chunkIndex);
+            int chunkZ = ChunkUtil.zOfChunkIndex(chunkIndex);
+            int localX = ChunkUtil.xFromBlockInColumn(blockIndex);
+            int localY = ChunkUtil.yFromBlockInColumn(blockIndex);
+            int localZ = ChunkUtil.zFromBlockInColumn(blockIndex);
+
+            int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
+            int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
+            blockPosition = new Vector3i(worldX, localY, worldZ);
+            return blockPosition;
+        }
+
+        return null;
+    }
+
+    private int findBlockIndex(BlockComponentChunk blockComponents) {
+        int targetIndex = blockRef.getIndex();
+        if (targetIndex == Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
+        for (Int2ObjectMap.Entry<Ref<ChunkStore>> entry
+                : blockComponents.getEntityReferences().int2ObjectEntrySet()) {
+            Ref<ChunkStore> entryRef = entry.getValue();
+            if (entryRef != null && entryRef.getIndex() == targetIndex) {
+                return entry.getIntKey();
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+
+    private World getWorld(Store<EntityStore> store) {
+        EntityStore entityStore = store == null ? null : store.getExternalData();
+        return entityStore == null ? null : entityStore.getWorld();
+    }
+
+    private static String[] buildSlotIds(String prefix) {
+        String[] ids = new String[STORAGE_SLOT_COUNT];
+        for (int i = 0; i < STORAGE_SLOT_COUNT; i++) {
+            ids[i] = prefix + (i + 1);
+        }
+        return ids;
+    }
+
+    private void bindButtons(UIEventBuilder uiEventBuilder) {
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#WidthMinus",
+                EventData.of("Action", "WidthMinus"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#WidthPlus",
+                EventData.of("Action", "WidthPlus"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#DepthMinus",
+                EventData.of("Action", "DepthMinus"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#DepthPlus",
+                EventData.of("Action", "DepthPlus"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#ShowAreaButton",
+                EventData.of("Action", "ToggleArea"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#UpgradeButton",
+                EventData.of("Action", ACTION_UPGRADE));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#QuarryToggleButton",
+                EventData.of("Action", "ToggleEnabled"));
+    }
+
+    private static int normalizeArea(int value) {
+        return value > 0 ? value : DEFAULT_AREA;
+    }
+
+    private static int clampArea(int value, int max) {
+        if (value < MIN_AREA) {
+            return MIN_AREA;
+        }
+        if (value > max) {
+            return max;
+        }
+        return value;
+    }
+
+}

@@ -1,0 +1,17 @@
+$C = "Common.ui";
+
+Group #SolarHudRoot {
+  Anchor: (Top: 20, Left: 20, Width: 240, Height: 40);
+  LayoutMode: Top;
+  Background: $C.@InputBoxBackground;
+  Padding: (Top: 6, Bottom: 6, Left: 10, Right: 10);
+
+  Label #SolarOutput {
+    Style: (
+      FontSize: 16,
+      RenderBold: true,
+      TextColor: #f0e3b0
+    );
+    Text: "Solar Output: 0";
+  }
+}

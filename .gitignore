@@ -1,0 +1,18 @@
+# IGNORE EVERYTHING
+*
+
+# ALLOW ONLY THESE FOLDERS
+!src/
+!src/**
+
+!.gradle/
+!.gradle/**
+
+!.idea/
+!.idea/**
+
+!.github/
+!.github/**
+
+# ALLOW .gitignore ITSELF
+!.gitignore

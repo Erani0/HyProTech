@@ -1,0 +1,640 @@
+$C = "Common.ui";
+@ReqSlotSize = 32;
+@StorageSlotSize = 32;
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 1200, Height: 520);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Quarry";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Left;
+
+      Group {
+        Anchor: (Width: 280);
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 8, Right: 8);
+
+        Label {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Text: "Storage";
+        }
+
+        Label #QuarryStorageSlots {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Padding: (Top: 4);
+          Text: "Slots: 0/0";
+        }
+
+        Group {
+          LayoutMode: Top;
+          Padding: (Top: 8);
+
+          Group {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: @StorageSlotSize);
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot1 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty1 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot2 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty2 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot3 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty3 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot4 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty4 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot5 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty5 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+          }
+
+          Group {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: @StorageSlotSize);
+            Padding: (Top: 6);
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot6 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty6 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot7 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty7 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot8 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty8 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot9 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty9 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 6); }
+
+            Group {
+              Anchor: (Width: @StorageSlotSize, Height: @StorageSlotSize);
+              LayoutMode: Full;
+              ItemSlot #StorageSlot10 {
+                Anchor: (Full: 0);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+              Group {
+                LayoutMode: Right;
+                Anchor: (Width: @StorageSlotSize, Top: 18);
+                Label #StorageQty10 {
+                  Style: (
+                    FontSize: 11,
+                    HorizontalAlignment: End,
+                    TextColor: #ffffff
+                  );
+                  Text: "";
+                }
+              }
+            }
+          }
+        }
+      }
+
+      Group { Anchor: (Width: 24); }
+
+      Group {
+        Anchor: (Width: 480);
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 4, Right: 4);
+
+        Label #QuarryTier {
+          Style: (
+            FontSize: 16,
+            RenderBold: true,
+            TextColor: #d6cfb2
+          );
+          Text: "Tier: Basic";
+        }
+
+        Label #QuarryEnergy {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be,
+            Wrap: true
+          );
+          Anchor: (Left: 0, Right: 0);
+          Padding: (Top: 4);
+          Text: "Energy: 0 / 0";
+        }
+
+        Label #QuarryConsumption {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Padding: (Top: 2);
+          Text: "Draw: 0 W";
+        }
+
+        Label #QuarryStatus {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Padding: (Top: 2);
+          Text: "Status: ON";
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+
+          $C.@SmallSecondaryTextButton #QuarryToggleButton {
+            Anchor: (Width: 120, Height: 26);
+            Text: "TURN OFF";
+          }
+        }
+
+        Group { Anchor: (Height: 6); }
+
+        Label #QuarryArea {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Text: "Area: 5 x 5";
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 6);
+
+          Label {
+            Anchor: (Width: 36);
+            Style: (
+              FontSize: 12,
+              TextColor: #96a9be
+            );
+            Text: "Width";
+          }
+
+          TextButton #WidthMinus {
+            Style: $C.@SmallSecondaryTextButtonStyle;
+            Anchor: (Width: 22, Height: 22);
+            Padding: (Horizontal: 0, Vertical: 0);
+            Text: "-";
+          }
+
+          Label #QuarryWidthValue {
+            Anchor: (Width: 40);
+            Style: (
+              FontSize: 12,
+              TextColor: #d6cfb2,
+              HorizontalAlignment: Center
+            );
+            Text: "5";
+          }
+
+          TextButton #WidthPlus {
+            Style: $C.@SmallSecondaryTextButtonStyle;
+            Anchor: (Width: 22, Height: 22);
+            Padding: (Horizontal: 0, Vertical: 0);
+            Text: "+";
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+
+          Label {
+            Anchor: (Width: 36);
+            Style: (
+              FontSize: 12,
+              TextColor: #96a9be
+            );
+            Text: "Depth";
+          }
+
+          TextButton #DepthMinus {
+            Style: $C.@SmallSecondaryTextButtonStyle;
+            Anchor: (Width: 22, Height: 22);
+            Padding: (Horizontal: 0, Vertical: 0);
+            Text: "-";
+          }
+
+          Label #QuarryDepthValue {
+            Anchor: (Width: 40);
+            Style: (
+              FontSize: 12,
+              TextColor: #d6cfb2,
+              HorizontalAlignment: Center
+            );
+            Text: "5";
+          }
+
+          TextButton #DepthPlus {
+            Style: $C.@SmallSecondaryTextButtonStyle;
+            Anchor: (Width: 22, Height: 22);
+            Padding: (Horizontal: 0, Vertical: 0);
+            Text: "+";
+          }
+        }
+
+        Group { Anchor: (Height: 6); }
+
+        $C.@TextButton #ShowAreaButton {
+          Anchor: (Left: 0, Right: 0, Height: 30);
+          Text: "Show Area";
+        }
+      }
+
+      Group { Anchor: (Width: 24); }
+
+      Group {
+        Anchor: (Width: 360);
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 4, Right: 8);
+
+        Label #QuarryNextTier {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Text: "Next: Reinforced";
+        }
+
+        Label #QuarryUpgradeStats {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be,
+            Wrap: true
+          );
+          Anchor: (Left: 0, Right: 0);
+          Padding: (Top: 4);
+          Text: "";
+        }
+
+        Label #UpgradeReqHeader {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Padding: (Top: 10);
+          Text: "Requirements";
+        }
+
+        Group {
+          LayoutMode: Top;
+          Padding: (Top: 6);
+
+          Group #UpgradeReqRow1 {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: 34);
+
+            ItemSlot #UpgradeReqSlot1 {
+              Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+              ShowQualityBackground: false;
+              HitTestVisible: false;
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #UpgradeReqName1 {
+              FlexWeight: 1;
+              Style: (
+                FontSize: 13,
+                TextColor: #c7b59a
+              );
+              Text: "";
+            }
+
+            Label #UpgradeReqQty1 {
+              Anchor: (Width: 70);
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be,
+                HorizontalAlignment: End
+              );
+              Text: "";
+            }
+          }
+
+          Group #UpgradeReqRow2 {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: 34);
+            Padding: (Top: 4);
+
+            ItemSlot #UpgradeReqSlot2 {
+              Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+              ShowQualityBackground: false;
+              HitTestVisible: false;
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #UpgradeReqName2 {
+              FlexWeight: 1;
+              Style: (
+                FontSize: 13,
+                TextColor: #c7b59a
+              );
+              Text: "";
+            }
+
+            Label #UpgradeReqQty2 {
+              Anchor: (Width: 70);
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be,
+                HorizontalAlignment: End
+              );
+              Text: "";
+            }
+          }
+
+          Group #UpgradeReqRow3 {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: 34);
+            Padding: (Top: 4);
+
+            ItemSlot #UpgradeReqSlot3 {
+              Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+              ShowQualityBackground: false;
+              HitTestVisible: false;
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #UpgradeReqName3 {
+              FlexWeight: 1;
+              Style: (
+                FontSize: 13,
+                TextColor: #c7b59a
+              );
+              Text: "";
+            }
+
+            Label #UpgradeReqQty3 {
+              Anchor: (Width: 70);
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be,
+                HorizontalAlignment: End
+              );
+              Text: "";
+            }
+          }
+
+          Group #UpgradeReqRow4 {
+            LayoutMode: Left;
+            Anchor: (Left: 0, Right: 0, Height: 34);
+            Padding: (Top: 4);
+
+            ItemSlot #UpgradeReqSlot4 {
+              Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+              ShowQualityBackground: false;
+              HitTestVisible: false;
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #UpgradeReqName4 {
+              FlexWeight: 1;
+              Style: (
+                FontSize: 13,
+                TextColor: #c7b59a
+              );
+              Text: "";
+            }
+
+            Label #UpgradeReqQty4 {
+              Anchor: (Width: 70);
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be,
+                HorizontalAlignment: End
+              );
+              Text: "";
+            }
+          }
+
+          Label #UpgradeReqEmpty {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be
+            );
+            Padding: (Top: 6);
+            Text: "No further upgrades.";
+            Visible: false;
+          }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        $C.@TextButton #UpgradeButton {
+          Anchor: (Left: 0, Right: 0, Height: 34);
+          Text: "Upgrade";
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

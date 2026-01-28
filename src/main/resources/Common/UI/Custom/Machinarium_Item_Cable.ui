@@ -1,0 +1,856 @@
+$C = "Common.ui";
+@IconSize = 64;
+@SideButtonWidth = 280;
+@RenameButtonWidth = 90;
+@FilterButtonWidth = 64;
+@FilterButtonHeight = 32;
+@FilterButtonIconSize = 16;
+@FilterIconSize = 24;
+@FilterButtonIcon = Group {
+  Anchor: (Width: @FilterButtonIconSize, Height: @FilterButtonIconSize);
+  Background: "TexturesUI/filter.png";
+};
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 560, Height: 700);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Item Cable";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+      Group {
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 8, Right: 8);
+
+        Label #ItemHeader {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Text: "Item Transport";
+        }
+
+        Label #SideHeader {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Padding: (Top: 8);
+          Text: "Connections";
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+
+          ItemSlot #SideEastIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideEast {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "East: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideEastRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideEastFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideWestIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideWest {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "West: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideWestRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideWestFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideUpIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideUp {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "Up: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideUpRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideUpFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideDownIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideDown {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "Down: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideDownRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideDownFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideSouthIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideSouth {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "South: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideSouthRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideSouthFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 2);
+
+          ItemSlot #SideNorthIcon {
+            Anchor: (Width: @IconSize, Height: @IconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideNorth {
+            Anchor: (Width: @SideButtonWidth);
+            Text: "North: Off";
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@SmallSecondaryTextButton #SideNorthRename {
+            Anchor: (Width: @RenameButtonWidth, Height: @FilterButtonHeight);
+            Text: "Name";
+            Visible: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          Button #SideNorthFilter {
+            Anchor: (Width: @FilterButtonWidth, Height: @FilterButtonHeight);
+            Style: $C.@TertiaryButtonStyle;
+            LayoutMode: Center;
+
+            @FilterButtonIcon {}
+          }
+        }
+
+        Group {
+          LayoutMode: Top;
+          Padding: (Top: 10);
+
+          $C.@SmallSecondaryTextButton #ItemMode {
+            Text: "Item Mode: Take/Put";
+            Visible: false;
+          }
+
+          $C.@SmallSecondaryTextButton #ItemTarget {
+            Text: "Target: Auto";
+          }
+
+          $C.@SmallSecondaryTextButton #ItemNetwork {
+            Text: "Priority Network";
+          }
+        }
+      }
+    }
+  }
+}
+
+Group #FilterPanel {
+  Anchor: (Full: 0);
+  Background: #000000(0.55);
+  Visible: false;
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Center;
+
+    Group #FilterPanelBody {
+      Anchor: (Width: 360, Height: 420);
+      Background: $C.@InputBoxBackground;
+      Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12);
+      LayoutMode: Top;
+
+      Label #FilterTitle {
+        Style: (
+          FontSize: 16,
+          RenderBold: true,
+          TextColor: #d6cfb2
+        );
+        Text: "Filters";
+      }
+
+      Label #FilterHint {
+        Style: (
+          FontSize: 13,
+          TextColor: #96a9be
+        );
+        Padding: (Top: 4);
+        Text: "Select items to allow";
+      }
+
+      Group #FilterModeRow {
+        Anchor: (Height: 24);
+        LayoutMode: Left;
+        Padding: (Top: 6);
+
+        Label #FilterModeLabel {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Anchor: (Width: 60, Vertical: 0);
+          Text: "Mode";
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterModeCheck {
+          Anchor: (Vertical: 0);
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        Label #FilterModeValue {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Anchor: (Vertical: 0);
+          Text: "Blacklist";
+        }
+      }
+
+      Group #FilterSearchRow {
+        Anchor: (Height: 38);
+        LayoutMode: Left;
+        Padding: (Top: 8);
+
+        Label #FilterSearchLabel {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Anchor: (Width: 60, Vertical: 0);
+          Text: "Search";
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        CompactTextField #FilterSearchInput {
+          Anchor: (Width: 200, Height: 30, Vertical: 0);
+          CollapsedWidth: 200;
+          ExpandedWidth: 200;
+          PlaceholderText: "Search items...";
+          Style: (FontSize: 14);
+          PlaceholderStyle: (TextColor: #3d5a85, FontSize: 13);
+          Padding: (Horizontal: 10, Left: 26);
+          Decoration: (
+            Default: (
+              Icon: (Texture: "Common/SearchIcon.png", Width: 14, Height: 14, Offset: 6),
+              ClearButtonStyle: $C.@ClearButtonStyle
+            )
+          );
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@SmallSecondaryTextButton #FilterSearchButton {
+          Anchor: (Width: 60, Height: 30, Vertical: 0);
+          Text: "Find";
+        }
+      }
+
+      Label #FilterEmpty {
+        Style: (
+          FontSize: 13,
+          TextColor: #96a9be
+        );
+        Padding: (Top: 8);
+        Text: "No items available";
+        Visible: false;
+      }
+
+      Group #FilterList {
+        LayoutMode: Top;
+        Padding: (Top: 6);
+
+      Group #FilterRow0 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem0Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem0Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem0Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow1 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem1Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem1Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem1Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow2 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem2Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem2Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem2Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow3 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem3Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem3Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem3Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow4 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem4Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem4Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem4Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow5 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem5Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem5Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem5Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow6 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem6Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem6Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem6Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow7 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem7Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem7Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem7Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+      Group #FilterRow8 {
+        LayoutMode: Left;
+        Padding: (Top: 4);
+        Visible: false;
+
+        ItemSlot #FilterItem8Icon {
+          Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+          ShowQualityBackground: false;
+          ShowQuantity: false;
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@CheckBox #FilterItem8Check {}
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterItem8Label {
+          Style: (
+            FontSize: 14,
+            TextColor: #c7b59a
+          );
+          Text: "-";
+        }
+      }
+
+        Group #FilterRow9 {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+          Visible: false;
+
+          ItemSlot #FilterItem9Icon {
+            Anchor: (Width: @FilterIconSize, Height: @FilterIconSize, Vertical: 0);
+            ShowQualityBackground: false;
+            ShowQuantity: false;
+          }
+
+          Group {
+            Anchor: (Width: 6);
+          }
+
+          $C.@CheckBox #FilterItem9Check {}
+
+          Group {
+            Anchor: (Width: 8);
+          }
+
+          Label #FilterItem9Label {
+            Style: (
+              FontSize: 14,
+              TextColor: #c7b59a
+            );
+            Text: "-";
+          }
+        }
+      }
+
+      Group #FilterPaging {
+        LayoutMode: Left;
+        Padding: (Top: 8);
+
+        $C.@SmallSecondaryTextButton #FilterPrev {
+          Anchor: (Width: 80);
+          Text: "Prev";
+        }
+
+        Group {
+          Anchor: (Width: 6);
+        }
+
+        $C.@SmallSecondaryTextButton #FilterNext {
+          Anchor: (Width: 80);
+          Text: "Next";
+        }
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        Label #FilterPage {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Text: "0 / 0";
+        }
+      }
+
+      Group {
+        Anchor: (Height: 8);
+      }
+
+      $C.@SmallSecondaryTextButton #FilterClose {
+        Anchor: (Width: 120);
+        Text: "Close";
+      }
+    }
+  }
+}
+
+$C.@BackButton {}
+
+Group #RenamePanel {
+  Anchor: (Full: 0);
+  Background: #000000(0.55);
+  Visible: false;
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Center;
+
+    Group #RenamePanelBody {
+      Anchor: (Width: 340, Height: 180);
+      Background: $C.@InputBoxBackground;
+      Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12);
+      LayoutMode: Top;
+
+      Label #RenameTitle {
+        Style: (
+          FontSize: 16,
+          RenderBold: true,
+          TextColor: #d6cfb2
+        );
+        Text: "Storage Name";
+      }
+
+      CompactTextField #RenameInput {
+        Anchor: (Width: 280, Height: 30, Vertical: 0);
+        CollapsedWidth: 280;
+        ExpandedWidth: 280;
+        PlaceholderText: "Enter name...";
+        Style: (FontSize: 14);
+        PlaceholderStyle: (TextColor: #3d5a85, FontSize: 13);
+        Padding: (Horizontal: 10, Left: 10);
+      }
+
+      Group {
+        Anchor: (Height: 10);
+      }
+
+      Group {
+        LayoutMode: Left;
+
+        $C.@SmallSecondaryTextButton #RenameSave {
+          Anchor: (Width: 120);
+          Text: "Save";
+        }
+
+        Group {
+          Anchor: (Width: 8);
+        }
+
+        $C.@SmallSecondaryTextButton #RenameCancel {
+          Anchor: (Width: 120);
+          Text: "Cancel";
+        }
+      }
+    }
+  }
+}
