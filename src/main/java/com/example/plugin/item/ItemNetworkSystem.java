@@ -1084,17 +1084,22 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
             return fallback;
         }
+        boolean allowBlockConfig = false;
         if (world != null) {
             long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+            BlockType blockType = world.getBlockType(x, y, z);
+            String blockId = blockType == null ? null : blockType.getId();
+            allowBlockConfig = isMachinariumBlockId(blockId);
             if (accessor != null) {
+                if (!allowBlockConfig) {
+                    cleanupStorageConfig(world, chunkStore, x, y, z);
+                }
                 Holder<ChunkStore> holder = accessor.getBlockComponentHolder(x, y, z);
-                if (holder != null) {
-                    if (hasBlockConfig) {
-                        ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
-                        if (config != null) {
-                            return config.getPriority();
-                        }
+                if (holder != null && hasBlockConfig && allowBlockConfig) {
+                    ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
+                    if (config != null) {
+                        return config.getPriority();
                     }
                 }
             }
@@ -1105,7 +1110,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         BlockComponentChunk components =
                 chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
-        if (components != null && hasBlockConfig) {
+        if (components != null && hasBlockConfig && allowBlockConfig) {
             int localX = ChunkUtil.localCoordinate((long) x);
             int localZ = ChunkUtil.localCoordinate((long) z);
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
@@ -1117,6 +1122,86 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             }
         }
         return resolveChunkStoragePriority(chunkStore, chunkIndex, x, y, z, fallback);
+    }
+
+    private void cleanupStorageConfig(World world, ChunkStore chunkStore, int x, int y, int z) {
+        if (world == null || chunkStore == null || MachinariumComponents.ITEM_STORAGE == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        BlockComponentChunk components =
+                chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (components == null) {
+            return;
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
+        Store<ChunkStore> store = chunkStore.getStore();
+        Ref<ChunkStore> ref = components.getEntityReference(blockIndex);
+        if (ref != null) {
+            if (store != null) {
+                ItemStorageConfigComponent config = store.getComponent(ref, MachinariumComponents.ITEM_STORAGE);
+                if (config != null) {
+                    storeChunkStorageConfig(chunkStore, x, y, z, config);
+                    BlockState state = BlockState.getBlockState(ref, store);
+                    if (state == null) {
+                        components.removeEntityReference(blockIndex, ref);
+                        components.markNeedsSaving();
+                    }
+                }
+            }
+            return;
+        }
+        Holder<ChunkStore> holder = components.getEntityHolder(blockIndex);
+        if (holder == null) {
+            return;
+        }
+        ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
+        if (config == null) {
+            return;
+        }
+        storeChunkStorageConfig(chunkStore, x, y, z, config);
+        BlockState state = BlockState.getBlockState(holder);
+        if (state == null) {
+            components.removeEntityHolder(blockIndex);
+            components.markNeedsSaving();
+        }
+    }
+
+    private void storeChunkStorageConfig(
+            ChunkStore chunkStore,
+            int x,
+            int y,
+            int z,
+            ItemStorageConfigComponent config) {
+        if (chunkStore == null || MachinariumComponents.ITEM_STORAGE_CHUNK == null || config == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        ItemStorageConfigChunk chunkConfig =
+                chunkStore.getChunkComponent(chunkIndex, MachinariumComponents.ITEM_STORAGE_CHUNK);
+        if (chunkConfig == null) {
+            chunkConfig = new ItemStorageConfigChunk();
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
+        chunkConfig.setConfig(blockIndex, config);
+        Store<ChunkStore> store = chunkStore.getStore();
+        Ref<ChunkStore> chunkRef = chunkStore.getChunkReference(chunkIndex);
+        if (store != null && chunkRef != null) {
+            store.putComponent(chunkRef, MachinariumComponents.ITEM_STORAGE_CHUNK, chunkConfig);
+        }
+    }
+
+    private boolean isMachinariumBlockId(String blockId) {
+        if (blockId == null || blockId.isEmpty()) {
+            return false;
+        }
+        int colonIndex = blockId.indexOf(':');
+        String normalized = colonIndex >= 0 ? blockId.substring(colonIndex + 1) : blockId;
+        return normalized.regionMatches(true, 0, "Machinarium_", 0, "Machinarium_".length());
     }
 
     private int resolveChunkStoragePriority(

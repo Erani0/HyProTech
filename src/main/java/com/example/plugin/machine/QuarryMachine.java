@@ -155,11 +155,7 @@ public final class QuarryMachine extends MasterMachine {
             }
         }
 
-        long chunkIndex = ChunkUtil.indexChunkFromBlock(target.pos.getX(), target.pos.getZ());
-        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
-        if (accessor != null) {
-            accessor.setBlock(target.pos.getX(), target.pos.getY(), target.pos.getZ(), BlockType.EMPTY);
-        }
+        scheduleBlockBreak(world, target.pos);
 
         context.markDirty();
         return true;
@@ -384,6 +380,9 @@ public final class QuarryMachine extends MasterMachine {
         if (id == null || id.isEmpty()) {
             return false;
         }
+        if (containsIgnoreCase(id, "bedrock")) {
+            return false;
+        }
         if (isBorderId(id) || TieredIdUtil.isTieredId(id, MachinariumIds.BLOCK_QUARRY)) {
             return false;
         }
@@ -455,6 +454,22 @@ public final class QuarryMachine extends MasterMachine {
         int maxZ = MINING_OFFSET_Z;
         int minZ = maxZ - (Math.max(1, depth) - 1);
         return new Bounds(minX, maxX, minZ, maxZ);
+    }
+
+    private void scheduleBlockBreak(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        world.execute(() -> {
+            long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+            BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+            if (accessor != null) {
+                accessor.setBlock(x, y, z, BlockType.EMPTY);
+            }
+        });
     }
 
     private static final class BlockTarget {

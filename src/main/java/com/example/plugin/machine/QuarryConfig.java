@@ -41,11 +41,11 @@ public final class QuarryConfig {
 
     private static final int[] CAPACITY = {
             5000,
-            12500,
-            31000,
-            79000,
+            50000,
+            100000,
             200000,
-            500000
+            600000,
+            1000000
     };
 
     private static final int[] CONSUMPTION_PER_SECOND = {

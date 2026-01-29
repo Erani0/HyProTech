@@ -5,6 +5,28 @@
                               },
     "MaxStack":  100,
     "Icon":  "Icons/ItemsGenerated/machinarium_quarry_T3.png",
+    "Recipe":  {
+                   "TimeSeconds":  2,
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ingredient_Bar_Silver",
+                                     "Quantity":  1
+                                 },
+                                 {
+                                     "ItemId":  "Ingredient_Bar_Cobalt",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Type":  "Crafting",
+                                                "Id":  "Machinarium_Workbench",
+                                                "Categories":  [
+                                                                   "Machinarium_Crafting"
+                                                               ]
+                                            }
+                                        ]
+               },
     "Interactions":  {
                          "Primary":  "Block_Primary",
                          "Secondary":  "Block_Secondary"

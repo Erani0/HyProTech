@@ -5,9 +5,11 @@ import com.example.plugin.energy.EnergyNodeComponent;
 import com.example.plugin.energy.SolarUpgradeConfig;
 import com.example.plugin.furnace.FurnaceConfig;
 import com.example.plugin.item.ItemNodeComponent;
+import com.example.plugin.MachinariumComponents;
 import com.hypixel.hytale.builtin.crafting.state.ProcessingBenchState;
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Holder;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -162,8 +164,11 @@ public final class UpgradePersistence {
                 }
                 return;
             }
+            clearBlockComponents(world, pos);
             int rotationIndex = world.getBlockRotationIndex(pos.getX(), pos.getY(), pos.getZ());
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
+            ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
+            applyPendingComponents(world, pos);
             if (debug) {
                 System.out.println("[Machinarium] queueBlockSwap setBlock done pos=" + pos
                         + " newId=" + newBlockId);
@@ -196,9 +201,12 @@ public final class UpgradePersistence {
                 return;
             }
 
+            clearBlockComponents(world, pos);
             int rotationIndex = world.getBlockRotationIndex(pos.getX(), pos.getY(), pos.getZ());
             List<ItemStack> items = snapshotContainerItems(world, pos.getX(), pos.getY(), pos.getZ());
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
+            ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
+            applyPendingComponents(world, pos);
             if (items != null && !items.isEmpty()) {
                 restoreContainerItems(world, pos.getX(), pos.getY(), pos.getZ(), items);
             }
@@ -230,9 +238,12 @@ public final class UpgradePersistence {
                 return;
             }
 
+            clearBlockComponents(world, pos);
             int rotationIndex = world.getBlockRotationIndex(pos.getX(), pos.getY(), pos.getZ());
             List<ItemStack> items = snapshotBenchItems(world, pos.getX(), pos.getY(), pos.getZ());
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
+            ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
+            applyPendingComponents(world, pos);
             if (items != null && !items.isEmpty()) {
                 restoreBenchItems(world, pos.getX(), pos.getY(), pos.getZ(), items);
             }
@@ -535,6 +546,7 @@ public final class UpgradePersistence {
                 break;
             case BATTERY:
             case MACHINE:
+            case QUARRY:
                 snapshot.setInputMask(node.getInputMask());
                 snapshot.setOutputMask(node.getOutputMask());
                 break;
@@ -568,6 +580,7 @@ public final class UpgradePersistence {
                 return true;
             case BATTERY:
             case MACHINE:
+            case QUARRY:
                 target.setInputMask(snapshot.getInputMask());
                 target.setOutputMask(snapshot.getOutputMask());
                 return true;
@@ -656,6 +669,125 @@ public final class UpgradePersistence {
     private static boolean isExpired(World world, PendingUpgrade pending) {
         long tick = world.getTick();
         return tick - pending.createdTick > PENDING_TTL_TICKS;
+    }
+
+    private static void ensureBlockState(World world, int x, int y, int z) {
+        if (world == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        WorldChunk chunk = world.getChunkIfLoaded(chunkIndex);
+        if (chunk == null) {
+            return;
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        BlockState.ensureState(chunk, localX, y, localZ);
+    }
+
+    private static void clearBlockComponents(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+        BlockComponentChunk blockComponents =
+                world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return;
+        }
+        int localX = ChunkUtil.localCoordinate((long) pos.getX());
+        int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
+        Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+        if (ref != null) {
+            blockComponents.removeEntityReference(blockIndex, ref);
+        }
+        Holder<ChunkStore> holder = blockComponents.getEntityHolder(blockIndex);
+        if (holder != null) {
+            blockComponents.removeEntityHolder(blockIndex);
+        }
+        if (ref != null || holder != null) {
+            blockComponents.markNeedsSaving();
+        }
+    }
+
+    private static void applyPendingComponents(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        PendingUpgrade pending = getPending(world, pos.getX(), pos.getY(), pos.getZ());
+        if (pending == null) {
+            return;
+        }
+        if (isExpired(world, pending)) {
+            removePending(world, pos.getX(), pos.getY(), pos.getZ());
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+        BlockComponentChunk blockComponents =
+                world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return;
+        }
+        int localX = ChunkUtil.localCoordinate((long) pos.getX());
+        int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
+        Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+        if (ref != null && !ref.isValid()) {
+            blockComponents.removeEntityReference(blockIndex, ref);
+            ref = null;
+        }
+        Holder<ChunkStore> holder = ref == null ? blockComponents.getEntityHolder(blockIndex) : null;
+        boolean holderFromChunk = holder != null;
+        if (ref == null && holder == null) {
+            holder = ChunkStore.REGISTRY.newHolder();
+        }
+        boolean changed = false;
+        if (pending.energy != null && MachinariumComponents.ENERGY != null) {
+            if (ref != null) {
+                Store<ChunkStore> store = world.getChunkStore().getStore();
+                if (store != null) {
+                    store.putComponent(ref, MachinariumComponents.ENERGY, pending.energy);
+                }
+            } else if (holder != null) {
+                holder.putComponent(MachinariumComponents.ENERGY, pending.energy);
+            }
+            pending.energy = null;
+            changed = true;
+        }
+        if (pending.item != null && MachinariumComponents.ITEM != null) {
+            if (ref != null) {
+                Store<ChunkStore> store = world.getChunkStore().getStore();
+                if (store != null) {
+                    store.putComponent(ref, MachinariumComponents.ITEM, pending.item);
+                }
+            } else if (holder != null) {
+                holder.putComponent(MachinariumComponents.ITEM, pending.item);
+            }
+            pending.item = null;
+            changed = true;
+        }
+        if (ref == null && changed && holder != null) {
+            Store<ChunkStore> store = world.getChunkStore().getStore();
+            if (store != null) {
+                if (holderFromChunk) {
+                    blockComponents.removeEntityHolder(blockIndex);
+                }
+                Ref<ChunkStore> newRef = store.addEntity(holder, AddReason.SPAWN);
+                blockComponents.addEntityReference(blockIndex, newRef);
+            } else {
+                if (!holderFromChunk) {
+                    blockComponents.storeEntityHolder(blockIndex, holder);
+                }
+                blockComponents.markNeedsSaving();
+            }
+        }
+        if (pending.energy == null && pending.item == null) {
+            removePending(world, pos.getX(), pos.getY(), pos.getZ());
+        }
+        if (changed && ref != null) {
+            blockComponents.markNeedsSaving();
+        }
     }
 
     private static boolean blockIdMatches(World world, int x, int y, int z, String expectedId) {

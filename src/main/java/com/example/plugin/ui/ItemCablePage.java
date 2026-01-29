@@ -774,19 +774,22 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
             return;
         }
+        BlockType blockType = world.getBlockType(x, y, z);
+        String blockId = blockType == null ? null : blockType.getId();
+        boolean allowBlockConfig = isMachinariumBlockId(blockId);
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
         BlockComponentChunk components =
                 chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
         boolean stored = false;
-        if (accessor != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (allowBlockConfig && accessor != null && MachinariumComponents.ITEM_STORAGE != null) {
             Holder<ChunkStore> holder = accessor.getBlockComponentHolder(x, y, z);
             if (holder != null) {
                 holder.putComponent(MachinariumComponents.ITEM_STORAGE, config);
                 stored = true;
             }
         }
-        if (!stored && components != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (!stored && allowBlockConfig && components != null && MachinariumComponents.ITEM_STORAGE != null) {
             int localX = ChunkUtil.localCoordinate((long) x);
             int localZ = ChunkUtil.localCoordinate((long) z);
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
@@ -813,6 +816,15 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             components.markNeedsSaving();
         }
         storeChunkStorageConfig(chunkStore, x, y, z, config);
+    }
+
+    private boolean isMachinariumBlockId(String blockId) {
+        if (blockId == null || blockId.isEmpty()) {
+            return false;
+        }
+        int colonIndex = blockId.indexOf(':');
+        String normalized = colonIndex >= 0 ? blockId.substring(colonIndex + 1) : blockId;
+        return normalized.regionMatches(true, 0, "Machinarium_", 0, "Machinarium_".length());
     }
 
     private ItemStorageConfigComponent getChunkStorageConfig(ChunkStore chunkStore, int x, int y, int z) {

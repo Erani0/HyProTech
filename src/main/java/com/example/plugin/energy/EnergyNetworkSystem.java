@@ -113,7 +113,8 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         double sunlightFactor = 1.0;
         WorldTimeResource timeResource = world.getEntityStore().getStore().getResource(WorldTimeResource.getResourceType());
         if (timeResource != null) {
-            sunlightFactor = timeResource.getSunlightFactor();
+            double baseFactor = timeResource.getSunlightFactor();
+            sunlightFactor = SunlightUtil.adjustedSunlightFactor(world, timeResource, baseFactor);
         }
 
         int chunkX = worldChunk.getX();
@@ -176,7 +177,8 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
             changed |= syncSolarOutputSide(world, worldX, worldY, worldZ, node);
             syncSolarState(world, worldX, worldY, worldZ, node);
-        } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY) {
+        } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY
+                || EnergyNodeComponent.isMachineLike(node.getNodeType())) {
             changed |= syncBatterySides(world, worldX, worldY, worldZ, node);
         } else if (node.getNodeType() == EnergyNodeComponent.NodeType.FURNACE) {
             changed |= syncFurnaceSides(world, worldX, worldY, worldZ, node);
@@ -230,6 +232,11 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private boolean ensureDefaults(EnergyNodeComponent node) {
         boolean changed = false;
         EnergyNodeComponent.NodeType type = node.getNodeType();
+        if (type == EnergyNodeComponent.NodeType.QUARRY) {
+            node.setNodeType(EnergyNodeComponent.NodeType.MACHINE);
+            changed = true;
+            type = EnergyNodeComponent.NodeType.MACHINE;
+        }
         if (type == EnergyNodeComponent.NodeType.CABLE) {
             int tier = CableUpgradeConfig.clampTier(node.getCableTier());
             if (node.getCableTier() != tier) {
@@ -287,7 +294,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 node.setMaxTransfer(BASIC_MACHINE_MAX_TRANSFER);
                 changed = true;
             }
-        } else if (type == EnergyNodeComponent.NodeType.MACHINE) {
+        } else if (EnergyNodeComponent.isMachineLike(type)) {
             if (node.getCapacity() <= 0) {
                 node.setCapacity(BASIC_MACHINE_CAPACITY);
                 changed = true;
@@ -683,7 +690,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                     idleFurnaces.add(neighbor);
                 }
             } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY
-                    || node.getNodeType() == EnergyNodeComponent.NodeType.MACHINE) {
+                    || EnergyNodeComponent.isMachineLike(node.getNodeType())) {
                 batteries.add(neighbor);
             }
         }
@@ -1996,6 +2003,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 return isFurnaceActive(node) ? 3 : 1;
             case BATTERY:
             case MACHINE:
+            case QUARRY:
                 return 2;
             case CABLE:
             case SOLAR:

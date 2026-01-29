@@ -5,6 +5,28 @@
                               },
     "MaxStack":  100,
     "Icon":  "Icons/ItemsGenerated/machinarium_quarry_T1.png",
+    "Recipe":  {
+                   "TimeSeconds":  2,
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ingredient_Bar_Copper",
+                                     "Quantity":  1
+                                 },
+                                 {
+                                     "ItemId":  "Ingredient_Hide_Medium",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Type":  "Crafting",
+                                                "Id":  "Machinarium_Workbench",
+                                                "Categories":  [
+                                                                   "Machinarium_Crafting"
+                                                               ]
+                                            }
+                                        ]
+               },
     "Interactions":  {
                          "Primary":  "Block_Primary",
                          "Secondary":  "Block_Secondary"

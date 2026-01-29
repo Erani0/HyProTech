@@ -12,12 +12,16 @@
     "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Copper",
+        "ItemId": "Ingredient_Bar_Adamantite",
         "Quantity": 1
       },
       {
-        "ResourceTypeId": "Rock",
-        "Quantity": 5
+        "ItemId": "Ingredient_Bar_Cobalt",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Leather_Medium",
+        "Quantity": 1
       }
     ],
     "BenchRequirement": [

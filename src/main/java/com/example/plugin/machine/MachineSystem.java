@@ -136,7 +136,27 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
             }
         }
 
+        EnergyNodeComponent.NodeType beforeNodeType = energy == null ? null : energy.getNodeType();
+        int beforeCapacity = energy == null ? 0 : energy.getCapacity();
+        int beforeMaxTransfer = energy == null ? 0 : energy.getMaxTransfer();
+        int beforeInputMask = energy == null ? 0 : energy.getInputMask();
+        int beforeOutputMask = energy == null ? 0 : energy.getOutputMask();
+        int beforeProgressMax = machine == null ? 0 : machine.getProgressMax();
+
         definition.configureDefaults(machine, energy);
+
+        if (energy != null) {
+            if (energy.getNodeType() != beforeNodeType
+                    || energy.getCapacity() != beforeCapacity
+                    || energy.getMaxTransfer() != beforeMaxTransfer
+                    || energy.getInputMask() != beforeInputMask
+                    || energy.getOutputMask() != beforeOutputMask) {
+                changed = true;
+            }
+        }
+        if (machine != null && machine.getProgressMax() != beforeProgressMax) {
+            changed = true;
+        }
 
         int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, ChunkUtil.xFromBlockInColumn(blockIndex));
         int worldY = ChunkUtil.yFromBlockInColumn(blockIndex);

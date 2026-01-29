@@ -4,6 +4,7 @@ import com.example.plugin.energy.EnergyNodeComponent;
 import com.example.plugin.energy.EnergySide;
 import com.example.plugin.energy.EnergyUnits;
 import com.example.plugin.energy.SolarUpgradeConfig;
+import com.example.plugin.energy.SunlightUtil;
 import com.example.plugin.energy.CableUpgradeConfig;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
@@ -167,7 +168,8 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
             double sunlightFactor = 1.0;
             WorldTimeResource timeResource = store.getResource(WorldTimeResource.getResourceType());
             if (timeResource != null) {
-                sunlightFactor = timeResource.getSunlightFactor();
+                double baseFactor = timeResource.getSunlightFactor();
+                sunlightFactor = SunlightUtil.adjustedSunlightFactor(world, timeResource, baseFactor);
             }
             int output = (int) Math.round(node.getGeneration() * sunlightFactor);
             int tier = SolarUpgradeConfig.clampTier(node.getSolarTier());
@@ -280,13 +282,27 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
         try {
             if (page instanceof BatteryPage) {
                 BatteryPage batteryPage = (BatteryPage) page;
-                EnergyNodeComponent node = chunkStore.getComponent(batteryPage.getBlockRef(), energyType);
+                Vector3i pos = batteryPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = batteryPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
                 if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY) {
                     batteryPage.update(node);
                 }
             } else if (page instanceof SolarPage) {
                 SolarPage solarPage = (SolarPage) page;
-                EnergyNodeComponent node = chunkStore.getComponent(solarPage.getBlockRef(), energyType);
+                Vector3i pos = solarPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = solarPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
                 if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
                     solarPage.update(node);
                 }
@@ -313,9 +329,22 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                 }
             } else if (page instanceof QuarryPage) {
                 QuarryPage quarryPage = (QuarryPage) page;
-                EnergyNodeComponent node = chunkStore.getComponent(quarryPage.getBlockRef(), energyType);
-                if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.MACHINE) {
-                    MachineComponent machine = chunkStore.getComponent(quarryPage.getBlockRef(), machineType);
+                Vector3i pos = quarryPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = quarryPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
+                if (node != null && EnergyNodeComponent.isMachineLike(node.getNodeType())) {
+                    MachineComponent machine = pos == null
+                            ? null
+                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
+                    if (machine == null) {
+                        Ref<ChunkStore> ref = quarryPage.resolveBlockRef(world);
+                        machine = chunkStore.getComponent(ref, machineType);
+                    }
                     quarryPage.update(node, machine);
                 }
             }
@@ -663,6 +692,25 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
         int localZ = ChunkUtil.localCoordinate((long) z);
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
         return blockComponents.getComponent(blockIndex, itemType);
+    }
+
+    private MachineComponent getMachineAt(World world, int x, int y, int z) {
+        if (world == null) {
+            return null;
+        }
+        if (y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
+            return null;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        BlockComponentChunk blockComponents =
+                world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return null;
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
+        return blockComponents.getComponent(blockIndex, machineType);
     }
 
     private ItemCableNetworkInfo getItemCableNetworkInfo(World world, Vector3i target) {

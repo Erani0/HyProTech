@@ -1,7 +1,20 @@
 {
-  "Group": "com.example",
-  "Name": "HyProTech",
-  "Version": "1.2.0",
-  "Main": "com.example.plugin.Machinarium",
-  "IncludesAssetPack": true
+    "Group": "com.example",
+    "Name": "HyProTech",
+    "Version": "1.2.8",
+    "Description": "A Hytale Modern Technology mod!",
+    "Authors": [
+        {
+            "Name": "Yoofe"
+        }
+    ],
+    "Website": "example.org",
+    "ServerVersion": "*",
+    "Dependencies": {
+    },
+    "OptionalDependencies": {
+    },
+    "DisabledByDefault": false,
+    "Main": "com.example.plugin.Machinarium",
+    "IncludesAssetPack": true
 }

@@ -37,7 +37,10 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent> {
     public enum CableType {
@@ -70,6 +73,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             "#UpgradeReqQty3",
             "#UpgradeReqQty4"
     };
+    private static final Map<World, Map<UpgradeKey, UpgradeProgress>> UPGRADE_QUEUE = new WeakHashMap<>();
 
     private final Vector3i targetPos;
     private final CableType cableType;
@@ -138,44 +142,44 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             return;
         }
 
+        int upgradeCount = snapshot.minTierCount > 0 ? snapshot.minTierCount : snapshot.cableCount;
         CableUpgradeConfig.Requirement[] requirements =
-                CableUpgradeConfig.getUpgradeRequirements(currentTier, snapshot.cableCount);
-        List<ItemStack> stacks = new ArrayList<>(requirements.length);
-        for (CableUpgradeConfig.Requirement requirement : requirements) {
-            stacks.add(new ItemStack(requirement.getItemId(), requirement.getQuantity()));
-        }
+                CableUpgradeConfig.getUpgradeRequirements(currentTier, upgradeCount);
+        Vector3i anchor = snapshot.anchor != null ? snapshot.anchor : targetPos;
+        UpgradeProgress progress = getUpgradeProgress(world, CableType.ENERGY, anchor, currentTier, true);
 
-        if (!stacks.isEmpty() && !inventory.canRemoveItemStacks(stacks)) {
-            sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
+        if (isUpgradeComplete(requirements, progress)) {
+            completeEnergyUpgrade(world, snapshot, currentTier);
+            clearUpgradeProgress(world, CableType.ENERGY, anchor);
+            sendPlayerMessage(
+                    playerRef,
+                    store,
+                    "Upgraded cable network to " + CableUpgradeConfig.getTierName(currentTier + 1) + ".");
+            refreshAndSend(store, world);
             return;
         }
 
-        if (!stacks.isEmpty()) {
-            ListTransaction<ItemStackTransaction> transaction = inventory.removeItemStacks(stacks);
-            if (transaction == null || !transaction.succeeded()) {
-                sendPlayerMessage(playerRef, store, "Upgrade failed.");
-                return;
+        int taken = depositUpgradeItems(inventory, requirements, progress);
+        if (taken <= 0) {
+            if (progress != null && progress.hasAnyPaid()) {
+                sendPlayerMessage(playerRef, store, buildProgressMessage(requirements, progress));
+            } else {
+                sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
             }
+            refreshAndSend(store, world);
+            return;
         }
 
-        int nextTier = currentTier + 1;
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ENERGY_CABLE, nextTier);
-        for (EnergyCableEntry cable : snapshot.cables) {
-            if (cable.node.getCableTier() >= nextTier) {
-                continue;
-            }
-            cable.node.setCableTier(nextTier);
-            applyEnergyCableTier(cable.node, nextTier);
-            cable.components.markNeedsSaving();
-            if (cable.position != null) {
-                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ENERGY_CABLE, upgradedId, cable.node, null);
-            }
+        if (isUpgradeComplete(requirements, progress)) {
+            completeEnergyUpgrade(world, snapshot, currentTier);
+            clearUpgradeProgress(world, CableType.ENERGY, anchor);
+            sendPlayerMessage(
+                    playerRef,
+                    store,
+                    "Upgraded cable network to " + CableUpgradeConfig.getTierName(currentTier + 1) + ".");
+        } else {
+            sendPlayerMessage(playerRef, store, buildProgressMessage(requirements, progress));
         }
-
-        sendPlayerMessage(
-                playerRef,
-                store,
-                "Upgraded cable network to " + CableUpgradeConfig.getTierName(nextTier) + ".");
         refreshAndSend(store, world);
     }
 
@@ -200,44 +204,44 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             return;
         }
 
+        int upgradeCount = snapshot.minTierCount > 0 ? snapshot.minTierCount : snapshot.cableCount;
         CableUpgradeConfig.Requirement[] requirements =
-                CableUpgradeConfig.getUpgradeRequirements(currentTier, snapshot.cableCount);
-        List<ItemStack> stacks = new ArrayList<>(requirements.length);
-        for (CableUpgradeConfig.Requirement requirement : requirements) {
-            stacks.add(new ItemStack(requirement.getItemId(), requirement.getQuantity()));
-        }
+                CableUpgradeConfig.getUpgradeRequirements(currentTier, upgradeCount);
+        Vector3i anchor = snapshot.anchor != null ? snapshot.anchor : targetPos;
+        UpgradeProgress progress = getUpgradeProgress(world, CableType.ITEM, anchor, currentTier, true);
 
-        if (!stacks.isEmpty() && !inventory.canRemoveItemStacks(stacks)) {
-            sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
+        if (isUpgradeComplete(requirements, progress)) {
+            completeItemUpgrade(world, snapshot, currentTier);
+            clearUpgradeProgress(world, CableType.ITEM, anchor);
+            sendPlayerMessage(
+                    playerRef,
+                    store,
+                    "Upgraded cable network to " + CableUpgradeConfig.getTierName(currentTier + 1) + ".");
+            refreshAndSend(store, world);
             return;
         }
 
-        if (!stacks.isEmpty()) {
-            ListTransaction<ItemStackTransaction> transaction = inventory.removeItemStacks(stacks);
-            if (transaction == null || !transaction.succeeded()) {
-                sendPlayerMessage(playerRef, store, "Upgrade failed.");
-                return;
+        int taken = depositUpgradeItems(inventory, requirements, progress);
+        if (taken <= 0) {
+            if (progress != null && progress.hasAnyPaid()) {
+                sendPlayerMessage(playerRef, store, buildProgressMessage(requirements, progress));
+            } else {
+                sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
             }
+            refreshAndSend(store, world);
+            return;
         }
 
-        int nextTier = currentTier + 1;
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ITEM_CABLE, nextTier);
-        for (ItemCableEntry cable : snapshot.cables) {
-            if (cable.node.getCableTier() >= nextTier) {
-                continue;
-            }
-            cable.node.setCableTier(nextTier);
-            applyItemCableTier(cable.node, nextTier);
-            cable.components.markNeedsSaving();
-            if (cable.position != null) {
-                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ITEM_CABLE, upgradedId, null, cable.node);
-            }
+        if (isUpgradeComplete(requirements, progress)) {
+            completeItemUpgrade(world, snapshot, currentTier);
+            clearUpgradeProgress(world, CableType.ITEM, anchor);
+            sendPlayerMessage(
+                    playerRef,
+                    store,
+                    "Upgraded cable network to " + CableUpgradeConfig.getTierName(currentTier + 1) + ".");
+        } else {
+            sendPlayerMessage(playerRef, store, buildProgressMessage(requirements, progress));
         }
-
-        sendPlayerMessage(
-                playerRef,
-                store,
-                "Upgraded cable network to " + CableUpgradeConfig.getTierName(nextTier) + ".");
         refreshAndSend(store, world);
     }
 
@@ -263,7 +267,10 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             update.set("#CableNetworkType.Text", "Energy Cable Network");
             update.set("#CableNetworkSize.Text", "Cables: " + snapshot.cableCount);
             update.set("#CableNetworkStats.Text", buildEnergyStats(snapshot));
-            updateUpgradePanel(update, snapshot.minTier, snapshot.maxTier, snapshot.cableCount, inventory, true);
+            Vector3i anchor = snapshot.anchor != null ? snapshot.anchor : targetPos;
+            UpgradeProgress progress = getUpgradeProgress(world, CableType.ENERGY, anchor, snapshot.minTier, false);
+            int upgradeCount = snapshot.minTierCount > 0 ? snapshot.minTierCount : snapshot.cableCount;
+            updateUpgradePanel(update, snapshot.minTier, snapshot.maxTier, upgradeCount, inventory, true, progress);
         } else {
             ItemNetworkSnapshot snapshot = collectItemNetwork(world);
             if (snapshot == null) {
@@ -273,7 +280,10 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             update.set("#CableNetworkType.Text", "Item Cable Network");
             update.set("#CableNetworkSize.Text", "Cables: " + snapshot.cableCount);
             update.set("#CableNetworkStats.Text", buildItemStats(snapshot));
-            updateUpgradePanel(update, snapshot.minTier, snapshot.maxTier, snapshot.cableCount, inventory, false);
+            Vector3i anchor = snapshot.anchor != null ? snapshot.anchor : targetPos;
+            UpgradeProgress progress = getUpgradeProgress(world, CableType.ITEM, anchor, snapshot.minTier, false);
+            int upgradeCount = snapshot.minTierCount > 0 ? snapshot.minTierCount : snapshot.cableCount;
+            updateUpgradePanel(update, snapshot.minTier, snapshot.maxTier, upgradeCount, inventory, false, progress);
         }
     }
 
@@ -299,9 +309,10 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             UICommandBuilder update,
             int minTier,
             int maxTier,
-            int cableCount,
+            int upgradeCount,
             ItemContainer inventory,
-            boolean energyCable) {
+            boolean energyCable,
+            UpgradeProgress progress) {
         String tierLabel = minTier == maxTier
                 ? CableUpgradeConfig.getTierName(minTier)
                 : "Mixed (" + CableUpgradeConfig.getTierName(minTier)
@@ -317,21 +328,31 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
         update.set("#UpgradeStats.Text", buildUpgradeStatsText(minTier, hasNextTier, energyCable));
 
         CableUpgradeConfig.Requirement[] requirements =
-                hasNextTier ? CableUpgradeConfig.getUpgradeRequirements(minTier, cableCount)
+                hasNextTier ? CableUpgradeConfig.getUpgradeRequirements(minTier, upgradeCount)
                         : new CableUpgradeConfig.Requirement[0];
-        int[] owned = new int[requirements.length];
-        boolean canUpgrade = hasNextTier && inventory != null;
+        boolean readyToUpgrade = hasNextTier;
+        boolean hasDepositItems = false;
         for (int i = 0; i < requirements.length; i++) {
             CableUpgradeConfig.Requirement requirement = requirements[i];
-            owned[i] = inventory == null ? 0 : countItem(inventory, requirement.getItemId());
-            if (owned[i] < requirement.getQuantity()) {
-                canUpgrade = false;
+            int required = requirement.getQuantity();
+            int paidAmount = progress == null ? 0 : progress.getPaid(requirement.getItemId());
+            if (paidAmount < required) {
+                readyToUpgrade = false;
+            }
+            int available = inventory == null ? 0 : countItem(inventory, requirement.getItemId());
+            if (paidAmount < required && available > 0) {
+                hasDepositItems = true;
             }
         }
 
-        String buttonText = hasNextTier
-                ? (canUpgrade ? "Upgrade" : "Missing Items")
-                : "Max Tier";
+        String buttonText;
+        if (!hasNextTier) {
+            buttonText = "Max Tier";
+        } else if (readyToUpgrade) {
+            buttonText = "Upgrade";
+        } else {
+            buttonText = hasDepositItems ? "Deposit" : "Missing Items";
+        }
         update.set("#UpgradeButton.Text", buttonText);
 
         update.set("#UpgradeReqEmpty.Text", "No further upgrades.");
@@ -341,15 +362,227 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             update.set(UPGRADE_ROW_IDS[i] + ".Visible", visible);
             if (visible) {
                 CableUpgradeConfig.Requirement requirement = requirements[i];
+                int required = requirement.getQuantity();
+                int paidAmount = progress == null ? 0 : progress.getPaid(requirement.getItemId());
+                int paid = Math.min(paidAmount, Math.max(0, required));
                 update.set(UPGRADE_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(requirement.getItemId()));
                 update.set(UPGRADE_NAME_IDS[i] + ".Text", formatRequirementName(requirement.getItemId()));
-                update.set(UPGRADE_QTY_IDS[i] + ".Text", owned[i] + "/" + requirement.getQuantity());
+                update.set(UPGRADE_QTY_IDS[i] + ".Text", paid + "/" + required);
             } else {
                 update.set(UPGRADE_SLOT_IDS[i] + ".ItemId", "");
                 update.set(UPGRADE_NAME_IDS[i] + ".Text", "");
                 update.set(UPGRADE_QTY_IDS[i] + ".Text", "");
             }
         }
+    }
+
+    private void completeEnergyUpgrade(World world, EnergyNetworkSnapshot snapshot, int currentTier) {
+        if (world == null || snapshot == null) {
+            return;
+        }
+        int nextTier = currentTier + 1;
+        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ENERGY_CABLE, nextTier);
+        for (EnergyCableEntry cable : snapshot.cables) {
+            if (cable.node.getCableTier() >= nextTier) {
+                continue;
+            }
+            cable.node.setCableTier(nextTier);
+            applyEnergyCableTier(cable.node, nextTier);
+            cable.components.markNeedsSaving();
+            if (cable.position != null) {
+                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ENERGY_CABLE, upgradedId, cable.node, null);
+            }
+        }
+    }
+
+    private void completeItemUpgrade(World world, ItemNetworkSnapshot snapshot, int currentTier) {
+        if (world == null || snapshot == null) {
+            return;
+        }
+        int nextTier = currentTier + 1;
+        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ITEM_CABLE, nextTier);
+        for (ItemCableEntry cable : snapshot.cables) {
+            if (cable.node.getCableTier() >= nextTier) {
+                continue;
+            }
+            cable.node.setCableTier(nextTier);
+            applyItemCableTier(cable.node, nextTier);
+            cable.components.markNeedsSaving();
+            if (cable.position != null) {
+                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ITEM_CABLE, upgradedId, null, cable.node);
+            }
+        }
+    }
+
+    private boolean isUpgradeComplete(
+            CableUpgradeConfig.Requirement[] requirements,
+            UpgradeProgress progress) {
+        if (requirements == null || requirements.length == 0) {
+            return true;
+        }
+        if (progress == null) {
+            return false;
+        }
+        for (CableUpgradeConfig.Requirement requirement : requirements) {
+            if (requirement == null) {
+                continue;
+            }
+            int required = requirement.getQuantity();
+            if (required <= 0) {
+                continue;
+            }
+            if (progress.getPaid(requirement.getItemId()) < required) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int depositUpgradeItems(
+            ItemContainer inventory,
+            CableUpgradeConfig.Requirement[] requirements,
+            UpgradeProgress progress) {
+        if (inventory == null || requirements == null || requirements.length == 0 || progress == null) {
+            return 0;
+        }
+        int totalTaken = 0;
+        for (CableUpgradeConfig.Requirement requirement : requirements) {
+            if (requirement == null) {
+                continue;
+            }
+            String itemId = requirement.getItemId();
+            int required = requirement.getQuantity();
+            if (required <= 0 || itemId == null || itemId.isEmpty()) {
+                continue;
+            }
+            int paid = progress.getPaid(itemId);
+            int remaining = required - paid;
+            if (remaining <= 0) {
+                continue;
+            }
+            int available = countItem(inventory, itemId);
+            int toTake = Math.min(remaining, available);
+            if (toTake <= 0) {
+                continue;
+            }
+            List<ItemStack> stacks = new ArrayList<>(1);
+            stacks.add(new ItemStack(itemId, toTake));
+            ListTransaction<ItemStackTransaction> transaction = inventory.removeItemStacks(stacks);
+            if (transaction == null || !transaction.succeeded()) {
+                continue;
+            }
+            progress.addPaid(itemId, toTake);
+            totalTaken += toTake;
+        }
+        return totalTaken;
+    }
+
+    private String buildProgressMessage(
+            CableUpgradeConfig.Requirement[] requirements,
+            UpgradeProgress progress) {
+        if (requirements == null || requirements.length == 0 || progress == null) {
+            return "Upgrade progress updated.";
+        }
+        StringBuilder text = new StringBuilder("Upgrade progress: ");
+        boolean first = true;
+        for (CableUpgradeConfig.Requirement requirement : requirements) {
+            if (requirement == null) {
+                continue;
+            }
+            String itemId = requirement.getItemId();
+            int required = requirement.getQuantity();
+            if (required <= 0 || itemId == null || itemId.isEmpty()) {
+                continue;
+            }
+            if (!first) {
+                text.append(", ");
+            }
+            int paid = Math.min(progress.getPaid(itemId), Math.max(0, required));
+            text.append(formatRequirementName(itemId))
+                    .append(' ')
+                    .append(paid)
+                    .append('/')
+                    .append(required);
+            first = false;
+        }
+        return text.toString();
+    }
+
+    private static UpgradeProgress getUpgradeProgress(
+            World world,
+            CableType type,
+            Vector3i anchor,
+            int tier,
+            boolean create) {
+        if (world == null || type == null || anchor == null) {
+            return null;
+        }
+        UpgradeKey key = new UpgradeKey(type, anchor);
+        synchronized (UPGRADE_QUEUE) {
+            Map<UpgradeKey, UpgradeProgress> byKey = UPGRADE_QUEUE.get(world);
+            if (byKey == null) {
+                if (!create) {
+                    return null;
+                }
+                byKey = new HashMap<>();
+                UPGRADE_QUEUE.put(world, byKey);
+            }
+            UpgradeProgress progress = byKey.get(key);
+            if (progress == null) {
+                if (!create) {
+                    return null;
+                }
+                progress = new UpgradeProgress(tier);
+                byKey.put(key, progress);
+                return progress;
+            }
+            if (progress.tier != tier) {
+                progress.reset(tier);
+            }
+            return progress;
+        }
+    }
+
+    private static void clearUpgradeProgress(World world, CableType type, Vector3i anchor) {
+        if (world == null || type == null || anchor == null) {
+            return;
+        }
+        UpgradeKey key = new UpgradeKey(type, anchor);
+        synchronized (UPGRADE_QUEUE) {
+            Map<UpgradeKey, UpgradeProgress> byKey = UPGRADE_QUEUE.get(world);
+            if (byKey == null) {
+                return;
+            }
+            byKey.remove(key);
+            if (byKey.isEmpty()) {
+                UPGRADE_QUEUE.remove(world);
+            }
+        }
+    }
+
+    private static Vector3i selectAnchor(Vector3i current, Vector3i candidate) {
+        if (candidate == null) {
+            return current;
+        }
+        if (current == null) {
+            return candidate;
+        }
+        if (candidate.getX() < current.getX()) {
+            return candidate;
+        }
+        if (candidate.getX() > current.getX()) {
+            return current;
+        }
+        if (candidate.getY() < current.getY()) {
+            return candidate;
+        }
+        if (candidate.getY() > current.getY()) {
+            return current;
+        }
+        if (candidate.getZ() < current.getZ()) {
+            return candidate;
+        }
+        return current;
     }
 
     private String buildEnergyStats(EnergyNetworkSnapshot snapshot) {
@@ -590,7 +823,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
         String name = itemId;
         String prefix = "Ingredient_Bar_";
         if (name.startsWith(prefix)) {
-            name = name.substring(prefix.length()) + " Bar";
+            name = name.substring(prefix.length()) + " Ingot";
         }
         return name.replace('_', ' ');
     }
@@ -653,7 +886,9 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
 
     private static final class EnergyNetworkSnapshot {
         private final List<EnergyCableEntry> cables = new ArrayList<>();
+        private Vector3i anchor;
         private int cableCount;
+        private int minTierCount;
         private int totalEnergy;
         private int totalCapacity;
         private int maxTransfer = Integer.MAX_VALUE;
@@ -667,12 +902,18 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
                 int blockIndex,
                 Vector3i position) {
             cables.add(new EnergyCableEntry(node, components, blockIndex, position));
+            anchor = selectAnchor(anchor, position);
             cableCount++;
             totalEnergy += node.getEnergy();
             totalCapacity += node.getCapacity();
             maxTransfer = Math.min(maxTransfer, node.getMaxTransfer());
             int tier = CableUpgradeConfig.clampTier(node.getCableTier());
-            minTier = Math.min(minTier, tier);
+            if (tier < minTier) {
+                minTier = tier;
+                minTierCount = 1;
+            } else if (tier == minTier) {
+                minTierCount++;
+            }
             maxTier = Math.max(maxTier, tier);
         }
     }
@@ -697,7 +938,9 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
 
     private static final class ItemNetworkSnapshot {
         private final List<ItemCableEntry> cables = new ArrayList<>();
+        private Vector3i anchor;
         private int cableCount;
+        private int minTierCount;
         private int maxTransfer = Integer.MAX_VALUE;
         private int minTier = Integer.MAX_VALUE;
         private int maxTier = Integer.MIN_VALUE;
@@ -708,10 +951,16 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
                 int blockIndex,
                 Vector3i position) {
             cables.add(new ItemCableEntry(node, components, blockIndex, position));
+            anchor = selectAnchor(anchor, position);
             cableCount++;
             maxTransfer = Math.min(maxTransfer, node.getMaxTransfer());
             int tier = CableUpgradeConfig.clampTier(node.getCableTier());
-            minTier = Math.min(minTier, tier);
+            if (tier < minTier) {
+                minTier = tier;
+                minTierCount = 1;
+            } else if (tier == minTier) {
+                minTierCount++;
+            }
             maxTier = Math.max(maxTier, tier);
         }
     }
@@ -731,6 +980,78 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             this.components = components;
             this.blockIndex = blockIndex;
             this.position = position;
+        }
+    }
+
+    private static final class UpgradeKey {
+        private final CableType type;
+        private final int x;
+        private final int y;
+        private final int z;
+
+        private UpgradeKey(CableType type, Vector3i anchor) {
+            this.type = type;
+            this.x = anchor.getX();
+            this.y = anchor.getY();
+            this.z = anchor.getZ();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof UpgradeKey)) {
+                return false;
+            }
+            UpgradeKey other = (UpgradeKey) obj;
+            return x == other.x
+                    && y == other.y
+                    && z == other.z
+                    && type == other.type;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = type == null ? 0 : type.hashCode();
+            result = 31 * result + x;
+            result = 31 * result + y;
+            result = 31 * result + z;
+            return result;
+        }
+    }
+
+    private static final class UpgradeProgress {
+        private int tier;
+        private final Map<String, Integer> paid = new HashMap<>();
+
+        private UpgradeProgress(int tier) {
+            this.tier = tier;
+        }
+
+        private int getPaid(String itemId) {
+            if (itemId == null || itemId.isEmpty()) {
+                return 0;
+            }
+            Integer value = paid.get(itemId);
+            return value == null ? 0 : value;
+        }
+
+        private void addPaid(String itemId, int amount) {
+            if (itemId == null || itemId.isEmpty() || amount <= 0) {
+                return;
+            }
+            int current = getPaid(itemId);
+            paid.put(itemId, current + amount);
+        }
+
+        private void reset(int newTier) {
+            tier = newTier;
+            paid.clear();
+        }
+
+        private boolean hasAnyPaid() {
+            return !paid.isEmpty();
         }
     }
 }

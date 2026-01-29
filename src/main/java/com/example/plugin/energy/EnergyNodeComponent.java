@@ -14,7 +14,9 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         CABLE,
         BATTERY,
         MACHINE,
-        FURNACE
+        FURNACE,
+        // Legacy value used by older quarry nodes; treat as MACHINE.
+        QUARRY
     }
 
     private static final IntegerCodec INTEGER_CODEC = new IntegerCodec();
@@ -92,6 +94,14 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
 
     public NodeType getNodeType() {
         return nodeType;
+    }
+
+    public boolean isMachineLike() {
+        return isMachineLike(nodeType);
+    }
+
+    public static boolean isMachineLike(NodeType type) {
+        return type == NodeType.MACHINE || type == NodeType.QUARRY;
     }
 
     public void setNodeType(NodeType nodeType) {

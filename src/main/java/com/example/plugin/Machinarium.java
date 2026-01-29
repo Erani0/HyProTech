@@ -23,8 +23,11 @@ import com.example.plugin.ui.PlayerUiSystem;
 import com.example.plugin.ui.SolarPage;
 import com.example.plugin.interaction.OpenPoweredBenchInteraction;
 import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.server.core.command.system.CommandManager;
+import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
+import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
@@ -36,9 +39,15 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.math.util.ChunkUtil;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class Machinarium extends JavaPlugin {
+    private static final String TUTBOOKS_DOWNLOAD_URL =
+            "https://github.com/YoofeCZ/HyProTechBook/releases/latest/download/HyProTechBook.zip";
+    private static final String TUTBOOKS_MOD_ID = "HyProTech";
+    private final AtomicBoolean tutbooksDownloadQueued = new AtomicBoolean(false);
+
     public Machinarium(@NonNullDecl JavaPluginInit init) {
         super(init);
     }
@@ -46,6 +55,8 @@ public class Machinarium extends JavaPlugin {
     @Override
     protected void setup() {
         super.setup();
+
+        registerTutbooksDownloadOnPlayerJoin();
 
         ComponentType<ChunkStore, EnergyNodeComponent> energyType =
                 getChunkStoreRegistry().registerComponent(
@@ -215,6 +226,38 @@ public class Machinarium extends JavaPlugin {
                     UpgradePersistence.storePending(world, pos, blockId, stack);
                 });
         // Furnace custom UI removed; vanilla bench opens via interaction.
+    }
+
+    private void registerTutbooksDownloadOnPlayerJoin() {
+        getEventRegistry().registerGlobal(
+                PlayerReadyEvent.class,
+                event -> {
+                    if (!tutbooksDownloadQueued.compareAndSet(false, true)) {
+                        return;
+                    }
+                    CommandManager commandManager = CommandManager.get();
+                    if (commandManager == null) {
+                        tutbooksDownloadQueued.set(false);
+                        getLogger().atWarning().log("[HyProTech] CommandManager not available for TutBooks download.");
+                        return;
+                    }
+                    String downloadCommand = String.format(
+                            "tutbooks download %s %s",
+                            TUTBOOKS_MOD_ID,
+                            TUTBOOKS_DOWNLOAD_URL);
+                    getLogger().atInfo().log("[HyProTech] Running: %s", downloadCommand);
+                    commandManager
+                            .handleCommand(ConsoleSender.INSTANCE, downloadCommand)
+                            .thenCompose(ignored -> commandManager.handleCommand(ConsoleSender.INSTANCE, "tutbooks reload"))
+                            .thenAccept(ignored -> getLogger().atInfo().log("[HyProTech] TutBooks download/reload complete."))
+                            .exceptionally(ex -> {
+                                tutbooksDownloadQueued.set(false);
+                                getLogger().atWarning().log(
+                                        "[HyProTech] TutBooks download/reload failed: %s",
+                                        ex.getMessage());
+                                return null;
+                            });
+                });
     }
 
     private static MachineComponent getMachineAt(

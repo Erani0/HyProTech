@@ -90,7 +90,7 @@ public final class BatteryUpgradeConfig {
             case 0:
                 return new Requirement[] {
                         req("Ingredient_Bar_Copper", 1),
-                        req("Ingredient_Hide_Medium", 1)
+                        req("Ingredient_Leather_Medium", 1)
                 };
             case 1:
                 return new Requirement[] {
@@ -112,7 +112,7 @@ public final class BatteryUpgradeConfig {
                 return new Requirement[] {
                         req("Ingredient_Bar_Adamantite", 1),
                         req("Ingredient_Bar_Cobalt", 1),
-                        req("Ingredient_Hide_Medium", 1)
+                        req("Ingredient_Leather_Medium", 1)
                 };
             default:
                 return NO_REQUIREMENTS;

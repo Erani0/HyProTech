@@ -8,10 +8,6 @@
     "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Machinarium_Cable_Tool",
-        "Quantity": 1
-      },
-      {
         "ItemId": "Ingredient_Bar_Iron",
         "Quantity": 4
       }

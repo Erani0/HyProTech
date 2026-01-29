@@ -7,6 +7,7 @@ import com.example.plugin.energy.EnergyNodeComponent;
 import com.example.plugin.energy.EnergyUnits;
 import com.example.plugin.energy.SolarUpgradeConfig;
 import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.util.ChunkUtil;
@@ -61,7 +62,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
             "#UpgradeReqQty4"
     };
 
-    private final Ref<ChunkStore> blockRef;
+    private Ref<ChunkStore> blockRef;
     private final ComponentType<ChunkStore, EnergyNodeComponent> energyType;
     private Vector3i blockPosition;
     private int lastEnergy = Integer.MIN_VALUE;
@@ -110,27 +111,31 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
         if (!ACTION_UPGRADE.equalsIgnoreCase(data.getAction())) {
             return;
         }
+        if (!handleUpgrade(playerRef, store)) {
+            sendUpdate(new UICommandBuilder());
+        }
+    }
 
+    private boolean handleUpgrade(Ref<EntityStore> playerRef, Store<EntityStore> store) {
         World world = getWorld(store);
         if (world == null) {
-            return;
+            return false;
         }
 
-        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
-        EnergyNodeComponent node = chunkStore.getComponent(blockRef, energyType);
+        EnergyNodeComponent node = resolveNode(world);
         if (node == null || node.getNodeType() != EnergyNodeComponent.NodeType.SOLAR) {
-            return;
+            return false;
         }
 
         int currentTier = SolarUpgradeConfig.clampTier(node.getSolarTier());
         if (!SolarUpgradeConfig.hasNextTier(currentTier)) {
             sendPlayerMessage(playerRef, store, "Solar panel is already at max tier.");
-            return;
+            return false;
         }
 
         ItemContainer inventory = getPlayerInventory(store);
         if (inventory == null) {
-            return;
+            return false;
         }
 
         SolarUpgradeConfig.Requirement[] requirements =
@@ -142,21 +147,21 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
 
         if (!stacks.isEmpty() && !inventory.canRemoveItemStacks(stacks)) {
             sendPlayerMessage(playerRef, store, "Missing upgrade materials.");
-            return;
+            return false;
         }
 
         if (!stacks.isEmpty()) {
             ListTransaction<ItemStackTransaction> transaction = inventory.removeItemStacks(stacks);
             if (transaction == null || !transaction.succeeded()) {
                 sendPlayerMessage(playerRef, store, "Upgrade failed.");
-                return;
+                return false;
             }
         }
 
         int nextTier = currentTier + 1;
         node.setSolarTier(nextTier);
         applySolarTier(node, nextTier);
-        chunkStore.putComponent(blockRef, energyType, node);
+        storeNode(world, node);
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
             String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_SOLAR_PANEL, nextTier);
@@ -168,6 +173,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
                 store,
                 "Upgraded solar panel to " + SolarUpgradeConfig.getTierName(nextTier) + ".");
         update(node, true);
+        return true;
     }
 
     public void update(EnergyNodeComponent node) {
@@ -192,6 +198,8 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
         boolean changed = updateForNode(update, node, inventory);
         if (changed) {
             sendUpdate(update);
+        } else if (force) {
+            sendUpdate(new UICommandBuilder());
         }
         lastUpdateMs = now;
     }
@@ -201,8 +209,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
             showNoNode(update);
             return true;
         }
-        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
-        EnergyNodeComponent node = chunkStore.getComponent(blockRef, energyType);
+        EnergyNodeComponent node = resolveNode(world);
         if (node == null || node.getNodeType() != EnergyNodeComponent.NodeType.SOLAR) {
             showNoNode(update);
             return true;
@@ -373,9 +380,95 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
         String name = itemId;
         String prefix = "Ingredient_Bar_";
         if (name.startsWith(prefix)) {
-            name = name.substring(prefix.length()) + " Bar";
+            name = name.substring(prefix.length()) + " Ingot";
         }
         return name.replace('_', ' ');
+    }
+
+    Ref<ChunkStore> resolveBlockRef(World world) {
+        if (world == null) {
+            return blockRef;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos == null) {
+            return blockRef;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+        BlockComponentChunk blockComponents =
+                world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return blockRef;
+        }
+        int localX = ChunkUtil.localCoordinate((long) pos.getX());
+        int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
+        Ref<ChunkStore> ref = blockComponents.getEntityReferences().get(blockIndex);
+        if (ref != null && (blockRef == null || ref.getIndex() != blockRef.getIndex())) {
+            blockRef = ref;
+        }
+        return blockRef;
+    }
+
+    private EnergyNodeComponent resolveNode(World world) {
+        if (world == null) {
+            return null;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos != null) {
+            long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+            BlockComponentChunk blockComponents =
+                    world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+            if (blockComponents != null) {
+                int localX = ChunkUtil.localCoordinate((long) pos.getX());
+                int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
+                int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
+                EnergyNodeComponent node = blockComponents.getComponent(blockIndex, energyType);
+                if (node != null) {
+                    return node;
+                }
+            }
+        }
+        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+        Ref<ChunkStore> resolvedRef = resolveBlockRef(world);
+        try {
+            return chunkStore.getComponent(resolvedRef, energyType);
+        } catch (IllegalStateException ignored) {
+            return null;
+        }
+    }
+
+    private void storeNode(World world, EnergyNodeComponent node) {
+        if (world == null || node == null) {
+            return;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos != null) {
+            long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+            BlockComponentChunk blockComponents =
+                    world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+            if (blockComponents != null) {
+                int localX = ChunkUtil.localCoordinate((long) pos.getX());
+                int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
+                int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
+                Holder<ChunkStore> holder = blockComponents.getEntityHolder(blockIndex);
+                if (holder == null) {
+                    holder = ChunkStore.REGISTRY.newHolder();
+                    holder.putComponent(energyType, node);
+                    blockComponents.storeEntityHolder(blockIndex, holder);
+                } else {
+                    holder.putComponent(energyType, node);
+                }
+                blockComponents.markNeedsSaving();
+                return;
+            }
+        }
+        Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+        Ref<ChunkStore> resolvedRef = resolveBlockRef(world);
+        try {
+            chunkStore.putComponent(resolvedRef, energyType, node);
+        } catch (IllegalStateException ignored) {
+            // Ref may be stale right after a block swap.
+        }
     }
 
     private void sendPlayerMessage(Ref<EntityStore> playerRef, Store<EntityStore> store, String text) {
@@ -391,7 +484,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
         return entityStore == null ? null : entityStore.getWorld();
     }
 
-    private Vector3i resolveBlockPosition(World world) {
+    Vector3i resolveBlockPosition(World world) {
         if (world == null) {
             return null;
         }
