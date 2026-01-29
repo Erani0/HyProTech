@@ -9,7 +9,7 @@
     "Blocks.Misc"
   ],
   "Recipe": {
-    "TimeSeconds": 2,
+    "TimeSeconds": 0,
     "Input": [
       {
         "ItemId": "Machinarium_Energy_Cable_T4",

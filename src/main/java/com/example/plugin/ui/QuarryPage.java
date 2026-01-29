@@ -92,6 +92,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private int lastAreaDepth = Integer.MIN_VALUE;
     private Boolean lastAreaVisible;
     private Boolean lastEnabled;
+    private long lastAreaToggleMs;
     private long lastUpdateMs;
 
     public QuarryPage(
@@ -165,6 +166,11 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         } else if ("DepthPlus".equalsIgnoreCase(action)) {
             newDepth = clampArea(depth + 1, maxArea);
         } else if ("ToggleArea".equalsIgnoreCase(action)) {
+            long now = System.currentTimeMillis();
+            if (lastAreaToggleMs != 0L && now - lastAreaToggleMs < 300L) {
+                return;
+            }
+            lastAreaToggleMs = now;
             newVisible = !visible;
         } else if ("ToggleEnabled".equalsIgnoreCase(action)) {
             machine.setEnabled(!machine.isEnabled());
