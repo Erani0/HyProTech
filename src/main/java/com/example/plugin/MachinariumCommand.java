@@ -28,7 +28,7 @@ public class MachinariumCommand extends AbstractPlayerCommand {
             withOptionalArg(
                     "item",
                     "ID itemu (solar/battery/cable/energy_cable/item_cable/thin_cable_black/"
-                            + "thin_cable_brown/thin_cable_blue/thin_cable_green/furnace/workbench)",
+                            + "thin_cable_brown/thin_cable_blue/thin_cable_green/furnace/workbench/ore_crusher)",
                     ArgTypes.STRING);
     private final OptionalArg<Integer> countArg =
             withOptionalArg("count", "Mnozstvi (default 1)", ArgTypes.INTEGER);
@@ -96,6 +96,7 @@ public class MachinariumCommand extends AbstractPlayerCommand {
         giveItem(container, MachinariumIds.BLOCK_BATTERY, count, player);
         giveItem(container, MachinariumIds.BLOCK_ELECTRIC_FURNACE, count, player);
         giveItem(container, MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH, count, player);
+        giveItem(container, MachinariumIds.BLOCK_ORE_CRUSHER, count, player);
         player.sendMessage(Message.raw("Pridany HyProTech bloky do inventare."));
     }
 
@@ -132,6 +133,10 @@ public class MachinariumCommand extends AbstractPlayerCommand {
             case "workbench":
             case "electrical_workbench":
                 return MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH;
+            case "ore_crusher":
+            case "orecrusher":
+            case "crusher":
+                return MachinariumIds.BLOCK_ORE_CRUSHER;
             default:
                 return itemId;
         }

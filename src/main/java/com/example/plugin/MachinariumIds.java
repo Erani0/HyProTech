@@ -17,6 +17,7 @@ public final class MachinariumIds {
     public static final String CABLE_PAGE_ID = "machinarium_cable_page";
     public static final String ITEM_CABLE_PAGE_ID = "machinarium_item_cable_page";
     public static final String QUARRY_PAGE_ID = "machinarium_quarry_page";
+    public static final String ORE_CRUSHER_PAGE_ID = "machinarium_ore_crusher_page";
 
     public static final String BLOCK_SOLAR_PANEL = "Machinarium_Solar_Panel";
     public static final String BLOCK_ENERGY_CABLE = "Machinarium_Energy_Cable";
@@ -30,6 +31,9 @@ public final class MachinariumIds {
     public static final String BLOCK_ELECTRICAL_WORKBENCH = "Machinarium_Electrical_Workbench";
     public static final String BLOCK_QUARRY = "Machinarium_Quarry";
     public static final String BLOCK_QUARRY_BORDER = "Machinarium_Quarry_Border";
+    public static final String BLOCK_ORE_CRUSHER = "Machinarium_Ore_Crusher";
+
+    public static final String ITEM_COPPER_POWDER = "Machinarium_Copper_Powder";
 
     private MachinariumIds() {
     }

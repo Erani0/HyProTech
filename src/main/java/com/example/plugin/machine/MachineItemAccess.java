@@ -18,6 +18,7 @@ import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerSta
 
 public final class MachineItemAccess {
     private static final short QUARRY_STORAGE_CAPACITY = 10;
+    private static final short ORE_CRUSHER_STORAGE_CAPACITY = 2;
 
     private MachineItemAccess() {
     }
@@ -44,7 +45,7 @@ public final class MachineItemAccess {
                 y,
                 z);
         if (containerState != null) {
-            ensureQuarryContainer(world, x, y, z, containerState);
+            ensureMachineContainers(world, x, y, z, containerState);
             return containerState;
         }
 
@@ -96,9 +97,52 @@ public final class MachineItemAccess {
                 state.initialize(blockType);
             }
             if (state != null) {
-                ensureQuarryContainer(world, x, y, z, state);
+                ensureMachineContainers(world, x, y, z, state);
             }
         });
+    }
+
+    public static ItemContainerBlockState ensureContainerState(World world, int x, int y, int z) {
+        if (world == null) {
+            return null;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        WorldChunk chunk = world.getChunkIfLoaded(chunkIndex);
+        if (chunk == null) {
+            return null;
+        }
+
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        BlockState.ensureState(chunk, localX, y, localZ);
+
+        ItemContainerState state = BlockModule.get().getComponent(
+                BlockStateModule.get().getComponentType(ItemContainerState.class),
+                world,
+                x,
+                y,
+                z);
+        if (state == null) {
+            return null;
+        }
+        if (state.getItemContainer() == null) {
+            BlockType blockType = world.getBlockType(x, y, z);
+            if (blockType != null) {
+                state.initialize(blockType);
+            }
+        }
+        ensureMachineContainers(world, x, y, z, state);
+        return state;
+    }
+
+    private static void ensureMachineContainers(
+            World world,
+            int x,
+            int y,
+            int z,
+            ItemContainerState state) {
+        ensureQuarryContainer(world, x, y, z, state);
+        ensureOreCrusherContainer(world, x, y, z, state);
     }
 
     private static void ensureQuarryContainer(
@@ -124,6 +168,43 @@ public final class MachineItemAccess {
         }
 
         SimpleItemContainer replacement = new SimpleItemContainer(QUARRY_STORAGE_CAPACITY);
+        if (container != null) {
+            short capacity = container.getCapacity();
+            for (short slot = 0; slot < capacity; slot++) {
+                ItemStack stack = container.getItemStack(slot);
+                if (stack == null || ItemStack.isEmpty(stack)) {
+                    continue;
+                }
+                ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
+                replacement.addItemStack(copy);
+            }
+        }
+        state.setItemContainer(replacement);
+    }
+
+    private static void ensureOreCrusherContainer(
+            World world,
+            int x,
+            int y,
+            int z,
+            ItemContainerState state) {
+        if (world == null || state == null) {
+            return;
+        }
+        BlockType blockType = world.getBlockType(x, y, z);
+        if (blockType == null || blockType == BlockType.EMPTY) {
+            return;
+        }
+        String blockId = blockType.getId();
+        if (blockId == null || !TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            return;
+        }
+        ItemContainer container = state.getItemContainer();
+        if (container != null && container.getCapacity() == ORE_CRUSHER_STORAGE_CAPACITY) {
+            return;
+        }
+
+        SimpleItemContainer replacement = new SimpleItemContainer(ORE_CRUSHER_STORAGE_CAPACITY);
         if (container != null) {
             short capacity = container.getCapacity();
             for (short slot = 0; slot < capacity; slot++) {

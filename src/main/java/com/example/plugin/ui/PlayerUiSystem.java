@@ -347,6 +347,26 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                     }
                     quarryPage.update(node, machine);
                 }
+            } else if (page instanceof OreCrusherPage) {
+                OreCrusherPage crusherPage = (OreCrusherPage) page;
+                Vector3i pos = crusherPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = crusherPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
+                if (node != null && EnergyNodeComponent.isMachineLike(node.getNodeType())) {
+                    MachineComponent machine = pos == null
+                            ? null
+                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
+                    if (machine == null) {
+                        Ref<ChunkStore> ref = crusherPage.resolveBlockRef(world);
+                        machine = chunkStore.getComponent(ref, machineType);
+                    }
+                    crusherPage.update(node, machine);
+                }
             }
         } catch (IllegalStateException e) {
             dismissCustomPage(player, playerRef, store);

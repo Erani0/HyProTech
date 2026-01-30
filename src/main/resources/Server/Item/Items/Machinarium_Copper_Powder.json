@@ -1,0 +1,11 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.Machinarium_Copper_Powder.name",
+    "Description": "server.items.Machinarium_Copper_Powder.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Items/CraftingItems/copper_powder.png",
+  "Model": "Items/CraftingItems/CopperPowder.blockymodel",
+  "Texture": "Items/CraftingItems/copper_powder.png",
+  "Set": "Crafting"
+}

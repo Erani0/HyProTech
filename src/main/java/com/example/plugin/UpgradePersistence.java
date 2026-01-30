@@ -60,7 +60,8 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
     }
 
     public static ItemStack buildDropStack(World world, Vector3i pos, BlockType blockType, String blockId) {
@@ -385,7 +386,8 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
     }
 
     private static String resolveItemId(BlockType blockType, String blockId) {
@@ -437,6 +439,12 @@ public final class UpgradePersistence {
             int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_BATTERY);
             if (tier >= 0) {
                 return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_BATTERY, tier);
+            }
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+            if (tier >= 0) {
+                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, tier);
             }
         }
         return null;
