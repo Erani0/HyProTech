@@ -81,10 +81,17 @@ public class OpenCustomUIWithWindowsInteraction extends SimpleInstantInteraction
         if (targetPos != null) {
             if (page instanceof FurnacePage) {
                 ((FurnacePage) page).setBlockPosition(targetPos);
+            } else if (page instanceof OreCrusherPage) {
+                ((OreCrusherPage) page).setBlockPosition(targetPos);
             }
         }
 
         Store<EntityStore> store = commandBuffer.getStore();
+        if (page instanceof WindowlessPage) {
+            pageManager.openCustomPage(playerEntityRef, store, page);
+            return;
+        }
+
         Window[] windows = null;
         if (page instanceof WindowProvider) {
             windows = ((WindowProvider) page).createWindows(playerEntityRef, store);

@@ -34,6 +34,21 @@ public final class MachinariumIds {
     public static final String BLOCK_ORE_CRUSHER = "Machinarium_Ore_Crusher";
 
     public static final String ITEM_COPPER_POWDER = "Machinarium_Copper_Powder";
+    public static final String ITEM_IRON_POWDER = "Machinarium_Iron_Powder";
+    public static final String ITEM_COBALT_POWDER = "Machinarium_Cobalt_Powder";
+    public static final String ITEM_SILVER_POWDER = "Machinarium_Silver_Powder";
+    public static final String ITEM_GOLD_POWDER = "Machinarium_Gold_Powder";
+    public static final String ITEM_MITHRIL_POWDER = "Machinarium_Mithril_Powder";
+    public static final String ITEM_ADAMANTITE_POWDER = "Machinarium_Adamantite_Powder";
+    public static final String ITEM_THORIUM_POWDER = "Machinarium_Thorium_Powder";
+    public static final String ITEM_ONYXIUM_POWDER = "Machinarium_Onyxium_Powder";
+    public static final String ITEM_PRISMA_POWDER = "Machinarium_Prisma_Powder";
+
+    public static final String ITEM_SCRAP = "Machinarium_Scrap";
+    public static final String ITEM_SLAG = "Machinarium_Slag";
+    public static final String ITEM_ORE_CHIPS = "Machinarium_Ore_Chips";
+    public static final String ITEM_CRYSTAL_FRAGMENT = "Machinarium_Crystal_Fragment";
+    public static final String ITEM_STONE_DUST = "Machinarium_Stone_Dust";
 
     private MachinariumIds() {
     }

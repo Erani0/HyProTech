@@ -10,11 +10,16 @@ import com.hypixel.hytale.server.core.inventory.transaction.ItemStackSlotTransac
 import com.hypixel.hytale.server.core.inventory.transaction.ItemStackTransaction;
 import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
 import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class OreCrusherMachine extends MasterMachine {
     public static final String ID = "machinarium:ore_crusher";
     private static final short INPUT_SLOT = 0;
-    private static final short OUTPUT_SLOT = 1;
+    private static final short OUTPUT_SLOT_START = 1;
+    private static final short OUTPUT_SLOT_END =
+            (short) (OUTPUT_SLOT_START + OreCrusherConfig.OUTPUT_SLOT_COUNT - 1);
 
     @Override
     public String id() {
@@ -68,7 +73,7 @@ public final class OreCrusherMachine extends MasterMachine {
         }
 
         ItemContainer container = context.getItemContainer();
-        if (container == null || container.getCapacity() <= OUTPUT_SLOT) {
+        if (container == null || container.getCapacity() <= OUTPUT_SLOT_END) {
             return changed;
         }
 
@@ -86,8 +91,18 @@ public final class OreCrusherMachine extends MasterMachine {
 
         int tier = OreCrusherConfig.clampTier(machine.getTier());
         int outputQty = OreCrusherConfig.getOutputMultiplierForTier(tier);
-        ItemStack outputStack = new ItemStack(OreCrusherConfig.getOutputItemId(), outputQty);
-        if (!container.canAddItemStack(outputStack)) {
+        String outputItemId = OreCrusherConfig.getOutputItemId(inputStack.getItemId());
+        ItemStack baseOutput = new ItemStack(outputItemId, outputQty);
+
+        List<ItemStack> outputs = new ArrayList<>();
+        outputs.add(baseOutput);
+        List<ItemStack> bonusDrops = OreCrusherConfig.rollBonusDrops(
+                inputStack.getItemId(),
+                tier,
+                ThreadLocalRandom.current());
+        outputs.addAll(bonusDrops);
+
+        if (!canAddOutputs(container, outputs)) {
             return changed;
         }
 
@@ -112,18 +127,18 @@ public final class OreCrusherMachine extends MasterMachine {
         }
         machine.setProgress(0);
 
-        ItemStackSlotTransaction removeTx =
-                container.removeItemStackFromSlot(INPUT_SLOT, inputStack, 1);
-        if (removeTx == null || !removeTx.succeeded()) {
+        ItemStackTransaction addTx = container.addItemStack(baseOutput);
+        if (addTx == null || !addTx.succeeded()) {
             return changed;
         }
 
-        ItemStackTransaction addTx = container.addItemStack(outputStack);
-        if (addTx == null || !addTx.succeeded()) {
-            container.addItemStack(new ItemStack(
-                    inputStack.getItemId(),
-                    1,
-                    inputStack.getMetadata()));
+        if (bonusDrops != null && !bonusDrops.isEmpty()) {
+            container.addItemStacks(bonusDrops);
+        }
+
+        ItemStackSlotTransaction removeTx =
+                container.removeItemStackFromSlot(INPUT_SLOT, inputStack, 1);
+        if (removeTx == null || !removeTx.succeeded()) {
             return changed;
         }
 
@@ -188,5 +203,15 @@ public final class OreCrusherMachine extends MasterMachine {
             }
         }
         return false;
+    }
+
+    private boolean canAddOutputs(ItemContainer container, List<ItemStack> outputs) {
+        if (container == null || outputs == null || outputs.isEmpty()) {
+            return false;
+        }
+        if (outputs.size() == 1) {
+            return container.canAddItemStack(outputs.get(0));
+        }
+        return container.canAddItemStacks(outputs, true, true);
     }
 }

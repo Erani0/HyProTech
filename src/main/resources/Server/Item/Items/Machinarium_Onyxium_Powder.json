@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Copper_Powder.name"
+    "Name": "server.items.Machinarium_Onyxium_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,7 +8,7 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ore_Copper",
+        "ItemId": "Ore_Onyxium",
         "Quantity": 1
       }
     ],
@@ -23,7 +23,7 @@
   },
   "Model": "Items/CraftingItems/CopperPowder.blockymodel",
   "Texture": "Items/CraftingItems/copper_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_copper_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_onyxium_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

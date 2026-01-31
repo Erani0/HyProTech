@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Copper_Powder.name"
+    "Name": "server.items.Machinarium_Scrap.name"
   },
   "Categories": [
     "Items"
@@ -23,7 +23,7 @@
   },
   "Model": "Items/CraftingItems/CopperPowder.blockymodel",
   "Texture": "Items/CraftingItems/copper_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_copper_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_scrap.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

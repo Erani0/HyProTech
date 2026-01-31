@@ -18,7 +18,7 @@ import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerSta
 
 public final class MachineItemAccess {
     private static final short QUARRY_STORAGE_CAPACITY = 10;
-    private static final short ORE_CRUSHER_STORAGE_CAPACITY = 2;
+    private static final short ORE_CRUSHER_STORAGE_CAPACITY = OreCrusherConfig.CONTAINER_CAPACITY;
 
     private MachineItemAccess() {
     }

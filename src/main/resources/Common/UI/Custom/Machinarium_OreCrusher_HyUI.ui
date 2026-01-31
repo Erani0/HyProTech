@@ -1,0 +1,608 @@
+$C = "Common.ui";
+@ReqSlotSize = 32;
+@ItemSlotSize = 48;
+@ItemSlotInner = 44;
+@SlotBorderColor = #2a3d54(0.9);
+@SlotInnerColor = #0b1623(0.6);
+@InvSlotSize = 36;
+@InvSlotGap = 4;
+@InvSlotBorder = #2a3d54(0.9);
+@InvSlotInner = #0b1623(0.45);
+@InvGridHeight = 196;
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 1000, Height: 620);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Ore Crusher";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Top: 8, Left: 8, Right: 8);
+
+      Group #TopRow {
+        LayoutMode: Left;
+        Anchor: (Left: 0, Right: 0, Height: 220);
+
+        Group {
+          Anchor: (Width: 320);
+          LayoutMode: Top;
+          Padding: (Top: 8, Left: 8, Right: 8);
+
+          Label {
+            Style: (
+              FontSize: 14,
+              RenderBold: true,
+              TextColor: #c7b59a
+            );
+            Text: "Input / Output";
+          }
+
+          Group {
+            LayoutMode: Left;
+            Padding: (Top: 10);
+
+            Group {
+              Anchor: (Width: @ItemSlotSize, Height: @ItemSlotSize);
+              Background: @SlotBorderColor;
+              Padding: (Top: 2, Bottom: 2, Left: 2, Right: 2);
+
+              Group {
+                Anchor: (Full: 0);
+                Background: @SlotInnerColor;
+
+                ItemGrid #InputGrid {
+                  Anchor: (Full: 0);
+                  SlotsPerRow: 1;
+                  AreItemsDraggable: true;
+                  ShowScrollbar: false;
+                  RenderItemQualityBackground: false;
+                  Style: (
+                    SlotSize: @ItemSlotInner,
+                    SlotIconSize: @ItemSlotInner,
+                    SlotSpacing: 0,
+                    SlotBackground: "Common/BlockSelectorSlotBackground.png"
+                  );
+                }
+              }
+            }
+
+            Group { Anchor: (Width: 16); }
+
+            Label {
+              Style: (
+                FontSize: 18,
+                TextColor: #c7b59a
+              );
+              Text: "->";
+            }
+
+            Group { Anchor: (Width: 16); }
+
+            Group {
+              Anchor: (Width: 180, Height: 90);
+              Padding: (Top: 2, Bottom: 2, Left: 2, Right: 2);
+
+              Group {
+                Anchor: (Full: 0);
+
+                ItemGrid #OutputGrid {
+                  Anchor: (Full: 0);
+                  SlotsPerRow: 3;
+                  AreItemsDraggable: true;
+                  ShowScrollbar: false;
+                  RenderItemQualityBackground: false;
+                  Style: (
+                    SlotSize: @ItemSlotInner,
+                    SlotIconSize: @ItemSlotInner,
+                    SlotSpacing: 4,
+                    SlotBackground: "Common/BlockSelectorSlotBackground.png"
+                  );
+                }
+              }
+            }
+          }
+        }
+
+        Group { Anchor: (Width: 20); }
+
+        Group {
+          Anchor: (Width: 300, Height: 220);
+          LayoutMode: Top;
+          Padding: (Top: 8, Left: 4, Right: 8);
+
+          Label #CrusherTier {
+            Style: (
+              FontSize: 16,
+              RenderBold: true,
+              TextColor: #d6cfb2
+            );
+            Text: "Tier: Basic";
+          }
+
+          Label #CrusherEnergy {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be,
+              Wrap: true
+            );
+            Anchor: (Left: 0, Right: 0);
+            Padding: (Top: 4);
+            Text: "Energy: 0 / 0";
+          }
+
+          Label #CrusherConsumption {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be
+            );
+            Padding: (Top: 2);
+            Text: "Consumption: 0 J/s";
+          }
+
+          Label #CrusherProgress {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be
+            );
+            Padding: (Top: 2);
+            Text: "Progress: 0%";
+          }
+
+          Label #CrusherYield {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be
+            );
+            Padding: (Top: 2);
+            Text: "Yield: 2x";
+          }
+
+          Label #CrusherStatus {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be
+            );
+            Padding: (Top: 2);
+            Text: "Status: ON";
+          }
+
+          Group {
+            LayoutMode: Left;
+            Padding: (Top: 4);
+
+            $C.@SmallSecondaryTextButton #CrusherToggleButton {
+              Anchor: (Width: 120, Height: 26);
+              Text: "TURN OFF";
+            }
+          }
+        }
+
+        Group { Anchor: (Width: 20); }
+
+        Group {
+          Anchor: (Width: 300, Height: 220);
+          LayoutMode: Top;
+          Padding: (Top: 8, Left: 4, Right: 8);
+
+          Label #CrusherNextTier {
+            Style: (
+              FontSize: 14,
+              RenderBold: true,
+              TextColor: #c7b59a
+            );
+            Text: "Next: Reinforced";
+          }
+
+          Label #CrusherUpgradeStats {
+            Style: (
+              FontSize: 13,
+              TextColor: #96a9be,
+              Wrap: true
+            );
+            Anchor: (Left: 0, Right: 0);
+            Padding: (Top: 4);
+            Text: "";
+          }
+
+          Label #UpgradeReqHeader {
+            Style: (
+              FontSize: 14,
+              RenderBold: true,
+              TextColor: #c7b59a
+            );
+            Padding: (Top: 10);
+            Text: "Requirements";
+          }
+
+          Group {
+            LayoutMode: Top;
+            Padding: (Top: 6);
+
+            Group #UpgradeReqRow1 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 34);
+
+              ItemSlot #UpgradeReqSlot1 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #UpgradeReqName1 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #UpgradeReqQty1 {
+                Anchor: (Width: 70);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #UpgradeReqRow2 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 34);
+              Padding: (Top: 4);
+
+              ItemSlot #UpgradeReqSlot2 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #UpgradeReqName2 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #UpgradeReqQty2 {
+                Anchor: (Width: 70);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #UpgradeReqRow3 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 34);
+              Padding: (Top: 4);
+
+              ItemSlot #UpgradeReqSlot3 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #UpgradeReqName3 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #UpgradeReqQty3 {
+                Anchor: (Width: 70);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #UpgradeReqRow4 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 34);
+              Padding: (Top: 4);
+
+              ItemSlot #UpgradeReqSlot4 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #UpgradeReqName4 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #UpgradeReqQty4 {
+                Anchor: (Width: 70);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Label #UpgradeReqEmpty {
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be
+              );
+              Padding: (Top: 6);
+              Text: "No further upgrades.";
+              Visible: false;
+            }
+          }
+
+          Group { Anchor: (Height: 8); }
+
+          $C.@TextButton #UpgradeButton {
+            Anchor: (Left: 0, Right: 0, Height: 34);
+            Text: "Upgrade";
+          }
+
+          Group { Anchor: (Height: 12); }
+
+          Label #BonusHeader {
+            Style: (
+              FontSize: 14,
+              RenderBold: true,
+              TextColor: #c7b59a
+            );
+            Text: "Bonus Drops";
+          }
+
+          Group {
+            LayoutMode: Top;
+            Padding: (Top: 6);
+
+            Group #BonusRow1 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 32);
+
+              ItemSlot #BonusSlot1 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #BonusName1 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #BonusChance1 {
+                Anchor: (Width: 60);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #BonusRow2 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 32);
+              Padding: (Top: 4);
+
+              ItemSlot #BonusSlot2 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #BonusName2 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #BonusChance2 {
+                Anchor: (Width: 60);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #BonusRow3 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 32);
+              Padding: (Top: 4);
+
+              ItemSlot #BonusSlot3 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #BonusName3 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #BonusChance3 {
+                Anchor: (Width: 60);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #BonusRow4 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 32);
+              Padding: (Top: 4);
+
+              ItemSlot #BonusSlot4 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #BonusName4 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #BonusChance4 {
+                Anchor: (Width: 60);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Group #BonusRow5 {
+              LayoutMode: Left;
+              Anchor: (Left: 0, Right: 0, Height: 32);
+              Padding: (Top: 4);
+
+              ItemSlot #BonusSlot5 {
+                Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                ShowQualityBackground: false;
+                HitTestVisible: false;
+              }
+
+              Group { Anchor: (Width: 8); }
+
+              Label #BonusName5 {
+                FlexWeight: 1;
+                Style: (
+                  FontSize: 13,
+                  TextColor: #c7b59a
+                );
+                Text: "";
+              }
+
+              Label #BonusChance5 {
+                Anchor: (Width: 60);
+                Style: (
+                  FontSize: 13,
+                  TextColor: #96a9be,
+                  HorizontalAlignment: End
+                );
+                Text: "";
+              }
+            }
+
+            Label #BonusEmpty {
+              Style: (
+                FontSize: 13,
+                TextColor: #96a9be
+              );
+              Padding: (Top: 6);
+              Text: "";
+              Visible: false;
+            }
+          }
+        }
+      }
+
+      Group { Anchor: (Height: 16); }
+
+      Group #InventoryRow {
+        LayoutMode: Top;
+        Padding: (Left: 8, Right: 8);
+
+        Label {
+          Style: (
+            FontSize: 14,
+            RenderBold: true,
+            TextColor: #c7b59a
+          );
+          Text: "Inventory";
+        }
+
+        Group { Anchor: (Height: 6); }
+
+        Group {
+          Anchor: (Left: 0, Right: 0, Height: @InvGridHeight);
+          LayoutMode: Full;
+
+          ItemGrid #PlayerInventoryGrid {
+            Anchor: (Left: 0, Right: 0, Top: 0, Height: @InvGridHeight);
+            SlotsPerRow: 9;
+            AreItemsDraggable: true;
+            RenderItemQualityBackground: false;
+            Style: (
+              SlotSize: @InvSlotSize,
+              SlotIconSize: @InvSlotSize,
+              SlotSpacing: @InvSlotGap,
+              SlotBackground: "Common/BlockSelectorSlotBackground.png"
+            );
+          }
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}
