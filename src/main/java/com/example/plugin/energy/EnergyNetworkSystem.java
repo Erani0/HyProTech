@@ -59,7 +59,8 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private static final boolean DEBUG_CABLE_UPGRADES = false;
     private static final double EXTERNAL_RATIO_EPSILON = 0.01;
     private static final int BATTERY_BASE_MASK = EnergySide.NORTH.mask() | EnergySide.SOUTH.mask();
-    private static final int FURNACE_BASE_INPUT_MASK = EnergySide.EAST.mask() | EnergySide.UP.mask();
+    private static final int FURNACE_BASE_INPUT_MASK =
+            EnergySide.EAST.mask() | EnergySide.UP.mask() | EnergySide.SOUTH.mask() | EnergySide.WEST.mask();
     private static final String[][] CABLE_STATE_NAMES = buildCableStateNames();
     private static final String[] SOLAR_STATE_NAMES = buildTierStateNames("Solar_T", SolarUpgradeConfig.MAX_TIER);
     private static final String[] FURNACE_STATE_NAMES = buildTierStateNames("Furnace_T", FurnaceConfig.MAX_TIER);
@@ -170,7 +171,12 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
             changed |= syncCableTierFromBlockId(world, worldX, worldY, worldZ, node);
         }
-        changed |= tickNode(node, sunlightFactor, deltaSeconds);
+        double nodeSunlightFactor = sunlightFactor;
+        if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR
+                && !SunlightUtil.hasSkyAccess(world, worldX, worldY, worldZ)) {
+            nodeSunlightFactor = 0.0;
+        }
+        changed |= tickNode(node, nodeSunlightFactor, deltaSeconds);
         if (node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
             changed |= syncCableBlockId(world, worldX, worldY, worldZ, node);
         }
@@ -407,7 +413,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         node.setProgress(0);
         node.setProgressMax(FURNACE_PROGRESS_MAX);
         node.setInputMask(FURNACE_BASE_INPUT_MASK);
-        node.setOutputMask(0);
+        node.setOutputMask(FURNACE_BASE_INPUT_MASK);
         node.setEnabled(true);
         return node;
     }
@@ -1226,7 +1232,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             EnergyNodeComponent node) {
         Rotation yaw = getBlockYaw(world, worldX, worldY, worldZ);
         int inputMask = rotateMaskByYaw(FURNACE_BASE_INPUT_MASK, yaw);
-        int outputMask = 0;
+        int outputMask = inputMask;
         boolean changed = false;
 
         if (node.getInputMask() != inputMask) {
@@ -1345,7 +1351,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             }
         }
 
-        syncFurnaceState(world, worldX, worldY, worldZ, Math.max(0, tier - 1));
+        syncFurnaceState(world, worldX, worldY, worldZ, Math.max(0, tier - 1), benchState, node);
         syncFurnaceBlockId(world, worldX, worldY, worldZ, tier, benchState, node);
         return changed;
     }
@@ -1514,8 +1520,61 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int worldX,
             int worldY,
             int worldZ,
-            int tierIndex) {
-        syncTieredMachineState(world, worldX, worldY, worldZ, tierIndex, FURNACE_STATE_NAMES, "Furnace");
+            int tierIndex,
+            ProcessingBenchState benchState,
+            EnergyNodeComponent node) {
+        if (world == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+
+        BlockType blockType = accessor.getBlockType(worldX, worldY, worldZ);
+        if (blockType == null) {
+            return;
+        }
+
+        int safeTier = Math.max(0, Math.min(tierIndex, FURNACE_STATE_NAMES.length - 1));
+        boolean working = benchState != null && (benchState.isActive() || benchState.getInputProgress() > 0f);
+        String baseState = FURNACE_STATE_NAMES[safeTier];
+        String stateName = baseState;
+        if (working) {
+            long now = System.currentTimeMillis();
+            if (node != null) {
+                if (!node.isFurnaceWorking()) {
+                    node.setFurnaceWorking(true);
+                    node.setFurnaceWorkingStartMs(now);
+                }
+            }
+            long startMs = node != null ? node.getFurnaceWorkingStartMs() : now;
+            // Play close once, then switch to the looping "ProcessingLoop".
+            stateName = (now - startMs) < 1000L ? "Processing" : "ProcessingLoop";
+        } else if (node != null && node.isFurnaceWorking()) {
+            node.setFurnaceWorking(false);
+            node.setFurnaceWorkingStartMs(0L);
+        }
+        if (node != null && stateName.equals(node.getLastFurnaceState())) {
+            return;
+        }
+        try {
+            accessor.setBlockInteractionState(worldX, worldY, worldZ, blockType, stateName, false);
+            if (node != null) {
+                node.setLastFurnaceState(stateName);
+            }
+        } catch (Exception e) {
+            try {
+                accessor.setBlockInteractionState(worldX, worldY, worldZ, blockType, baseState, false);
+                if (node != null) {
+                    node.setLastFurnaceState(baseState);
+                }
+            } catch (Exception ignored) {
+                System.out.println("[Machinarium] Furnace state '" + stateName
+                        + "' not found for blockType=" + blockType.getId());
+            }
+        }
     }
 
     private int getCableTierFromBlockId(World world, int worldX, int worldY, int worldZ, String baseId) {

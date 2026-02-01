@@ -3,6 +3,7 @@ package com.example.plugin.machine;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
+import com.example.plugin.machine.AlloySmelterMachine;
 import com.example.plugin.machine.OreCrusherMachine;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -137,6 +138,12 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
             }
         } else if (definition instanceof OreCrusherMachine) {
             int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+            if (parsedTier > 0 && machine.getTier() != parsedTier) {
+                machine.setTier(parsedTier);
+                changed = true;
+            }
+        } else if (definition instanceof AlloySmelterMachine) {
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
             if (parsedTier > 0 && machine.getTier() != parsedTier) {
                 machine.setTier(parsedTier);
                 changed = true;

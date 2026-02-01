@@ -59,11 +59,13 @@ public final class OreCrusherMachine extends MasterMachine {
         if (machine == null || energy == null) {
             return false;
         }
+        boolean shouldAnimate = false;
         if (!machine.isEnabled()) {
             if (machine.getProgress() != 0) {
                 machine.setProgress(0);
                 context.markDirty();
             }
+            syncAnimationState(context, machine, false);
             return false;
         }
 
@@ -84,8 +86,10 @@ public final class OreCrusherMachine extends MasterMachine {
             if (machine.getProgress() != 0) {
                 machine.setProgress(0);
                 context.markDirty();
+                syncAnimationState(context, machine, false);
                 return true;
             }
+            syncAnimationState(context, machine, false);
             return changed;
         }
 
@@ -103,6 +107,7 @@ public final class OreCrusherMachine extends MasterMachine {
         outputs.addAll(bonusDrops);
 
         if (!canAddOutputs(container, outputs)) {
+            syncAnimationState(context, machine, false);
             return changed;
         }
 
@@ -115,14 +120,17 @@ public final class OreCrusherMachine extends MasterMachine {
             }
         }
         if (cost > 0 && !consumeEnergy(context.getEnergyStorage(), cost)) {
+            syncAnimationState(context, machine, false);
             return changed;
         }
 
         int progressMax = Math.max(1, machine.getProgressMax());
         int progress = machine.getProgress() + 1;
+        shouldAnimate = true;
         if (progress < progressMax) {
             machine.setProgress(progress);
             context.markDirty();
+            syncAnimationState(context, machine, shouldAnimate);
             return true;
         }
         machine.setProgress(0);
@@ -142,8 +150,38 @@ public final class OreCrusherMachine extends MasterMachine {
             return changed;
         }
 
+        MachineItemAccess.markContainerDirty(context.getWorld(), context.getX(), context.getY(), context.getZ());
         context.markDirty();
+        syncAnimationState(context, machine, shouldAnimate);
         return true;
+    }
+
+    private void syncAnimationState(MachineContext context, MachineComponent machine, boolean working) {
+        if (context == null || machine == null) {
+            return;
+        }
+        int tier = OreCrusherConfig.clampTier(machine.getTier());
+        if (machine.isWorking() == working && machine.getLastAnimTier() == tier) {
+            return;
+        }
+        machine.setWorking(working);
+        machine.setLastAnimTier(tier);
+        context.markDirty();
+        String baseState = "OreCrusher_T" + tier;
+        String stateName = working ? baseState + "_Working" : baseState;
+
+        long chunkIndex = com.hypixel.hytale.math.util.ChunkUtil.indexChunkFromBlock(context.getX(), context.getZ());
+        com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor accessor =
+                context.getWorld().getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType blockType =
+                accessor.getBlockType(context.getX(), context.getY(), context.getZ());
+        if (blockType == null) {
+            return;
+        }
+        accessor.setBlockInteractionState(context.getX(), context.getY(), context.getZ(), blockType, stateName, false);
     }
 
     private boolean applyTierSettings(MachineComponent machine, EnergyNodeComponent energy) {

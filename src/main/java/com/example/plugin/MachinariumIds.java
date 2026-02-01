@@ -18,6 +18,7 @@ public final class MachinariumIds {
     public static final String ITEM_CABLE_PAGE_ID = "machinarium_item_cable_page";
     public static final String QUARRY_PAGE_ID = "machinarium_quarry_page";
     public static final String ORE_CRUSHER_PAGE_ID = "machinarium_ore_crusher_page";
+    public static final String ALLOY_SMELTER_PAGE_ID = "machinarium_alloy_smelter_page";
 
     public static final String BLOCK_SOLAR_PANEL = "Machinarium_Solar_Panel";
     public static final String BLOCK_ENERGY_CABLE = "Machinarium_Energy_Cable";
@@ -32,23 +33,26 @@ public final class MachinariumIds {
     public static final String BLOCK_QUARRY = "Machinarium_Quarry";
     public static final String BLOCK_QUARRY_BORDER = "Machinarium_Quarry_Border";
     public static final String BLOCK_ORE_CRUSHER = "Machinarium_Ore_Crusher";
+    public static final String BLOCK_ALLOY_SMELTER = "Machinarium_Alloy_Smelter";
 
     public static final String ITEM_COPPER_POWDER = "Machinarium_Copper_Powder";
     public static final String ITEM_IRON_POWDER = "Machinarium_Iron_Powder";
     public static final String ITEM_COBALT_POWDER = "Machinarium_Cobalt_Powder";
     public static final String ITEM_SILVER_POWDER = "Machinarium_Silver_Powder";
     public static final String ITEM_GOLD_POWDER = "Machinarium_Gold_Powder";
-    public static final String ITEM_MITHRIL_POWDER = "Machinarium_Mithril_Powder";
     public static final String ITEM_ADAMANTITE_POWDER = "Machinarium_Adamantite_Powder";
     public static final String ITEM_THORIUM_POWDER = "Machinarium_Thorium_Powder";
-    public static final String ITEM_ONYXIUM_POWDER = "Machinarium_Onyxium_Powder";
-    public static final String ITEM_PRISMA_POWDER = "Machinarium_Prisma_Powder";
 
     public static final String ITEM_SCRAP = "Machinarium_Scrap";
     public static final String ITEM_SLAG = "Machinarium_Slag";
     public static final String ITEM_ORE_CHIPS = "Machinarium_Ore_Chips";
-    public static final String ITEM_CRYSTAL_FRAGMENT = "Machinarium_Crystal_Fragment";
     public static final String ITEM_STONE_DUST = "Machinarium_Stone_Dust";
+
+    public static final String ITEM_ALLOY_ELECTRUM = "Machinarium_Alloy_Electrum";
+    public static final String ITEM_ALLOY_STEEL = "Machinarium_Alloy_Steel";
+    public static final String ITEM_ALLOY_INVAR = "Machinarium_Alloy_Invar";
+    public static final String ITEM_ALLOY_CONSTANTAN = "Machinarium_Alloy_Constantan";
+    public static final String ITEM_ALLOY_THORIUM = "Machinarium_Alloy_Thorium";
 
     private MachinariumIds() {
     }

@@ -61,7 +61,8 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
     }
 
     public static ItemStack buildDropStack(World world, Vector3i pos, BlockType blockType, String blockId) {
@@ -202,9 +203,9 @@ public final class UpgradePersistence {
                 return;
             }
 
+            List<ItemStack> items = snapshotContainerItems(world, pos.getX(), pos.getY(), pos.getZ());
             clearBlockComponents(world, pos);
             int rotationIndex = world.getBlockRotationIndex(pos.getX(), pos.getY(), pos.getZ());
-            List<ItemStack> items = snapshotContainerItems(world, pos.getX(), pos.getY(), pos.getZ());
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
@@ -239,9 +240,9 @@ public final class UpgradePersistence {
                 return;
             }
 
+            List<ItemStack> items = snapshotBenchItems(world, pos.getX(), pos.getY(), pos.getZ());
             clearBlockComponents(world, pos);
             int rotationIndex = world.getBlockRotationIndex(pos.getX(), pos.getY(), pos.getZ());
-            List<ItemStack> items = snapshotBenchItems(world, pos.getX(), pos.getY(), pos.getZ());
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
@@ -387,7 +388,8 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
     }
 
     private static String resolveItemId(BlockType blockType, String blockId) {
@@ -445,6 +447,12 @@ public final class UpgradePersistence {
             int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
             if (tier >= 0) {
                 return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, tier);
+            }
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+            if (tier >= 0) {
+                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, tier);
             }
         }
         return null;
@@ -970,11 +978,12 @@ public final class UpgradePersistence {
         if (container == null) {
             return null;
         }
-        List<ItemStack> items = new ArrayList<>();
         short capacity = container.getCapacity();
+        List<ItemStack> items = new ArrayList<>(capacity);
         for (short slot = 0; slot < capacity; slot++) {
             ItemStack stack = container.getItemStack(slot);
             if (stack == null || ItemStack.isEmpty(stack)) {
+                items.add(null);
                 continue;
             }
             ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
@@ -992,7 +1001,15 @@ public final class UpgradePersistence {
         if (container == null) {
             return;
         }
-        container.addItemStacks(items);
+        short capacity = container.getCapacity();
+        int count = Math.min(items.size(), capacity);
+        for (short slot = 0; slot < count; slot++) {
+            ItemStack stack = items.get(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            placeStackIntoSlot(container, slot, stack);
+        }
     }
 
     private static List<ItemStack> snapshotBenchItems(World world, int x, int y, int z) {
@@ -1001,11 +1018,12 @@ public final class UpgradePersistence {
         if (container == null) {
             return null;
         }
-        List<ItemStack> items = new ArrayList<>();
         short capacity = container.getCapacity();
+        List<ItemStack> items = new ArrayList<>(capacity);
         for (short slot = 0; slot < capacity; slot++) {
             ItemStack stack = container.getItemStack(slot);
             if (stack == null || ItemStack.isEmpty(stack)) {
+                items.add(null);
                 continue;
             }
             items.add(new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata()));
@@ -1022,7 +1040,15 @@ public final class UpgradePersistence {
         if (container == null) {
             return;
         }
-        container.addItemStacks(items);
+        short capacity = container.getCapacity();
+        int count = Math.min(items.size(), capacity);
+        for (short slot = 0; slot < count; slot++) {
+            ItemStack stack = items.get(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            placeStackIntoSlot(container, slot, stack);
+        }
     }
 
     private static final class PendingUpgrade {
@@ -1041,6 +1067,24 @@ public final class UpgradePersistence {
             this.item = item;
             this.createdTick = createdTick;
         }
+    }
+
+    private static void placeStackIntoSlot(ItemContainer container, short slot, ItemStack stack) {
+        if (container == null || stack == null || ItemStack.isEmpty(stack)) {
+            return;
+        }
+        ItemStack existing = container.getItemStack(slot);
+        if (existing != null && !ItemStack.isEmpty(existing)) {
+            int quantity = existing.getQuantity();
+            if (quantity > 0) {
+                container.removeItemStackFromSlot(slot, existing, quantity);
+            }
+        }
+        if (!container.canAddItemStackToSlot(slot, stack, false, false)) {
+            container.addItemStack(stack);
+            return;
+        }
+        container.addItemStackToSlot(slot, stack);
     }
 
     public static void cleanupExpired(World world) {

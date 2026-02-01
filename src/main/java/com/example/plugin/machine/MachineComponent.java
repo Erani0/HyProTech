@@ -32,6 +32,12 @@ public class MachineComponent implements Component<ChunkStore> {
                     .addField(new KeyedCodec<>("Enabled", BOOLEAN_CODEC),
                             (component, value) -> component.enabled = value == null || value,
                             component -> component.enabled)
+                    .addField(new KeyedCodec<>("Working", BOOLEAN_CODEC),
+                            (component, value) -> component.working = value != null && value,
+                            component -> component.working)
+                    .addField(new KeyedCodec<>("LastAnimTier", INTEGER_CODEC),
+                            (component, value) -> component.lastAnimTier = value == null ? 0 : value,
+                            component -> component.lastAnimTier)
                     .addField(new KeyedCodec<>("AreaWidth", INTEGER_CODEC),
                             (component, value) -> component.areaWidth = clampArea(value),
                             component -> component.areaWidth)
@@ -48,6 +54,8 @@ public class MachineComponent implements Component<ChunkStore> {
     private int progress;
     private int progressMax;
     private boolean enabled = true;
+    private boolean working;
+    private int lastAnimTier;
     private int areaWidth = DEFAULT_AREA_SIZE;
     private int areaDepth = DEFAULT_AREA_SIZE;
     private boolean areaVisible;
@@ -92,6 +100,22 @@ public class MachineComponent implements Component<ChunkStore> {
         this.enabled = enabled;
     }
 
+    public boolean isWorking() {
+        return working;
+    }
+
+    public void setWorking(boolean working) {
+        this.working = working;
+    }
+
+    public int getLastAnimTier() {
+        return lastAnimTier;
+    }
+
+    public void setLastAnimTier(int lastAnimTier) {
+        this.lastAnimTier = Math.max(0, lastAnimTier);
+    }
+
     public int getAreaWidth() {
         return areaWidth;
     }
@@ -124,6 +148,8 @@ public class MachineComponent implements Component<ChunkStore> {
         copy.progress = progress;
         copy.progressMax = progressMax;
         copy.enabled = enabled;
+        copy.working = working;
+        copy.lastAnimTier = lastAnimTier;
         copy.areaWidth = areaWidth;
         copy.areaDepth = areaDepth;
         copy.areaVisible = areaVisible;

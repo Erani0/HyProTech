@@ -83,6 +83,8 @@ public class OpenCustomUIWithWindowsInteraction extends SimpleInstantInteraction
                 ((FurnacePage) page).setBlockPosition(targetPos);
             } else if (page instanceof OreCrusherPage) {
                 ((OreCrusherPage) page).setBlockPosition(targetPos);
+            } else if (page instanceof AlloySmelterPage) {
+                ((AlloySmelterPage) page).setBlockPosition(targetPos);
             }
         }
 

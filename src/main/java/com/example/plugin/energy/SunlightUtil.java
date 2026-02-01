@@ -1,7 +1,10 @@
 package com.example.plugin.energy;
 
+import com.hypixel.hytale.math.util.ChunkUtil;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.modules.time.WorldTimeResource;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import java.time.LocalDateTime;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -55,6 +58,34 @@ public final class SunlightUtil {
             double tail = state.lastNonZeroFactor * clamp01(t);
             return Math.max(baseFactor, tail);
         }
+    }
+
+    public static boolean hasSkyAccess(World world, int worldX, int worldY, int worldZ) {
+        if (world == null) {
+            return false;
+        }
+        if (worldY >= ChunkUtil.HEIGHT - 1) {
+            return true;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return false;
+        }
+        for (int y = worldY + 1; y < ChunkUtil.HEIGHT; y++) {
+            BlockType blockType = accessor.getBlockType(worldX, y, worldZ);
+            if (blockType == null) {
+                return false;
+            }
+            if (blockType == BlockType.EMPTY) {
+                continue;
+            }
+            String id = blockType.getId();
+            if (id == null || !BlockType.EMPTY_KEY.equals(id)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static int dayKey(LocalDateTime time) {

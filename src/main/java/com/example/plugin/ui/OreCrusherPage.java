@@ -53,6 +53,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final String ACTION_INPUT_DROP = "InputDrop";
     private static final String ACTION_OUTPUT_DROP = "OutputDrop";
     private static final String ACTION_INVENTORY_DROP = "InventoryDrop";
+    private static final String ACTION_TAKE_INPUT = "TakeInput";
     private static final String PAGE_LAYOUT = "Machinarium_OreCrusher_HyUI.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final long DRAG_DEDUP_WINDOW_MS = 120L;
@@ -146,6 +147,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private DragSnapshot lastDragSource;
     private long lastInputDropMs;
     private String lastInputDropItemId;
+    private long lastInputToInventoryMs;
+    private String lastInputToInventoryItemId;
 
     public OreCrusherPage(
             PlayerRef playerRef,
@@ -234,6 +237,13 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             UICommandBuilder update = new UICommandBuilder();
             updateControls(update, machine);
             sendUpdate(update);
+            return;
+        }
+        if (ACTION_TAKE_INPUT.equalsIgnoreCase(action)) {
+            if (!handleTakeInput(store)) {
+                sendUpdate(new UICommandBuilder());
+            }
+            return;
         }
     }
 
@@ -593,7 +603,11 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 update.set(BONUS_CHANCE_IDS[i] + ".Text", "");
                 continue;
             }
-            update.set(BONUS_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(drop.getItemId()));
+            String bonusItemId = drop.getItemId();
+            if ("__random_crystal__".equals(bonusItemId)) {
+                bonusItemId = "Ingredient_Crystal_Blue";
+            }
+            update.set(BONUS_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(bonusItemId));
             update.set(BONUS_NAME_IDS[i] + ".Text", formatBonusName(drop.getItemId()));
             int percent = (int) Math.round(drop.getChance(tier) * 100);
             update.set(BONUS_CHANCE_IDS[i] + ".Text", percent + "%");
@@ -664,6 +678,53 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 "Upgraded ore crusher to " + OreCrusherConfig.getTierName(nextTier) + ".");
         update(node, machine, true);
         return true;
+    }
+
+    private boolean handleTakeInput(Store<EntityStore> store) {
+        if (store == null) {
+            return false;
+        }
+        World world = getWorld(store);
+        if (world == null) {
+            return false;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos == null) {
+            return false;
+        }
+        ItemContainer machineContainer = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
+        if (machineContainer == null || machineContainer.getCapacity() <= INPUT_SLOT) {
+            return false;
+        }
+        ItemStack input = machineContainer.getItemStack(INPUT_SLOT);
+        if (input == null || ItemStack.isEmpty(input)) {
+            return false;
+        }
+        Inventory inventory = getPlayerInventoryFull(store);
+        if (inventory == null) {
+            return false;
+        }
+        ItemContainer hotbar = inventory.getHotbar();
+        ItemContainer storage = inventory.getStorage();
+        ItemContainer target = null;
+        if (hotbar != null && hotbar.canAddItemStack(input)) {
+            target = hotbar;
+        } else if (storage != null && storage.canAddItemStack(input)) {
+            target = storage;
+        }
+        if (target == null) {
+            return false;
+        }
+        int quantity = input.getQuantity();
+        MoveTransaction<?> move = machineContainer.moveItemStackFromSlot(INPUT_SLOT, quantity, target);
+        if (move == null || !move.succeeded()) {
+            move = machineContainer.moveItemStackFromSlot(INPUT_SLOT, target);
+        }
+        if (move != null && move.succeeded()) {
+            MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+            return refreshSlots(store);
+        }
+        return false;
     }
 
     private void applyTier(MachineComponent machine, EnergyNodeComponent node, int tier) {
@@ -758,6 +819,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private String formatBonusName(String itemId) {
         if (itemId == null) {
             return "";
+        }
+        if ("__random_crystal__".equals(itemId)) {
+            return "Random Crystal";
         }
         String name = itemId;
         String machinariumPrefix = "Machinarium_";
@@ -1244,6 +1308,14 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 }
             }
             String eventItemId = resolveEventItemId(data);
+            if (targetGrid == GridType.INPUT
+                    && sourceGrid == GridType.INPUT
+                    && eventItemId != null
+                    && eventItemId.equals(lastInputToInventoryItemId)
+                    && (System.currentTimeMillis() - lastInputToInventoryMs) < INPUT_DROP_SUPPRESS_MS) {
+                System.out.println("[Machinarium] DBG Drag suppress input drop after inventory move itemId=" + eventItemId);
+                return;
+            }
             if (targetGrid == GridType.PLAYER
                     && sourceGrid == GridType.INPUT
                     && eventItemId != null
@@ -1285,11 +1357,15 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 return;
             }
 
-            if (targetGrid == GridType.INPUT) {
-                // Input drops should always treat the source as player inventory,
-                // even if UI index mappings are inconsistent.
+            if (targetGrid == GridType.INPUT && sourceGrid != GridType.INPUT) {
+                // Treat drops into input as player inventory only when the drag source
+                // was not the input grid.
                 sourceGrid = GridType.PLAYER;
                 sourceSlotId = null;
+            }
+            if (targetGrid == GridType.PLAYER && sourceGrid == GridType.INPUT && eventItemId != null) {
+                lastInputToInventoryMs = System.currentTimeMillis();
+                lastInputToInventoryItemId = eventItemId;
             }
             System.out.println("[Machinarium] DBG Drag v2 state target=" + targetGrid
                     + " source=" + sourceGrid
@@ -1371,6 +1447,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                     targetRef.container,
                     targetRef.slot);
             if (move != null && move.succeeded()) {
+                if (pos != null) {
+                    MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+                }
                 if (targetGrid == GridType.INPUT) {
                     ItemStack targetAfter = targetRef.container.getItemStack(targetRef.slot);
                     boolean ok = stackMatches(targetAfter, eventItemId);
@@ -1390,10 +1469,24 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 updateSent = refreshSlots(store);
                 return;
             }
+            if (sourceGrid == GridType.INPUT && targetGrid == GridType.PLAYER) {
+                System.out.println("[Machinarium] DBG Drag input->player move failed, trying manual transfer itemId="
+                        + sourceStack.getItemId());
+                if (tryManualTransfer(sourceRef, targetRef, sourceStack, quantity)) {
+                    if (pos != null) {
+                        MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+                    }
+                    updateSent = refreshSlots(store);
+                    return;
+                }
+            }
             if (targetGrid == GridType.INPUT && sourceGrid == GridType.PLAYER) {
                 System.out.println("[Machinarium] DBG Drag input move failed, trying manual add itemId="
                         + sourceStack.getItemId());
                 if (tryManualInputTransfer(sourceRef, targetRef, sourceStack, quantity)) {
+                    if (pos != null) {
+                        MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+                    }
                     lastInputDropMs = System.currentTimeMillis();
                     lastInputDropItemId = eventItemId;
                     updateSent = refreshSlots(store);
@@ -1411,6 +1504,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                                 targetRef.slot,
                                 (short) 1);
                 if (swap != null && swap.succeeded()) {
+                    if (pos != null) {
+                        MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+                    }
                     updateSent = refreshSlots(store);
                 }
             }
@@ -1444,6 +1540,38 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return true;
         }
         return false;
+    }
+
+    private boolean tryManualTransfer(
+            SlotRef sourceRef,
+            SlotRef targetRef,
+            ItemStack sourceStack,
+            int quantity) {
+        if (sourceRef == null || targetRef == null || sourceStack == null || ItemStack.isEmpty(sourceStack)) {
+            return false;
+        }
+        ItemStack moveStack = new ItemStack(
+                sourceStack.getItemId(),
+                quantity,
+                sourceStack.getMetadata());
+        if (!targetRef.container.canAddItemStackToSlot(targetRef.slot, moveStack, false, false)) {
+            System.out.println("[Machinarium] DBG Drag manual transfer add rejected for itemId=" + moveStack.getItemId());
+            return false;
+        }
+        ItemStackSlotTransaction addTx = targetRef.container.addItemStackToSlot(targetRef.slot, moveStack);
+        if (addTx == null || !addTx.succeeded()) {
+            System.out.println("[Machinarium] DBG Drag manual transfer add failed for itemId=" + moveStack.getItemId());
+            return false;
+        }
+        ItemStackSlotTransaction removeTx = sourceRef.container.removeItemStackFromSlot(sourceRef.slot, quantity);
+        if (removeTx == null || !removeTx.succeeded()) {
+            System.out.println("[Machinarium] DBG Drag manual transfer remove failed for itemId=" + moveStack.getItemId());
+            // rollback best-effort
+            targetRef.container.removeItemStackFromSlot(targetRef.slot, moveStack, quantity, false, false);
+            return false;
+        }
+        System.out.println("[Machinarium] DBG Drag manual transfer ok itemId=" + moveStack.getItemId());
+        return true;
     }
 
     private boolean tryManualInputTransfer(
@@ -2045,6 +2173,10 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 CustomUIEventBindingType.Activating,
                 "#CrusherToggleButton",
                 EventData.of("Action", ACTION_TOGGLE));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#TakeInputButton",
+                EventData.of("Action", ACTION_TAKE_INPUT));
     }
 
     private enum GridType {

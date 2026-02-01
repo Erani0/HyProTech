@@ -21,8 +21,8 @@
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/CopperPowder.blockymodel",
-  "Texture": "Items/CraftingItems/copper_powder.png",
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/cobalt_powder.png",
   "Icon": "Icons/ItemsGenerated/machinarium_cobalt_powder.png",
   "ResourceTypes": [
     {
@@ -53,3 +53,4 @@
   "ItemSoundSetId": "ISS_Items_Ingots",
   "DropOnDeath": true
 }
+

@@ -4,7 +4,7 @@
     "Description": "server.items.Machinarium_Ore_Crusher_T1.description"
   },
   "MaxStack": 100,
-  "Icon": "Icons/ItemsGenerated/machinarium_quarry.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_ore_crusher.png",
   "Recipe": {
     "TimeSeconds": 2,
     "Input": [
@@ -85,6 +85,17 @@
               "Weight": 1
             }
           ]
+        },
+        "OreCrusher_T1_Working": {
+          "CustomModel": "Blocks/Machinarium/OreCrusher/OreCrusherNew.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "Blocks/Machinarium/OreCrusher/OreCrusher_TEX.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/OreCrusher/OreCrusherNew.blockyanim",
+          "Looping": true
         }
       }
     },

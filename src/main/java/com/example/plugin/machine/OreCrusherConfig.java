@@ -18,8 +18,16 @@ public final class OreCrusherConfig {
     public static final int CONTAINER_CAPACITY = INPUT_SLOT_COUNT + OUTPUT_SLOT_COUNT;
     public static final int MAX_BONUS_DROPS = 5;
     private static final int TICKS_PER_SECOND = 20;
-    private static final double BASIC_SPEED_SECONDS = 0.4;
+    private static final double BASIC_SPEED_SECONDS = 5.0;
     private static final double QUANTUM_SPEED_SECONDS = 0.1;
+    private static final double[] PROCESSING_SECONDS_BY_TIER = {
+            5.0,  // Basic
+            3.0,  // Reinforced
+            2.2,  // Industrial
+            1.5,  // Advanced
+            0.9,  // Precision
+            0.1   // Quantum
+    };
 
     private static final String[] TIER_NAMES = {
             "Basic",
@@ -131,6 +139,17 @@ public final class OreCrusherConfig {
             0.15
     };
 
+    private static final String RANDOM_CRYSTAL_ID = "__random_crystal__";
+    private static final String[] CRYSTAL_ITEMS = {
+            "Ingredient_Crystal_Blue",
+            "Ingredient_Crystal_Cyan",
+            "Ingredient_Crystal_Green",
+            "Ingredient_Crystal_Purple",
+            "Ingredient_Crystal_Red",
+            "Ingredient_Crystal_White",
+            "Ingredient_Crystal_Yellow"
+    };
+
     private static final BonusDrop BONUS_SCRAP =
             new BonusDrop(MachinariumIds.ITEM_SCRAP, 1, BONUS_SCRAP_CHANCE);
     private static final BonusDrop BONUS_SLAG =
@@ -138,7 +157,7 @@ public final class OreCrusherConfig {
     private static final BonusDrop BONUS_CHIPS =
             new BonusDrop(MachinariumIds.ITEM_ORE_CHIPS, 1, BONUS_CHIPS_CHANCE);
     private static final BonusDrop BONUS_CRYSTAL =
-            new BonusDrop(MachinariumIds.ITEM_CRYSTAL_FRAGMENT, 1, BONUS_CRYSTAL_CHANCE);
+            new BonusDrop(RANDOM_CRYSTAL_ID, 1, BONUS_CRYSTAL_CHANCE);
     private static final BonusDrop BONUS_DUST =
             new BonusDrop(MachinariumIds.ITEM_STONE_DUST, 1, BONUS_DUST_CHANCE);
 
@@ -175,19 +194,6 @@ public final class OreCrusherConfig {
             "Ore_Iron_Slate",
             "Ore_Iron_Stone",
             "Ore_Iron_Volcanic",
-            "Ore_Mithril",
-            "Ore_Mithril_Basalt",
-            "Ore_Mithril_Magma",
-            "Ore_Mithril_Slate",
-            "Ore_Mithril_Stone",
-            "Ore_Mithril_Volcanic",
-            "Ore_Onyxium",
-            "Ore_Onyxium_Basalt",
-            "Ore_Onyxium_Sandstone",
-            "Ore_Onyxium_Shale",
-            "Ore_Onyxium_Stone",
-            "Ore_Onyxium_Volcanic",
-            "Ore_Prisma",
             "Ore_Silver",
             "Ore_Silver_Basalt",
             "Ore_Silver_Sandstone",
@@ -246,11 +252,10 @@ public final class OreCrusherConfig {
 
     public static double getProcessingSecondsForTier(int tier) {
         int safeTier = clampTier(tier);
-        if (MAX_TIER == MIN_TIER) {
-            return BASIC_SPEED_SECONDS;
+        if (safeTier >= 0 && safeTier < PROCESSING_SECONDS_BY_TIER.length) {
+            return PROCESSING_SECONDS_BY_TIER[safeTier];
         }
-        double ratio = (double) (safeTier - MIN_TIER) / (double) (MAX_TIER - MIN_TIER);
-        return BASIC_SPEED_SECONDS + (QUANTUM_SPEED_SECONDS - BASIC_SPEED_SECONDS) * ratio;
+        return BASIC_SPEED_SECONDS;
     }
 
     public static int getOutputMultiplierForTier(int tier) {
@@ -273,12 +278,6 @@ public final class OreCrusherConfig {
                 return MachinariumIds.ITEM_GOLD_POWDER;
             case "Iron":
                 return MachinariumIds.ITEM_IRON_POWDER;
-            case "Mithril":
-                return MachinariumIds.ITEM_MITHRIL_POWDER;
-            case "Onyxium":
-                return MachinariumIds.ITEM_ONYXIUM_POWDER;
-            case "Prisma":
-                return MachinariumIds.ITEM_PRISMA_POWDER;
             case "Silver":
                 return MachinariumIds.ITEM_SILVER_POWDER;
             case "Thorium":
@@ -324,11 +323,6 @@ public final class OreCrusherConfig {
                 drops.add(BONUS_SLAG);
                 drops.add(BONUS_DUST);
                 break;
-            case "Mithril":
-                drops.add(BONUS_CRYSTAL);
-                drops.add(BONUS_CHIPS);
-                drops.add(BONUS_SLAG);
-                break;
             case "Adamantite":
                 drops.add(BONUS_CRYSTAL);
                 drops.add(BONUS_SLAG);
@@ -338,16 +332,6 @@ public final class OreCrusherConfig {
                 drops.add(BONUS_CHIPS);
                 drops.add(BONUS_SLAG);
                 drops.add(BONUS_DUST);
-                break;
-            case "Onyxium":
-                drops.add(BONUS_CRYSTAL);
-                drops.add(BONUS_CHIPS);
-                drops.add(BONUS_DUST);
-                break;
-            case "Prisma":
-                drops.add(BONUS_CRYSTAL);
-                drops.add(BONUS_CHIPS);
-                drops.add(BONUS_SLAG);
                 break;
             default:
                 break;
@@ -379,7 +363,14 @@ public final class OreCrusherConfig {
                 continue;
             }
             if (random.nextDouble() <= chance) {
-                results.add(new ItemStack(drop.getItemId(), drop.getQuantity()));
+                String itemId = drop.getItemId();
+                if (RANDOM_CRYSTAL_ID.equals(itemId)) {
+                    if (CRYSTAL_ITEMS.length == 0) {
+                        continue;
+                    }
+                    itemId = CRYSTAL_ITEMS[random.nextInt(CRYSTAL_ITEMS.length)];
+                }
+                results.add(new ItemStack(itemId, drop.getQuantity()));
             }
         }
         if (results.size() > MAX_BONUS_DROPS) {

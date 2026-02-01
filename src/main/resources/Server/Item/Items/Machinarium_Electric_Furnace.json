@@ -222,10 +222,10 @@
       "Id": "processingBench",
       "Definitions": {
         "Processing": {
-          "Looping": true
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_close.blockyanim"
         },
         "ProcessCompleted": {
-          "Looping": true
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
         },
         "Furnace_T0": {
           "CustomModelTexture": [
@@ -233,7 +233,18 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T0_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "Furnace_T1": {
           "CustomModelTexture": [
@@ -241,7 +252,18 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T1_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "Furnace_T2": {
           "CustomModelTexture": [
@@ -249,7 +271,18 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T2_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "Furnace_T3": {
           "CustomModelTexture": [
@@ -257,7 +290,18 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T3_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "Furnace_T4": {
           "CustomModelTexture": [
@@ -265,7 +309,18 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T4_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "Furnace_T5": {
           "CustomModelTexture": [
@@ -273,7 +328,22 @@
               "Texture": "BlockTextures/ElectricFurnace.png",
               "Weight": 1
             }
-          ]
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
+        },
+        "Furnace_T5_Working": {
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/ElectricFurnace.png",
+              "Weight": 1
+            }
+          ],
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
+        },
+        "ProcessingLoop": {
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         }
       }
     },

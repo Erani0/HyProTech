@@ -904,7 +904,7 @@
             },
             {
               "id": "19",
-              "name": "cube--C4",
+              "name": "bone3",
               "position": {"x": 12.1, "y": -4, "z": -12.5},
               "orientation": {"x": 0, "y": 0, "z": 0, "w": 1},
               "shape": {
@@ -913,8 +913,7 @@
                 "stretch": {"x": 1, "y": 1, "z": 1},
                 "settings": {
                   "isPiece": false,
-                  "size": {"x": 14, "y": 4, "z": 14},
-                  "isStaticBox": true
+                  "size": {"x": 14, "y": 4, "z": 14}
                 },
                 "textureLayout": {
                   "back": {
@@ -956,7 +955,7 @@
             },
             {
               "id": "20",
-              "name": "cube--C5",
+              "name": "cube--C4",
               "position": {"x": 0, "y": -4, "z": 12.5},
               "orientation": {"x": 0, "y": 0, "z": 0, "w": 1},
               "shape": {

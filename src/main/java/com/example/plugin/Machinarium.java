@@ -10,6 +10,7 @@ import com.example.plugin.item.ItemStorageConfigComponent;
 import com.example.plugin.machine.MachineComponent;
 import com.example.plugin.machine.MachineRegistry;
 import com.example.plugin.machine.MachineSystem;
+import com.example.plugin.machine.AlloySmelterMachine;
 import com.example.plugin.machine.OreCrusherMachine;
 import com.example.plugin.machine.QuarryAreaManager;
 import com.example.plugin.machine.QuarryMachine;
@@ -18,6 +19,7 @@ import com.example.plugin.interaction.CableNetworkUpgradeInteraction;
 import com.example.plugin.ui.BatteryPage;
 import com.example.plugin.ui.CablePage;
 import com.example.plugin.ui.ItemCablePage;
+import com.example.plugin.ui.AlloySmelterPage;
 import com.example.plugin.ui.OreCrusherPage;
 import com.example.plugin.ui.QuarryPage;
 import com.example.plugin.ui.OpenCustomUIWithWindowsInteraction;
@@ -89,6 +91,7 @@ public class Machinarium extends JavaPlugin {
 
         MachineRegistry.register(new QuarryMachine());
         MachineRegistry.register(new OreCrusherMachine());
+        MachineRegistry.register(new AlloySmelterMachine());
 
         EnergyStorageLookup.register((world, x, y, z) -> {
             if (world == null || y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
@@ -177,6 +180,12 @@ public class Machinarium extends JavaPlugin {
                 OpenCustomUIInteraction.CustomPageSupplier.class,
                 MachinariumIds.ORE_CRUSHER_PAGE_ID,
                 (playerRef, blockRef) -> new OreCrusherPage(playerRef, blockRef, energyType, machineType));
+
+        OpenCustomUIInteraction.registerBlockEntityCustomPage(
+                this,
+                OpenCustomUIInteraction.CustomPageSupplier.class,
+                MachinariumIds.ALLOY_SMELTER_PAGE_ID,
+                (playerRef, blockRef) -> new AlloySmelterPage(playerRef, blockRef, energyType, machineType));
 
         getEventRegistry().registerGlobal(
                 BreakBlockEvent.class,

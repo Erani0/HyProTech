@@ -90,6 +90,9 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
     private int solarTier = SolarUpgradeConfig.MIN_TIER;
     private transient int connectedMask = EnergySide.ALL_MASK;
     private transient EnergyNodeStorage storage;
+    private transient String lastFurnaceState = "";
+    private transient long furnaceWorkingStartMs;
+    private transient boolean furnaceWorking;
     private boolean enabled = true;
 
     public NodeType getNodeType() {
@@ -258,6 +261,30 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
 
     public int getConnectedMask() {
         return connectedMask;
+    }
+
+    public String getLastFurnaceState() {
+        return lastFurnaceState == null ? "" : lastFurnaceState;
+    }
+
+    public void setLastFurnaceState(String lastFurnaceState) {
+        this.lastFurnaceState = lastFurnaceState == null ? "" : lastFurnaceState;
+    }
+
+    public long getFurnaceWorkingStartMs() {
+        return furnaceWorkingStartMs;
+    }
+
+    public void setFurnaceWorkingStartMs(long furnaceWorkingStartMs) {
+        this.furnaceWorkingStartMs = furnaceWorkingStartMs;
+    }
+
+    public boolean isFurnaceWorking() {
+        return furnaceWorking;
+    }
+
+    public void setFurnaceWorking(boolean furnaceWorking) {
+        this.furnaceWorking = furnaceWorking;
     }
 
     public void setConnectedMask(int connectedMask) {

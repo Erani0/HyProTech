@@ -1371,321 +1371,705 @@
         },
         "Cable_T0_00": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_00.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_00",
           "InteractionHitboxType": "Machinarium_Cable_Interact_00"
         },
         "Cable_T0_01": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_01.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_01",
           "InteractionHitboxType": "Machinarium_Cable_Interact_01"
         },
         "Cable_T0_02": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_02.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_02",
           "InteractionHitboxType": "Machinarium_Cable_Interact_02"
         },
         "Cable_T0_03": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_03.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_03",
           "InteractionHitboxType": "Machinarium_Cable_Interact_03"
         },
         "Cable_T0_04": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_04.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_04",
           "InteractionHitboxType": "Machinarium_Cable_Interact_04"
         },
         "Cable_T0_05": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_05.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_05",
           "InteractionHitboxType": "Machinarium_Cable_Interact_05"
         },
         "Cable_T0_06": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_06.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_06",
           "InteractionHitboxType": "Machinarium_Cable_Interact_06"
         },
         "Cable_T0_07": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_07.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_07",
           "InteractionHitboxType": "Machinarium_Cable_Interact_07"
         },
         "Cable_T0_08": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_08.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_08",
           "InteractionHitboxType": "Machinarium_Cable_Interact_08"
         },
         "Cable_T0_09": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_09.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_09",
           "InteractionHitboxType": "Machinarium_Cable_Interact_09"
         },
         "Cable_T0_10": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_10.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_10",
           "InteractionHitboxType": "Machinarium_Cable_Interact_10"
         },
         "Cable_T0_11": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_11.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_11",
           "InteractionHitboxType": "Machinarium_Cable_Interact_11"
         },
         "Cable_T0_12": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_12.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_12",
           "InteractionHitboxType": "Machinarium_Cable_Interact_12"
         },
         "Cable_T0_13": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_13.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_13",
           "InteractionHitboxType": "Machinarium_Cable_Interact_13"
         },
         "Cable_T0_14": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_14.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_14",
           "InteractionHitboxType": "Machinarium_Cable_Interact_14"
         },
         "Cable_T0_15": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_15.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_15",
           "InteractionHitboxType": "Machinarium_Cable_Interact_15"
         },
         "Cable_T0_16": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_16.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_16",
           "InteractionHitboxType": "Machinarium_Cable_Interact_16"
         },
         "Cable_T0_17": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_17.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_17",
           "InteractionHitboxType": "Machinarium_Cable_Interact_17"
         },
         "Cable_T0_18": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_18.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_18",
           "InteractionHitboxType": "Machinarium_Cable_Interact_18"
         },
         "Cable_T0_19": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_19.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_19",
           "InteractionHitboxType": "Machinarium_Cable_Interact_19"
         },
         "Cable_T0_20": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_20.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_20",
           "InteractionHitboxType": "Machinarium_Cable_Interact_20"
         },
         "Cable_T0_21": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_21.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_21",
           "InteractionHitboxType": "Machinarium_Cable_Interact_21"
         },
         "Cable_T0_22": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_22.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_22",
           "InteractionHitboxType": "Machinarium_Cable_Interact_22"
         },
         "Cable_T0_23": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_23.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_23",
           "InteractionHitboxType": "Machinarium_Cable_Interact_23"
         },
         "Cable_T0_24": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_24.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_24",
           "InteractionHitboxType": "Machinarium_Cable_Interact_24"
         },
         "Cable_T0_25": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_25.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_25",
           "InteractionHitboxType": "Machinarium_Cable_Interact_25"
         },
         "Cable_T0_26": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_26.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_26",
           "InteractionHitboxType": "Machinarium_Cable_Interact_26"
         },
         "Cable_T0_27": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_27.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_27",
           "InteractionHitboxType": "Machinarium_Cable_Interact_27"
         },
         "Cable_T0_28": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_28.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_28",
           "InteractionHitboxType": "Machinarium_Cable_Interact_28"
         },
         "Cable_T0_29": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_29.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_29",
           "InteractionHitboxType": "Machinarium_Cable_Interact_29"
         },
         "Cable_T0_30": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_30.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_30",
           "InteractionHitboxType": "Machinarium_Cable_Interact_30"
         },
         "Cable_T0_31": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_31.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_31",
           "InteractionHitboxType": "Machinarium_Cable_Interact_31"
         },
         "Cable_T0_32": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_32.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_32",
           "InteractionHitboxType": "Machinarium_Cable_Interact_32"
         },
         "Cable_T0_33": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_33.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_33",
           "InteractionHitboxType": "Machinarium_Cable_Interact_33"
         },
         "Cable_T0_34": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_34.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_34",
           "InteractionHitboxType": "Machinarium_Cable_Interact_34"
         },
         "Cable_T0_35": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_35.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_35",
           "InteractionHitboxType": "Machinarium_Cable_Interact_35"
         },
         "Cable_T0_36": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_36.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_36",
           "InteractionHitboxType": "Machinarium_Cable_Interact_36"
         },
         "Cable_T0_37": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_37.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_37",
           "InteractionHitboxType": "Machinarium_Cable_Interact_37"
         },
         "Cable_T0_38": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_38.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_38",
           "InteractionHitboxType": "Machinarium_Cable_Interact_38"
         },
         "Cable_T0_39": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_39.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_39",
           "InteractionHitboxType": "Machinarium_Cable_Interact_39"
         },
         "Cable_T0_40": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_40.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_40",
           "InteractionHitboxType": "Machinarium_Cable_Interact_40"
         },
         "Cable_T0_41": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_41.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_41",
           "InteractionHitboxType": "Machinarium_Cable_Interact_41"
         },
         "Cable_T0_42": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_42.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_42",
           "InteractionHitboxType": "Machinarium_Cable_Interact_42"
         },
         "Cable_T0_43": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_43.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_43",
           "InteractionHitboxType": "Machinarium_Cable_Interact_43"
         },
         "Cable_T0_44": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_44.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_44",
           "InteractionHitboxType": "Machinarium_Cable_Interact_44"
         },
         "Cable_T0_45": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_45.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_45",
           "InteractionHitboxType": "Machinarium_Cable_Interact_45"
         },
         "Cable_T0_46": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_46.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_46",
           "InteractionHitboxType": "Machinarium_Cable_Interact_46"
         },
         "Cable_T0_47": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_47.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_47",
           "InteractionHitboxType": "Machinarium_Cable_Interact_47"
         },
         "Cable_T0_48": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_48.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_48",
           "InteractionHitboxType": "Machinarium_Cable_Interact_48"
         },
         "Cable_T0_49": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_49.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_49",
           "InteractionHitboxType": "Machinarium_Cable_Interact_49"
         },
         "Cable_T0_50": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_50.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_50",
           "InteractionHitboxType": "Machinarium_Cable_Interact_50"
         },
         "Cable_T0_51": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_51.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_51",
           "InteractionHitboxType": "Machinarium_Cable_Interact_51"
         },
         "Cable_T0_52": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_52.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_52",
           "InteractionHitboxType": "Machinarium_Cable_Interact_52"
         },
         "Cable_T0_53": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_53.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_53",
           "InteractionHitboxType": "Machinarium_Cable_Interact_53"
         },
         "Cable_T0_54": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_54.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_54",
           "InteractionHitboxType": "Machinarium_Cable_Interact_54"
         },
         "Cable_T0_55": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_55.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_55",
           "InteractionHitboxType": "Machinarium_Cable_Interact_55"
         },
         "Cable_T0_56": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_56.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_56",
           "InteractionHitboxType": "Machinarium_Cable_Interact_56"
         },
         "Cable_T0_57": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_57.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_57",
           "InteractionHitboxType": "Machinarium_Cable_Interact_57"
         },
         "Cable_T0_58": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_58.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_58",
           "InteractionHitboxType": "Machinarium_Cable_Interact_58"
         },
         "Cable_T0_59": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_59.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_59",
           "InteractionHitboxType": "Machinarium_Cable_Interact_59"
         },
         "Cable_T0_60": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_60.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_60",
           "InteractionHitboxType": "Machinarium_Cable_Interact_60"
         },
         "Cable_T0_61": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_61.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_61",
           "InteractionHitboxType": "Machinarium_Cable_Interact_61"
         },
         "Cable_T0_62": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_62.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_62",
           "InteractionHitboxType": "Machinarium_Cable_Interact_62"
         },
         "Cable_T0_63": {
           "CustomModel": "Blocks/Machinarium/Cable/Tier0/Cable_63.blockymodel",
+          "CustomModelTexture": [
+            {
+              "Texture": "BlockTextures/cable.png",
+              "Weight": 1
+            }
+          ],
           "HitboxType": "Machinarium_Cable_Hit_63",
           "InteractionHitboxType": "Machinarium_Cable_Interact_63"
         },
