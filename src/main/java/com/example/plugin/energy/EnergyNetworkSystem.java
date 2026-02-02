@@ -3,6 +3,7 @@ package com.example.plugin.energy;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.furnace.FurnaceConfig;
+import com.example.plugin.sound.MachinariumSounds;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorageLookup;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorageUtil;
@@ -63,6 +64,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             EnergySide.EAST.mask() | EnergySide.UP.mask() | EnergySide.SOUTH.mask() | EnergySide.WEST.mask();
     private static final String[][] CABLE_STATE_NAMES = buildCableStateNames();
     private static final String[] SOLAR_STATE_NAMES = buildTierStateNames("Solar_T", SolarUpgradeConfig.MAX_TIER);
+    private static final String[] WIND_STATE_NAMES = buildTierStateNames("Wind_T", WindUpgradeConfig.MAX_TIER);
     private static final String[] FURNACE_STATE_NAMES = buildTierStateNames("Furnace_T", FurnaceConfig.MAX_TIER);
     private static volatile Field benchFuelTimeField;
     private static volatile Field benchInputProgressField;
@@ -176,13 +178,42 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 && !SunlightUtil.hasSkyAccess(world, worldX, worldY, worldZ)) {
             nodeSunlightFactor = 0.0;
         }
-        changed |= tickNode(node, nodeSunlightFactor, deltaSeconds);
+        double nodeWindFactor = 0.0;
+        if (node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
+            nodeWindFactor = WindUtil.getWindFactor(world, worldX, worldY, worldZ);
+        }
+        changed |= tickNode(node, nodeSunlightFactor, nodeWindFactor, deltaSeconds);
         if (node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
             changed |= syncCableBlockId(world, worldX, worldY, worldZ, node);
         }
         if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
             changed |= syncSolarOutputSide(world, worldX, worldY, worldZ, node);
             syncSolarState(world, worldX, worldY, worldZ, node);
+            boolean generating = node.getGeneration() > 0 && nodeSunlightFactor > 0.0;
+            MachinariumSounds.tickLoop(
+                    world,
+                    worldX,
+                    worldY,
+                    worldZ,
+                    MachinariumSounds.EVENT_SOLAR_PANEL,
+                    MachinariumSounds.FILE_SOLAR_PANEL,
+                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    generating,
+                    node);
+        } else if (node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
+            changed |= syncWindOutputSide(world, worldX, worldY, worldZ, node);
+            syncWindState(world, worldX, worldY, worldZ, node, nodeWindFactor);
+            boolean generating = node.getGeneration() > 0 && nodeWindFactor > 0.0;
+            MachinariumSounds.tickLoop(
+                    world,
+                    worldX,
+                    worldY,
+                    worldZ,
+                    MachinariumSounds.EVENT_WIND_TURBINE,
+                    MachinariumSounds.FILE_WIND_TURBINE,
+                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    generating,
+                    node);
         } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY
                 || EnergyNodeComponent.isMachineLike(node.getNodeType())) {
             changed |= syncBatterySides(world, worldX, worldY, worldZ, node);
@@ -202,7 +233,11 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             transferToNeighbors(blockComponents, chunkStore, world, worldX, worldY, worldZ, node, deltaSeconds);
     }
 
-    private boolean tickNode(EnergyNodeComponent node, double sunlightFactor, float deltaSeconds) {
+    private boolean tickNode(
+            EnergyNodeComponent node,
+            double sunlightFactor,
+            double windFactor,
+            float deltaSeconds) {
         if (deltaSeconds <= 0f) {
             return false;
         }
@@ -213,6 +248,14 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         if (nodeType == EnergyNodeComponent.NodeType.SOLAR) {
             int generated = (int) Math.round(node.getGeneration() * sunlightFactor * deltaSeconds);
+            if (generated > 0 && energy < node.getCapacity()) {
+                int add = Math.min(generated, node.getCapacity() - energy);
+                node.setEnergy(energy + add);
+                energy += add;
+                changed = true;
+            }
+        } else if (nodeType == EnergyNodeComponent.NodeType.WIND) {
+            int generated = (int) Math.round(node.getGeneration() * windFactor * deltaSeconds);
             if (generated > 0 && energy < node.getCapacity()) {
                 int add = Math.min(generated, node.getCapacity() - energy);
                 node.setEnergy(energy + add);
@@ -287,6 +330,30 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 changed = true;
             }
             int maxTransfer = SolarUpgradeConfig.getMaxTransferForTier(tier);
+            if (node.getMaxTransfer() != maxTransfer) {
+                node.setMaxTransfer(maxTransfer);
+                changed = true;
+            }
+        } else if (type == EnergyNodeComponent.NodeType.WIND) {
+            int tier = WindUpgradeConfig.clampTier(node.getWindTier());
+            if (node.getWindTier() != tier) {
+                node.setWindTier(tier);
+                changed = true;
+            }
+            int capacity = WindUpgradeConfig.getCapacityForTier(tier);
+            if (node.getCapacity() != capacity) {
+                node.setCapacity(capacity);
+                if (node.getEnergy() > capacity) {
+                    node.setEnergy(capacity);
+                }
+                changed = true;
+            }
+            int generation = WindUpgradeConfig.getGenerationForTier(tier);
+            if (node.getGeneration() != generation) {
+                node.setGeneration(generation);
+                changed = true;
+            }
+            int maxTransfer = WindUpgradeConfig.getMaxTransferForTier(tier);
             if (node.getMaxTransfer() != maxTransfer) {
                 node.setMaxTransfer(maxTransfer);
                 changed = true;
@@ -1188,6 +1255,27 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return changed;
     }
 
+    private boolean syncWindOutputSide(
+            World world,
+            int worldX,
+            int worldY,
+            int worldZ,
+            EnergyNodeComponent node) {
+        EnergySide outputSide = getSolarOutputSide(world, worldX, worldY, worldZ);
+        int outputMask = outputSide.mask() | outputSide.opposite().mask();
+        int inputMask = outputMask;
+        boolean changed = false;
+        if (node.getOutputMask() != outputMask) {
+            node.setOutputMask(outputMask);
+            changed = true;
+        }
+        if (node.getInputMask() != inputMask) {
+            node.setInputMask(inputMask);
+            changed = true;
+        }
+        return changed;
+    }
+
     private boolean syncBatterySides(
             World world,
             int worldX,
@@ -1256,6 +1344,16 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             float deltaSeconds) {
         ProcessingBenchState benchState = getProcessingBenchState(world, worldX, worldY, worldZ);
         if (benchState == null || deltaSeconds <= 0f) {
+            MachinariumSounds.tickLoop(
+                    world,
+                    worldX,
+                    worldY,
+                    worldZ,
+                    MachinariumSounds.EVENT_ELECTRIC_FURNACE,
+                    MachinariumSounds.FILE_ELECTRIC_FURNACE,
+                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    false,
+                    node);
             return false;
         }
 
@@ -1367,6 +1465,16 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         syncFurnaceState(world, worldX, worldY, worldZ, Math.max(0, tier - 1), benchState, node);
+        MachinariumSounds.tickLoop(
+                world,
+                worldX,
+                worldY,
+                worldZ,
+                MachinariumSounds.EVENT_ELECTRIC_FURNACE,
+                MachinariumSounds.FILE_ELECTRIC_FURNACE,
+                MachinariumSounds.DEFAULT_LOOP_MS,
+                node != null && node.isFurnaceWorking(),
+                node);
         syncFurnaceBlockId(world, worldX, worldY, worldZ, tier, benchState, node);
         return changed;
     }
@@ -1442,6 +1550,56 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
         int tier = SolarUpgradeConfig.clampTier(node.getSolarTier());
         syncTieredMachineState(world, worldX, worldY, worldZ, tier, SOLAR_STATE_NAMES, "Solar");
+    }
+
+    private void syncWindState(
+            World world,
+            int worldX,
+            int worldY,
+            int worldZ,
+            EnergyNodeComponent node,
+            double windFactor) {
+        if (node == null) {
+            return;
+        }
+        int tier = WindUpgradeConfig.clampTier(node.getWindTier());
+        int safeTier = Math.max(0, Math.min(tier, WIND_STATE_NAMES.length - 1));
+        String baseState = WIND_STATE_NAMES[safeTier];
+        boolean working = node.getGeneration() > 0
+                && windFactor > 0.0;
+        String stateName = working ? baseState + "_Working" : baseState;
+        if (stateName.equals(node.getLastWindState())) {
+            return;
+        }
+
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        BlockType blockType = accessor.getBlockType(worldX, worldY, worldZ);
+        if (blockType == null) {
+            return;
+        }
+
+        try {
+            accessor.setBlockInteractionState(worldX, worldY, worldZ, blockType, stateName, false);
+            node.setLastWindState(stateName);
+            if (working) {
+                node.setLastWindAnimMs(System.currentTimeMillis());
+            } else {
+                node.setLastWindAnimMs(0L);
+            }
+        } catch (Exception e) {
+            try {
+                accessor.setBlockInteractionState(worldX, worldY, worldZ, blockType, baseState, false);
+                node.setLastWindState(baseState);
+                node.setLastWindAnimMs(0L);
+            } catch (Exception ignored) {
+                System.out.println("[Machinarium] Wind state '" + stateName
+                        + "' not found for blockType=" + blockType.getId());
+            }
+        }
     }
 
     private boolean syncCableTierFromBlockId(
@@ -1876,7 +2034,9 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (!node.allowsInput(side)) {
             return false;
         }
-        return node.getNodeType() != EnergyNodeComponent.NodeType.SOLAR;
+        EnergyNodeComponent.NodeType type = node.getNodeType();
+        return type != EnergyNodeComponent.NodeType.SOLAR
+                && type != EnergyNodeComponent.NodeType.WIND;
     }
 
     private boolean allowsOutput(EnergyNodeComponent node, EnergySide side) {
@@ -2063,7 +2223,9 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
     }
 
     private boolean canReceive(EnergyNodeComponent node) {
-        if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
+        EnergyNodeComponent.NodeType type = node.getNodeType();
+        if (type == EnergyNodeComponent.NodeType.SOLAR
+                || type == EnergyNodeComponent.NodeType.WIND) {
             return false;
         }
         return node.getCapacity() > node.getEnergy();
@@ -2086,6 +2248,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 return 2;
             case CABLE:
             case SOLAR:
+            case WIND:
             default:
                 return 0;
         }

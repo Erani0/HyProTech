@@ -5,6 +5,8 @@ import com.example.plugin.energy.EnergySide;
 import com.example.plugin.energy.EnergyUnits;
 import com.example.plugin.energy.SolarUpgradeConfig;
 import com.example.plugin.energy.SunlightUtil;
+import com.example.plugin.energy.WindUpgradeConfig;
+import com.example.plugin.energy.WindUtil;
 import com.example.plugin.energy.CableUpgradeConfig;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
@@ -179,6 +181,13 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
             title = SolarUpgradeConfig.getTierName(tier) + " Solar Panel";
             subtitle = "Output: " + EnergyUnits.formatWatts(output);
             targetKind = TargetKind.SOLAR;
+        } else if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
+            double windFactor = WindUtil.getWindFactor(world, target.getX(), target.getY(), target.getZ());
+            int output = (int) Math.round(node.getGeneration() * windFactor);
+            int tier = WindUpgradeConfig.clampTier(node.getWindTier());
+            title = WindUpgradeConfig.getTierName(tier) + " Wind Turbine";
+            subtitle = "Output: " + EnergyUnits.formatWatts(output);
+            targetKind = TargetKind.WIND;
         } else if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
             CableNetworkInfo info = getCableNetworkInfo(world, target);
             if (info == null) {
@@ -308,6 +317,19 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                 }
                 if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
                     solarPage.update(node);
+                }
+            } else if (page instanceof WindPage) {
+                WindPage windPage = (WindPage) page;
+                Vector3i pos = windPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = windPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
+                if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
+                    windPage.update(node);
                 }
             } else if (page instanceof CablePage) {
                 CablePage cablePage = (CablePage) page;
@@ -820,6 +842,7 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
 
     private enum TargetKind {
         SOLAR,
+        WIND,
         CABLE,
         BATTERY,
         FURNACE,

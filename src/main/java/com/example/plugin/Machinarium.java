@@ -25,6 +25,7 @@ import com.example.plugin.ui.QuarryPage;
 import com.example.plugin.ui.OpenCustomUIWithWindowsInteraction;
 import com.example.plugin.ui.PlayerUiSystem;
 import com.example.plugin.ui.SolarPage;
+import com.example.plugin.ui.WindPage;
 import com.example.plugin.interaction.OpenPoweredBenchInteraction;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.command.system.CommandManager;
@@ -50,6 +51,7 @@ public class Machinarium extends JavaPlugin {
     private static final String TUTBOOKS_DOWNLOAD_URL =
             "https://github.com/YoofeCZ/HyProTechBook/releases/latest/download/HyProTechBook.zip";
     private static final String TUTBOOKS_MOD_ID = "HyProTech";
+    private static final int WIND_TURBINE_BLOCK_HEIGHT = 5;
     private final AtomicBoolean tutbooksDownloadQueued = new AtomicBoolean(false);
 
     public Machinarium(@NonNullDecl JavaPluginInit init) {
@@ -160,6 +162,12 @@ public class Machinarium extends JavaPlugin {
         OpenCustomUIInteraction.registerBlockEntityCustomPage(
                 this,
                 OpenCustomUIInteraction.CustomPageSupplier.class,
+                MachinariumIds.WIND_PAGE_ID,
+                (playerRef, blockRef) -> new WindPage(playerRef, blockRef, energyType));
+
+        OpenCustomUIInteraction.registerBlockEntityCustomPage(
+                this,
+                OpenCustomUIInteraction.CustomPageSupplier.class,
                 MachinariumIds.CABLE_PAGE_ID,
                 (playerRef, blockRef) -> new CablePage(playerRef, blockRef, energyType));
 
@@ -233,12 +241,16 @@ public class Machinarium extends JavaPlugin {
                     if (pos == null) {
                         return;
                     }
-                    String blockId = stack.getBlockKey();
-                    if (!UpgradePersistence.isUpgradeableBlockId(blockId)) {
-                        return;
-                    }
                     World world = UpgradePersistence.findWorld(pos, null);
                     if (world == null) {
+                        return;
+                    }
+                    if (isBlockedByWindTurbine(world, pos)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                    String blockId = stack.getBlockKey();
+                    if (!UpgradePersistence.isUpgradeableBlockId(blockId)) {
                         return;
                     }
                     UpgradePersistence.storePending(world, pos, blockId, stack);
@@ -302,6 +314,30 @@ public class Machinarium extends JavaPlugin {
         int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
         return blockComponents.getComponent(blockIndex, machineType);
+    }
+
+    private static boolean isBlockedByWindTurbine(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return false;
+        }
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        int minY = Math.max(ChunkUtil.MIN_Y, y - (WIND_TURBINE_BLOCK_HEIGHT - 1));
+        for (int checkY = y; checkY >= minY; checkY--) {
+            BlockType blockType = world.getBlockType(x, checkY, z);
+            if (blockType == null) {
+                continue;
+            }
+            String blockId = blockType.getId();
+            if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_WIND_TURBINE)) {
+                int baseY = checkY;
+                if (y < baseY + WIND_TURBINE_BLOCK_HEIGHT) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

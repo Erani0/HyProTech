@@ -59,6 +59,7 @@ public class MachineComponent implements Component<ChunkStore> {
     private int areaWidth = DEFAULT_AREA_SIZE;
     private int areaDepth = DEFAULT_AREA_SIZE;
     private boolean areaVisible;
+    private transient long nextSoundMs;
 
     public String getMachineId() {
         return machineId;
@@ -138,6 +139,14 @@ public class MachineComponent implements Component<ChunkStore> {
 
     public void setAreaVisible(boolean areaVisible) {
         this.areaVisible = areaVisible;
+    }
+
+    public long getNextSoundMs() {
+        return nextSoundMs;
+    }
+
+    public void setNextSoundMs(long nextSoundMs) {
+        this.nextSoundMs = nextSoundMs;
     }
 
     @Override

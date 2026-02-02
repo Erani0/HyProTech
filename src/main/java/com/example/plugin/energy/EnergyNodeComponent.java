@@ -16,7 +16,8 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         MACHINE,
         FURNACE,
         // Legacy value used by older quarry nodes; treat as MACHINE.
-        QUARRY
+        QUARRY,
+        WIND
     }
 
     private static final IntegerCodec INTEGER_CODEC = new IntegerCodec();
@@ -69,6 +70,10 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
                             (component, value) -> component.solarTier =
                                     value != null ? value : SolarUpgradeConfig.MIN_TIER,
                             component -> component.solarTier)
+                    .addField(new KeyedCodec<>("WindTier", INTEGER_CODEC),
+                            (component, value) -> component.windTier =
+                                    value != null ? value : WindUpgradeConfig.MIN_TIER,
+                            component -> component.windTier)
                     .addField(new KeyedCodec<>("Enabled", BOOLEAN_CODEC),
                             (component, value) -> component.enabled = value != null ? value : true,
                             component -> component.enabled)
@@ -88,11 +93,15 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
     private int cableColor;
     private int cableTier = CableUpgradeConfig.MIN_TIER;
     private int solarTier = SolarUpgradeConfig.MIN_TIER;
+    private int windTier = WindUpgradeConfig.MIN_TIER;
     private transient int connectedMask = EnergySide.ALL_MASK;
     private transient EnergyNodeStorage storage;
     private transient String lastFurnaceState = "";
     private transient long furnaceWorkingStartMs;
     private transient boolean furnaceWorking;
+    private transient String lastWindState = "";
+    private transient long lastWindAnimMs;
+    private transient long nextSoundMs;
     private boolean enabled = true;
 
     public NodeType getNodeType() {
@@ -215,6 +224,14 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         this.solarTier = SolarUpgradeConfig.clampTier(solarTier);
     }
 
+    public int getWindTier() {
+        return windTier;
+    }
+
+    public void setWindTier(int windTier) {
+        this.windTier = WindUpgradeConfig.clampTier(windTier);
+    }
+
     public boolean allowsInput(EnergySide side) {
         return (inputMask & side.mask()) != 0;
     }
@@ -287,6 +304,30 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         this.furnaceWorking = furnaceWorking;
     }
 
+    public String getLastWindState() {
+        return lastWindState == null ? "" : lastWindState;
+    }
+
+    public void setLastWindState(String lastWindState) {
+        this.lastWindState = lastWindState == null ? "" : lastWindState;
+    }
+
+    public long getLastWindAnimMs() {
+        return lastWindAnimMs;
+    }
+
+    public void setLastWindAnimMs(long lastWindAnimMs) {
+        this.lastWindAnimMs = lastWindAnimMs;
+    }
+
+    public long getNextSoundMs() {
+        return nextSoundMs;
+    }
+
+    public void setNextSoundMs(long nextSoundMs) {
+        this.nextSoundMs = nextSoundMs;
+    }
+
     public void setConnectedMask(int connectedMask) {
         this.connectedMask = connectedMask & EnergySide.ALL_MASK;
     }
@@ -335,6 +376,7 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         copy.connectedMask = connectedMask;
         copy.enabled = enabled;
         copy.solarTier = solarTier;
+        copy.windTier = windTier;
         return copy;
     }
 

@@ -3,6 +3,7 @@ package com.example.plugin;
 import com.example.plugin.energy.CableUpgradeConfig;
 import com.example.plugin.energy.EnergyNodeComponent;
 import com.example.plugin.energy.SolarUpgradeConfig;
+import com.example.plugin.energy.WindUpgradeConfig;
 import com.example.plugin.furnace.FurnaceConfig;
 import com.example.plugin.item.ItemNodeComponent;
 import com.example.plugin.MachinariumComponents;
@@ -53,6 +54,7 @@ public final class UpgradePersistence {
             return false;
         }
         return isIdOrState(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_WIND_TURBINE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_BATTERY)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
@@ -382,6 +384,7 @@ public final class UpgradePersistence {
             return false;
         }
         return isIdOrState(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_WIND_TURBINE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_BATTERY)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
@@ -411,6 +414,14 @@ public final class UpgradePersistence {
                     : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_SOLAR_PANEL);
             if (tier >= 0) {
                 return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_SOLAR_PANEL, tier);
+            }
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_WIND_TURBINE)) {
+            int tier = energyNode != null
+                    ? WindUpgradeConfig.clampTier(energyNode.getWindTier())
+                    : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_WIND_TURBINE);
+            if (tier >= 0) {
+                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_WIND_TURBINE, tier);
             }
         }
         if (isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)) {
@@ -560,6 +571,9 @@ public final class UpgradePersistence {
             case SOLAR:
                 snapshot.setSolarTier(node.getSolarTier());
                 break;
+            case WIND:
+                snapshot.setWindTier(node.getWindTier());
+                break;
             case BATTERY:
             case MACHINE:
             case QUARRY:
@@ -594,6 +608,9 @@ public final class UpgradePersistence {
             case SOLAR:
                 target.setSolarTier(snapshot.getSolarTier());
                 return true;
+            case WIND:
+                target.setWindTier(snapshot.getWindTier());
+                return true;
             case BATTERY:
             case MACHINE:
             case QUARRY:
@@ -623,6 +640,7 @@ public final class UpgradePersistence {
         target.setCableColor(snapshot.getCableColor());
         target.setCableTier(snapshot.getCableTier());
         target.setSolarTier(snapshot.getSolarTier());
+        target.setWindTier(snapshot.getWindTier());
         target.setEnabled(snapshot.isEnabled());
     }
 

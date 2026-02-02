@@ -168,3 +168,16 @@ items.Machinarium_Alloy_Constantan.name = Constantan Alloy
 server.items.Machinarium_Alloy_Constantan.name = Constantan Alloy
 items.Machinarium_Alloy_Thorium.name = Thorium Alloy
 server.items.Machinarium_Alloy_Thorium.name = Thorium Alloy
+
+items.Machinarium_Wind_Turbine.name = Wind Turbine
+items.Machinarium_Wind_Turbine.description = Generates energy from wind.
+items.Machinarium_Wind_Turbine_T1.name = Wind Turbine - Reinforced
+items.Machinarium_Wind_Turbine_T1.description = Generates energy from wind.
+items.Machinarium_Wind_Turbine_T2.name = Wind Turbine - Industrial
+items.Machinarium_Wind_Turbine_T2.description = Generates energy from wind.
+items.Machinarium_Wind_Turbine_T3.name = Wind Turbine - Advanced
+items.Machinarium_Wind_Turbine_T3.description = Generates energy from wind.
+items.Machinarium_Wind_Turbine_T4.name = Wind Turbine - Precision
+items.Machinarium_Wind_Turbine_T4.description = Generates energy from wind.
+items.Machinarium_Wind_Turbine_T5.name = Wind Turbine - Quantum
+items.Machinarium_Wind_Turbine_T5.description = Generates energy from wind.

@@ -3,6 +3,7 @@ package com.example.plugin.machine;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
+import com.example.plugin.sound.MachinariumSounds;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
@@ -206,6 +207,16 @@ public final class AlloySmelterMachine extends MasterMachine {
         if (context == null || machine == null) {
             return;
         }
+        MachinariumSounds.tickLoop(
+                context.getWorld(),
+                context.getX(),
+                context.getY(),
+                context.getZ(),
+                MachinariumSounds.EVENT_ALLOY_SMELTER,
+                MachinariumSounds.FILE_ALLOY_SMELTER,
+                MachinariumSounds.DEFAULT_LOOP_MS,
+                working,
+                machine);
         int tier = AlloySmelterConfig.clampTier(machine.getTier());
         if (machine.isWorking() == working && machine.getLastAnimTier() == tier) {
             return;
