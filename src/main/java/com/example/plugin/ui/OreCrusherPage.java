@@ -50,6 +50,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final String ACTION_INPUT_CLICK = "InputClick";
     private static final String ACTION_OUTPUT_CLICK = "OutputClick";
     private static final String ACTION_INVENTORY_CLICK = "InventoryClick";
+    private static final long CLICK_CURSOR_TIMEOUT_MS = 5000L;
     private static final String ACTION_INPUT_DROP = "InputDrop";
     private static final String ACTION_OUTPUT_DROP = "OutputDrop";
     private static final String ACTION_INVENTORY_DROP = "InventoryDrop";
@@ -145,6 +146,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private long lastUpdateMs;
     private long lastDragMs;
     private DragSnapshot lastDragSource;
+    private DragSnapshot clickCursor;
+    private boolean suppressNextDrag;
     private long lastInputDropMs;
     private String lastInputDropItemId;
     private long lastInputToInventoryMs;
@@ -197,15 +200,30 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return;
         }
         if (ACTION_INPUT_CLICK.equalsIgnoreCase(action)) {
+            debugClickEvent("InputClick", data);
+            if (handleClickDrop(store, data, GridType.INPUT)) {
+                return;
+            }
             captureClickSource(GridType.INPUT, data);
+            sendUpdate(new UICommandBuilder());
             return;
         }
         if (ACTION_OUTPUT_CLICK.equalsIgnoreCase(action)) {
+            debugClickEvent("OutputClick", data);
+            if (handleClickDrop(store, data, GridType.OUTPUT)) {
+                return;
+            }
             captureClickSource(GridType.OUTPUT, data);
+            sendUpdate(new UICommandBuilder());
             return;
         }
         if (ACTION_INVENTORY_CLICK.equalsIgnoreCase(action)) {
+            debugClickEvent("InventoryClick", data);
+            if (handleClickDrop(store, data, GridType.PLAYER)) {
+                return;
+            }
             captureClickSource(GridType.PLAYER, data);
+            sendUpdate(new UICommandBuilder());
             return;
         }
         if (isDragAction(action)) {
@@ -1235,6 +1253,18 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 CustomUIEventBindingType.SlotClicking,
                 selector,
                 EventData.of("Action", action));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.SlotDoubleClicking,
+                selector,
+                EventData.of("Action", action));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.SlotClickReleaseWhileDragging,
+                selector,
+                EventData.of("Action", action));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.SlotMouseDragCompleted,
+                selector,
+                EventData.of("Action", action));
     }
 
     private boolean isDragAction(String action) {
@@ -1246,12 +1276,179 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 || ACTION_INVENTORY_DROP.equalsIgnoreCase(action);
     }
 
+    private boolean handleClickDrop(Store<EntityStore> store, OreCrusherUiEvent data, GridType targetGrid) {
+        if (store == null || data == null || targetGrid == null) {
+            return false;
+        }
+        Integer targetSlot = data.getSlotIndex();
+        if (targetSlot == null) {
+            return false;
+        }
+        String action = actionForTarget(targetGrid);
+        if (action == null) {
+            return false;
+        }
+        boolean hasExplicitSource =
+                data.getSourceSlotId() != null
+                        || data.getSourceInventorySectionId() != null
+                        || data.getSourceItemGridIndex() != null;
+        if (hasExplicitSource) {
+            OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+            dropEvent.setAction(action);
+            dropEvent.setSlotIndex(targetSlot);
+            dropEvent.setTarget(data.getTarget());
+            dropEvent.setSourceInventorySectionId(data.getSourceInventorySectionId());
+            dropEvent.setSourceItemGridIndex(data.getSourceItemGridIndex());
+            dropEvent.setSourceSlotId(data.getSourceSlotId());
+            dropEvent.setItemStackId(data.getItemStackId());
+            dropEvent.setItemStackQuantity(data.getItemStackQuantity());
+            dropEvent.setDragItemStackId(data.getDragItemStackId());
+            dropEvent.setDragItemStackQuantity(data.getDragItemStackQuantity());
+            dropEvent.setDragSourceInventorySectionId(data.getDragSourceInventorySectionId());
+            dropEvent.setDragSourceItemGridIndex(data.getDragSourceItemGridIndex());
+            dropEvent.setDragSourceSlotId(data.getDragSourceSlotId());
+            handleDrag(store, dropEvent);
+            suppressNextDrag = true;
+            lastDragSource = null;
+            return true;
+        }
+
+        DragSnapshot cursor = getActiveClickCursor();
+        if (cursor != null) {
+            if (cursor.grid == targetGrid && cursor.slotId == targetSlot) {
+                clickCursor = null;
+                sendUpdate(new UICommandBuilder());
+                return true;
+            }
+
+            OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+            String sourceSectionId = gridSectionId(cursor.grid);
+            Integer sourceGridIndex = gridIndexFor(cursor.grid);
+            Integer quantity = cursor.quantity > 0 ? cursor.quantity : null;
+
+            dropEvent.setAction(action);
+            dropEvent.setSlotIndex(targetSlot);
+            dropEvent.setTarget(data.getTarget());
+            dropEvent.setSourceInventorySectionId(sourceSectionId);
+            dropEvent.setSourceItemGridIndex(sourceGridIndex);
+            dropEvent.setSourceSlotId(cursor.slotId);
+            dropEvent.setItemStackId(cursor.itemId);
+            dropEvent.setItemStackQuantity(quantity);
+            dropEvent.setDragItemStackId(cursor.itemId);
+            dropEvent.setDragItemStackQuantity(quantity);
+            dropEvent.setDragSourceInventorySectionId(sourceSectionId);
+            dropEvent.setDragSourceItemGridIndex(sourceGridIndex);
+            dropEvent.setDragSourceSlotId(cursor.slotId);
+
+            handleDrag(store, dropEvent);
+            suppressNextDrag = true;
+            clickCursor = null;
+            lastDragSource = null;
+            return true;
+        }
+
+        DragSnapshot snapshot = getRecentDragSource();
+        if (snapshot == null) {
+            Inventory inventory = getPlayerInventoryFull(store);
+            ItemContainer machineContainer = resolveMachineContainer(store);
+            SlotRef sourceRef = resolveSlotRef(
+                    targetGrid,
+                    targetSlot,
+                    inventory,
+                    machineContainer,
+                    PlayerIndexMode.COMBINED);
+            ItemStack stack = slotRefStack(sourceRef);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                return false;
+            }
+            clickCursor = new DragSnapshot(
+                    targetGrid,
+                    targetSlot,
+                    stack.getItemId(),
+                    stack.getQuantity(),
+                    System.currentTimeMillis());
+            sendUpdate(new UICommandBuilder());
+            return true;
+        }
+        if (snapshot.grid == targetGrid && snapshot.slotId == targetSlot) {
+            return false;
+        }
+
+        OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+        String sourceSectionId = gridSectionId(snapshot.grid);
+        Integer sourceGridIndex = gridIndexFor(snapshot.grid);
+        Integer quantity = snapshot.quantity > 0 ? snapshot.quantity : null;
+
+        dropEvent.setAction(action);
+        dropEvent.setSlotIndex(targetSlot);
+        dropEvent.setTarget(data.getTarget());
+        dropEvent.setSourceInventorySectionId(sourceSectionId);
+        dropEvent.setSourceItemGridIndex(sourceGridIndex);
+        dropEvent.setSourceSlotId(snapshot.slotId);
+        dropEvent.setItemStackId(snapshot.itemId);
+        dropEvent.setItemStackQuantity(quantity);
+        dropEvent.setDragItemStackId(snapshot.itemId);
+        dropEvent.setDragItemStackQuantity(quantity);
+        dropEvent.setDragSourceInventorySectionId(sourceSectionId);
+        dropEvent.setDragSourceItemGridIndex(sourceGridIndex);
+        dropEvent.setDragSourceSlotId(snapshot.slotId);
+
+        handleDrag(store, dropEvent);
+        lastDragSource = null;
+        return true;
+    }
+
+    private String actionForTarget(GridType gridType) {
+        if (gridType == GridType.INPUT) {
+            return ACTION_INPUT_DROP;
+        }
+        if (gridType == GridType.OUTPUT) {
+            return ACTION_OUTPUT_DROP;
+        }
+        if (gridType == GridType.PLAYER) {
+            return ACTION_INVENTORY_DROP;
+        }
+        return null;
+    }
+
+    private String gridSectionId(GridType gridType) {
+        if (gridType == GridType.INPUT) {
+            return "#InputGrid";
+        }
+        if (gridType == GridType.OUTPUT) {
+            return "#OutputGrid";
+        }
+        if (gridType == GridType.PLAYER) {
+            return "#PlayerInventoryGrid";
+        }
+        return null;
+    }
+
+    private Integer gridIndexFor(GridType gridType) {
+        if (gridType == GridType.INPUT) {
+            return GRID_INDEX_INPUT;
+        }
+        if (gridType == GridType.OUTPUT) {
+            return GRID_INDEX_OUTPUT;
+        }
+        if (gridType == GridType.PLAYER) {
+            return GRID_INDEX_PLAYER;
+        }
+        return null;
+    }
+
+
     private void handleDrag(Store<EntityStore> store, OreCrusherUiEvent data) {
         boolean updateSent = false;
         try {
             if (store == null || data == null) {
                 return;
             }
+            if (suppressNextDrag) {
+                suppressNextDrag = false;
+                return;
+            }
+            clickCursor = null;
             // Debug: surface drag payload in chat to trace slot/index issues.
             debugDragEvent(store, data);
             GridType targetGrid = resolveTargetGrid(data.getAction());
@@ -1530,6 +1727,26 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 + " itemId=" + data.getItemStackId()
                 + " dragItemId=" + data.getDragItemStackId()
                 + " qty=" + data.getItemStackQuantity();
+        System.out.println("[Machinarium] v2 " + msg);
+    }
+
+    private void debugClickEvent(String label, OreCrusherUiEvent data) {
+        if (data == null) {
+            return;
+        }
+        String msg = "DBG Click " + label
+                + " slotIndex=" + data.getSlotIndex()
+                + " srcSlot=" + data.getSourceSlotId()
+                + " srcGridIdx=" + data.getSourceItemGridIndex()
+                + " srcSection=" + data.getSourceInventorySectionId()
+                + " dragSrcSlot=" + data.getDragSourceSlotId()
+                + " dragSrcGridIdx=" + data.getDragSourceItemGridIndex()
+                + " dragSrcSection=" + data.getDragSourceInventorySectionId()
+                + " itemId=" + data.getItemStackId()
+                + " dragItemId=" + data.getDragItemStackId()
+                + " qty=" + data.getItemStackQuantity()
+                + " btn=" + data.getPressedMouseButton()
+                + " target=" + data.getTarget();
         System.out.println("[Machinarium] v2 " + msg);
     }
 
@@ -1831,6 +2048,18 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return null;
         }
         return lastDragSource;
+    }
+
+    private DragSnapshot getActiveClickCursor() {
+        if (clickCursor == null) {
+            return null;
+        }
+        long age = System.currentTimeMillis() - clickCursor.timestampMs;
+        if (age > CLICK_CURSOR_TIMEOUT_MS) {
+            clickCursor = null;
+            return null;
+        }
+        return clickCursor;
     }
 
     private boolean dragMatchesSnapshot(OreCrusherUiEvent data, DragSnapshot snapshot) {

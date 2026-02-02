@@ -71,55 +71,111 @@ public class OreCrusherUiEvent {
         return action;
     }
 
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     public String getDragItemStackId() {
         return dragItemStackId;
+    }
+
+    public void setDragItemStackId(String dragItemStackId) {
+        this.dragItemStackId = dragItemStackId;
     }
 
     public Integer getDragItemStackQuantity() {
         return dragItemStackQuantity;
     }
 
+    public void setDragItemStackQuantity(Integer dragItemStackQuantity) {
+        this.dragItemStackQuantity = dragItemStackQuantity;
+    }
+
     public String getDragSourceInventorySectionId() {
         return dragSourceInventorySectionId;
+    }
+
+    public void setDragSourceInventorySectionId(String dragSourceInventorySectionId) {
+        this.dragSourceInventorySectionId = dragSourceInventorySectionId;
     }
 
     public Integer getDragSourceItemGridIndex() {
         return dragSourceItemGridIndex;
     }
 
+    public void setDragSourceItemGridIndex(Integer dragSourceItemGridIndex) {
+        this.dragSourceItemGridIndex = dragSourceItemGridIndex;
+    }
+
     public Integer getDragSourceSlotId() {
         return dragSourceSlotId;
+    }
+
+    public void setDragSourceSlotId(Integer dragSourceSlotId) {
+        this.dragSourceSlotId = dragSourceSlotId;
     }
 
     public Integer getSlotIndex() {
         return slotIndex;
     }
 
+    public void setSlotIndex(Integer slotIndex) {
+        this.slotIndex = slotIndex;
+    }
+
     public Integer getSourceSlotId() {
         return sourceSlotId;
+    }
+
+    public void setSourceSlotId(Integer sourceSlotId) {
+        this.sourceSlotId = sourceSlotId;
     }
 
     public Integer getSourceItemGridIndex() {
         return sourceItemGridIndex;
     }
 
+    public void setSourceItemGridIndex(Integer sourceItemGridIndex) {
+        this.sourceItemGridIndex = sourceItemGridIndex;
+    }
+
     public String getItemStackId() {
         return itemStackId;
+    }
+
+    public void setItemStackId(String itemStackId) {
+        this.itemStackId = itemStackId;
     }
 
     public Integer getItemStackQuantity() {
         return itemStackQuantity;
     }
 
+    public void setItemStackQuantity(Integer itemStackQuantity) {
+        this.itemStackQuantity = itemStackQuantity;
+    }
+
     public Integer getPressedMouseButton() {
         return pressedMouseButton;
+    }
+
+    public void setPressedMouseButton(Integer pressedMouseButton) {
+        this.pressedMouseButton = pressedMouseButton;
     }
 
     public String getSourceInventorySectionId() {
         return sourceInventorySectionId;
     }
 
+    public void setSourceInventorySectionId(String sourceInventorySectionId) {
+        this.sourceInventorySectionId = sourceInventorySectionId;
+    }
+
     public String getTarget() {
         return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 }

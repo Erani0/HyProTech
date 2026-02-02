@@ -20,12 +20,20 @@
         "Quantity": 12
       },
       {
-        "ItemId": "Ingredient_Bar_Mithril",
+        "ItemId": "Ingredient_Bar_Adamantite",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Machinarium_Slag",
+        "Quantity": 12
+      },
+      {
+        "ItemId": "Machinarium_Ore_Chips",
         "Quantity": 8
       },
       {
-        "ItemId": "Ingredient_Bar_Adamantite",
-        "Quantity": 4
+        "ItemId": "Machinarium_Cobalt_Powder",
+        "Quantity": 10
       },
       {
         "ItemId": "Ingredient_Fire_Essence",
@@ -104,119 +112,24 @@
           "UpgradeRequirement": {
             "Material": [
               {
-                "ItemId": "Ingredient_Bar_Copper",
-                "Quantity": 20
-              },
-              {
-                "ItemId": "Ingredient_Bar_Iron",
-                "Quantity": 10
-              },
-              {
-                "ItemId": "Ingredient_Leather_Medium",
-                "Quantity": 10
-              },
-              {
-                "ItemId": "Ingredient_Bar_Silver",
-                "Quantity": 5
-              }
-            ],
-            "TimeSeconds": 3
-          },
-          "CraftingTimeReductionModifier": 0.0
-        },
-        {
-          "UpgradeRequirement": {
-            "Material": [
-              {
-                "ItemId": "Ingredient_Bar_Iron",
-                "Quantity": 20
-              },
-              {
-                "ItemId": "Ingredient_Bar_Silver",
-                "Quantity": 10
-              },
-              {
-                "ItemId": "Ingredient_Bar_Gold",
-                "Quantity": 8
-              },
-              {
-                "ItemId": "Ingredient_Bar_Cobalt",
-                "Quantity": 6
-              }
-            ],
-            "TimeSeconds": 3
-          },
-          "CraftingTimeReductionModifier": 0.2,
-          "ExtraInputSlot": 1
-        },
-        {
-          "UpgradeRequirement": {
-            "Material": [
-              {
-                "ItemId": "Ingredient_Bar_Cobalt",
-                "Quantity": 12
-              },
-              {
-                "ItemId": "Ingredient_Bar_Mithril",
-                "Quantity": 8
-              },
-              {
-                "ItemId": "Ingredient_Bar_Adamantite",
-                "Quantity": 4
-              },
-              {
-                "ItemId": "Ingredient_Fire_Essence",
-                "Quantity": 5
-              }
-            ],
-            "TimeSeconds": 3
-          },
-          "CraftingTimeReductionModifier": 0.4,
-          "ExtraInputSlot": 2
-        },
-        {
-          "UpgradeRequirement": {
-            "Material": [
-              {
-                "ItemId": "Ingredient_Bar_Mithril",
-                "Quantity": 20
-              },
-              {
-                "ItemId": "Ingredient_Bar_Adamantite",
-                "Quantity": 10
-              },
-              {
-                "ItemId": "Ingredient_Bar_Prisma",
-                "Quantity": 6
-              },
-              {
-                "ItemId": "Ingredient_Bar_Onyxium",
-                "Quantity": 4
-              }
-            ],
-            "TimeSeconds": 3
-          },
-          "CraftingTimeReductionModifier": 0.6,
-          "ExtraInputSlot": 3
-        },
-        {
-          "UpgradeRequirement": {
-            "Material": [
-              {
                 "ItemId": "Ingredient_Bar_Adamantite",
                 "Quantity": 20
-              },
-              {
-                "ItemId": "Ingredient_Bar_Onyxium",
-                "Quantity": 12
-              },
-              {
-                "ItemId": "Ingredient_Bar_Prisma",
-                "Quantity": 10
               },
               {
                 "ItemId": "Ingredient_Bar_Thorium",
                 "Quantity": 8
+              },
+              {
+                "ItemId": "Machinarium_Slag",
+                "Quantity": 30
+              },
+              {
+                "ItemId": "Machinarium_Ore_Chips",
+                "Quantity": 20
+              },
+              {
+                "ItemId": "Machinarium_Gold_Powder",
+                "Quantity": 24
               }
             ],
             "TimeSeconds": 3
@@ -234,7 +147,8 @@
       "Id": "processingBench",
       "Definitions": {
         "Processing": {
-          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_close.blockyanim"
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
+          "Looping": true
         },
         "ProcessCompleted": {
           "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_open.blockyanim"
@@ -353,9 +267,8 @@
           "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
           "Looping": true
         },
-        "ProcessingLoop": {
-          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/FurnaceOn.blockyanim",
-          "Looping": true
+        "ProcessingStart": {
+          "CustomModelAnimation": "Blocks/Machinarium/ElectricFurnace/furnace_close.blockyanim"
         }
       }
     },

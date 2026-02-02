@@ -10,6 +10,8 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 public final class SunlightUtil {
+    private static final double DAY_START_HOUR = 5.0;
+    private static final double NIGHT_START_HOUR = 20.0;
     private static final double SUNSET_EXTENSION_HOURS = 1.0;
     private static final Map<World, TailState> TAILS = new IdentityHashMap<>();
 
@@ -37,6 +39,12 @@ public final class SunlightUtil {
                 state.dayKey = dayKey;
                 state.lastNonZeroFactor = 0.0;
                 state.sunsetStartHour = Double.NaN;
+            }
+
+            if (hour < DAY_START_HOUR || hour >= NIGHT_START_HOUR) {
+                state.lastNonZeroFactor = 0.0;
+                state.sunsetStartHour = Double.NaN;
+                return 0.0;
             }
 
             if (baseFactor > 0.0) {

@@ -8,8 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ore_Gold",
+        "ItemId": "Machinarium_Gold_Powder",
         "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Ingredient_Bar_Gold"
       }
     ],
     "BenchRequirement": [
@@ -53,4 +58,3 @@
   "ItemSoundSetId": "ISS_Items_Ingots",
   "DropOnDeath": true
 }
-

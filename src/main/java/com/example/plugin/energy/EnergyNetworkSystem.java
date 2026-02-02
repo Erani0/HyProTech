@@ -1293,6 +1293,21 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         boolean hasRecipe = benchState.getRecipe() != null;
         boolean shouldBeActive = node.isEnabled() && hasRecipe && consumption > 0 && energy >= consumption;
+        long now = System.currentTimeMillis();
+        if (shouldBeActive && node != null) {
+            if (!node.isFurnaceWorking()) {
+                node.setFurnaceWorking(true);
+                node.setFurnaceWorkingStartMs(now);
+            }
+            long startMs = node.getFurnaceWorkingStartMs();
+            if (startMs > 0L && (now - startMs) < 1000L) {
+                // Delay actual processing while the close animation plays.
+                shouldBeActive = false;
+            }
+        } else if (!shouldBeActive && node != null && node.isFurnaceWorking() && !hasRecipe) {
+            node.setFurnaceWorking(false);
+            node.setFurnaceWorkingStartMs(0L);
+        }
         boolean usesFuel = false;
         ProcessingBench bench = benchState.getBench() instanceof ProcessingBench
                 ? (ProcessingBench) benchState.getBench()
@@ -1538,23 +1553,28 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         int safeTier = Math.max(0, Math.min(tierIndex, FURNACE_STATE_NAMES.length - 1));
+        boolean hasRecipe = benchState != null && benchState.getRecipe() != null;
         boolean working = benchState != null && (benchState.isActive() || benchState.getInputProgress() > 0f);
+        if (!working && node != null && node.isFurnaceWorking() && hasRecipe) {
+            // Keep working latched while a recipe is still present to avoid flicker.
+            working = true;
+        }
         String baseState = FURNACE_STATE_NAMES[safeTier];
         String stateName = baseState;
         if (working) {
             long now = System.currentTimeMillis();
-            if (node != null) {
-                if (!node.isFurnaceWorking()) {
-                    node.setFurnaceWorking(true);
-                    node.setFurnaceWorkingStartMs(now);
-                }
+            long startMs = node != null ? node.getFurnaceWorkingStartMs() : 0L;
+            if (startMs > 0L && (now - startMs) < 1000L) {
+                // Startup close animation phase.
+                stateName = "ProcessingStart";
+            } else {
+                // Working loop.
+                stateName = "Processing";
             }
-            long startMs = node != null ? node.getFurnaceWorkingStartMs() : now;
-            // Play close once, then switch to the looping "ProcessingLoop".
-            stateName = (now - startMs) < 1000L ? "Processing" : "ProcessingLoop";
         } else if (node != null && node.isFurnaceWorking()) {
             node.setFurnaceWorking(false);
             node.setFurnaceWorkingStartMs(0L);
+            node.setLastFurnaceState("");
         }
         if (node != null && stateName.equals(node.getLastFurnaceState())) {
             return;

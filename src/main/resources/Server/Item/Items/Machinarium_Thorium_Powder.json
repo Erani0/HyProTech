@@ -5,11 +5,24 @@
   "Categories": [
     "Items"
   ],
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/Thorium_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_thorium_powder.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ore_Thorium",
+        "ItemId": "Machinarium_Thorium_Powder",
         "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Ingredient_Bar_Thorium"
       }
     ],
     "BenchRequirement": [
@@ -21,14 +34,6 @@
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/Thorium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_thorium_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -53,4 +58,3 @@
   "ItemSoundSetId": "ISS_Items_Ingots",
   "DropOnDeath": true
 }
-
