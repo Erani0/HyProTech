@@ -67,7 +67,7 @@
           "MaxTransfer": 3020,
           "Generation": 3020,
           "InputMask": 0,
-          "OutputMask": 48,
+          "OutputMask": 63,
           "WindTier": 3
         }
       }

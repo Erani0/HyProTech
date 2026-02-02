@@ -162,6 +162,7 @@ public class MachineComponent implements Component<ChunkStore> {
         copy.areaWidth = areaWidth;
         copy.areaDepth = areaDepth;
         copy.areaVisible = areaVisible;
+        copy.nextSoundMs = nextSoundMs;
         return copy;
     }
 

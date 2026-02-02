@@ -62,7 +62,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private static final int BATTERY_BASE_MASK = EnergySide.NORTH.mask() | EnergySide.SOUTH.mask();
     private static final int FURNACE_BASE_INPUT_MASK =
             EnergySide.EAST.mask() | EnergySide.UP.mask() | EnergySide.SOUTH.mask() | EnergySide.WEST.mask();
-    private static final String[][] CABLE_STATE_NAMES = buildCableStateNames();
+    private static final String[] CABLE_STATE_NAMES = buildCableStateNames();
     private static final String[] SOLAR_STATE_NAMES = buildTierStateNames("Solar_T", SolarUpgradeConfig.MAX_TIER);
     private static final String[] WIND_STATE_NAMES = buildTierStateNames("Wind_T", WindUpgradeConfig.MAX_TIER);
     private static final String[] FURNACE_STATE_NAMES = buildTierStateNames("Furnace_T", FurnaceConfig.MAX_TIER);
@@ -753,7 +753,8 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         for (NeighborNode neighbor : network.neighbors) {
             EnergyNodeComponent node = neighbor.node;
-            if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR) {
+            if (node.getNodeType() == EnergyNodeComponent.NodeType.SOLAR
+                    || node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
                 solarNodes.add(neighbor);
             } else if (node.getNodeType() == EnergyNodeComponent.NodeType.FURNACE) {
                 boolean active = isFurnaceActive(node);
@@ -1261,8 +1262,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int worldY,
             int worldZ,
             EnergyNodeComponent node) {
-        EnergySide outputSide = getSolarOutputSide(world, worldX, worldY, worldZ);
-        int outputMask = outputSide.mask() | outputSide.opposite().mask();
+        int outputMask = EnergySide.ALL_MASK;
         int inputMask = outputMask;
         boolean changed = false;
         if (node.getOutputMask() != outputMask) {
@@ -2412,21 +2412,17 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
     }
 
-    private static String[][] buildCableStateNames() {
-        int maxTier = CableUpgradeConfig.MAX_TIER;
-        String[][] names = new String[maxTier + 1][EnergySide.ALL_MASK + 1];
-        for (int tier = 0; tier <= maxTier; tier++) {
-            for (int mask = 0; mask < names[tier].length; mask++) {
-                names[tier][mask] = String.format("Cable_T%d_%02d", tier, mask);
-            }
+    private static String[] buildCableStateNames() {
+        String[] names = new String[EnergySide.ALL_MASK + 1];
+        for (int mask = 0; mask < names.length; mask++) {
+            names[mask] = String.format("Cable_%02d", mask);
         }
         return names;
     }
 
     private static String cableStateName(int mask, int tier) {
         int normalized = mask & EnergySide.ALL_MASK;
-        int clampedTier = CableUpgradeConfig.clampTier(tier);
-        return CABLE_STATE_NAMES[clampedTier][normalized];
+        return CABLE_STATE_NAMES[normalized];
     }
 
     private static String[] buildTierStateNames(String prefix, int maxTier) {

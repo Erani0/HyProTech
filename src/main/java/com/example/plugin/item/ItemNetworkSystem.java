@@ -52,7 +52,7 @@ import java.util.Set;
 
 public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private static final int DEFAULT_MAX_TRANSFER = 16;
-    private static final String[][] CABLE_STATE_NAMES = buildCableStateNames();
+    private static final String[] CABLE_STATE_NAMES = buildCableStateNames();
     private static volatile Field benchInputContainerField;
     private static volatile Field benchFuelContainerField;
     private static volatile Field benchOutputContainerField;
@@ -1348,21 +1348,17 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return localMask;
     }
 
-    private static String[][] buildCableStateNames() {
-        int maxTier = CableUpgradeConfig.MAX_TIER;
-        String[][] names = new String[maxTier + 1][EnergySide.ALL_MASK + 1];
-        for (int tier = 0; tier <= maxTier; tier++) {
-            for (int mask = 0; mask < names[tier].length; mask++) {
-                names[tier][mask] = String.format("Cable_T%d_%02d", tier, mask);
-            }
+    private static String[] buildCableStateNames() {
+        String[] names = new String[EnergySide.ALL_MASK + 1];
+        for (int mask = 0; mask < names.length; mask++) {
+            names[mask] = String.format("Cable_%02d", mask);
         }
         return names;
     }
 
     private static String cableStateName(int mask, int tier) {
         int normalized = mask & EnergySide.ALL_MASK;
-        int clampedTier = CableUpgradeConfig.clampTier(tier);
-        return CABLE_STATE_NAMES[clampedTier][normalized];
+        return CABLE_STATE_NAMES[normalized];
     }
 
     private ContainerLookup resolveContainerState(World world, int x, int y, int z) {
@@ -1442,6 +1438,12 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         ItemContainerBlockState state = MachineItemAccess.getContainerState(world, x, y, z);
         if (state != null) {
             return state;
+        }
+
+        // Autofix: ensure missing container states (older worlds can have null block state types)
+        ItemContainerBlockState ensured = MachineItemAccess.ensureContainerState(world, x, y, z);
+        if (ensured != null) {
+            return ensured;
         }
 
         scheduleBenchState(world, x, y, z);

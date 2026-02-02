@@ -377,6 +377,7 @@ public class EnergyNodeComponent implements Component<ChunkStore> {
         copy.enabled = enabled;
         copy.solarTier = solarTier;
         copy.windTier = windTier;
+        copy.nextSoundMs = nextSoundMs;
         return copy;
     }
 

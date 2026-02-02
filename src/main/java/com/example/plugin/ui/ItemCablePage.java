@@ -36,7 +36,11 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,9 +48,31 @@ import java.util.Set;
 public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String PAGE_LAYOUT = "Machinarium_Item_Cable.ui";
     private static final String NO_LINK_LABEL = "No link";
-    private static final int FILTER_ROW_COUNT = 10;
+    private static final int FILTER_ROW_COUNT = 12;
+    private static final int PRESET_SLOT_COUNT = 5;
+    private static final String CATEGORY_ALL = "All";
+    private static final String CATEGORY_ORES = "Ores";
+    private static final String CATEGORY_INGOTS = "Ingots";
+    private static final String CATEGORY_PLATES = "Plates";
+    private static final String CATEGORY_COMPONENTS = "Components";
+    private static final String CATEGORY_MACHINES = "Machines";
+    private static final String CATEGORY_CABLES = "Cables";
+    private static final String CATEGORY_FLUIDS = "Fluids";
+    private static final String CATEGORY_NUCLEAR = "Nuclear";
+    private static final String CATEGORY_OTHER = "Other";
     private static final String FILTER_HINT_WHITELIST = "Select items to allow";
     private static final String FILTER_HINT_BLACKLIST = "Select items to block";
+    private static final List<String> CATEGORY_ORDER = Arrays.asList(
+            CATEGORY_ALL,
+            CATEGORY_ORES,
+            CATEGORY_INGOTS,
+            CATEGORY_PLATES,
+            CATEGORY_COMPONENTS,
+            CATEGORY_MACHINES,
+            CATEGORY_CABLES,
+            CATEGORY_FLUIDS,
+            CATEGORY_NUCLEAR,
+            CATEGORY_OTHER);
 
     private final Ref<ChunkStore> blockRef;
     private final ComponentType<ChunkStore, ItemNodeComponent> itemType;
@@ -60,10 +86,15 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
     private final List<String> filterItems = new ArrayList<>();
     private final List<String> allItemIds = new ArrayList<>();
     private final List<String> filteredItemIds = new ArrayList<>();
+    private final Map<String, String> itemDisplayNames = new HashMap<>();
+    private final Map<String, String> itemIdByDisplayName = new HashMap<>();
+    private final Map<String, String> itemCategoryById = new HashMap<>();
+    private final List<String> presetNames = new ArrayList<>();
     private EnergySide activeFilterSide;
     private boolean filterPanelVisible;
     private int filterPageIndex;
     private String filterQuery = "";
+    private String activeCategory = CATEGORY_ALL;
     private Vector3i renameTargetPos;
 
     public ItemCablePage(
@@ -172,8 +203,82 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             }
             openFilterPanel(playerRef, store, node, side);
             return;
+        } else if ("FilterCategory".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            String category = data.getValue();
+            if (category == null || category.isEmpty()) {
+                return;
+            }
+            activeCategory = category;
+            filterPageIndex = 0;
+            applySearchQuery(filterQuery);
+            updateFilterUi(node);
+            return;
         } else if ("CloseFilter".equalsIgnoreCase(action)) {
             closeFilterPanel();
+            return;
+        } else if ("PresetOres".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            applyPresetItems(chunkStore, node, buildOrePreset());
+            return;
+        } else if ("PresetSave".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            String name = data.getValue();
+            if (name == null || name.trim().isEmpty()) {
+                return;
+            }
+            Set<String> items = node.getFilters(activeFilterSide);
+            if (items.isEmpty()) {
+                return;
+            }
+            node.saveFilterPreset(name.trim(), items);
+            chunkStore.putComponent(blockRef, itemType, node);
+            UICommandBuilder clear = new UICommandBuilder();
+            clear.set("#FilterPresetNameInput.Value", "");
+            sendUpdate(clear);
+            updateFilterUi(node);
+            return;
+        } else if ("PresetLoad".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            int index = parseIndex(data.getIndex());
+            String presetName = resolvePresetName(node, index);
+            if (presetName == null) {
+                return;
+            }
+            applyPresetItems(chunkStore, node, node.getFilterPreset(presetName));
+            return;
+        } else if ("PresetCopy".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            sendPresetCopy(node);
+            return;
+        } else if ("PresetPaste".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            String text = data.getValue();
+            if (text == null || text.trim().isEmpty()) {
+                return;
+            }
+            Set<String> items = parsePresetText(text);
+            applyPresetItems(chunkStore, node, items);
+            return;
+        } else if ("PresetClear".equalsIgnoreCase(action)) {
+            if (!filterPanelVisible || activeFilterSide == null) {
+                return;
+            }
+            node.clearFilters(activeFilterSide);
+            chunkStore.putComponent(blockRef, itemType, node);
+            updateFilterUi(node);
             return;
         } else if ("ToggleFilterMode".equalsIgnoreCase(action)) {
             if (activeFilterSide == null) {
@@ -297,6 +402,24 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, sideFilterId(side), data);
         }
 
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryAll", CATEGORY_ALL);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryOres", CATEGORY_ORES);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryIngots", CATEGORY_INGOTS);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryPlates", CATEGORY_PLATES);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryComponents", CATEGORY_COMPONENTS);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryMachines", CATEGORY_MACHINES);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryCables", CATEGORY_CABLES);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryFluids", CATEGORY_FLUIDS);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryNuclear", CATEGORY_NUCLEAR);
+        bindCategoryButton(uiEventBuilder, "#FilterCategoryOther", CATEGORY_OTHER);
+
+        EventData presetOres = EventData.of("Action", "PresetOres");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterPresetOres", presetOres);
+
+        EventData presetSave = EventData.of("Action", "PresetSave")
+                .append("@Value", "#FilterPresetNameInput.Value");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterPresetSave", presetSave);
+
         EventData searchData = EventData.of("@SearchQuery", "#FilterSearchInput.Value");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.ValueChanged,
@@ -324,6 +447,25 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         EventData nextData = EventData.of("Action", "FilterNext").append("Side", "All");
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterNext", nextData);
 
+        EventData presetCopy = EventData.of("Action", "PresetCopy");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterPresetCopy", presetCopy);
+
+        EventData presetPaste = EventData.of("Action", "PresetPaste")
+                .append("@Value", "#FilterPresetText.Value");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterPresetPaste", presetPaste);
+
+        EventData presetClear = EventData.of("Action", "PresetClear");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#FilterPresetClear", presetClear);
+
+        for (int i = 0; i < PRESET_SLOT_COUNT; i++) {
+            EventData data = EventData.of("Action", "PresetLoad")
+                    .append("Index", Integer.toString(i));
+            uiEventBuilder.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    presetSlotId(i),
+                    data);
+        }
+
         for (int i = 0; i < FILTER_ROW_COUNT; i++) {
             EventData data = EventData.of("Action", "ToggleFilter")
                     .append("Side", "Active")
@@ -333,6 +475,11 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
                     filterCheckId(i),
                     data);
         }
+    }
+
+    private void bindCategoryButton(UIEventBuilder uiEventBuilder, String selector, String category) {
+        EventData data = EventData.of("Action", "FilterCategory").append("@Value", category);
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selector, data);
     }
 
     private ItemNodeComponent getOrCreateItemNode(Store<ChunkStore> chunkStore) {
@@ -385,10 +532,10 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
                 if (configuredName != null && !configuredName.isEmpty()) {
                     linkLabel = configuredName;
                 } else if (!UiItemIds.isEmptyItemId(itemId)) {
-                    linkLabel = itemId;
+                    linkLabel = getDisplayName(itemId);
                 }
             } else if (!UiItemIds.isEmptyItemId(itemId)) {
-                linkLabel = itemId;
+                linkLabel = getDisplayName(itemId);
             }
             String modeLabel = node.getSideMode(side).label();
             String text = side.label() + ": " + modeLabel + " (" + linkLabel + ")";
@@ -422,7 +569,10 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         update.set("#FilterPanel.Visible", true);
         update.set("#FilterTitle.Text", "Filters: " + side.label());
         update.set("#FilterSearchInput.Value", filterQuery);
+        update.set("#FilterPresetNameInput.Value", "");
         updateFilterModeUi(update, node);
+        updateCategoryUi(update);
+        updatePresetUi(update, node);
         updateFilterRows(update, node);
         sendUpdate(update);
     }
@@ -459,6 +609,8 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         updateSideButtons(update, node, world, pos);
         if (filterPanelVisible) {
             updateFilterModeUi(update, node);
+            updateCategoryUi(update);
+            updatePresetUi(update, node);
             updateFilterRows(update, node);
         }
         sendUpdate(update);
@@ -492,7 +644,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             }
             String itemId = filterItems.get(i);
             update.set(filterIconId(i) + ".ItemId", UiItemIds.safeItemId(itemId));
-            update.set(filterLabelId(i) + ".Text", itemId);
+            update.set(filterLabelId(i) + ".Text", getDisplayName(itemId));
             update.set(filterCheckId(i) + ".Value", activeFilters.contains(itemId));
         }
     }
@@ -530,26 +682,345 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             if (item == null || item == Item.UNKNOWN || item.isState()) {
                 continue;
             }
+            String displayName = resolveDisplayName(itemId, item);
+            itemDisplayNames.put(itemId, displayName);
+            String normalizedName = normalizeDisplayName(displayName);
+            if (!normalizedName.isEmpty()) {
+                itemIdByDisplayName.putIfAbsent(normalizedName, itemId);
+            }
+            String category = categorizeItem(itemId);
+            itemCategoryById.put(itemId, category);
             allItemIds.add(itemId);
         }
-        Collections.sort(allItemIds);
+        allItemIds.sort(Comparator.comparing(this::getDisplayName, String.CASE_INSENSITIVE_ORDER));
     }
 
     private void applySearchQuery(String query) {
         filterQuery = query == null ? "" : query.trim().toLowerCase();
+        applyFilters();
+    }
+
+    private void applyFilters() {
         filteredItemIds.clear();
         if (allItemIds.isEmpty()) {
             return;
         }
-        if (filterQuery.isEmpty()) {
-            filteredItemIds.addAll(allItemIds);
+        if (!CATEGORY_ORDER.contains(activeCategory)) {
+            activeCategory = CATEGORY_ALL;
+        }
+        String query = filterQuery == null ? "" : filterQuery.trim().toLowerCase();
+        for (String itemId : allItemIds) {
+            if (!CATEGORY_ALL.equals(activeCategory)) {
+                String category = itemCategoryById.get(itemId);
+                if (!activeCategory.equals(category)) {
+                    continue;
+                }
+            }
+            if (!query.isEmpty()) {
+                String display = getDisplayName(itemId).toLowerCase();
+                if (!itemId.toLowerCase().contains(query) && !display.contains(query)) {
+                    continue;
+                }
+            }
+            filteredItemIds.add(itemId);
+        }
+    }
+
+    private void updateCategoryUi(UICommandBuilder update) {
+        if (update == null) {
             return;
         }
+        update.set("#FilterCategoryValue.Text", activeCategory);
+        updateCategoryButton(update, "#FilterCategoryAll", CATEGORY_ALL);
+        updateCategoryButton(update, "#FilterCategoryOres", CATEGORY_ORES);
+        updateCategoryButton(update, "#FilterCategoryIngots", CATEGORY_INGOTS);
+        updateCategoryButton(update, "#FilterCategoryPlates", CATEGORY_PLATES);
+        updateCategoryButton(update, "#FilterCategoryComponents", CATEGORY_COMPONENTS);
+        updateCategoryButton(update, "#FilterCategoryMachines", CATEGORY_MACHINES);
+        updateCategoryButton(update, "#FilterCategoryCables", CATEGORY_CABLES);
+        updateCategoryButton(update, "#FilterCategoryFluids", CATEGORY_FLUIDS);
+        updateCategoryButton(update, "#FilterCategoryNuclear", CATEGORY_NUCLEAR);
+        updateCategoryButton(update, "#FilterCategoryOther", CATEGORY_OTHER);
+    }
+
+    private void updateCategoryButton(UICommandBuilder update, String selector, String category) {
+        String label = category;
+        if (category.equalsIgnoreCase(activeCategory)) {
+            label = "> " + category;
+        }
+        update.set(selector + ".Text", label);
+    }
+
+    private void updatePresetUi(UICommandBuilder update, ItemNodeComponent node) {
+        if (update == null || node == null) {
+            return;
+        }
+        refreshPresetNames(node);
+        for (int i = 0; i < PRESET_SLOT_COUNT; i++) {
+            boolean hasPreset = i < presetNames.size();
+            String label = hasPreset ? presetNames.get(i) : "Empty";
+            update.set(presetSlotId(i) + ".Text", label);
+            update.set(presetSlotId(i) + ".Visible", true);
+        }
+    }
+
+    private void refreshPresetNames(ItemNodeComponent node) {
+        presetNames.clear();
+        if (node == null) {
+            return;
+        }
+        presetNames.addAll(node.getFilterPresetNames());
+    }
+
+    private String resolvePresetName(ItemNodeComponent node, int index) {
+        refreshPresetNames(node);
+        if (index < 0 || index >= presetNames.size()) {
+            return null;
+        }
+        return presetNames.get(index);
+    }
+
+    private void applyPresetItems(Store<ChunkStore> chunkStore, ItemNodeComponent node, Set<String> items) {
+        if (chunkStore == null || node == null || activeFilterSide == null) {
+            return;
+        }
+        filterPageIndex = 0;
+        if (items == null || items.isEmpty()) {
+            node.clearFilters(activeFilterSide);
+        } else {
+            node.setFilters(activeFilterSide, items);
+        }
+        chunkStore.putComponent(blockRef, itemType, node);
+        updateFilterUi(node);
+    }
+
+    private Set<String> buildOrePreset() {
+        ensureAllItemsLoaded();
+        Set<String> ores = new LinkedHashSet<>();
         for (String itemId : allItemIds) {
-            if (itemId.toLowerCase().contains(filterQuery)) {
-                filteredItemIds.add(itemId);
+            if (CATEGORY_ORES.equals(itemCategoryById.get(itemId))) {
+                ores.add(itemId);
             }
         }
+        return ores;
+    }
+
+    private void sendPresetCopy(ItemNodeComponent node) {
+        if (node == null || activeFilterSide == null) {
+            return;
+        }
+        Set<String> items = node.getFilters(activeFilterSide);
+        String text = serializePresetText(items);
+        UICommandBuilder update = new UICommandBuilder();
+        update.set("#FilterPresetText.Value", text);
+        sendUpdate(update);
+    }
+
+    private String serializePresetText(Set<String> items) {
+        if (items == null || items.isEmpty()) {
+            return "";
+        }
+        StringBuilder out = new StringBuilder();
+        boolean first = true;
+        for (String itemId : items) {
+            if (itemId == null || itemId.isEmpty()) {
+                continue;
+            }
+            if (!first) {
+                out.append(", ");
+            }
+            out.append(getDisplayName(itemId));
+            first = false;
+        }
+        return out.toString();
+    }
+
+    private Set<String> parsePresetText(String text) {
+        ensureAllItemsLoaded();
+        Set<String> items = new LinkedHashSet<>();
+        if (text == null || text.trim().isEmpty()) {
+            return items;
+        }
+        String[] tokens = text.split("[,;\\n]+");
+        for (String token : tokens) {
+            String itemId = resolveItemIdFromToken(token);
+            if (itemId != null && !itemId.isEmpty()) {
+                items.add(itemId);
+            }
+        }
+        return items;
+    }
+
+    private String resolveItemIdFromToken(String token) {
+        if (token == null) {
+            return null;
+        }
+        String trimmed = token.trim();
+        if (trimmed.isEmpty()) {
+            return null;
+        }
+        if (isKnownItemId(trimmed)) {
+            return trimmed;
+        }
+        String normalized = normalizeDisplayName(trimmed);
+        String byName = itemIdByDisplayName.get(normalized);
+        if (byName != null) {
+            return byName;
+        }
+        String candidate = trimmed.replace(' ', '_');
+        if (isKnownItemId(candidate)) {
+            return candidate;
+        }
+        String machinarium = "Machinarium_" + candidate;
+        if (isKnownItemId(machinarium)) {
+            return machinarium;
+        }
+        String ore = "Ore_" + candidate;
+        if (isKnownItemId(ore)) {
+            return ore;
+        }
+        return null;
+    }
+
+    private boolean isKnownItemId(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        Item item = Item.getAssetMap().getAsset(itemId);
+        return item != null && item != Item.UNKNOWN && !item.isState();
+    }
+
+    private String getDisplayName(String itemId) {
+        if (UiItemIds.isEmptyItemId(itemId)) {
+            return "";
+        }
+        String name = itemDisplayNames.get(itemId);
+        if (name != null && !name.isEmpty()) {
+            return name;
+        }
+        return humanizeItemId(itemId);
+    }
+
+    private String resolveDisplayName(String itemId, Item item) {
+        String name = humanizeItemId(itemId);
+        return name == null || name.isEmpty() ? itemId : name;
+    }
+
+    private String normalizeDisplayName(String name) {
+        if (name == null) {
+            return "";
+        }
+        return name.trim().toLowerCase();
+    }
+
+    private String humanizeItemId(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return "";
+        }
+        String raw = itemId;
+        int colonIndex = raw.indexOf(':');
+        if (colonIndex >= 0) {
+            raw = raw.substring(colonIndex + 1);
+        }
+        boolean isOre = raw.startsWith("Ore_");
+        raw = raw.replaceFirst("^Machinarium_", "");
+        raw = raw.replaceFirst("^Ingredient_", "");
+        if (isOre && raw.length() > 4) {
+            raw = raw.substring(4);
+        }
+        raw = raw.replace('_', ' ');
+        String title = toTitleCase(raw);
+        if (isOre) {
+            return title + " Ore";
+        }
+        return title;
+    }
+
+    private String toTitleCase(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";
+        }
+        List<String> keepUpper = Arrays.asList("AI", "MOX", "HV", "LV", "UV", "PCB");
+        String[] parts = input.split(" ");
+        StringBuilder out = new StringBuilder();
+        for (String part : parts) {
+            if (part == null || part.isEmpty()) {
+                continue;
+            }
+            String word = part;
+            String upper = part.toUpperCase();
+            if (keepUpper.contains(upper)) {
+                word = upper;
+            } else if (part.length() > 1) {
+                word = Character.toUpperCase(part.charAt(0)) + part.substring(1).toLowerCase();
+            } else {
+                word = part.toUpperCase();
+            }
+            if (out.length() > 0) {
+                out.append(' ');
+            }
+            out.append(word);
+        }
+        return out.toString();
+    }
+
+    private String categorizeItem(String itemId) {
+        if (itemId == null) {
+            return CATEGORY_OTHER;
+        }
+        String id = itemId.toLowerCase();
+        if (id.startsWith("ore_") || id.contains("_ore_") || id.endsWith("_ore")) {
+            return CATEGORY_ORES;
+        }
+        if (id.contains("ingot")) {
+            return CATEGORY_INGOTS;
+        }
+        if (id.contains("plate") || id.contains("plating") || id.contains("panel")) {
+            return CATEGORY_PLATES;
+        }
+        if (id.contains("cable") || id.contains("wire")) {
+            return CATEGORY_CABLES;
+        }
+        if (id.contains("acid")
+                || id.contains("fluid")
+                || id.contains("solvent")
+                || id.contains("gel")
+                || id.contains("lubricant")
+                || id.contains("resin")
+                || id.contains("slurry")) {
+            return CATEGORY_FLUIDS;
+        }
+        if (id.contains("uranium")
+                || id.contains("plutonium")
+                || id.contains("nuclear")
+                || id.contains("reactor")
+                || id.contains("radiation")
+                || id.contains("fuel")
+                || id.contains("isotope")) {
+            return CATEGORY_NUCLEAR;
+        }
+        if (id.contains("furnace")
+                || id.contains("crusher")
+                || id.contains("smelter")
+                || id.contains("quarry")
+                || id.contains("assembler")
+                || id.contains("machine")
+                || id.contains("centrifuge")
+                || id.contains("leacher")
+                || id.contains("electrolyzer")
+                || id.contains("distillation")
+                || id.contains("sifter")
+                || id.contains("washer")
+                || id.contains("turbine")
+                || id.contains("generator")
+                || id.contains("solar")
+                || id.contains("wind")) {
+            return CATEGORY_MACHINES;
+        }
+        if (id.startsWith("machinarium_") || id.startsWith("ingredient_")) {
+            return CATEGORY_COMPONENTS;
+        }
+        return CATEGORY_OTHER;
     }
 
     private void rebuildFilterItems() {
@@ -921,6 +1392,10 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
 
     private String filterLabelId(int index) {
         return "#FilterItem" + index + "Label";
+    }
+
+    private String presetSlotId(int index) {
+        return "#FilterPresetSlot" + index;
     }
 
     private Vector3i resolveBlockPosition(World world) {

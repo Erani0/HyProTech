@@ -1,0 +1,35 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.Ore_Scheelite.name",
+    "Description": "server.items.Ore_Scheelite.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Model": "Items/CraftingItems/OreChips.blockymodel",
+  "Texture": "Items/CraftingItems/textures/ore_chip.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_ore_chips.png",
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true
+}

@@ -168,6 +168,8 @@ public final class OreCrusherConfig {
             "Ore_Adamantite_Slate",
             "Ore_Adamantite_Stone",
             "Ore_Adamantite_Volcanic",
+            "Ore_Bauxite",
+            "Ore_Cassiterite",
             "Ore_Cobalt",
             "Ore_Cobalt_Basalt",
             "Ore_Cobalt_Sandstone",
@@ -175,6 +177,7 @@ public final class OreCrusherConfig {
             "Ore_Cobalt_Slate",
             "Ore_Cobalt_Stone",
             "Ore_Cobalt_Volcanic",
+            "Ore_Chromite",
             "Ore_Copper",
             "Ore_Copper_Basalt",
             "Ore_Copper_Sandstone",
@@ -187,6 +190,7 @@ public final class OreCrusherConfig {
             "Ore_Gold_Shale",
             "Ore_Gold_Stone",
             "Ore_Gold_Volcanic",
+            "Ore_Ilmenite",
             "Ore_Iron",
             "Ore_Iron_Basalt",
             "Ore_Iron_Sandstone",
@@ -194,6 +198,10 @@ public final class OreCrusherConfig {
             "Ore_Iron_Slate",
             "Ore_Iron_Stone",
             "Ore_Iron_Volcanic",
+            "Ore_Manganese",
+            "Ore_Pentlandite",
+            "Ore_Quartzite",
+            "Ore_Scheelite",
             "Ore_Silver",
             "Ore_Silver_Basalt",
             "Ore_Silver_Sandstone",
@@ -201,12 +209,15 @@ public final class OreCrusherConfig {
             "Ore_Silver_Slate",
             "Ore_Silver_Stone",
             "Ore_Silver_Volcanic",
+            "Ore_Spodumene",
             "Ore_Thorium",
             "Ore_Thorium_Basalt",
             "Ore_Thorium_Sandstone",
             "Ore_Thorium_Shale",
             "Ore_Thorium_Stone",
-            "Ore_Thorium_Volcanic"
+            "Ore_Thorium_Volcanic",
+            "Ore_Uraninite",
+            "Ore_Vanadinite"
     };
 
     private static final Set<String> ORE_ITEM_SET =
@@ -270,18 +281,40 @@ public final class OreCrusherConfig {
         switch (base) {
             case "Adamantite":
                 return MachinariumIds.ITEM_ADAMANTITE_POWDER;
+            case "Bauxite":
+                return "Machinarium_Aluminum_Ingot";
+            case "Cassiterite":
+                return "Machinarium_Tin_Ingot";
             case "Cobalt":
                 return MachinariumIds.ITEM_COBALT_POWDER;
+            case "Chromite":
+                return "Machinarium_Chromium_Ingot";
             case "Copper":
                 return MachinariumIds.ITEM_COPPER_POWDER;
             case "Gold":
                 return MachinariumIds.ITEM_GOLD_POWDER;
+            case "Ilmenite":
+                return "Machinarium_Titanium_Ingot";
             case "Iron":
                 return MachinariumIds.ITEM_IRON_POWDER;
+            case "Manganese":
+                return "Machinarium_Manganese_Ingot";
+            case "Pentlandite":
+                return "Machinarium_Nickel_Ingot";
+            case "Quartzite":
+                return "Machinarium_Silicon";
+            case "Scheelite":
+                return "Machinarium_Tungsten_Ingot";
             case "Silver":
                 return MachinariumIds.ITEM_SILVER_POWDER;
+            case "Spodumene":
+                return "Machinarium_Lithium_Ingot";
             case "Thorium":
                 return MachinariumIds.ITEM_THORIUM_POWDER;
+            case "Uraninite":
+                return "Machinarium_Uranium_Ingot";
+            case "Vanadinite":
+                return "Machinarium_Vanadium_Ingot";
             default:
                 return MachinariumIds.ITEM_COPPER_POWDER;
         }

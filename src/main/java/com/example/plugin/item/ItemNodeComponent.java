@@ -11,7 +11,10 @@ import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ItemNodeComponent implements Component<ChunkStore> {
@@ -59,6 +62,9 @@ public class ItemNodeComponent implements Component<ChunkStore> {
                     .addField(new KeyedCodec<>("FilterModes", STRING_CODEC),
                             (component, value) -> component.deserializeFilterModes(value),
                             ItemNodeComponent::serializeFilterModes)
+                    .addField(new KeyedCodec<>("FilterPresets", STRING_CODEC),
+                            (component, value) -> component.deserializeFilterPresets(value),
+                            ItemNodeComponent::serializeFilterPresets)
                     .build();
 
     private ItemMode mode = ItemMode.BOTH;
@@ -73,6 +79,8 @@ public class ItemNodeComponent implements Component<ChunkStore> {
             new EnumMap<>(EnergySide.class);
     private final EnumMap<EnergySide, FilterMode> filterModesBySide =
             new EnumMap<>(EnergySide.class);
+    private final LinkedHashMap<String, LinkedHashSet<String>> filterPresets =
+            new LinkedHashMap<>();
 
     public ItemMode getMode() {
         return mode;
@@ -156,6 +164,25 @@ public class ItemNodeComponent implements Component<ChunkStore> {
         return filters == null ? Collections.emptySet() : Collections.unmodifiableSet(filters);
     }
 
+    public void setFilters(EnergySide side, Set<String> items) {
+        if (side == null) {
+            return;
+        }
+        if (items == null || items.isEmpty()) {
+            filtersBySide.remove(side);
+            return;
+        }
+        LinkedHashSet<String> next = new LinkedHashSet<>(items);
+        filtersBySide.put(side, next);
+    }
+
+    public void clearFilters(EnergySide side) {
+        if (side == null) {
+            return;
+        }
+        filtersBySide.remove(side);
+    }
+
     public int getFilterCount(EnergySide side) {
         return getFilters(side).size();
     }
@@ -212,6 +239,44 @@ public class ItemNodeComponent implements Component<ChunkStore> {
         }
         filters.add(itemId);
         return true;
+    }
+
+    public Map<String, Set<String>> getFilterPresets() {
+        if (filterPresets.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<String, Set<String>> copy = new LinkedHashMap<>();
+        for (Map.Entry<String, LinkedHashSet<String>> entry : filterPresets.entrySet()) {
+            copy.put(entry.getKey(), Collections.unmodifiableSet(entry.getValue()));
+        }
+        return Collections.unmodifiableMap(copy);
+    }
+
+    public List<String> getFilterPresetNames() {
+        return new java.util.ArrayList<>(filterPresets.keySet());
+    }
+
+    public Set<String> getFilterPreset(String name) {
+        if (name == null || name.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<String> preset = filterPresets.get(name);
+        return preset == null ? Collections.emptySet() : Collections.unmodifiableSet(preset);
+    }
+
+    public void saveFilterPreset(String name, Set<String> items) {
+        if (name == null || name.trim().isEmpty() || items == null || items.isEmpty()) {
+            return;
+        }
+        LinkedHashSet<String> stored = new LinkedHashSet<>(items);
+        filterPresets.put(name.trim(), stored);
+    }
+
+    public boolean removeFilterPreset(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return filterPresets.remove(name.trim()) != null;
     }
 
     public boolean allowsTake(EnergySide side) {
@@ -314,6 +379,18 @@ public class ItemNodeComponent implements Component<ChunkStore> {
                 copy.filterModesBySide.put(side, mode);
             }
         }
+        if (!filterPresets.isEmpty()) {
+            for (Map.Entry<String, LinkedHashSet<String>> entry : filterPresets.entrySet()) {
+                if (entry.getKey() == null || entry.getKey().isEmpty()) {
+                    continue;
+                }
+                LinkedHashSet<String> items = entry.getValue();
+                if (items == null || items.isEmpty()) {
+                    continue;
+                }
+                copy.filterPresets.put(entry.getKey(), new LinkedHashSet<>(items));
+            }
+        }
         return copy;
     }
 
@@ -388,6 +465,44 @@ public class ItemNodeComponent implements Component<ChunkStore> {
         }
     }
 
+    private void deserializeFilterPresets(String value) {
+        filterPresets.clear();
+        if (value == null || value.isEmpty()) {
+            return;
+        }
+        String[] entries = value.split(";");
+        for (String entry : entries) {
+            if (entry == null || entry.isEmpty()) {
+                continue;
+            }
+            int eq = entry.indexOf('=');
+            if (eq <= 0 || eq >= entry.length() - 1) {
+                continue;
+            }
+            String presetName = entry.substring(0, eq).trim();
+            if (presetName.isEmpty()) {
+                continue;
+            }
+            String itemsPart = entry.substring(eq + 1);
+            if (itemsPart.isEmpty()) {
+                continue;
+            }
+            LinkedHashSet<String> items = new LinkedHashSet<>();
+            for (String itemId : itemsPart.split("\\|")) {
+                if (itemId == null) {
+                    continue;
+                }
+                String trimmed = itemId.trim();
+                if (!trimmed.isEmpty()) {
+                    items.add(trimmed);
+                }
+            }
+            if (!items.isEmpty()) {
+                filterPresets.put(presetName, items);
+            }
+        }
+    }
+
     private String serializeFilters() {
         StringBuilder out = new StringBuilder();
         for (EnergySide side : EnergySide.VALUES) {
@@ -425,6 +540,36 @@ public class ItemNodeComponent implements Component<ChunkStore> {
                 out.append(';');
             }
             out.append(side.name()).append('=').append(mode.name());
+        }
+        return out.toString();
+    }
+
+    private String serializeFilterPresets() {
+        if (filterPresets.isEmpty()) {
+            return "";
+        }
+        StringBuilder out = new StringBuilder();
+        for (Map.Entry<String, LinkedHashSet<String>> entry : filterPresets.entrySet()) {
+            String name = entry.getKey();
+            LinkedHashSet<String> items = entry.getValue();
+            if (name == null || name.isEmpty() || items == null || items.isEmpty()) {
+                continue;
+            }
+            if (out.length() > 0) {
+                out.append(';');
+            }
+            out.append(name).append('=');
+            boolean first = true;
+            for (String itemId : items) {
+                if (itemId == null || itemId.isEmpty()) {
+                    continue;
+                }
+                if (!first) {
+                    out.append('|');
+                }
+                out.append(itemId);
+                first = false;
+            }
         }
         return out.toString();
     }

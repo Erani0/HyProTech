@@ -1,4 +1,6 @@
 {
+  "MaxInstance": 1,
+  "PreventSoundInterruption": false,
   "Layers": [
     {
       "Files": [ "Sounds/WindTurbine.ogg" ],

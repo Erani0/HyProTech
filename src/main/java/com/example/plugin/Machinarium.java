@@ -14,6 +14,7 @@ import com.example.plugin.machine.AlloySmelterMachine;
 import com.example.plugin.machine.OreCrusherMachine;
 import com.example.plugin.machine.QuarryAreaManager;
 import com.example.plugin.machine.QuarryMachine;
+import com.example.plugin.sound.MachinariumSounds;
 import com.example.plugin.interaction.CableSideToolInteraction;
 import com.example.plugin.interaction.CableNetworkUpgradeInteraction;
 import com.example.plugin.ui.BatteryPage;
@@ -61,6 +62,8 @@ public class Machinarium extends JavaPlugin {
     @Override
     protected void setup() {
         super.setup();
+
+        MachinariumSounds.registerDefaultsIfMissing();
 
         registerTutbooksDownloadOnPlayerJoin();
 
@@ -204,6 +207,12 @@ public class Machinarium extends JavaPlugin {
                     BlockType blockType = event.getBlockType();
                     String blockId = blockType == null ? null : blockType.getId();
                     Vector3i pos = event.getTargetBlock();
+                    if (pos != null && blockId != null) {
+                        World world = UpgradePersistence.findWorld(pos, blockType);
+                        if (world != null) {
+                            stopMachineSound(world, pos, blockId);
+                        }
+                    }
                     if (pos != null && TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_QUARRY)) {
                         World world = UpgradePersistence.findWorld(pos, blockType);
                         if (world != null) {
@@ -245,11 +254,13 @@ public class Machinarium extends JavaPlugin {
                     if (world == null) {
                         return;
                     }
-                    if (isBlockedByWindTurbine(world, pos)) {
-                        event.setCancelled(true);
-                        return;
-                    }
                     String blockId = stack.getBlockKey();
+                    if (!TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_WIND_TURBINE)) {
+                        if (isBlockedByWindTurbine(world, pos)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
                     if (!UpgradePersistence.isUpgradeableBlockId(blockId)) {
                         return;
                     }
@@ -338,6 +349,61 @@ public class Machinarium extends JavaPlugin {
             }
         }
         return false;
+    }
+
+    private static void stopMachineSound(World world, Vector3i pos, String blockId) {
+        if (world == null || pos == null || blockId == null) {
+            return;
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_WIND_TURBINE)) {
+            MachinariumSounds.stopSound(
+                    world,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    MachinariumSounds.EVENT_WIND_TURBINE,
+                    MachinariumSounds.FILE_WIND_TURBINE);
+            return;
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)) {
+            MachinariumSounds.stopSound(
+                    world,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    MachinariumSounds.EVENT_SOLAR_PANEL,
+                    MachinariumSounds.FILE_SOLAR_PANEL);
+            return;
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            MachinariumSounds.stopSound(
+                    world,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    MachinariumSounds.EVENT_ORE_CRUSHER,
+                    MachinariumSounds.FILE_ORE_CRUSHER);
+            return;
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+            MachinariumSounds.stopSound(
+                    world,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    MachinariumSounds.EVENT_ELECTRIC_FURNACE,
+                    MachinariumSounds.FILE_ELECTRIC_FURNACE);
+            return;
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            MachinariumSounds.stopSound(
+                    world,
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    MachinariumSounds.EVENT_ALLOY_SMELTER,
+                    MachinariumSounds.FILE_ALLOY_SMELTER);
+        }
     }
 
 }
