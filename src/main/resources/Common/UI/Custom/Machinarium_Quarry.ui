@@ -291,6 +291,13 @@ $C.@PageOverlay {
             }
           }
         }
+
+        Group { Anchor: (Height: 8); }
+
+        $C.@TextButton #TakeItemsButton {
+          Anchor: (Left: 0, Right: 0, Height: 30);
+          Text: "Take Items";
+        }
       }
 
       Group { Anchor: (Width: 24); }

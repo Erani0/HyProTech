@@ -3,8 +3,6 @@ package com.example.plugin.machine;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
-import com.example.plugin.machine.AlloySmelterMachine;
-import com.example.plugin.machine.OreCrusherMachine;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -96,10 +94,7 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         BlockType blockType = getBlockTypeAt(world, chunkX, chunkZ, blockIndex);
-        if (blockType == null || blockType.getId() == null) {
-            return;
-        }
-        String blockId = blockType.getId();
+        String blockId = blockType == null ? null : blockType.getId();
 
         MachineComponent machine = blockComponents.getComponent(blockIndex, machineType);
         MachineDefinition definition = machine == null ? null : MachineRegistry.getById(machine.getMachineId());
@@ -136,18 +131,6 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
                 machine.setTier(parsedTier);
                 changed = true;
             }
-        } else if (definition instanceof OreCrusherMachine) {
-            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
-            if (parsedTier > 0 && machine.getTier() != parsedTier) {
-                machine.setTier(parsedTier);
-                changed = true;
-            }
-        } else if (definition instanceof AlloySmelterMachine) {
-            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
-            if (parsedTier > 0 && machine.getTier() != parsedTier) {
-                machine.setTier(parsedTier);
-                changed = true;
-            }
         }
 
         EnergyNodeComponent.NodeType beforeNodeType = energy == null ? null : energy.getNodeType();
@@ -176,13 +159,42 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
         int worldY = ChunkUtil.yFromBlockInColumn(blockIndex);
         int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, ChunkUtil.zFromBlockInColumn(blockIndex));
 
-        MachineContext context = new MachineContext(world, chunkStore, blockComponents, worldX, worldY, worldZ, machine, energy);
+        if (blockType == null || blockType == BlockType.EMPTY || blockId == null) {
+            return;
+        }
+        if (!definition.matchesBlockId(blockId)) {
+            return;
+        }
+        MachineContext context = new MachineContext(
+                world,
+                chunkStore,
+                blockComponents,
+                worldX,
+                worldY,
+                worldZ,
+                machine,
+                energy);
         boolean tickChanged = definition.tick(context, deltaSeconds);
         if (tickChanged || context.isDirty()) {
             changed = true;
         }
 
         if (changed) {
+            if (ref != null && commandBuffer != null) {
+                if (machine != null) {
+                    commandBuffer.putComponent(ref, machineType, machine);
+                }
+                if (energy != null) {
+                    commandBuffer.putComponent(ref, energyType, energy);
+                }
+            } else if (holder != null) {
+                if (machine != null) {
+                    holder.putComponent(machineType, machine);
+                }
+                if (energy != null) {
+                    holder.putComponent(energyType, energy);
+                }
+            }
             blockComponents.markNeedsSaving();
         }
     }

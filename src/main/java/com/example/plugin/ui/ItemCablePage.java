@@ -22,6 +22,7 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.PageManager;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -44,6 +45,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String PAGE_LAYOUT = "Machinarium_Item_Cable.ui";
@@ -73,6 +76,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             CATEGORY_FLUIDS,
             CATEGORY_NUCLEAR,
             CATEGORY_OTHER);
+    private static final Map<UUID, String> FILTER_CLIPBOARD = new ConcurrentHashMap<>();
 
     private final Ref<ChunkStore> blockRef;
     private final ComponentType<ChunkStore, ItemNodeComponent> itemType;
@@ -209,6 +213,9 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             }
             String category = data.getValue();
             if (category == null || category.isEmpty()) {
+                category = data.getIndex();
+            }
+            if (category == null || category.isEmpty()) {
                 return;
             }
             activeCategory = category;
@@ -259,13 +266,16 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             if (!filterPanelVisible || activeFilterSide == null) {
                 return;
             }
-            sendPresetCopy(node);
+            sendPresetCopy(node, store);
             return;
         } else if ("PresetPaste".equalsIgnoreCase(action)) {
             if (!filterPanelVisible || activeFilterSide == null) {
                 return;
             }
             String text = data.getValue();
+            if (text == null || text.trim().isEmpty()) {
+                text = getClipboardText(store);
+            }
             if (text == null || text.trim().isEmpty()) {
                 return;
             }
@@ -478,7 +488,8 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
     }
 
     private void bindCategoryButton(UIEventBuilder uiEventBuilder, String selector, String category) {
-        EventData data = EventData.of("Action", "FilterCategory").append("@Value", category);
+        EventData data = EventData.of("Action", "FilterCategory")
+                .append("Index", category);
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selector, data);
     }
 
@@ -570,6 +581,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         update.set("#FilterTitle.Text", "Filters: " + side.label());
         update.set("#FilterSearchInput.Value", filterQuery);
         update.set("#FilterPresetNameInput.Value", "");
+        update.set("#FilterPresetText.Value", getClipboardText(store));
         updateFilterModeUi(update, node);
         updateCategoryUi(update);
         updatePresetUi(update, node);
@@ -805,15 +817,49 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         return ores;
     }
 
-    private void sendPresetCopy(ItemNodeComponent node) {
+    private void sendPresetCopy(ItemNodeComponent node, Store<EntityStore> store) {
         if (node == null || activeFilterSide == null) {
             return;
         }
         Set<String> items = node.getFilters(activeFilterSide);
         String text = serializePresetText(items);
+        setClipboardText(store, text);
         UICommandBuilder update = new UICommandBuilder();
         update.set("#FilterPresetText.Value", text);
         sendUpdate(update);
+    }
+
+    private String getClipboardText(Store<EntityStore> store) {
+        UUID playerId = resolvePlayerId(store);
+        if (playerId == null) {
+            return "";
+        }
+        return FILTER_CLIPBOARD.getOrDefault(playerId, "");
+    }
+
+    private void setClipboardText(Store<EntityStore> store, String text) {
+        UUID playerId = resolvePlayerId(store);
+        if (playerId == null) {
+            return;
+        }
+        String normalized = text == null ? "" : text.trim();
+        if (normalized.isEmpty()) {
+            FILTER_CLIPBOARD.remove(playerId);
+        } else {
+            FILTER_CLIPBOARD.put(playerId, normalized);
+        }
+    }
+
+    private UUID resolvePlayerId(Store<EntityStore> store) {
+        if (store == null) {
+            return null;
+        }
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        if (playerEntityRef == null) {
+            return null;
+        }
+        UUIDComponent uuidComponent = store.getComponent(playerEntityRef, UUIDComponent.getComponentType());
+        return uuidComponent == null ? null : uuidComponent.getUuid();
     }
 
     private String serializePresetText(Set<String> items) {

@@ -6,9 +6,9 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel.png",
+  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
+  "Texture": "Items/CraftingItems/Alloys/titanium-vanadium.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Vanadium_Alloy.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

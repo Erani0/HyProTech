@@ -28,7 +28,7 @@ public class MachinariumCommand extends AbstractPlayerCommand {
             withOptionalArg(
                     "item",
                     "ID itemu (solar/battery/cable/energy_cable/item_cable/thin_cable_black/"
-                            + "thin_cable_brown/thin_cable_blue/thin_cable_green/furnace/workbench/ore_crusher/alloy_smelter)",
+                            + "thin_cable_brown/thin_cable_blue/thin_cable_green/furnace/ore_crusher/workbench)",
                     ArgTypes.STRING);
     private final OptionalArg<Integer> countArg =
             withOptionalArg("count", "Mnozstvi (default 1)", ArgTypes.INTEGER);
@@ -95,9 +95,8 @@ public class MachinariumCommand extends AbstractPlayerCommand {
         giveItem(container, MachinariumIds.BLOCK_THIN_CABLE_GREEN, count, player);
         giveItem(container, MachinariumIds.BLOCK_BATTERY, count, player);
         giveItem(container, MachinariumIds.BLOCK_ELECTRIC_FURNACE, count, player);
-        giveItem(container, MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH, count, player);
         giveItem(container, MachinariumIds.BLOCK_ORE_CRUSHER, count, player);
-        giveItem(container, MachinariumIds.BLOCK_ALLOY_SMELTER, count, player);
+        giveItem(container, MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH, count, player);
         player.sendMessage(Message.raw("Pridany HyProTech bloky do inventare."));
     }
 
@@ -131,17 +130,13 @@ public class MachinariumCommand extends AbstractPlayerCommand {
             case "furnace":
             case "electric_furnace":
                 return MachinariumIds.BLOCK_ELECTRIC_FURNACE;
-            case "workbench":
-            case "electrical_workbench":
-                return MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH;
             case "ore_crusher":
             case "orecrusher":
             case "crusher":
                 return MachinariumIds.BLOCK_ORE_CRUSHER;
-            case "alloy_smelter":
-            case "alloysmelter":
-            case "smelter":
-                return MachinariumIds.BLOCK_ALLOY_SMELTER;
+            case "workbench":
+            case "electrical_workbench":
+                return MachinariumIds.BLOCK_ELECTRICAL_WORKBENCH;
             default:
                 return itemId;
         }
@@ -195,7 +190,8 @@ public class MachinariumCommand extends AbstractPlayerCommand {
         }
 
         ItemStack stack = new ItemStack(itemId, count);
-        if (TieredIdUtil.isTieredId(itemId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (TieredIdUtil.isTieredId(itemId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
+                || MachinariumIds.BLOCK_ORE_CRUSHER.equalsIgnoreCase(itemId)) {
             BsonDocument blockState = new BsonDocument("Type", new BsonString("processingBench"));
             BsonDocument metadata = new BsonDocument("BlockState", blockState);
             stack = stack.withMetadata(metadata);

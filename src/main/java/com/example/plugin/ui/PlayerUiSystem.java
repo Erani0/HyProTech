@@ -352,6 +352,26 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                 if (node != null && node.getNodeType() == EnergyNodeComponent.NodeType.FURNACE) {
                     furnacePage.update(node);
                 }
+            } else if (page instanceof OreCrusherPage) {
+                OreCrusherPage oreCrusherPage = (OreCrusherPage) page;
+                Vector3i pos = oreCrusherPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = oreCrusherPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
+                if (node != null) {
+                    MachineComponent machine = pos == null
+                            ? null
+                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
+                    if (machine == null) {
+                        Ref<ChunkStore> ref = oreCrusherPage.resolveBlockRef(world);
+                        machine = chunkStore.getComponent(ref, machineType);
+                    }
+                    oreCrusherPage.update(node, machine);
+                }
             } else if (page instanceof QuarryPage) {
                 QuarryPage quarryPage = (QuarryPage) page;
                 Vector3i pos = quarryPage.resolveBlockPosition(world);
@@ -371,46 +391,6 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                         machine = chunkStore.getComponent(ref, machineType);
                     }
                     quarryPage.update(node, machine);
-                }
-            } else if (page instanceof OreCrusherPage) {
-                OreCrusherPage crusherPage = (OreCrusherPage) page;
-                Vector3i pos = crusherPage.resolveBlockPosition(world);
-                EnergyNodeComponent node = pos == null
-                        ? null
-                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
-                if (node == null) {
-                    Ref<ChunkStore> ref = crusherPage.resolveBlockRef(world);
-                    node = chunkStore.getComponent(ref, energyType);
-                }
-                if (node != null && EnergyNodeComponent.isMachineLike(node.getNodeType())) {
-                    MachineComponent machine = pos == null
-                            ? null
-                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
-                    if (machine == null) {
-                        Ref<ChunkStore> ref = crusherPage.resolveBlockRef(world);
-                        machine = chunkStore.getComponent(ref, machineType);
-                    }
-                    crusherPage.update(node, machine);
-                }
-            } else if (page instanceof AlloySmelterPage) {
-                AlloySmelterPage smelterPage = (AlloySmelterPage) page;
-                Vector3i pos = smelterPage.resolveBlockPosition(world);
-                EnergyNodeComponent node = pos == null
-                        ? null
-                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
-                if (node == null) {
-                    Ref<ChunkStore> ref = smelterPage.resolveBlockRef(world);
-                    node = chunkStore.getComponent(ref, energyType);
-                }
-                if (node != null && EnergyNodeComponent.isMachineLike(node.getNodeType())) {
-                    MachineComponent machine = pos == null
-                            ? null
-                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
-                    if (machine == null) {
-                        Ref<ChunkStore> ref = smelterPage.resolveBlockRef(world);
-                        machine = chunkStore.getComponent(ref, machineType);
-                    }
-                    smelterPage.update(node, machine);
                 }
             }
         } catch (IllegalStateException e) {

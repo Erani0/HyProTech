@@ -6,9 +6,27 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel.png",
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "Machinarium_Metal_Rod",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Machinarium_Workbench",
+        "Categories": [
+          "Machinarium_Crafting"
+        ]
+      }
+    ]
+  },
+  "Model": "Items/CraftingItems/Gear/Gear_Base.blockymodel",
+  "Texture": "Items/CraftingItems/Gear/Iron Gear.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Gears.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

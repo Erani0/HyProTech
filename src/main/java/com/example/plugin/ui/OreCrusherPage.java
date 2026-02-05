@@ -9,6 +9,7 @@ import com.example.plugin.machine.MachineComponent;
 import com.example.plugin.machine.MachineItemAccess;
 import com.example.plugin.machine.OreCrusherConfig;
 import com.example.plugin.machine.OreCrusherMachine;
+import com.example.plugin.machine.OreCrusherRecipes;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
@@ -23,6 +24,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.inventory.MaterialQuantity;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.inventory.transaction.ItemStackTransaction;
 import com.hypixel.hytale.server.core.inventory.transaction.ItemStackSlotTransaction;
@@ -55,6 +57,12 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final String ACTION_OUTPUT_DROP = "OutputDrop";
     private static final String ACTION_INVENTORY_DROP = "InventoryDrop";
     private static final String ACTION_TAKE_INPUT = "TakeInput";
+    private static final String ACTION_RECIPE_SELECT = "RecipeSelect";
+    private static final String ACTION_RECIPE_LOAD = "RecipeLoad";
+    private static final String ACTION_RECIPE_QTY_MINUS = "RecipeQtyMinus";
+    private static final String ACTION_RECIPE_QTY_PLUS = "RecipeQtyPlus";
+    private static final String ACTION_RECIPE_QTY_PLUS_TEN = "RecipeQtyPlusTen";
+    private static final String ACTION_RECIPE_QTY_ALL = "RecipeQtyAll";
     private static final String PAGE_LAYOUT = "Machinarium_OreCrusher_HyUI.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final long DRAG_DEDUP_WINDOW_MS = 120L;
@@ -68,9 +76,10 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final short OUTPUT_SLOT_END =
             (short) (OUTPUT_SLOT_START + OUTPUT_SLOT_COUNT - 1);
     // ItemGrid index mapping follows UI order in Machinarium_OreCrusher_HyUI.ui
-    private static final int GRID_INDEX_INPUT = 0;
-    private static final int GRID_INDEX_OUTPUT = 1;
-    private static final int GRID_INDEX_PLAYER = 2;
+    private static final int GRID_INDEX_RECIPE = 0;
+    private static final int GRID_INDEX_INPUT = 1;
+    private static final int GRID_INDEX_OUTPUT = 2;
+    private static final int GRID_INDEX_PLAYER = 3;
     private static final String[] UPGRADE_ROW_IDS = {
             "#UpgradeReqRow1",
             "#UpgradeReqRow2",
@@ -141,6 +150,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private String lastOutputKey = "";
     private String lastInventoryKey = "";
     private String lastBonusKey = "";
+    private String lastRecipeGridKey = "";
+    private String lastRecipeDetailsKey = "";
     private String lastDragKey = "";
     private Boolean lastEnabled;
     private long lastUpdateMs;
@@ -152,6 +163,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private String lastInputDropItemId;
     private long lastInputToInventoryMs;
     private String lastInputToInventoryItemId;
+    private int selectedRecipeIndex = -1;
+    private int recipeQuantity = 1;
 
     public OreCrusherPage(
             PlayerRef playerRef,
@@ -185,7 +198,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
 
         World world = getWorld(store);
         ItemContainer inventory = getPlayerInventory(store);
-        updateForWorld(uiCommandBuilder, world, inventory);
+        updateForWorld(uiCommandBuilder, world, inventory, store);
     }
 
     @Override
@@ -226,6 +239,10 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             sendUpdate(new UICommandBuilder());
             return;
         }
+        if (ACTION_RECIPE_SELECT.equalsIgnoreCase(action)) {
+            handleRecipeSelect(store, data);
+            return;
+        }
         if (isDragAction(action)) {
             handleDrag(store, data);
             return;
@@ -263,6 +280,19 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             }
             return;
         }
+        if (ACTION_RECIPE_LOAD.equalsIgnoreCase(action)) {
+            if (!handleLoadRecipe(store)) {
+                sendUpdate(new UICommandBuilder());
+            }
+            return;
+        }
+        if (ACTION_RECIPE_QTY_MINUS.equalsIgnoreCase(action)
+                || ACTION_RECIPE_QTY_PLUS.equalsIgnoreCase(action)
+                || ACTION_RECIPE_QTY_PLUS_TEN.equalsIgnoreCase(action)
+                || ACTION_RECIPE_QTY_ALL.equalsIgnoreCase(action)) {
+            handleRecipeQuantity(action, store);
+            return;
+        }
     }
 
     public void update(EnergyNodeComponent node, MachineComponent machine) {
@@ -282,6 +312,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         Ref<EntityStore> playerEntityRef = playerRef.getReference();
         Store<EntityStore> store = playerEntityRef == null ? null : playerEntityRef.getStore();
         ItemContainer inventory = store == null ? null : getPlayerInventory(store);
+        ItemContainer recipeInventory = store == null ? null : getCombinedInventory(store);
 
         UICommandBuilder update = new UICommandBuilder();
         boolean changed = updateEnergy(update, node);
@@ -294,6 +325,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             changed = true;
         }
         changed |= updateSlots(update);
+        changed |= updateRecipeGrid(update);
+        changed |= updateRecipeDetails(update, machine, recipeInventory);
         changed |= updateBonusPanel(update, machine, resolveMachineContainer(store));
 
         if (changed) {
@@ -312,15 +345,22 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         update.set("#CrusherYield.Text", "Yield: 2x");
         update.set("#CrusherStatus.Text", "Status: ON");
         update.set("#CrusherToggleButton.Text", DISABLE_LABEL);
+        update.set("#HiddenMachineGrids.Visible", true);
         updateUpgradePanel(update, null, null);
         update.set("#InputGrid.Slots", buildEmptySlots(1, true));
         update.set("#OutputGrid.Slots", buildEmptySlots(OUTPUT_SLOT_COUNT, true));
         update.set("#PlayerInventoryGrid.Slots",
                 buildEmptySlots(Inventory.DEFAULT_HOTBAR_CAPACITY + Inventory.DEFAULT_STORAGE_CAPACITY, true));
+        updateRecipeGrid(update);
+        updateRecipeDetails(update, null, null);
         updateBonusPanel(update, null, null);
     }
 
-    private boolean updateForWorld(UICommandBuilder update, World world, ItemContainer inventory) {
+    private boolean updateForWorld(
+            UICommandBuilder update,
+            World world,
+            ItemContainer inventory,
+            Store<EntityStore> store) {
         if (world == null) {
             return false;
         }
@@ -339,6 +379,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             changed = true;
         }
         changed |= updateSlots(update);
+        changed |= updateRecipeGrid(update);
+        ItemContainer recipeInventory = store == null ? null : getCombinedInventory(store);
+        changed |= updateRecipeDetails(update, machine, recipeInventory);
         ItemContainer container = null;
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
@@ -634,6 +677,313 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return true;
     }
 
+    private boolean updateRecipeGrid(UICommandBuilder update) {
+        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+        StringBuilder keyBuilder = new StringBuilder();
+        for (OreCrusherRecipes.RecipeEntry entry : recipes) {
+            if (entry == null) {
+                continue;
+            }
+            keyBuilder.append(entry.inputItemId).append('|');
+        }
+        String key = keyBuilder.toString();
+        if (key.equals(lastRecipeGridKey)) {
+            return false;
+        }
+        lastRecipeGridKey = key;
+
+        List<ItemGridSlot> slots = new ArrayList<>(recipes.size());
+        for (OreCrusherRecipes.RecipeEntry entry : recipes) {
+            if (entry == null) {
+                continue;
+            }
+            ItemStack stack = new ItemStack(entry.inputItemId, Math.max(1, entry.inputQuantity));
+            slots.add(createSlot(stack, true));
+        }
+        update.set("#RecipeGrid.Slots", slots);
+        return true;
+    }
+
+    private boolean updateRecipeDetails(UICommandBuilder update, MachineComponent machine, ItemContainer inventory) {
+        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        if (entry == null) {
+            String key = "empty";
+            if (key.equals(lastRecipeDetailsKey)) {
+                return false;
+            }
+            lastRecipeDetailsKey = key;
+            update.set("#RecipeDetailsEmpty.Visible", true);
+            update.set("#RecipeDetails.Visible", false);
+            update.set("#RecipeEmptyText.Text", "Select a recipe to see requirements.");
+            clearRecipeDetails(update);
+            return true;
+        }
+
+        int quantity = Math.max(1, recipeQuantity);
+        int outputQty = Math.max(1, entry.outputQuantity) * quantity;
+        int available = inventory == null ? 0 : countItem(inventory, entry.inputItemId);
+        int needed = Math.max(1, entry.inputQuantity) * quantity;
+        String detailKey = entry.inputItemId + "|" + quantity + "|" + outputQty + "|" + available;
+        if (detailKey.equals(lastRecipeDetailsKey)) {
+            return false;
+        }
+        lastRecipeDetailsKey = detailKey;
+
+        update.set("#RecipeDetailsEmpty.Visible", false);
+        update.set("#RecipeDetails.Visible", true);
+        update.set("#RecipeOutputSlot.ItemId", UiItemIds.safeItemId(entry.outputItemId));
+        update.set("#RecipeOutputName.Text", formatItemName(entry.outputItemId));
+        update.set("#RecipeOutputQty.Text", "x" + outputQty);
+
+        MaterialQuantity[] inputs = entry.inputs == null ? MaterialQuantity.EMPTY_ARRAY : entry.inputs;
+        int row = 0;
+        for (MaterialQuantity input : inputs) {
+            if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+                continue;
+            }
+            if (row >= 4) {
+                break;
+            }
+            int qty = Math.max(1, input.getQuantity()) * quantity;
+            update.set("#RecipeReqRow" + (row + 1) + ".Visible", true);
+            update.set("#RecipeReqSlot" + (row + 1) + ".ItemId", UiItemIds.safeItemId(input.getItemId()));
+            update.set("#RecipeReqText" + (row + 1) + ".Text",
+                    formatItemName(input.getItemId()) + " x" + qty);
+            row++;
+        }
+        for (int i = row; i < 4; i++) {
+            update.set("#RecipeReqRow" + (i + 1) + ".Visible", false);
+            update.set("#RecipeReqSlot" + (i + 1) + ".ItemId", "");
+            update.set("#RecipeReqText" + (i + 1) + ".Text", "");
+        }
+
+        update.set("#RecipeQtyLabel.Text", "x" + quantity);
+        update.set("#RecipeCostText.Text", "Need " + needed + " | Have " + available);
+        return true;
+    }
+
+    private void clearRecipeDetails(UICommandBuilder update) {
+        update.set("#RecipeOutputSlot.ItemId", "");
+        update.set("#RecipeOutputName.Text", "");
+        update.set("#RecipeOutputQty.Text", "");
+        for (int i = 1; i <= 4; i++) {
+            update.set("#RecipeReqRow" + i + ".Visible", false);
+            update.set("#RecipeReqSlot" + i + ".ItemId", "");
+            update.set("#RecipeReqText" + i + ".Text", "");
+        }
+        update.set("#RecipeQtyLabel.Text", "x1");
+        update.set("#RecipeCostText.Text", "");
+    }
+
+    private void handleRecipeSelect(Store<EntityStore> store, OreCrusherUiEvent data) {
+        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+        if (recipes.isEmpty()) {
+            return;
+        }
+        Integer slotIndex = data == null ? null : data.getSlotIndex();
+        if (slotIndex == null) {
+            slotIndex = data == null ? null : data.getSourceSlotId();
+        }
+        if (slotIndex == null) {
+            return;
+        }
+        int index = slotIndex;
+        if (index < 0 || index >= recipes.size()) {
+            return;
+        }
+        selectedRecipeIndex = index;
+        recipeQuantity = 1;
+
+        UICommandBuilder update = new UICommandBuilder();
+        ItemContainer inventory = store == null ? null : getCombinedInventory(store);
+        updateRecipeDetails(update, null, inventory);
+        sendUpdate(update);
+    }
+
+    private void handleRecipeQuantity(String action, Store<EntityStore> store) {
+        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        if (entry == null) {
+            return;
+        }
+        int max = resolveMaxRecipeQuantity(entry, store);
+        int quantity = Math.max(1, recipeQuantity);
+        if (ACTION_RECIPE_QTY_MINUS.equalsIgnoreCase(action)) {
+            quantity = Math.max(1, quantity - 1);
+        } else if (ACTION_RECIPE_QTY_PLUS.equalsIgnoreCase(action)) {
+            quantity = Math.min(max, quantity + 1);
+        } else if (ACTION_RECIPE_QTY_PLUS_TEN.equalsIgnoreCase(action)) {
+            quantity = Math.min(max, quantity + 10);
+        } else if (ACTION_RECIPE_QTY_ALL.equalsIgnoreCase(action)) {
+            quantity = max;
+        }
+        if (quantity != recipeQuantity) {
+            recipeQuantity = quantity;
+            UICommandBuilder update = new UICommandBuilder();
+            ItemContainer inventory = store == null ? null : getCombinedInventory(store);
+            updateRecipeDetails(update, null, inventory);
+            sendUpdate(update);
+        }
+    }
+
+    private boolean handleLoadRecipe(Store<EntityStore> store) {
+        if (store == null) {
+            return false;
+        }
+        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        if (entry == null) {
+            return false;
+        }
+        World world = getWorld(store);
+        if (world == null) {
+            return false;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos == null) {
+            return false;
+        }
+        ItemContainer machineContainer = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
+        if (machineContainer == null || machineContainer.getCapacity() <= INPUT_SLOT) {
+            return false;
+        }
+
+        int quantity = Math.max(1, recipeQuantity);
+        int required = Math.max(1, entry.inputQuantity) * quantity;
+        ItemStack requiredStack = new ItemStack(entry.inputItemId, required);
+
+        ItemStack existing = machineContainer.getItemStack(INPUT_SLOT);
+        boolean slotEmpty = existing == null || ItemStack.isEmpty(existing);
+        if (existing != null && !ItemStack.isEmpty(existing)
+                && !existing.getItemId().equalsIgnoreCase(entry.inputItemId)) {
+            sendPlayerMessage(playerRef.getReference(), store, "Input slot is occupied.");
+            return false;
+        }
+        boolean canAdd = machineContainer.canAddItemStackToSlot(INPUT_SLOT, requiredStack, true, true);
+        boolean forceInsert = false;
+        if (!canAdd) {
+            if (!slotEmpty) {
+                sendPlayerMessage(playerRef.getReference(), store, "Input slot is full.");
+                return false;
+            }
+            forceInsert = true;
+        }
+
+        Inventory inventoryFull = getPlayerInventoryFull(store);
+        if (inventoryFull == null) {
+            return false;
+        }
+        ItemContainer combined = inventoryFull.getCombinedHotbarFirst();
+        if (combined == null) {
+            combined = inventoryFull.getCombinedStorageFirst();
+        }
+        if (combined == null) {
+            return false;
+        }
+        if (!combined.canRemoveItemStack(requiredStack)) {
+            sendPlayerMessage(playerRef.getReference(), store, "Missing ore.");
+            return false;
+        }
+        ItemStackTransaction remove = combined.removeItemStack(requiredStack);
+        if (remove == null || !remove.succeeded()) {
+            sendPlayerMessage(playerRef.getReference(), store, "Failed to take ore.");
+            return false;
+        }
+
+        ItemStackSlotTransaction add = forceInsert
+                ? machineContainer.setItemStackForSlot(INPUT_SLOT, requiredStack, true)
+                : machineContainer.addItemStackToSlot(INPUT_SLOT, requiredStack);
+        if (add == null || !add.succeeded()) {
+            ItemStackTransaction refund = combined.addItemStack(requiredStack);
+            if (refund == null || !refund.succeeded()) {
+                sendPlayerMessage(playerRef.getReference(), store, "Failed to load ore (refund failed).");
+            } else {
+                sendPlayerMessage(
+                        playerRef.getReference(),
+                        store,
+                        forceInsert ? "Invalid ore for this machine." : "Failed to load ore.");
+            }
+            return false;
+        }
+        MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+        refreshSlots(store);
+
+        UICommandBuilder update = new UICommandBuilder();
+        ItemContainer inventory = getCombinedInventory(store);
+        updateRecipeDetails(update, null, inventory);
+        sendUpdate(update);
+        return true;
+    }
+
+    private int resolveMaxRecipeQuantity(OreCrusherRecipes.RecipeEntry entry, Store<EntityStore> store) {
+        if (entry == null || store == null) {
+            return 1;
+        }
+        ItemContainer inventory = getCombinedInventory(store);
+        if (inventory == null) {
+            return 1;
+        }
+        int available = countItem(inventory, entry.inputItemId);
+        int perRecipe = Math.max(1, entry.inputQuantity);
+        int max = available / perRecipe;
+        return Math.max(1, max);
+    }
+
+    private OreCrusherRecipes.RecipeEntry getSelectedRecipeEntry() {
+        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+        if (selectedRecipeIndex < 0 || selectedRecipeIndex >= recipes.size()) {
+            return null;
+        }
+        return recipes.get(selectedRecipeIndex);
+    }
+
+    private static String formatItemName(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return "";
+        }
+        String raw = itemId;
+        int colonIndex = raw.indexOf(':');
+        if (colonIndex >= 0) {
+            raw = raw.substring(colonIndex + 1);
+        }
+        boolean isOre = raw.startsWith("Ore_");
+        raw = raw.replaceFirst("^Machinarium_", "");
+        raw = raw.replaceFirst("^Ingredient_", "");
+        if (isOre && raw.length() > 4) {
+            raw = raw.substring(4);
+        }
+        raw = raw.replace('_', ' ');
+        String title = toTitleCase(raw);
+        if (isOre) {
+            return title + " Ore";
+        }
+        return title;
+    }
+
+    private static String toTitleCase(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";
+        }
+        String[] parts = input.split(" ");
+        StringBuilder out = new StringBuilder();
+        for (String part : parts) {
+            if (part == null || part.isEmpty()) {
+                continue;
+            }
+            String word = part;
+            if (part.length() > 1) {
+                word = part.substring(0, 1).toUpperCase(Locale.ROOT)
+                        + part.substring(1).toLowerCase(Locale.ROOT);
+            } else {
+                word = part.toUpperCase(Locale.ROOT);
+            }
+            if (out.length() > 0) {
+                out.append(' ');
+            }
+            out.append(word);
+        }
+        return out.toString();
+    }
+
+
     private boolean handleUpgrade(
             Ref<EntityStore> playerRef,
             Store<EntityStore> store,
@@ -790,6 +1140,18 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return null;
         }
         return player.getInventory();
+    }
+
+    private ItemContainer getCombinedInventory(Store<EntityStore> store) {
+        Inventory inventory = getPlayerInventoryFull(store);
+        if (inventory == null) {
+            return null;
+        }
+        ItemContainer combined = inventory.getCombinedHotbarFirst();
+        if (combined == null) {
+            combined = inventory.getCombinedStorageFirst();
+        }
+        return combined;
     }
 
     private int countItem(ItemContainer container, String itemId) {
@@ -1221,6 +1583,10 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private void bindItemGrids(UIEventBuilder uiEventBuilder) {
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.SlotClicking,
+                "#RecipeGrid",
+                EventData.of("Action", ACTION_RECIPE_SELECT));
         bindDrag(uiEventBuilder, "#InputGrid", ACTION_INPUT_DROP);
         bindDrag(uiEventBuilder, "#OutputGrid", ACTION_OUTPUT_DROP);
         bindDrag(uiEventBuilder, "#PlayerInventoryGrid", ACTION_INVENTORY_DROP);
@@ -2246,6 +2612,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private GridType resolveGridIndex(int gridIndex) {
+        if (gridIndex == GRID_INDEX_RECIPE) {
+            return null;
+        }
         if (gridIndex == GRID_INDEX_INPUT) {
             return GridType.INPUT;
         }
@@ -2406,6 +2775,26 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 CustomUIEventBindingType.Activating,
                 "#TakeInputButton",
                 EventData.of("Action", ACTION_TAKE_INPUT));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RecipeConfirmButton",
+                EventData.of("Action", ACTION_RECIPE_LOAD));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RecipeQtyMinus",
+                EventData.of("Action", ACTION_RECIPE_QTY_MINUS));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RecipeQtyPlus",
+                EventData.of("Action", ACTION_RECIPE_QTY_PLUS));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RecipeQtyPlusTen",
+                EventData.of("Action", ACTION_RECIPE_QTY_PLUS_TEN));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RecipeQtyAll",
+                EventData.of("Action", ACTION_RECIPE_QTY_ALL));
     }
 
     private enum GridType {

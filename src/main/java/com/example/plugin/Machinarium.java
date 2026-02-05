@@ -10,9 +10,8 @@ import com.example.plugin.item.ItemStorageConfigComponent;
 import com.example.plugin.machine.MachineComponent;
 import com.example.plugin.machine.MachineRegistry;
 import com.example.plugin.machine.MachineSystem;
-import com.example.plugin.machine.AlloySmelterMachine;
-import com.example.plugin.machine.OreCrusherMachine;
 import com.example.plugin.machine.QuarryAreaManager;
+import com.example.plugin.machine.OreCrusherMachine;
 import com.example.plugin.machine.QuarryMachine;
 import com.example.plugin.sound.MachinariumSounds;
 import com.example.plugin.interaction.CableSideToolInteraction;
@@ -20,7 +19,6 @@ import com.example.plugin.interaction.CableNetworkUpgradeInteraction;
 import com.example.plugin.ui.BatteryPage;
 import com.example.plugin.ui.CablePage;
 import com.example.plugin.ui.ItemCablePage;
-import com.example.plugin.ui.AlloySmelterPage;
 import com.example.plugin.ui.OreCrusherPage;
 import com.example.plugin.ui.QuarryPage;
 import com.example.plugin.ui.OpenCustomUIWithWindowsInteraction;
@@ -32,6 +30,7 @@ import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
+import com.hypixel.hytale.server.core.event.events.ecs.DamageBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
@@ -45,6 +44,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.math.util.ChunkUtil;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
@@ -92,11 +92,15 @@ public class Machinarium extends JavaPlugin {
                         MachineComponent.class,
                         MachinariumIds.MACHINE_COMPONENT_ID,
                         MachineComponent.CODEC);
-        MachinariumComponents.init(energyType, itemType, storageType, storageChunkType, machineType);
+        MachinariumComponents.init(
+                energyType,
+                itemType,
+                storageType,
+                storageChunkType,
+                machineType);
 
         MachineRegistry.register(new QuarryMachine());
         MachineRegistry.register(new OreCrusherMachine());
-        MachineRegistry.register(new AlloySmelterMachine());
 
         EnergyStorageLookup.register((world, x, y, z) -> {
             if (world == null || y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
@@ -183,20 +187,37 @@ public class Machinarium extends JavaPlugin {
         OpenCustomUIInteraction.registerBlockEntityCustomPage(
                 this,
                 OpenCustomUIInteraction.CustomPageSupplier.class,
-                MachinariumIds.QUARRY_PAGE_ID,
-                (playerRef, blockRef) -> new QuarryPage(playerRef, blockRef, energyType, machineType));
-
-        OpenCustomUIInteraction.registerBlockEntityCustomPage(
-                this,
-                OpenCustomUIInteraction.CustomPageSupplier.class,
                 MachinariumIds.ORE_CRUSHER_PAGE_ID,
                 (playerRef, blockRef) -> new OreCrusherPage(playerRef, blockRef, energyType, machineType));
 
         OpenCustomUIInteraction.registerBlockEntityCustomPage(
                 this,
                 OpenCustomUIInteraction.CustomPageSupplier.class,
-                MachinariumIds.ALLOY_SMELTER_PAGE_ID,
-                (playerRef, blockRef) -> new AlloySmelterPage(playerRef, blockRef, energyType, machineType));
+                MachinariumIds.QUARRY_PAGE_ID,
+                (playerRef, blockRef) -> new QuarryPage(playerRef, blockRef, energyType, machineType));
+
+        getEventRegistry().registerGlobal(
+                DamageBlockEvent.class,
+                event -> {
+                    if (event.isCancelled()) {
+                        return;
+                    }
+                    BlockType blockType = event.getBlockType();
+                    String blockId = blockType == null ? null : blockType.getId();
+                    if (!UpgradePersistence.isUpgradeableBlockId(blockId)) {
+                        return;
+                    }
+                    Vector3i pos = event.getTargetBlock();
+                    if (pos == null) {
+                        return;
+                    }
+                    World world = UpgradePersistence.findWorld(pos, blockType);
+                    if (world == null) {
+                        return;
+                    }
+                    List<ItemStack> drops = UpgradePersistence.snapshotBreakDrops(world, pos);
+                    UpgradePersistence.cacheBreakDrops(world, pos, drops);
+                });
 
         getEventRegistry().registerGlobal(
                 BreakBlockEvent.class,
@@ -230,14 +251,21 @@ public class Machinarium extends JavaPlugin {
                     }
                     World world = UpgradePersistence.findWorld(pos, blockType);
                     if (world == null) {
+                        world = UpgradePersistence.findWorld(pos, null);
+                    }
+                    if (world == null) {
                         return;
                     }
                     ItemStack drop = UpgradePersistence.buildDropStack(world, pos, blockType, blockId);
                     if (drop == null) {
                         return;
                     }
+                    List<ItemStack> extraDrops = UpgradePersistence.consumeBreakDrops(world, pos);
+                    if (extraDrops == null || extraDrops.isEmpty()) {
+                        extraDrops = UpgradePersistence.snapshotBreakDrops(world, pos);
+                    }
                     event.setCancelled(true);
-                    UpgradePersistence.queueBreakAndDrop(world, pos, blockType, drop);
+                    UpgradePersistence.queueBreakAndDrop(world, pos, blockType, drop, extraDrops);
                 });
         getEventRegistry().registerGlobal(
                 PlaceBlockEvent.class,
@@ -375,16 +403,6 @@ public class Machinarium extends JavaPlugin {
                     MachinariumSounds.FILE_SOLAR_PANEL);
             return;
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
-            MachinariumSounds.stopSound(
-                    world,
-                    pos.getX(),
-                    pos.getY(),
-                    pos.getZ(),
-                    MachinariumSounds.EVENT_ORE_CRUSHER,
-                    MachinariumSounds.FILE_ORE_CRUSHER);
-            return;
-        }
         if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
             MachinariumSounds.stopSound(
                     world,
@@ -394,15 +412,6 @@ public class Machinarium extends JavaPlugin {
                     MachinariumSounds.EVENT_ELECTRIC_FURNACE,
                     MachinariumSounds.FILE_ELECTRIC_FURNACE);
             return;
-        }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
-            MachinariumSounds.stopSound(
-                    world,
-                    pos.getX(),
-                    pos.getY(),
-                    pos.getZ(),
-                    MachinariumSounds.EVENT_ALLOY_SMELTER,
-                    MachinariumSounds.FILE_ALLOY_SMELTER);
         }
     }
 

@@ -19,7 +19,7 @@ $M = "Machinarium_Master.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
-    Anchor: (Width: 1000, Height: 720);
+    Anchor: (Width: 1000, Height: 940);
 
     #Title {
       Group {
@@ -54,7 +54,7 @@ $C.@PageOverlay {
                 RenderBold: true,
                 TextColor: #c7b59a
               );
-              Text: "Input / Output";
+              Text: "Recipe Selector";
             }
 
             Group { Anchor: (Height: 4); }
@@ -62,19 +62,53 @@ $C.@PageOverlay {
             Group { Anchor: (Height: 8); }
 
             Group {
-              LayoutMode: Left;
+              LayoutMode: Top;
+              Anchor: (Left: 0, Right: 0);
+
+              ItemGrid #RecipeGrid {
+                Anchor: (Left: 0, Right: 0, Height: 260);
+                SlotsPerRow: 4;
+                AreItemsDraggable: false;
+                ShowScrollbar: true;
+                RenderItemQualityBackground: false;
+                Style: (
+                  SlotSize: @InvSlotSize,
+                  SlotIconSize: @InvSlotSize,
+                  SlotSpacing: @InvSlotGap,
+                  SlotBackground: "Common/BlockSelectorSlotBackground.png"
+                );
+              }
+
+              Group { Anchor: (Height: 6); }
+
+              Label #RecipeGridHint {
+                Style: (
+                  FontSize: 12,
+                  TextColor: #96a9be,
+                  Wrap: true
+                );
+                Anchor: (Left: 0, Right: 0);
+                Text: "Select an ore to load inputs from your inventory.";
+              }
+            }
+
+            Group { Anchor: (Height: 8); }
+
+            Group #HiddenMachineGrids {
+              Anchor: (Left: 0, Right: 0, Height: 108);
+              LayoutMode: Top;
+              Visible: false;
 
               Group {
-                Anchor: (Width: @ItemSlotSize, Height: @ItemSlotSize);
-                Background: @SlotBorderColor;
-                Padding: (Top: 2, Bottom: 2, Left: 2, Right: 2);
+                LayoutMode: Center;
+                Anchor: (Left: 0, Right: 0, Height: 84);
 
                 Group {
-                  Anchor: (Full: 0);
-                  Background: @SlotInnerColor;
+                  LayoutMode: Left;
+                  Anchor: (Width: 260, Height: 92);
 
                   ItemGrid #InputGrid {
-                    Anchor: (Full: 0);
+                    Anchor: (Width: 44, Height: 44);
                     SlotsPerRow: 1;
                     AreItemsDraggable: true;
                     ShowScrollbar: false;
@@ -86,31 +120,25 @@ $C.@PageOverlay {
                       SlotBackground: "Common/BlockSelectorSlotBackground.png"
                     );
                   }
-                }
-              }
 
-              Group { Anchor: (Width: 16); }
+                  Group { Anchor: (Width: 10); }
 
-              Label {
-                Style: (
-                  FontSize: 18,
-                  TextColor: #c7b59a,
-                  VerticalAlignment: Center
-                );
-                Text: "->";
-              }
+                  Label {
+                    Anchor: (Width: 24, Height: 44);
+                    Style: (
+                      FontSize: 18,
+                      RenderBold: true,
+                      TextColor: #96a9be,
+                      HorizontalAlignment: Center,
+                      VerticalAlignment: Center
+                    );
+                    Text: "->";
+                  }
 
-              Group { Anchor: (Width: 16); }
-
-              Group {
-                Anchor: (Width: 180, Height: 90);
-                Padding: (Top: 2, Bottom: 2, Left: 2, Right: 2);
-
-                Group {
-                  Anchor: (Full: 0);
+                  Group { Anchor: (Width: 10); }
 
                   ItemGrid #OutputGrid {
-                    Anchor: (Full: 0);
+                    Anchor: (Width: 160, Height: 92);
                     SlotsPerRow: 3;
                     AreItemsDraggable: true;
                     ShowScrollbar: false;
@@ -124,13 +152,25 @@ $C.@PageOverlay {
                   }
                 }
               }
-            }
 
-            Group { Anchor: (Height: 8); }
+              Group { Anchor: (Height: 4); }
 
-            $C.@SmallSecondaryTextButton #TakeInputButton {
-              Anchor: (Width: 140, Height: 26);
-              Text: "Take Input";
+              Group {
+                LayoutMode: Center;
+                Anchor: (Left: 0, Right: 0, Height: 26);
+
+                $C.@SmallSecondaryTextButton #TakeInputButton {
+                  Anchor: (Width: 140, Height: 26);
+                  Text: "Take Input";
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                $C.@SmallSecondaryTextButton #TakeOutputButton {
+                  Anchor: (Width: 140, Height: 26);
+                  Text: "Take Output";
+                }
+              }
             }
           }
         }
@@ -154,19 +194,237 @@ $C.@PageOverlay {
                 RenderBold: true,
                 TextColor: #c7b59a
               );
-              Text: "Inventory";
+              Text: "Recipe Details";
             }
 
             Group { Anchor: (Height: 4); }
             Group { Anchor: (Height: 1); Background: @PanelDividerColor; }
             Group { Anchor: (Height: 8); }
 
-            Group {
-              Anchor: (Left: 0, Right: 0, Height: @InvGridHeight);
-              LayoutMode: Full;
+            Group #RecipeDetailsEmpty {
+              Anchor: (Left: 0, Right: 0, Height: 22);
+              LayoutMode: Center;
+
+              Label #RecipeEmptyText {
+                Style: (
+                  FontSize: 12,
+                  TextColor: #96a9be
+                );
+                Text: "Select a recipe to see requirements.";
+              }
+            }
+
+            Group #RecipeDetails {
+              LayoutMode: Top;
+              Anchor: (Left: 0, Right: 0);
+              Visible: false;
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Left: 0, Right: 0, Height: 36);
+
+                ItemSlot #RecipeOutputSlot {
+                  Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                  ShowQualityBackground: false;
+                  HitTestVisible: false;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label #RecipeOutputName {
+                  FlexWeight: 1;
+                  Style: (
+                    FontSize: 13,
+                    TextColor: #c7b59a
+                  );
+                  Text: "";
+                }
+
+                Label #RecipeOutputQty {
+                  Anchor: (Width: 80);
+                  Style: (
+                    FontSize: 12,
+                    TextColor: #96a9be,
+                    HorizontalAlignment: End
+                  );
+                  Text: "";
+                }
+              }
+
+              Group { Anchor: (Height: 6); }
+
+              Group #RecipeReqRow1 {
+                LayoutMode: Left;
+                Anchor: (Left: 0, Right: 0, Height: 28);
+
+                ItemSlot #RecipeReqSlot1 {
+                  Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                  ShowQualityBackground: false;
+                  HitTestVisible: false;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label #RecipeReqText1 {
+                  FlexWeight: 1;
+                  Style: (
+                    FontSize: 12,
+                    TextColor: #c7b59a
+                  );
+                  Text: "";
+                }
+              }
+
+              Group #RecipeReqRow2 {
+                LayoutMode: Left;
+                Anchor: (Left: 0, Right: 0, Height: 28);
+                Padding: (Top: 4);
+
+                ItemSlot #RecipeReqSlot2 {
+                  Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                  ShowQualityBackground: false;
+                  HitTestVisible: false;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label #RecipeReqText2 {
+                  FlexWeight: 1;
+                  Style: (
+                    FontSize: 12,
+                    TextColor: #c7b59a
+                  );
+                  Text: "";
+                }
+              }
+
+              Group #RecipeReqRow3 {
+                LayoutMode: Left;
+                Anchor: (Left: 0, Right: 0, Height: 28);
+                Padding: (Top: 4);
+
+                ItemSlot #RecipeReqSlot3 {
+                  Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                  ShowQualityBackground: false;
+                  HitTestVisible: false;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label #RecipeReqText3 {
+                  FlexWeight: 1;
+                  Style: (
+                    FontSize: 12,
+                    TextColor: #c7b59a
+                  );
+                  Text: "";
+                }
+              }
+
+              Group #RecipeReqRow4 {
+                LayoutMode: Left;
+                Anchor: (Left: 0, Right: 0, Height: 28);
+                Padding: (Top: 4);
+
+                ItemSlot #RecipeReqSlot4 {
+                  Anchor: (Width: @ReqSlotSize, Height: @ReqSlotSize);
+                  ShowQualityBackground: false;
+                  HitTestVisible: false;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label #RecipeReqText4 {
+                  FlexWeight: 1;
+                  Style: (
+                    FontSize: 12,
+                    TextColor: #c7b59a
+                  );
+                  Text: "";
+                }
+              }
+
+              Group { Anchor: (Height: 8); }
+
+              Group #RecipeQtyRow {
+                LayoutMode: Top;
+                Anchor: (Left: 0, Right: 0, Height: 58);
+
+                Group {
+                  LayoutMode: Left;
+                  Anchor: (Left: 0, Right: 0, Height: 26);
+
+                  $C.@SmallSecondaryTextButton #RecipeQtyMinus {
+                    Anchor: (Width: 32, Height: 26);
+                    Text: "-";
+                  }
+
+                  Group { Anchor: (Width: 6); }
+
+                  Label #RecipeQtyLabel {
+                    Anchor: (Width: 44, Height: 26);
+                    Style: (
+                      FontSize: 12,
+                      TextColor: #c7b59a,
+                      HorizontalAlignment: Center
+                    );
+                    Text: "x1";
+                  }
+
+                  Group { Anchor: (Width: 6); }
+
+                  $C.@SmallSecondaryTextButton #RecipeQtyPlus {
+                    Anchor: (Width: 32, Height: 26);
+                    Text: "+";
+                  }
+
+                  Group { Anchor: (Width: 8); }
+
+                  $C.@SmallSecondaryTextButton #RecipeQtyPlusTen {
+                    Anchor: (Width: 50, Height: 26);
+                    Text: "+10";
+                  }
+
+                  Group { Anchor: (Width: 6); }
+
+                  $C.@SmallSecondaryTextButton #RecipeQtyAll {
+                    Anchor: (Width: 50, Height: 26);
+                    Text: "ALL";
+                  }
+                }
+
+                Group { Anchor: (Height: 6); }
+
+                Group {
+                  LayoutMode: Center;
+                  Anchor: (Left: 0, Right: 0, Height: 26);
+
+                  $C.@SmallSecondaryTextButton #RecipeConfirmButton {
+                    Anchor: (Width: 140, Height: 26);
+                    Text: "Load Recipe";
+                  }
+                }
+              }
+
+              Group { Anchor: (Height: 6); }
+
+              Label #RecipeCostText {
+                Style: (
+                  FontSize: 12,
+                  TextColor: #96a9be,
+                  Wrap: true
+                );
+                Anchor: (Left: 0, Right: 0);
+                Text: "";
+              }
+            }
+
+            Group #HiddenInventoryGrid {
+              Anchor: (Height: 0);
+              Visible: false;
 
               ItemGrid #PlayerInventoryGrid {
-                Anchor: (Left: 0, Right: 0, Top: 0, Height: @InvGridHeight);
+                Anchor: (Left: 0, Right: 0, Height: 0);
                 SlotsPerRow: 9;
                 AreItemsDraggable: true;
                 RenderItemQualityBackground: false;

@@ -19,15 +19,11 @@ public final class MachinariumSounds {
     private static final boolean ONLY_WIND = false;
     public static final String EVENT_WIND_TURBINE = "Machinarium_Wind_Turbine";
     public static final String EVENT_SOLAR_PANEL = "Machinarium_Solar_Panel";
-    public static final String EVENT_ORE_CRUSHER = "Machinarium_Ore_Crusher";
     public static final String EVENT_ELECTRIC_FURNACE = "Machinarium_Electric_Furnace";
-    public static final String EVENT_ALLOY_SMELTER = "Machinarium_Alloy_Smelter";
 
     public static final String FILE_WIND_TURBINE = "Sounds/WindTurbine.ogg";
     public static final String FILE_SOLAR_PANEL = "Sounds/SolarPanel.ogg";
-    public static final String FILE_ORE_CRUSHER = "Sounds/OreCrusher.ogg";
     public static final String FILE_ELECTRIC_FURNACE = "Sounds/ElectricFurnace.ogg";
-    public static final String FILE_ALLOY_SMELTER = "Sounds/AlloySmelter.ogg";
 
     public static final long DEFAULT_LOOP_MS = 10000L;
 
@@ -53,14 +49,8 @@ public final class MachinariumSounds {
         if (isEnabledEvent(EVENT_SOLAR_PANEL)) {
             resolveSoundIndex(EVENT_SOLAR_PANEL, FILE_SOLAR_PANEL);
         }
-        if (isEnabledEvent(EVENT_ORE_CRUSHER)) {
-            resolveSoundIndex(EVENT_ORE_CRUSHER, FILE_ORE_CRUSHER);
-        }
         if (isEnabledEvent(EVENT_ELECTRIC_FURNACE)) {
             resolveSoundIndex(EVENT_ELECTRIC_FURNACE, FILE_ELECTRIC_FURNACE);
-        }
-        if (isEnabledEvent(EVENT_ALLOY_SMELTER)) {
-            resolveSoundIndex(EVENT_ALLOY_SMELTER, FILE_ALLOY_SMELTER);
         }
     }
 
@@ -270,9 +260,7 @@ public final class MachinariumSounds {
 
     private static Map<String, Long> buildLoopOverrides() {
         Map<String, Long> overrides = new HashMap<>();
-        overrides.put(FILE_ORE_CRUSHER, 12500L);
         overrides.put(FILE_ELECTRIC_FURNACE, 49500L);
-        overrides.put(FILE_ALLOY_SMELTER, 49500L);
         overrides.put(FILE_SOLAR_PANEL, 10000L);
         overrides.put(FILE_WIND_TURBINE, 9000L);
         return overrides;

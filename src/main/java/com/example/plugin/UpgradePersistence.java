@@ -42,9 +42,13 @@ public final class UpgradePersistence {
     public static final String META_ENERGY = "MachinariumEnergyNode";
     public static final String META_ITEM = "MachinariumItemNode";
     private static final boolean DEBUG_CABLE_UPGRADES = false;
+    private static final boolean DEBUG_PERSISTENCE = false;
     private static final int PENDING_TTL_TICKS = 20;
+    private static final int PENDING_DROP_TTL_TICKS = 20 * 60 * 60;
     private static final Map<World, Map<Vector3i, PendingUpgrade>> PENDING = new IdentityHashMap<>();
     private static final Map<World, Long> LAST_CLEANUP = new IdentityHashMap<>();
+    private static final Map<World, Map<Vector3i, PendingDrops>> PENDING_DROPS = new IdentityHashMap<>();
+    private static final Map<World, Long> LAST_DROP_CLEANUP = new IdentityHashMap<>();
 
     private UpgradePersistence() {
     }
@@ -62,9 +66,7 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
     }
 
     public static ItemStack buildDropStack(World world, Vector3i pos, BlockType blockType, String blockId) {
@@ -102,7 +104,6 @@ public final class UpgradePersistence {
         if (itemSnapshot != null) {
             stack = stack.withMetadata(META_ITEM, ItemNodeComponent.CODEC, itemSnapshot);
         }
-
         return stack;
     }
 
@@ -255,9 +256,35 @@ public final class UpgradePersistence {
     }
 
     public static void queueBreakAndDrop(World world, Vector3i pos, BlockType expectedType, ItemStack drop) {
+        queueBreakAndDrop(world, pos, expectedType, drop, null);
+    }
+
+    public static List<ItemStack> snapshotBreakDrops(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return List.of();
+        }
+        List<ItemStack> drops = new ArrayList<>();
+        List<ItemStack> machineDrops = snapshotMachineItems(world, pos);
+        if (machineDrops != null && !machineDrops.isEmpty()) {
+            drops.addAll(machineDrops);
+        }
+        List<ItemStack> blockDrops = snapshotContainerItems(world, pos.getX(), pos.getY(), pos.getZ());
+        if (blockDrops != null && !blockDrops.isEmpty()) {
+            drops.addAll(blockDrops);
+        }
+        return drops;
+    }
+
+    public static void queueBreakAndDrop(
+            World world,
+            Vector3i pos,
+            BlockType expectedType,
+            ItemStack drop,
+            List<ItemStack> precomputedDrops) {
         if (world == null || pos == null || drop == null) {
             return;
         }
+        final List<ItemStack> finalDrops = precomputedDrops == null ? null : new ArrayList<>(precomputedDrops);
         world.execute(() -> {
             long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
@@ -267,12 +294,99 @@ public final class UpgradePersistence {
             if (expectedType != null) {
                 BlockType actual = accessor.getBlockType(pos.getX(), pos.getY(), pos.getZ());
                 if (!sameBlockId(actual, expectedType)) {
+                    if (actual == null || actual == BlockType.EMPTY) {
+                        // Allow drops if the block was already removed by the time this executes.
+                    } else {
                     return;
                 }
+                }
+            }
+            List<ItemStack> drops = finalDrops;
+            if (drops == null || drops.isEmpty()) {
+                drops = snapshotBreakDrops(world, pos);
             }
             accessor.setBlock(pos.getX(), pos.getY(), pos.getZ(), BlockType.EMPTY);
             spawnDrop(world, drop, pos);
+            spawnDropsAt(world, drops, pos);
         });
+    }
+
+    public static void cacheBreakDrops(World world, Vector3i pos, List<ItemStack> drops) {
+        if (world == null || pos == null || drops == null || drops.isEmpty()) {
+            return;
+        }
+        List<ItemStack> filtered = new ArrayList<>();
+        for (ItemStack stack : drops) {
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            filtered.add(stack);
+        }
+        if (filtered.isEmpty()) {
+            return;
+        }
+        long tick = world.getTick();
+        synchronized (PENDING_DROPS) {
+            cleanupDropCache(world, tick);
+            PENDING_DROPS.computeIfAbsent(world, key -> new HashMap<>())
+                    .put(new Vector3i(pos), new PendingDrops(tick, filtered));
+        }
+    }
+
+    public static void cacheBreakDropsFromContainers(
+            World world,
+            Vector3i pos,
+            ItemContainer input,
+            ItemContainer output) {
+        if (world == null || pos == null) {
+            return;
+        }
+        List<ItemStack> stacks = new ArrayList<>();
+        collectContainerStacks(input, stacks);
+        collectContainerStacks(output, stacks);
+        if (stacks.isEmpty()) {
+            clearBreakDrops(world, pos);
+            return;
+        }
+        cacheBreakDrops(world, pos, stacks);
+    }
+
+    public static void clearBreakDrops(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        synchronized (PENDING_DROPS) {
+            Map<Vector3i, PendingDrops> byPos = PENDING_DROPS.get(world);
+            if (byPos == null || byPos.isEmpty()) {
+                return;
+            }
+            byPos.remove(new Vector3i(pos));
+            if (byPos.isEmpty()) {
+                PENDING_DROPS.remove(world);
+            }
+        }
+    }
+
+    public static List<ItemStack> consumeBreakDrops(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return null;
+        }
+        long tick = world.getTick();
+        synchronized (PENDING_DROPS) {
+            cleanupDropCache(world, tick);
+            Map<Vector3i, PendingDrops> byPos = PENDING_DROPS.get(world);
+            if (byPos == null || byPos.isEmpty()) {
+                return null;
+            }
+            PendingDrops pending = byPos.remove(new Vector3i(pos));
+            if (byPos.isEmpty()) {
+                PENDING_DROPS.remove(world);
+            }
+            if (pending == null || tick - pending.createdTick > PENDING_DROP_TTL_TICKS) {
+                return null;
+            }
+            return pending.drops;
+        }
     }
 
     public static void storePending(World world, Vector3i pos, String blockId, ItemStack stack) {
@@ -390,9 +504,7 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN);
     }
 
     private static String resolveItemId(BlockType blockType, String blockId) {
@@ -452,18 +564,6 @@ public final class UpgradePersistence {
             int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_BATTERY);
             if (tier >= 0) {
                 return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_BATTERY, tier);
-            }
-        }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
-            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
-            if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, tier);
-            }
-        }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
-            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
-            if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, tier);
             }
         }
         return null;
@@ -654,6 +754,100 @@ public final class UpgradePersistence {
                 position,
                 velocity);
         store.addEntities(holders, AddReason.SPAWN);
+    }
+
+    public static void spawnDropsAt(World world, List<ItemStack> stacks, Vector3i pos) {
+        if (world == null || pos == null || stacks == null || stacks.isEmpty()) {
+            return;
+        }
+        List<ItemStack> drops = new ArrayList<>();
+        for (ItemStack stack : stacks) {
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            drops.add(stack);
+        }
+        if (drops.isEmpty()) {
+            return;
+        }
+        Store<EntityStore> store = world.getEntityStore().getStore();
+        Vector3d position = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        Vector3f velocity = new Vector3f(0f, 0.1f, 0f);
+        Holder<EntityStore>[] holders = ItemComponent.generateItemDrops(
+                store,
+                drops,
+                position,
+                velocity);
+        store.addEntities(holders, AddReason.SPAWN);
+    }
+
+    private static List<ItemStack> snapshotMachineItems(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return List.of();
+        }
+        List<ItemStack> fallback = snapshotMachineContainerState(world, pos.getX(), pos.getY(), pos.getZ());
+        return fallback == null ? List.of() : fallback;
+    }
+
+    private static List<ItemStack> snapshotMachineContainerState(World world, int x, int y, int z) {
+        return snapshotContainerItems(world, x, y, z);
+    }
+
+    private static void collectContainerStacks(ItemContainer container, List<ItemStack> out) {
+        if (container == null || out == null) {
+            return;
+        }
+        short capacity = container.getCapacity();
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            out.add(new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata()));
+        }
+    }
+
+    private static void logPersistence(String message) {
+        if (!DEBUG_PERSISTENCE) {
+            return;
+        }
+        System.out.println("[Machinarium] PERSIST " + message);
+    }
+
+    private static boolean isContainerEmpty(ItemContainer container) {
+        if (container == null) {
+            return true;
+        }
+        short capacity = container.getCapacity();
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stack != null && !ItemStack.isEmpty(stack)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void clearContainer(ItemContainer container) {
+        if (container == null) {
+            return;
+        }
+        container.clear();
+    }
+
+    private static void copyContainer(ItemContainer source, ItemContainer target) {
+        if (source == null || target == null) {
+            return;
+        }
+        short limit = (short) Math.min(source.getCapacity(), target.getCapacity());
+        for (short slot = 0; slot < limit; slot++) {
+            ItemStack stack = source.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
+            target.addItemStackToSlot(slot, copy);
+        }
     }
 
     private static void setBlockWithRotation(
@@ -1087,6 +1281,16 @@ public final class UpgradePersistence {
         }
     }
 
+    private static final class PendingDrops {
+        private final long createdTick;
+        private final List<ItemStack> drops;
+
+        private PendingDrops(long createdTick, List<ItemStack> drops) {
+            this.createdTick = createdTick;
+            this.drops = drops == null ? List.of() : drops;
+        }
+    }
+
     private static void placeStackIntoSlot(ItemContainer container, short slot, ItemStack stack) {
         if (container == null || stack == null || ItemStack.isEmpty(stack)) {
             return;
@@ -1126,4 +1330,24 @@ public final class UpgradePersistence {
             }
         }
     }
+
+    private static void cleanupDropCache(World world, long tick) {
+        if (world == null) {
+            return;
+        }
+        Long lastTick = LAST_DROP_CLEANUP.get(world);
+        if (lastTick != null && lastTick == tick) {
+            return;
+        }
+        LAST_DROP_CLEANUP.put(world, tick);
+        Map<Vector3i, PendingDrops> byPos = PENDING_DROPS.get(world);
+        if (byPos == null || byPos.isEmpty()) {
+            return;
+        }
+        byPos.entrySet().removeIf(entry -> tick - entry.getValue().createdTick > PENDING_DROP_TTL_TICKS);
+        if (byPos.isEmpty()) {
+            PENDING_DROPS.remove(world);
+        }
+    }
+
 }

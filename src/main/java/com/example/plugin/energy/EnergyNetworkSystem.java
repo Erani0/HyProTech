@@ -214,9 +214,10 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                     MachinariumSounds.DEFAULT_LOOP_MS,
                     generating,
                     node);
-        } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY
-                || EnergyNodeComponent.isMachineLike(node.getNodeType())) {
+        } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY) {
             changed |= syncBatterySides(world, worldX, worldY, worldZ, node);
+        } else if (EnergyNodeComponent.isMachineLike(node.getNodeType())) {
+            changed |= syncMachineSides(node);
         } else if (node.getNodeType() == EnergyNodeComponent.NodeType.FURNACE) {
             changed |= syncFurnaceSides(world, worldX, worldY, worldZ, node);
             changed |= syncFurnaceBench(world, chunkStore, worldX, worldY, worldZ, node, deltaSeconds);
@@ -1476,6 +1477,21 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 node != null && node.isFurnaceWorking(),
                 node);
         syncFurnaceBlockId(world, worldX, worldY, worldZ, tier, benchState, node);
+        return changed;
+    }
+
+    private boolean syncMachineSides(EnergyNodeComponent node) {
+        int outputMask = EnergySide.ALL_MASK;
+        int inputMask = outputMask;
+        boolean changed = false;
+        if (node.getOutputMask() != outputMask) {
+            node.setOutputMask(outputMask);
+            changed = true;
+        }
+        if (node.getInputMask() != inputMask) {
+            node.setInputMask(inputMask);
+            changed = true;
+        }
         return changed;
     }
 

@@ -4,32 +4,64 @@
     "Description": "server.items.Ore_Ilmenite.description"
   },
   "Categories": [
-    "Items"
+    "Blocks.Ores"
   ],
-  "Model": "Items/CraftingItems/OreChips.blockymodel",
-  "Texture": "Items/CraftingItems/textures/ore_chip.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_ore_chips.png",
-  "PlayerAnimationsId": "Item",
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ore_Ilmenite",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Machinarium_Titanium_Powder"
+      },
+      {
+        "ItemId": "Machinarium_Ore_Chips"
+      },
+      {
+        "ItemId": "Machinarium_Slag"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "OreCrusher"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
+  "Model": "Items/CraftingItems/Ores/Ore.blockymodel",
+  "Texture": "Items/CraftingItems/Ores/Ilmenite.png",
+  "Icon": "Icons/ItemsGenerated/Ore_Ilmenite.png",
+  "ItemLevel": 1,
+  "PlayerAnimationsId": "Block",
   "IconProperties": {
-    "Scale": 1,
+    "Scale": 0.58,
     "Translation": [
-      0,
-      -3
+      0.0,
+      -13.5
     ],
     "Rotation": [
       22.5,
-      45,
+      45.0,
       22.5
     ]
   },
   "Tags": {
     "Type": [
-      "Ingredient"
+      "Ore"
+    ],
+    "Family": [
+      "Ilmenite"
     ]
   },
   "ItemEntity": {
     "ParticleSystemId": null
   },
-  "ItemSoundSetId": "ISS_Items_Ingots",
+  "MaxStack": 25,
+  "ItemSoundSetId": "ISS_Blocks_Stone",
   "DropOnDeath": true
 }

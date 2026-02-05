@@ -15,11 +15,13 @@ import com.hypixel.hytale.server.core.universe.world.meta.BlockState;
 import com.hypixel.hytale.server.core.universe.world.meta.BlockStateModule;
 import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerBlockState;
 import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerState;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
+import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 
 public final class MachineItemAccess {
     private static final short QUARRY_STORAGE_CAPACITY = 10;
-    private static final short ORE_CRUSHER_STORAGE_CAPACITY = OreCrusherConfig.CONTAINER_CAPACITY;
-    private static final short ALLOY_SMELTER_STORAGE_CAPACITY = AlloySmelterConfig.CONTAINER_CAPACITY;
+    private static final short ORE_CRUSHER_STORAGE_CAPACITY = 4;
+    private static final String MACHINARIUM_PREFIX = "Machinarium_";
 
     private MachineItemAccess() {
     }
@@ -27,6 +29,25 @@ public final class MachineItemAccess {
     public static ItemContainerBlockState getContainerState(World world, int x, int y, int z) {
         if (world == null) {
             return null;
+        }
+
+        BlockType blockType = world.getBlockType(x, y, z);
+        if (blockType != null && blockType != BlockType.EMPTY) {
+            String blockId = blockType.getId();
+            if (blockId != null && isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+                ItemContainerState containerState = BlockModule.get().getComponent(
+                        BlockStateModule.get().getComponentType(ItemContainerState.class),
+                        world,
+                        x,
+                        y,
+                        z);
+                if (containerState == null) {
+                    scheduleContainerState(world, x, y, z, blockType);
+                    return null;
+                }
+                ensureMachineContainers(world, x, y, z, containerState);
+                return containerState;
+            }
         }
 
         ProcessingBenchState benchState = BlockModule.get().getComponent(
@@ -49,8 +70,6 @@ public final class MachineItemAccess {
             ensureMachineContainers(world, x, y, z, containerState);
             return containerState;
         }
-
-        BlockType blockType = world.getBlockType(x, y, z);
         if (blockType == null || blockType == BlockType.EMPTY) {
             return null;
         }
@@ -77,10 +96,12 @@ public final class MachineItemAccess {
             ((ItemContainerState) state).markNeedsSave();
             return;
         }
-        ItemContainerBlockState ensured = ensureContainerState(world, x, y, z);
-        if (ensured instanceof ItemContainerState) {
-            ((ItemContainerState) ensured).markNeedsSave();
-        }
+        world.execute(() -> {
+            ItemContainerBlockState ensured = ensureContainerState(world, x, y, z);
+            if (ensured instanceof ItemContainerState) {
+                ((ItemContainerState) ensured).markNeedsSave();
+            }
+        });
     }
 
     private static void scheduleContainerState(
@@ -159,7 +180,6 @@ public final class MachineItemAccess {
             ItemContainerState state) {
         ensureQuarryContainer(world, x, y, z, state);
         ensureOreCrusherContainer(world, x, y, z, state);
-        ensureAlloySmelterContainer(world, x, y, z, state);
     }
 
     private static void ensureQuarryContainer(
@@ -176,7 +196,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || !TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_QUARRY)) {
+        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -186,16 +206,7 @@ public final class MachineItemAccess {
 
         SimpleItemContainer replacement = new SimpleItemContainer(QUARRY_STORAGE_CAPACITY);
         if (container != null) {
-            short capacity = container.getCapacity();
-            short max = (short) Math.min(capacity, QUARRY_STORAGE_CAPACITY);
-            for (short slot = 0; slot < max; slot++) {
-                ItemStack stack = container.getItemStack(slot);
-                if (stack == null || ItemStack.isEmpty(stack)) {
-                    continue;
-                }
-                ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
-                replacement.addItemStackToSlot(slot, copy);
-            }
+            copyContainerItems(world, x, y, z, container, replacement, QUARRY_STORAGE_CAPACITY);
         }
         state.setItemContainer(replacement);
     }
@@ -214,7 +225,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || !TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -224,55 +235,58 @@ public final class MachineItemAccess {
 
         SimpleItemContainer replacement = new SimpleItemContainer(ORE_CRUSHER_STORAGE_CAPACITY);
         if (container != null) {
-            short capacity = container.getCapacity();
-            short max = (short) Math.min(capacity, ORE_CRUSHER_STORAGE_CAPACITY);
-            for (short slot = 0; slot < max; slot++) {
-                ItemStack stack = container.getItemStack(slot);
-                if (stack == null || ItemStack.isEmpty(stack)) {
-                    continue;
-                }
-                ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
-                replacement.addItemStackToSlot(slot, copy);
-            }
+            copyContainerItems(world, x, y, z, container, replacement, ORE_CRUSHER_STORAGE_CAPACITY);
         }
         state.setItemContainer(replacement);
     }
 
-    private static void ensureAlloySmelterContainer(
+
+    private static boolean isIdOrState(String blockId, String baseId) {
+        if (blockId == null || baseId == null) {
+            return false;
+        }
+        if (TieredIdUtil.isTieredId(blockId, baseId)) {
+            return true;
+        }
+        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
+        if (normalized == null) {
+            return false;
+        }
+        if (normalized.equalsIgnoreCase(baseId)) {
+            return true;
+        }
+        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
+            return false;
+        }
+        if (normalized.length() == baseId.length()) {
+            return false;
+        }
+        char separator = normalized.charAt(baseId.length());
+        return !Character.isLetterOrDigit(separator)
+                || normalized.regionMatches(true, 0, MACHINARIUM_PREFIX, 0, MACHINARIUM_PREFIX.length());
+    }
+
+    private static void copyContainerItems(
             World world,
             int x,
             int y,
             int z,
-            ItemContainerState state) {
-        if (world == null || state == null) {
+            ItemContainer source,
+            SimpleItemContainer target,
+            short maxCapacity) {
+        if (source == null || target == null) {
             return;
         }
-        BlockType blockType = world.getBlockType(x, y, z);
-        if (blockType == null || blockType == BlockType.EMPTY) {
-            return;
-        }
-        String blockId = blockType.getId();
-        if (blockId == null || !TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
-            return;
-        }
-        ItemContainer container = state.getItemContainer();
-        if (container != null && container.getCapacity() == ALLOY_SMELTER_STORAGE_CAPACITY) {
-            return;
-        }
-
-        SimpleItemContainer replacement = new SimpleItemContainer(ALLOY_SMELTER_STORAGE_CAPACITY);
-        if (container != null) {
-            short capacity = container.getCapacity();
-            short max = (short) Math.min(capacity, ALLOY_SMELTER_STORAGE_CAPACITY);
-            for (short slot = 0; slot < max; slot++) {
-                ItemStack stack = container.getItemStack(slot);
-                if (stack == null || ItemStack.isEmpty(stack)) {
-                    continue;
-                }
-                ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
-                replacement.addItemStackToSlot(slot, copy);
+        short capacity = source.getCapacity();
+        short limit = (short) Math.min(capacity, maxCapacity);
+        for (short slot = 0; slot < limit; slot++) {
+            ItemStack stack = source.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
             }
+            ItemStack copy = new ItemStack(stack.getItemId(), stack.getQuantity(), stack.getMetadata());
+            target.addItemStackToSlot(slot, copy);
         }
-        state.setItemContainer(replacement);
     }
+
 }

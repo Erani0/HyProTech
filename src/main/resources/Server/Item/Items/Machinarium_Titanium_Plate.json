@@ -6,9 +6,27 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel.png",
+  "Recipe": {
+    "TimeSeconds": 1,
+    "Input": [
+      {
+        "ItemId": "Machinarium_Titanium_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Machinarium_Workbench",
+        "Categories": [
+          "Machinarium_Crafting"
+        ]
+      }
+    ]
+  },
+  "Model": "Items/CraftingItems/Metal Plates/Plate_Base.blockymodel",
+  "Texture": "Items/CraftingItems/Metal Plates/Titanium Plate.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Plate.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

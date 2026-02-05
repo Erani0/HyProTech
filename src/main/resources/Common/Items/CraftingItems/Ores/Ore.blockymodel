@@ -1,0 +1,312 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "name": "IronOre",
+      "position": {"x": 5, "y": 16, "z": 4},
+      "orientation": {"x": 0.71343, "y": -0.13906, "z": 0.17196, "w": 0.66491},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.73288, "y": 0.80914, "z": 1.1751},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "front": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    },
+    {
+      "id": "2",
+      "name": "IronOre",
+      "position": {"x": 1, "y": 9, "z": 8},
+      "orientation": {"x": 0.50252, "y": 0.53528, "z": 0.41811, "w": 0.53491},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.57398, "y": 0.52699, "z": 1.2649},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "front": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    },
+    {
+      "id": "3",
+      "name": "IronOre",
+      "position": {"x": 0, "y": 14, "z": 1},
+      "orientation": {"x": -0.03593, "y": -0.08802, "z": -0.29485, "w": 0.9508},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.86609, "y": 0.87888, "z": 1.2432},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 16},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 32, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "front": {
+            "offset": {"x": 0, "y": 16},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 32, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    },
+    {
+      "id": "4",
+      "name": "IronOre",
+      "position": {"x": 1, "y": 20, "z": 0},
+      "orientation": {"x": 0.80634, "y": 0.55228, "z": 0.21141, "w": -0.0106},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.52149, "y": 0.47803, "z": 1.20262},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "front": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    },
+    {
+      "id": "5",
+      "name": "IronOre",
+      "position": {"x": 1, "y": 23, "z": 0},
+      "orientation": {"x": 0.64504, "y": 0.14127, "z": 0.73671, "w": 0.14569},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.7606, "y": 0.64574, "z": 1.13985},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 32, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "front": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 32, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    },
+    {
+      "id": "6",
+      "name": "IronOre",
+      "position": {"x": -7, "y": 16, "z": 2},
+      "orientation": {"x": 0.70575, "y": 0.22946, "z": -0.22924, "w": 0.62985},
+      "shape": {
+        "type": "box",
+        "offset": {"x": 0, "y": 0, "z": 0},
+        "stretch": {"x": 0.52449, "y": 0.5273, "z": 1.06921},
+        "settings": {
+          "isPiece": false,
+          "size": {"x": 16, "y": 16, "z": 32}
+        },
+        "textureLayout": {
+          "back": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": true, "y": true},
+            "angle": 270
+          },
+          "right": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "front": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "left": {
+            "offset": {"x": 0, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "top": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          },
+          "bottom": {
+            "offset": {"x": 16, "y": 0},
+            "mirror": {"x": false, "y": false},
+            "angle": 0
+          }
+        },
+        "unwrapMode": "custom",
+        "visible": true,
+        "doubleSided": false,
+        "shadingMode": "reflective"
+      }
+    }
+  ],
+  "format": "character",
+  "lod": "auto"
+}

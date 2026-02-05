@@ -6,9 +6,31 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel.png",
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 2
+      },
+      {
+        "ItemId": "Machinarium_Silicon",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Machinarium_Workbench",
+        "Categories": [
+          "Machinarium_Crafting"
+        ]
+      }
+    ]
+  },
+  "Model": "Items/CraftingItems/Circuitboard/Circuitboard.blockymodel",
+  "Texture": "Items/CraftingItems/Circuitboard/Circuitboard.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Circuit_Board.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

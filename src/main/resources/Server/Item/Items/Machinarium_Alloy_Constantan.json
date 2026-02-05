@@ -1,18 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Constantan.name"
+    "Name": "server.items.Machinarium_Alloy_Constantan.name",
+    "Description": "server.items.Machinarium_Alloy_Constantan.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/cobalt_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_constantan.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
+  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
+  "Texture": "Items/CraftingItems/Alloys/Constantan Ingot.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Constantan.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -35,5 +31,10 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
 }

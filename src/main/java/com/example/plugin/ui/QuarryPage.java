@@ -25,6 +25,7 @@ import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.inventory.transaction.ItemStackTransaction;
 import com.hypixel.hytale.server.core.inventory.transaction.ListTransaction;
+import com.hypixel.hytale.server.core.inventory.transaction.MoveTransaction;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -40,6 +41,7 @@ import java.util.List;
 
 public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String ACTION_UPGRADE = "Upgrade";
+    private static final String ACTION_TAKE_ITEMS = "TakeItems";
     private static final String PAGE_LAYOUT = "Machinarium_Quarry.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final int STORAGE_SLOT_COUNT = 10;
@@ -154,6 +156,11 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         String action = data.getAction();
         if (ACTION_UPGRADE.equalsIgnoreCase(action)) {
             if (!handleUpgrade(playerRef, store, world, machine, node)) {
+                sendUpdate(new UICommandBuilder());
+            }
+            return;
+        } else if (ACTION_TAKE_ITEMS.equalsIgnoreCase(action)) {
+            if (!handleTakeItems(store)) {
                 sendUpdate(new UICommandBuilder());
             }
             return;
@@ -579,6 +586,60 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         return true;
     }
 
+    private boolean handleTakeItems(Store<EntityStore> store) {
+        if (store == null) {
+            return false;
+        }
+        World world = getWorld(store);
+        if (world == null) {
+            return false;
+        }
+        Vector3i pos = resolveBlockPosition(world);
+        if (pos == null) {
+            return false;
+        }
+        ItemContainer container = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
+        if (container == null) {
+            return false;
+        }
+        Inventory inventory = getPlayerInventoryFull(store);
+        if (inventory == null) {
+            return false;
+        }
+        ItemContainer hotbar = inventory.getHotbar();
+        ItemContainer storage = inventory.getStorage();
+        boolean movedAny = false;
+        short capacity = container.getCapacity();
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            ItemContainer target = null;
+            if (hotbar != null && hotbar.canAddItemStack(stack)) {
+                target = hotbar;
+            } else if (storage != null && storage.canAddItemStack(stack)) {
+                target = storage;
+            }
+            if (target == null) {
+                continue;
+            }
+            int quantity = stack.getQuantity();
+            MoveTransaction<?> move = container.moveItemStackFromSlot(slot, quantity, target);
+            if (move == null || !move.succeeded()) {
+                move = container.moveItemStackFromSlot(slot, target);
+            }
+            if (move != null && move.succeeded()) {
+                movedAny = true;
+            }
+        }
+        if (movedAny) {
+            MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
+            return refreshStorage(store);
+        }
+        return false;
+    }
+
     private void applyTier(MachineComponent machine, EnergyNodeComponent node, int tier) {
         int capacity = QuarryConfig.getCapacityForTier(tier);
         node.setCapacity(capacity);
@@ -609,6 +670,21 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         }
         Inventory inventory = player.getInventory();
         return inventory == null ? null : inventory.getStorage();
+    }
+
+    private Inventory getPlayerInventoryFull(Store<EntityStore> store) {
+        if (store == null) {
+            return null;
+        }
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        if (playerEntityRef == null) {
+            return null;
+        }
+        Player player = store.getComponent(playerEntityRef, Player.getComponentType());
+        if (player == null) {
+            return null;
+        }
+        return player.getInventory();
     }
 
     private int countItem(ItemContainer container, String itemId) {
@@ -876,6 +952,15 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         return ids;
     }
 
+    private boolean refreshStorage(Store<EntityStore> store) {
+        UICommandBuilder update = new UICommandBuilder();
+        if (updateStorage(update)) {
+            sendUpdate(update);
+            return true;
+        }
+        return false;
+    }
+
     private void bindButtons(UIEventBuilder uiEventBuilder) {
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -901,6 +986,10 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
                 CustomUIEventBindingType.Activating,
                 "#UpgradeButton",
                 EventData.of("Action", ACTION_UPGRADE));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#TakeItemsButton",
+                EventData.of("Action", ACTION_TAKE_ITEMS));
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#QuarryToggleButton",

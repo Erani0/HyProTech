@@ -6,10 +6,64 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel.png",
-  "PlayerAnimationsId": "Item",
+  "Recipe": {
+    "TimeSeconds": 4,
+    "Input": [
+      {
+        "ItemId": "Machinarium_Reinforced_Plate",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Machinarium_Reinforced_Rod",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Machinarium_Reinforced_Gears",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Machinarium_Workbench",
+        "Categories": [
+          "Machinarium_Crafting"
+        ]
+      }
+    ]
+  },
+  "Model": "Blocks/Machinarium/MachineFrame/ReinforcedFrame_Base.blockymodel",
+  "Texture": "Blocks/Machinarium/MachineFrame/reinforcemachineframe.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Reinforced_Frame.png",
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": "Block_Secondary"
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/Machinarium/MachineFrame/ReinforcedFrame_Base.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/Machinarium/MachineFrame/reinforcemachineframe.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#9d9d9d",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock"
+  },
   "IconProperties": {
     "Scale": 1,
     "Translation": [

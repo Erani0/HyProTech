@@ -28,7 +28,7 @@ public class ItemNodeComponent implements Component<ChunkStore> {
     public static final BuilderCodec<ItemNodeComponent> CODEC =
             BuilderCodec.<ItemNodeComponent>builder(ItemNodeComponent.class, ItemNodeComponent::new)
                     .addField(new KeyedCodec<>("Mode", new EnumCodec<>(ItemMode.class)),
-                            (component, value) -> component.mode = ItemMode.BOTH,
+                            (component, value) -> component.mode = value != null ? value : ItemMode.BOTH,
                             component -> component.mode)
                     .addField(new KeyedCodec<>("Target", new EnumCodec<>(ItemTarget.class)),
                             (component, value) -> component.target = value != null ? value : ItemTarget.AUTO,
@@ -87,7 +87,7 @@ public class ItemNodeComponent implements Component<ChunkStore> {
     }
 
     public void setMode(ItemMode mode) {
-        this.mode = ItemMode.BOTH;
+        this.mode = mode == null ? ItemMode.BOTH : mode;
     }
 
     public ItemTarget getTarget() {

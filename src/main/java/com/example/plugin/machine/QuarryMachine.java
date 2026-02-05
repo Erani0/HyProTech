@@ -43,7 +43,8 @@ public final class QuarryMachine extends MasterMachine {
 
     @Override
     public boolean matchesBlockId(String blockId) {
-        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_QUARRY);
+        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_QUARRY)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY);
     }
 
     @Override
@@ -494,5 +495,26 @@ public final class QuarryMachine extends MasterMachine {
             this.minZ = minZ;
             this.maxZ = maxZ;
         }
+    }
+
+    private static boolean isIdOrState(String blockId, String baseId) {
+        if (blockId == null || baseId == null) {
+            return false;
+        }
+        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
+        if (normalized == null) {
+            return false;
+        }
+        if (normalized.equalsIgnoreCase(baseId)) {
+            return true;
+        }
+        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
+            return false;
+        }
+        if (normalized.length() == baseId.length()) {
+            return false;
+        }
+        char separator = normalized.charAt(baseId.length());
+        return !Character.isLetterOrDigit(separator);
     }
 }

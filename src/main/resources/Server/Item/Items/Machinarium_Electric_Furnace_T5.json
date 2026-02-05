@@ -108,29 +108,137 @@
           "UpgradeRequirement": {
             "Material": [
               {
-                "ItemId": "Ingredient_Bar_Adamantite",
+                "ItemId": "Ingredient_Bar_Copper",
                 "Quantity": 20
               },
               {
-                "ItemId": "Ingredient_Bar_Thorium",
-                "Quantity": 8
+                "ItemId": "Ingredient_Bar_Iron",
+                "Quantity": 10
               },
               {
-                "ItemId": "Machinarium_Slag",
-                "Quantity": 30
+                "ItemId": "Ingredient_Leather_Medium",
+                "Quantity": 10
               },
               {
-                "ItemId": "Machinarium_Ore_Chips",
-                "Quantity": 20
-              },
-              {
-                "ItemId": "Machinarium_Gold_Powder",
-                "Quantity": 24
+                "ItemId": "Ingredient_Bar_Silver",
+                "Quantity": 5
               }
             ],
             "TimeSeconds": 3
           },
           "CraftingTimeReductionModifier": 0.8,
+          "ExtraInputSlot": 3
+        },
+        {
+          "UpgradeRequirement": {
+            "Material": [
+              {
+                "ItemId": "Ingredient_Bar_Iron",
+                "Quantity": 20
+              },
+              {
+                "ItemId": "Ingredient_Bar_Silver",
+                "Quantity": 10
+              },
+              {
+                "ItemId": "Ingredient_Bar_Gold",
+                "Quantity": 8
+              },
+              {
+                "ItemId": "Ingredient_Bar_Cobalt",
+                "Quantity": 6
+              }
+            ],
+            "TimeSeconds": 3
+          },
+          "CraftingTimeReductionModifier": 1.0,
+          "ExtraInputSlot": 3
+        },
+        {
+          "UpgradeRequirement": {
+            "Material": [
+              {
+                "ItemId": "Ingredient_Bar_Cobalt",
+                "Quantity": 12
+              },
+              {
+                "ItemId": "Ingredient_Bar_Adamantite",
+                "Quantity": 4
+              },
+              {
+                "ItemId": "Machinarium_Slag",
+                "Quantity": 12
+              },
+              {
+                "ItemId": "Machinarium_Ore_Chips",
+                "Quantity": 8
+              },
+              {
+                "ItemId": "Machinarium_Cobalt_Powder",
+                "Quantity": 10
+              }
+            ],
+            "TimeSeconds": 3
+          },
+          "CraftingTimeReductionModifier": 1.0,
+          "ExtraInputSlot": 3
+        },
+        {
+          "UpgradeRequirement": {
+            "Material": [
+              {
+                "ItemId": "Ingredient_Bar_Adamantite",
+                "Quantity": 10
+              },
+              {
+                "ItemId": "Ingredient_Bar_Thorium",
+                "Quantity": 6
+              },
+              {
+                "ItemId": "Machinarium_Slag",
+                "Quantity": 18
+              },
+              {
+                "ItemId": "Machinarium_Ore_Chips",
+                "Quantity": 12
+              },
+              {
+                "ItemId": "Machinarium_Iron_Powder",
+                "Quantity": 16
+              }
+            ],
+            "TimeSeconds": 3
+          },
+          "CraftingTimeReductionModifier": 1.0,
+          "ExtraInputSlot": 3
+        },
+        {
+          "UpgradeRequirement": {
+            "Material": [
+              {
+                "ItemId": "Ingredient_Bar_Adamantite",
+                "Quantity": 20
+              },
+              {
+                "ItemId": "Ingredient_Bar_Thorium",
+                "Quantity": 10
+              },
+              {
+                "ItemId": "Machinarium_Slag",
+                "Quantity": 25
+              },
+              {
+                "ItemId": "Machinarium_Ore_Chips",
+                "Quantity": 18
+              },
+              {
+                "ItemId": "Machinarium_Gold_Powder",
+                "Quantity": 20
+              }
+            ],
+            "TimeSeconds": 3
+          },
+          "CraftingTimeReductionModifier": 1.0,
           "ExtraInputSlot": 3
         },
         {
