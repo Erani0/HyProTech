@@ -20,7 +20,9 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 
 public final class MachineItemAccess {
     private static final short QUARRY_STORAGE_CAPACITY = 10;
-    private static final short ORE_CRUSHER_STORAGE_CAPACITY = 4;
+    private static final short ORE_CRUSHER_STORAGE_CAPACITY = 7;
+    private static final short ALLOY_SMELTER_STORAGE_CAPACITY =
+            (short) (AlloySmelterConfig.INPUT_SLOT_COUNT + AlloySmelterConfig.OUTPUT_SLOT_COUNT);
     private static final String MACHINARIUM_PREFIX = "Machinarium_";
 
     private MachineItemAccess() {
@@ -35,6 +37,20 @@ public final class MachineItemAccess {
         if (blockType != null && blockType != BlockType.EMPTY) {
             String blockId = blockType.getId();
             if (blockId != null && isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+                ItemContainerState containerState = BlockModule.get().getComponent(
+                        BlockStateModule.get().getComponentType(ItemContainerState.class),
+                        world,
+                        x,
+                        y,
+                        z);
+                if (containerState == null) {
+                    scheduleContainerState(world, x, y, z, blockType);
+                    return null;
+                }
+                ensureMachineContainers(world, x, y, z, containerState);
+                return containerState;
+            }
+            if (blockId != null && isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
                 ItemContainerState containerState = BlockModule.get().getComponent(
                         BlockStateModule.get().getComponentType(ItemContainerState.class),
                         world,
@@ -180,6 +196,7 @@ public final class MachineItemAccess {
             ItemContainerState state) {
         ensureQuarryContainer(world, x, y, z, state);
         ensureOreCrusherContainer(world, x, y, z, state);
+        ensureAlloySmelterContainer(world, x, y, z, state);
     }
 
     private static void ensureQuarryContainer(
@@ -236,6 +253,35 @@ public final class MachineItemAccess {
         SimpleItemContainer replacement = new SimpleItemContainer(ORE_CRUSHER_STORAGE_CAPACITY);
         if (container != null) {
             copyContainerItems(world, x, y, z, container, replacement, ORE_CRUSHER_STORAGE_CAPACITY);
+        }
+        state.setItemContainer(replacement);
+    }
+
+    private static void ensureAlloySmelterContainer(
+            World world,
+            int x,
+            int y,
+            int z,
+            ItemContainerState state) {
+        if (world == null || state == null) {
+            return;
+        }
+        BlockType blockType = world.getBlockType(x, y, z);
+        if (blockType == null || blockType == BlockType.EMPTY) {
+            return;
+        }
+        String blockId = blockType.getId();
+        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            return;
+        }
+        ItemContainer container = state.getItemContainer();
+        if (container != null && container.getCapacity() == ALLOY_SMELTER_STORAGE_CAPACITY) {
+            return;
+        }
+
+        SimpleItemContainer replacement = new SimpleItemContainer(ALLOY_SMELTER_STORAGE_CAPACITY);
+        if (container != null) {
+            copyContainerItems(world, x, y, z, container, replacement, ALLOY_SMELTER_STORAGE_CAPACITY);
         }
         state.setItemContainer(replacement);
     }

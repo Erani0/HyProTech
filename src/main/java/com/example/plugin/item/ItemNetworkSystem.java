@@ -32,7 +32,9 @@ import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.meta.BlockState;
 import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerBlockState;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import com.example.plugin.machine.AlloySmelterConfig;
 import com.example.plugin.machine.MachineItemAccess;
+import com.example.plugin.machine.OreCrusherConfig;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -504,13 +506,39 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 Vector3i pos = lookup.position;
 
                 boolean isMachine = lookup.isMachine;
+                SlotRange sourceRange = null;
+                SlotRange sinkRange = null;
+                if (lookup.machineSlots != null) {
+                    sourceRange = lookup.machineSlots.outputRange;
+                    sinkRange = lookup.machineSlots.inputRange;
+                }
                 if (sideAllowsTake) {
                     ItemContainer sourceContainer = resolveContainer(world, pos, lookup, target, true);
-                    addSource(sources, sourceContainer, pos, isMachine, cable.node, cable, cableIndex, side);
+                    addSource(
+                            sources,
+                            sourceContainer,
+                            pos,
+                            isMachine,
+                            sourceRange,
+                            cable.node,
+                            cable,
+                            cableIndex,
+                            side);
                 }
                 if (sideAllowsPut) {
                     ItemContainer sinkContainer = resolveContainer(world, pos, lookup, target, false);
-                    addSink(sinks, sinkContainer, pos, isMachine, cable.node, cable, cableIndex, side, world, chunkStore);
+                    addSink(
+                            sinks,
+                            sinkContainer,
+                            pos,
+                            isMachine,
+                            sinkRange,
+                            cable.node,
+                            cable,
+                            cableIndex,
+                            side,
+                            world,
+                            chunkStore);
                 }
             }
         }
@@ -623,11 +651,15 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             ItemContainer container,
             Vector3i pos,
             boolean isMachine,
+            SlotRange slotRange,
             ItemNodeComponent node,
             CableNode cable,
             int cableIndex,
             EnergySide side) {
         if (container == null || pos == null || cable == null || side == null) {
+            return;
+        }
+        if (slotRange != null && slotRange.isEmpty()) {
             return;
         }
         Set<String> filters = node == null ? null : node.getFilters(side);
@@ -639,6 +671,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 container,
                 pos,
                 isMachine,
+                slotRange,
                 filters,
                 filterMode,
                 distributionMode,
@@ -654,6 +687,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             ItemContainer container,
             Vector3i pos,
             boolean isMachine,
+            SlotRange slotRange,
             ItemNodeComponent node,
             CableNode cable,
             int cableIndex,
@@ -663,6 +697,9 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (container == null || pos == null || cable == null || side == null) {
             return;
         }
+        if (slotRange != null && slotRange.isEmpty()) {
+            return;
+        }
         Set<String> filters = node == null ? null : node.getFilters(side);
         FilterMode filterMode = node == null ? FilterMode.WHITELIST : node.getFilterMode(side);
         int priority = resolveStoragePriority(world, chunkStore, pos, node);
@@ -670,6 +707,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 container,
                 pos,
                 isMachine,
+                slotRange,
                 filters,
                 filterMode,
                 priority,
@@ -776,6 +814,9 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             if (shouldAbortTick(cableState)) {
                 break;
             }
+            if (!source.allowsSlot(slot)) {
+                continue;
+            }
             ItemStack stack = sourceContainer.getItemStack(slot);
             if (ItemStack.isEmpty(stack)) {
                 continue;
@@ -868,7 +909,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 if (!canAccept(sink, stack)) {
                     continue;
                 }
-                if (tryMove(sourceContainer, slot, sink.container)) {
+                if (tryMove(sourceContainer, slot, sink, stack)) {
                     cacheAfterMove(world, source, sink);
                     int nextIndex = (index + 1) % sinks.size();
                     setRoundRobinIndex(cableState, networkKey, priority, nextIndex);
@@ -913,7 +954,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                     break;
                 }
                 SinkEndpoint sink = sinks.get(bestIndex);
-                if (tryMove(sourceContainer, slot, sink.container)) {
+                if (tryMove(sourceContainer, slot, sink, stack)) {
                     cacheAfterMove(world, source, sink);
                     return true;
                 }
@@ -1043,7 +1084,19 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (sink == null || sink.container == null || stack == null) {
             return false;
         }
-        return sink.container.canAddItemStack(stack);
+        SlotRange range = sink.slotRange;
+        if (range == null) {
+            return sink.container.canAddItemStack(stack);
+        }
+        short capacity = sink.container.getCapacity();
+        short start = (short) Math.max(0, range.start);
+        short end = (short) Math.min(capacity, range.start + range.count);
+        for (short slot = start; slot < end; slot++) {
+            if (sink.container.canAddItemStackToSlot(slot, stack, false, false)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean shouldAbortTick(CableState cableState) {
@@ -1060,13 +1113,30 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         // Machine inventory is removed; no cache behavior needed here.
     }
 
-    private boolean tryMove(ItemContainer sourceContainer, short slot, ItemContainer sinkContainer) {
-        if (sourceContainer == null || sinkContainer == null) {
+    private boolean tryMove(ItemContainer sourceContainer, short slot, SinkEndpoint sink, ItemStack stack) {
+        if (sourceContainer == null || sink == null || sink.container == null || stack == null) {
             return false;
         }
-        MoveTransaction<?> transaction =
-                sourceContainer.moveItemStackFromSlot(slot, 1, sinkContainer, false, false);
-        return transaction != null && transaction.succeeded();
+        SlotRange range = sink.slotRange;
+        if (range == null) {
+            MoveTransaction<?> transaction =
+                    sourceContainer.moveItemStackFromSlot(slot, 1, sink.container, false, false);
+            return transaction != null && transaction.succeeded();
+        }
+        short capacity = sink.container.getCapacity();
+        short start = (short) Math.max(0, range.start);
+        short end = (short) Math.min(capacity, range.start + range.count);
+        for (short target = start; target < end; target++) {
+            if (!sink.container.canAddItemStackToSlot(target, stack, false, false)) {
+                continue;
+            }
+            MoveTransaction<?> transaction =
+                    sourceContainer.moveItemStackFromSlotToSlot(slot, 1, sink.container, target);
+            if (transaction != null && transaction.succeeded()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void sortEndpoints(CableNetwork network) {
@@ -1448,7 +1518,14 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private ContainerLookup resolveContainerState(World world, ChunkStore chunkStore, int x, int y, int z) {
         ItemContainerBlockState state = getItemContainerState(world, x, y, z);
         if (state != null) {
-            return new ContainerLookup(state, null, null, new Vector3i(x, y, z), false);
+            MachineSlotLayout layout = resolveMachineSlots(world, x, y, z, state);
+            return new ContainerLookup(
+                    state,
+                    null,
+                    null,
+                    layout,
+                    new Vector3i(x, y, z),
+                    layout != null);
         }
 
         BlockType blockType = getBlockTypeIfLoaded(world, x, y, z);
@@ -1481,10 +1558,58 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
             ItemContainerBlockState neighborState = getItemContainerState(world, nx, ny, nz);
             if (neighborState != null) {
-                return new ContainerLookup(neighborState, null, null, new Vector3i(nx, ny, nz), false);
+                MachineSlotLayout layout = resolveMachineSlots(world, nx, ny, nz, neighborState);
+                return new ContainerLookup(
+                        neighborState,
+                        null,
+                        null,
+                        layout,
+                        new Vector3i(nx, ny, nz),
+                        layout != null);
             }
         }
 
+        return null;
+    }
+
+    private MachineSlotLayout resolveMachineSlots(
+            World world,
+            int x,
+            int y,
+            int z,
+            ItemContainerBlockState state) {
+        if (world == null || state == null) {
+            return null;
+        }
+        BlockType blockType = getBlockTypeIfLoaded(world, x, y, z);
+        if (blockType == null || blockType == BlockType.EMPTY) {
+            return null;
+        }
+        String blockId = blockType.getId();
+        if (blockId == null || blockId.isEmpty()) {
+            return null;
+        }
+        ItemContainer container = state.getItemContainer();
+        short capacity = container == null ? 0 : container.getCapacity();
+        if (isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            int outputCount = Math.min(OreCrusherConfig.OUTPUT_SLOT_COUNT, Math.max(0, capacity - 1));
+            SlotRange input = new SlotRange(0, capacity > 0 ? 1 : 0);
+            SlotRange output = new SlotRange(1, outputCount);
+            return new MachineSlotLayout(input, output);
+        }
+        if (isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            int inputCount = Math.min(AlloySmelterConfig.INPUT_SLOT_COUNT, Math.max(0, capacity));
+            int outputStart = inputCount;
+            int outputCount = Math.min(AlloySmelterConfig.OUTPUT_SLOT_COUNT, Math.max(0, capacity - outputStart));
+            SlotRange input = new SlotRange(0, inputCount);
+            SlotRange output = new SlotRange(outputStart, outputCount);
+            return new MachineSlotLayout(input, output);
+        }
+        if (isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
+            SlotRange input = new SlotRange(0, 0);
+            SlotRange output = new SlotRange(0, capacity);
+            return new MachineSlotLayout(input, output);
+        }
         return null;
     }
 
@@ -1625,6 +1750,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         private final ItemContainerBlockState state;
         private final ItemContainer inputContainer;
         private final ItemContainer outputContainer;
+        private final MachineSlotLayout machineSlots;
         private final Vector3i position;
         private final boolean isMachine;
 
@@ -1632,11 +1758,13 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 ItemContainerBlockState state,
                 ItemContainer inputContainer,
                 ItemContainer outputContainer,
+                MachineSlotLayout machineSlots,
                 Vector3i position,
                 boolean isMachine) {
             this.state = state;
             this.inputContainer = inputContainer;
             this.outputContainer = outputContainer;
+            this.machineSlots = machineSlots;
             this.position = position;
             this.isMachine = isMachine;
         }
@@ -1734,6 +1862,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         final ItemContainer container;
         final Vector3i position;
         final boolean isMachine;
+        final SlotRange slotRange;
         final Set<String> filters;
         final FilterMode filterMode;
         final int cableIndex;
@@ -1746,6 +1875,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 ItemContainer container,
                 Vector3i position,
                 boolean isMachine,
+                SlotRange slotRange,
                 Set<String> filters,
                 FilterMode filterMode,
                 int cableIndex,
@@ -1756,6 +1886,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             this.container = container;
             this.position = position;
             this.isMachine = isMachine;
+            this.slotRange = slotRange;
             this.filters = filters;
             this.filterMode = filterMode == null ? FilterMode.WHITELIST : filterMode;
             this.cableIndex = cableIndex;
@@ -1775,6 +1906,10 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             boolean contains = filters.contains(itemId);
             return filterMode == FilterMode.BLACKLIST ? !contains : contains;
         }
+
+        boolean allowsSlot(short slot) {
+            return slotRange == null || slotRange.contains(slot);
+        }
     }
 
     private static final class SourceEndpoint extends Endpoint {
@@ -1784,6 +1919,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 ItemContainer container,
                 Vector3i position,
                 boolean isMachine,
+                SlotRange slotRange,
                 Set<String> filters,
                 FilterMode filterMode,
                 ItemDistributionMode distributionMode,
@@ -1792,7 +1928,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 int cableY,
                 int cableZ,
                 EnergySide side) {
-            super(container, position, isMachine, filters, filterMode, cableIndex, cableX, cableY, cableZ, side);
+            super(container, position, isMachine, slotRange, filters, filterMode, cableIndex, cableX, cableY, cableZ, side);
             this.distributionMode = distributionMode == null
                     ? ItemDistributionMode.ROUND_ROBIN
                     : distributionMode;
@@ -1806,6 +1942,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 ItemContainer container,
                 Vector3i position,
                 boolean isMachine,
+                SlotRange slotRange,
                 Set<String> filters,
                 FilterMode filterMode,
                 int priority,
@@ -1814,8 +1951,37 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 int cableY,
                 int cableZ,
                 EnergySide side) {
-            super(container, position, isMachine, filters, filterMode, cableIndex, cableX, cableY, cableZ, side);
+            super(container, position, isMachine, slotRange, filters, filterMode, cableIndex, cableX, cableY, cableZ, side);
             this.priority = ItemNodeComponent.clampPriority(priority);
+        }
+    }
+
+    private static final class SlotRange {
+        private final int start;
+        private final int count;
+
+        private SlotRange(int start, int count) {
+            this.start = Math.max(0, start);
+            this.count = Math.max(0, count);
+        }
+
+        private boolean contains(short slot) {
+            int value = slot;
+            return value >= start && value < start + count;
+        }
+
+        private boolean isEmpty() {
+            return count <= 0;
+        }
+    }
+
+    private static final class MachineSlotLayout {
+        private final SlotRange inputRange;
+        private final SlotRange outputRange;
+
+        private MachineSlotLayout(SlotRange inputRange, SlotRange outputRange) {
+            this.inputRange = inputRange;
+            this.outputRange = outputRange;
         }
     }
 

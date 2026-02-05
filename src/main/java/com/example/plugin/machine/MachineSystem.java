@@ -131,6 +131,18 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
                 machine.setTier(parsedTier);
                 changed = true;
             }
+        } else if (definition instanceof OreCrusherMachine) {
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+            if (parsedTier > 0 && machine.getTier() != parsedTier) {
+                machine.setTier(parsedTier);
+                changed = true;
+            }
+        } else if (definition instanceof AlloySmelterMachine) {
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+            if (parsedTier > 0 && machine.getTier() != parsedTier) {
+                machine.setTier(parsedTier);
+                changed = true;
+            }
         }
 
         EnergyNodeComponent.NodeType beforeNodeType = energy == null ? null : energy.getNodeType();

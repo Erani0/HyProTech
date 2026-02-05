@@ -13,11 +13,12 @@ import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
 import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import java.util.List;
 
-public final class OreCrusherMachine implements MachineDefinition {
-    public static final String ID = "machinarium:ore_crusher";
-    private static final short INPUT_SLOT = 0;
-    private static final short OUTPUT_SLOT_START = 1;
-    private static final int OUTPUT_SLOT_COUNT = OreCrusherConfig.OUTPUT_SLOT_COUNT;
+public final class AlloySmelterMachine implements MachineDefinition {
+    public static final String ID = "machinarium:alloy_smelter";
+    private static final short INPUT_SLOT_START = 0;
+    private static final int INPUT_SLOT_COUNT = AlloySmelterConfig.INPUT_SLOT_COUNT;
+    private static final short OUTPUT_SLOT_START = (short) INPUT_SLOT_COUNT;
+    private static final int OUTPUT_SLOT_COUNT = AlloySmelterConfig.OUTPUT_SLOT_COUNT;
 
     @Override
     public String id() {
@@ -26,16 +27,16 @@ public final class OreCrusherMachine implements MachineDefinition {
 
     @Override
     public boolean matchesBlockId(String blockId) {
-        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
     }
 
     @Override
     public MachineComponent createMachineComponent() {
         MachineComponent component = new MachineComponent();
         component.setMachineId(ID);
-        component.setTier(OreCrusherConfig.MIN_TIER);
-        component.setProgressMax(OreCrusherConfig.getProcessingDelayTicks(OreCrusherConfig.MIN_TIER));
+        component.setTier(AlloySmelterConfig.MIN_TIER);
+        component.setProgressMax(AlloySmelterConfig.getProcessingDelayTicks(AlloySmelterConfig.MIN_TIER));
         return component;
     }
 
@@ -43,9 +44,9 @@ public final class OreCrusherMachine implements MachineDefinition {
     public EnergyNodeComponent createEnergyNode() {
         EnergyNodeComponent node = new EnergyNodeComponent();
         node.setNodeType(EnergyNodeComponent.NodeType.MACHINE);
-        node.setCapacity(OreCrusherConfig.getCapacityForTier(OreCrusherConfig.MIN_TIER));
-        node.setMaxTransfer(OreCrusherConfig.getMaxTransferForTier(OreCrusherConfig.MIN_TIER));
-        node.setConsumption(OreCrusherConfig.getConsumptionPerSecond(OreCrusherConfig.MIN_TIER));
+        node.setCapacity(AlloySmelterConfig.getCapacityForTier(AlloySmelterConfig.MIN_TIER));
+        node.setMaxTransfer(AlloySmelterConfig.getMaxTransferForTier(AlloySmelterConfig.MIN_TIER));
+        node.setConsumption(AlloySmelterConfig.getConsumptionPerSecond(AlloySmelterConfig.MIN_TIER));
         node.setInputMask(EnergySide.ALL_MASK);
         node.setOutputMask(EnergySide.ALL_MASK);
         return node;
@@ -65,26 +66,26 @@ public final class OreCrusherMachine implements MachineDefinition {
         if (energy.getOutputMask() != EnergySide.ALL_MASK) {
             energy.setOutputMask(EnergySide.ALL_MASK);
         }
-        int tier = OreCrusherConfig.clampTier(machine.getTier());
+        int tier = AlloySmelterConfig.clampTier(machine.getTier());
         if (machine.getTier() != tier) {
             machine.setTier(tier);
         }
-        int capacity = OreCrusherConfig.getCapacityForTier(tier);
+        int capacity = AlloySmelterConfig.getCapacityForTier(tier);
         if (energy.getCapacity() != capacity) {
             energy.setCapacity(capacity);
             if (energy.getEnergy() > capacity) {
                 energy.setEnergy(capacity);
             }
         }
-        int consumption = OreCrusherConfig.getConsumptionPerSecond(tier);
+        int consumption = AlloySmelterConfig.getConsumptionPerSecond(tier);
         if (energy.getConsumption() != consumption) {
             energy.setConsumption(consumption);
         }
-        int maxTransfer = OreCrusherConfig.getMaxTransferForTier(tier);
+        int maxTransfer = AlloySmelterConfig.getMaxTransferForTier(tier);
         if (energy.getMaxTransfer() != maxTransfer) {
             energy.setMaxTransfer(maxTransfer);
         }
-        int desiredProgressMax = OreCrusherConfig.getProcessingDelayTicks(tier);
+        int desiredProgressMax = AlloySmelterConfig.getProcessingDelayTicks(tier);
         if (machine.getProgressMax() != desiredProgressMax) {
             machine.setProgressMax(desiredProgressMax);
             if (machine.getProgress() > desiredProgressMax) {
@@ -138,26 +139,14 @@ public final class OreCrusherMachine implements MachineDefinition {
         }
 
         ItemContainer container = context.getItemContainer();
-        if (container == null || container.getCapacity() <= INPUT_SLOT) {
+        if (container == null || container.getCapacity() < INPUT_SLOT_COUNT) {
             if (changed) {
                 context.markDirty();
             }
             return changed;
         }
 
-        ItemStack input = container.getItemStack(INPUT_SLOT);
-        if (input == null || ItemStack.isEmpty(input)) {
-            if (machine.getProgress() != 0) {
-                machine.setProgress(0);
-                changed = true;
-            }
-            if (changed) {
-                context.markDirty();
-            }
-            return changed;
-        }
-
-        OreCrusherRecipes.RecipeEntry recipe = OreCrusherRecipes.findByInput(input.getItemId());
+        AlloySmelterRecipes.RecipeEntry recipe = findMatchingRecipe(container);
         if (recipe == null) {
             if (machine.getProgress() != 0) {
                 machine.setProgress(0);
@@ -169,20 +158,19 @@ public final class OreCrusherMachine implements MachineDefinition {
             return changed;
         }
 
-        int requiredInput = Math.max(1, recipe.inputQuantity);
-        if (input.getQuantity() < requiredInput) {
-            if (machine.getProgress() != 0) {
-                machine.setProgress(0);
-                changed = true;
-            }
+        int tier = AlloySmelterConfig.clampTier(machine.getTier());
+        String primaryInputId = resolvePrimaryInputId(recipe);
+        if (!canFitOutputs(container, recipe, tier, primaryInputId)) {
             if (changed) {
                 context.markDirty();
             }
             return changed;
         }
-
-        int tier = OreCrusherConfig.clampTier(machine.getTier());
-        if (!canFitOutputs(container, recipe, tier, input.getItemId())) {
+        if (!hasInputs(container, recipe)) {
+            if (machine.getProgress() != 0) {
+                machine.setProgress(0);
+                changed = true;
+            }
             if (changed) {
                 context.markDirty();
             }
@@ -219,9 +207,9 @@ public final class OreCrusherMachine implements MachineDefinition {
         }
 
         machine.setProgress(0);
-        boolean outputAdded = applyOutputs(container, recipe, tier, input.getItemId());
+        boolean outputAdded = applyOutputs(container, recipe, tier, primaryInputId);
         if (outputAdded) {
-            container.removeItemStackFromSlot(INPUT_SLOT, requiredInput);
+            consumeInputs(container, recipe);
             MachineItemAccess.markContainerDirty(context.getWorld(), context.getX(), context.getY(), context.getZ());
             changed = true;
         }
@@ -229,9 +217,103 @@ public final class OreCrusherMachine implements MachineDefinition {
         return changed;
     }
 
+    private AlloySmelterRecipes.RecipeEntry findMatchingRecipe(ItemContainer container) {
+        if (container == null) {
+            return null;
+        }
+        List<AlloySmelterRecipes.RecipeEntry> recipes = AlloySmelterRecipes.getRecipes();
+        if (recipes == null || recipes.isEmpty()) {
+            return null;
+        }
+        for (AlloySmelterRecipes.RecipeEntry recipe : recipes) {
+            if (recipe == null) {
+                continue;
+            }
+            if (hasInputs(container, recipe)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    private boolean hasInputs(ItemContainer container, AlloySmelterRecipes.RecipeEntry recipe) {
+        if (container == null || recipe == null) {
+            return false;
+        }
+        MaterialQuantity[] inputs = recipe.inputs == null ? MaterialQuantity.EMPTY_ARRAY : recipe.inputs;
+        boolean foundAny = false;
+        for (MaterialQuantity input : inputs) {
+            if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+                continue;
+            }
+            foundAny = true;
+            int required = Math.max(1, input.getQuantity());
+            int available = countInputItem(container, input.getItemId());
+            if (available < required) {
+                return false;
+            }
+        }
+        return foundAny;
+    }
+
+    private void consumeInputs(ItemContainer container, AlloySmelterRecipes.RecipeEntry recipe) {
+        if (container == null || recipe == null) {
+            return;
+        }
+        MaterialQuantity[] inputs = recipe.inputs == null ? MaterialQuantity.EMPTY_ARRAY : recipe.inputs;
+        for (MaterialQuantity input : inputs) {
+            if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+                continue;
+            }
+            int remaining = Math.max(1, input.getQuantity());
+            for (short slot = 0; slot < INPUT_SLOT_COUNT && remaining > 0; slot++) {
+                ItemStack stack = container.getItemStack(slot);
+                if (stack == null || ItemStack.isEmpty(stack)) {
+                    continue;
+                }
+                if (!stack.getItemId().equalsIgnoreCase(input.getItemId())) {
+                    continue;
+                }
+                int remove = Math.min(remaining, stack.getQuantity());
+                container.removeItemStackFromSlot(slot, remove);
+                remaining -= remove;
+            }
+        }
+    }
+
+    private int countInputItem(ItemContainer container, String itemId) {
+        if (container == null || itemId == null || itemId.isEmpty()) {
+            return 0;
+        }
+        int total = 0;
+        for (short slot = 0; slot < INPUT_SLOT_COUNT; slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                continue;
+            }
+            if (itemId.equalsIgnoreCase(stack.getItemId())) {
+                total += stack.getQuantity();
+            }
+        }
+        return total;
+    }
+
+    private String resolvePrimaryInputId(AlloySmelterRecipes.RecipeEntry recipe) {
+        if (recipe == null) {
+            return null;
+        }
+        MaterialQuantity[] inputs = recipe.inputs == null ? MaterialQuantity.EMPTY_ARRAY : recipe.inputs;
+        for (MaterialQuantity input : inputs) {
+            if (input != null && input.getItemId() != null && !input.getItemId().isEmpty()) {
+                return input.getItemId();
+            }
+        }
+        return recipe.inputItemId;
+    }
+
     private boolean canFitOutputs(
             ItemContainer container,
-            OreCrusherRecipes.RecipeEntry recipe,
+            AlloySmelterRecipes.RecipeEntry recipe,
             int tier,
             String inputItemId) {
         List<MaterialQuantity> outputs = buildOutputList(recipe, tier, inputItemId, false);
@@ -278,7 +360,7 @@ public final class OreCrusherMachine implements MachineDefinition {
 
     private boolean applyOutputs(
             ItemContainer container,
-            OreCrusherRecipes.RecipeEntry recipe,
+            AlloySmelterRecipes.RecipeEntry recipe,
             int tier,
             String inputItemId) {
         boolean addedAny = false;
@@ -375,12 +457,12 @@ public final class OreCrusherMachine implements MachineDefinition {
     }
 
     private List<MaterialQuantity> buildOutputList(
-            OreCrusherRecipes.RecipeEntry recipe,
+            AlloySmelterRecipes.RecipeEntry recipe,
             int tier,
             String inputItemId,
             boolean rollBonuses) {
         List<MaterialQuantity> list = new java.util.ArrayList<>();
-        int multiplier = Math.max(1, OreCrusherConfig.getOutputMultiplierForTier(tier));
+        int multiplier = Math.max(1, AlloySmelterConfig.getOutputMultiplierForTier(tier));
 
         MaterialQuantity[] outputs = recipe.outputs;
         if (outputs == null || outputs.length == 0) {
@@ -400,15 +482,14 @@ public final class OreCrusherMachine implements MachineDefinition {
             }
         }
 
-        String recipeOutputId = recipe.outputItemId;
-        List<OreCrusherConfig.BonusDrop> bonuses =
-                OreCrusherConfig.getBonusDropsForOre(inputItemId, recipeOutputId);
+        List<AlloySmelterConfig.BonusDrop> bonuses =
+                AlloySmelterConfig.getBonusDropsForInput(inputItemId);
         if (bonuses.isEmpty()) {
             return list;
         }
 
         java.util.concurrent.ThreadLocalRandom random = java.util.concurrent.ThreadLocalRandom.current();
-        for (OreCrusherConfig.BonusDrop bonus : bonuses) {
+        for (AlloySmelterConfig.BonusDrop bonus : bonuses) {
             if (bonus == null) {
                 continue;
             }
@@ -420,9 +501,6 @@ public final class OreCrusherMachine implements MachineDefinition {
                 continue;
             }
             String bonusItemId = bonus.getItemId();
-            if ("__ore_powder__".equals(bonusItemId)) {
-                bonusItemId = OreCrusherConfig.resolvePowderId(inputItemId, recipeOutputId);
-            }
             if (bonusItemId == null || bonusItemId.isEmpty()) {
                 continue;
             }

@@ -16,6 +16,7 @@ public final class MachinariumIds {
     public static final String WIND_PAGE_ID = "machinarium_wind_page";
     public static final String FURNACE_PAGE_ID = "machinarium_furnace_page";
     public static final String ORE_CRUSHER_PAGE_ID = "machinarium_ore_crusher_page";
+    public static final String ALLOY_SMELTER_PAGE_ID = "machinarium_alloy_smelter_page";
     public static final String CABLE_PAGE_ID = "machinarium_cable_page";
     public static final String ITEM_CABLE_PAGE_ID = "machinarium_item_cable_page";
     public static final String QUARRY_PAGE_ID = "machinarium_quarry_page";
@@ -31,6 +32,7 @@ public final class MachinariumIds {
     public static final String BLOCK_BATTERY = "Machinarium_Battery";
     public static final String BLOCK_ELECTRIC_FURNACE = "Machinarium_Electric_Furnace";
     public static final String BLOCK_ORE_CRUSHER = "Machinarium_Ore_Crusher";
+    public static final String BLOCK_ALLOY_SMELTER = "Machinarium_Alloy_Smelter";
     public static final String BLOCK_ELECTRICAL_WORKBENCH = "Machinarium_Electrical_Workbench";
     public static final String BLOCK_QUARRY = "Machinarium_Quarry";
     public static final String BLOCK_QUARRY_BORDER = "Machinarium_Quarry_Border";

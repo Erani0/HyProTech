@@ -24,7 +24,7 @@ $C.@PageOverlay {
     #Title {
       Group {
         $C.@Title {
-          @Text = "Ore Crusher";
+          @Text = "Alloy Smelter";
         }
       }
     }
@@ -88,7 +88,7 @@ $C.@PageOverlay {
                   Wrap: true
                 );
                 Anchor: (Left: 0, Right: 0);
-                Text: "Select an ore to load inputs from your inventory.";
+                Text: "Select an alloy to load inputs from your inventory.";
               }
             }
 
@@ -105,18 +105,18 @@ $C.@PageOverlay {
 
                 Group {
                   LayoutMode: Left;
-                  Anchor: (Width: 260, Height: 92);
+                  Anchor: (Width: 424, Height: 92);
 
                   ItemGrid #InputGrid {
-                    Anchor: (Width: 44, Height: 44);
-                    SlotsPerRow: 1;
+                    Anchor: (Width: 92, Height: 92);
+                    SlotsPerRow: 2;
                     AreItemsDraggable: true;
                     ShowScrollbar: false;
                     RenderItemQualityBackground: false;
                     Style: (
                       SlotSize: @ItemSlotInner,
                       SlotIconSize: @ItemSlotInner,
-                      SlotSpacing: 0,
+                      SlotSpacing: 4,
                       SlotBackground: "Common/BlockSelectorSlotBackground.png"
                     );
                   }

@@ -6,6 +6,31 @@
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 2
+      },
+      {
+        "ItemId": "Machinarium_Manganese_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Machinarium_Alloy_Steel"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
   "Texture": "Items/CraftingItems/Alloys/Steel.png",
   "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Steel.png",

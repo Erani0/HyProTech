@@ -6,6 +6,35 @@
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Machinarium_Alloy_Steel",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Titanium_Vanadium_Alloy",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Tungsten_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Machinarium_Composite_Alloy_Ingot"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
   "Texture": "Items/CraftingItems/Alloys/compositealloy.png",
   "Icon": "Icons/ItemsGenerated/Machinarium_Composite_Alloy_Ingot.png",

@@ -6,6 +6,35 @@
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Machinarium_Composite_Alloy_Ingot",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Chromium_Ingot",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Aluminum_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Machinarium_High_Tier_Alloy_Blend"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
   "Texture": "Items/CraftingItems/Alloys/hightier.png",
   "Icon": "Icons/ItemsGenerated/Machinarium_High_Tier_Alloy_Blend.png",

@@ -7,9 +7,9 @@ import com.example.plugin.energy.EnergyNodeComponent;
 import com.example.plugin.energy.EnergyUnits;
 import com.example.plugin.machine.MachineComponent;
 import com.example.plugin.machine.MachineItemAccess;
-import com.example.plugin.machine.OreCrusherConfig;
-import com.example.plugin.machine.OreCrusherMachine;
-import com.example.plugin.machine.OreCrusherRecipes;
+import com.example.plugin.machine.AlloySmelterConfig;
+import com.example.plugin.machine.AlloySmelterMachine;
+import com.example.plugin.machine.AlloySmelterRecipes;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
@@ -20,6 +20,7 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.inventory.Inventory;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> implements WindowlessPage {
+public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEvent> implements WindowlessPage {
     private static final String ACTION_UPGRADE = "Upgrade";
     private static final String ACTION_TOGGLE = "ToggleEnabled";
     private static final String ACTION_DRAG_START = "DragStart";
@@ -64,19 +65,20 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final String ACTION_RECIPE_QTY_PLUS = "RecipeQtyPlus";
     private static final String ACTION_RECIPE_QTY_PLUS_TEN = "RecipeQtyPlusTen";
     private static final String ACTION_RECIPE_QTY_ALL = "RecipeQtyAll";
-    private static final String PAGE_LAYOUT = "Machinarium_OreCrusher_HyUI.ui";
+    private static final String PAGE_LAYOUT = "Machinarium_AlloySmelter_HyUI.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final long DRAG_DEDUP_WINDOW_MS = 120L;
     private static final long DRAG_SOURCE_WINDOW_MS = 1500L;
     private static final long INPUT_DROP_SUPPRESS_MS = 250L;
     private static final String ENABLE_LABEL = "TURN ON";
     private static final String DISABLE_LABEL = "TURN OFF";
-    private static final short INPUT_SLOT = 0;
-    private static final short OUTPUT_SLOT_START = 1;
-    private static final int OUTPUT_SLOT_COUNT = OreCrusherConfig.OUTPUT_SLOT_COUNT;
+    private static final short INPUT_SLOT_START = 0;
+    private static final int INPUT_SLOT_COUNT = AlloySmelterConfig.INPUT_SLOT_COUNT;
+    private static final short OUTPUT_SLOT_START = (short) INPUT_SLOT_COUNT;
+    private static final int OUTPUT_SLOT_COUNT = AlloySmelterConfig.OUTPUT_SLOT_COUNT;
     private static final short OUTPUT_SLOT_END =
             (short) (OUTPUT_SLOT_START + OUTPUT_SLOT_COUNT - 1);
-    // ItemGrid index mapping follows UI order in Machinarium_OreCrusher_HyUI.ui
+    // ItemGrid index mapping follows UI order in Machinarium_AlloySmelter_HyUI.ui
     private static final int GRID_INDEX_RECIPE = 0;
     private static final int GRID_INDEX_INPUT = 1;
     private static final int GRID_INDEX_OUTPUT = 2;
@@ -167,12 +169,12 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private int selectedRecipeIndex = -1;
     private int recipeQuantity = 1;
 
-    public OreCrusherPage(
+    public AlloySmelterPage(
             PlayerRef playerRef,
             Ref<ChunkStore> blockRef,
             ComponentType<ChunkStore, EnergyNodeComponent> energyType,
             ComponentType<ChunkStore, MachineComponent> machineType) {
-        super(playerRef, CustomPageLifetime.CanDismiss, OreCrusherUiEvent.CODEC);
+        super(playerRef, CustomPageLifetime.CanDismiss, AlloySmelterUiEvent.CODEC);
         this.blockRef = blockRef;
         this.energyType = energyType;
         this.machineType = machineType;
@@ -203,7 +205,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     @Override
-    public void handleDataEvent(Ref<EntityStore> playerRef, Store<EntityStore> store, OreCrusherUiEvent data) {
+    public void handleDataEvent(Ref<EntityStore> playerRef, Store<EntityStore> store, AlloySmelterUiEvent data) {
         if (data == null || data.getAction() == null) {
             return;
         }
@@ -345,7 +347,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private void initStaticUi(UICommandBuilder update) {
-        update.set("#CrusherTier.Text", "Tier: " + OreCrusherConfig.getTierName(OreCrusherConfig.MIN_TIER));
+        update.set("#CrusherTier.Text", "Tier: " + AlloySmelterConfig.getTierName(AlloySmelterConfig.MIN_TIER));
         update.set("#CrusherEnergy.Text", "Energy: 0 / 0");
         update.set("#CrusherConsumption.Text", "Consumption: 0 J/s");
         update.set("#CrusherProgress.Text", "Progress: 0%");
@@ -378,7 +380,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             if (pos != null) {
                 BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
                 String blockId = blockType == null ? null : blockType.getId();
-                int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+                int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
                 if (parsedTier > 0 && machine != null && machine.getTier() != parsedTier && node != null) {
                     machine.setTier(parsedTier);
                     applyTier(machine, node, parsedTier);
@@ -452,8 +454,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private boolean updateYield(UICommandBuilder update, MachineComponent machine) {
-        int tier = machine == null ? OreCrusherConfig.MIN_TIER : OreCrusherConfig.clampTier(machine.getTier());
-        int yield = OreCrusherConfig.getOutputMultiplierForTier(tier);
+        int tier = machine == null ? AlloySmelterConfig.MIN_TIER : AlloySmelterConfig.clampTier(machine.getTier());
+        int yield = AlloySmelterConfig.getOutputMultiplierForTier(tier);
         if (yield != lastYield) {
             update.set("#CrusherYield.Text", "Yield: " + yield + "x");
             lastYield = yield;
@@ -495,16 +497,12 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return updateEmptyMachineSlots(update);
         }
 
-        ItemStack input = container.getCapacity() > INPUT_SLOT
-                ? container.getItemStack(INPUT_SLOT)
-                : null;
-
-        String inputKey = buildSlotKey(input);
+        String inputKey = buildInputKey(container);
         String outputKey = buildOutputKey(container);
         boolean changed = false;
 
         if (!inputKey.equals(lastInputKey)) {
-            update.set("#InputGrid.Slots", buildSingleSlotList(input));
+            update.set("#InputGrid.Slots", buildInputSlots(container));
             lastInputKey = inputKey;
             changed = true;
         }
@@ -555,7 +553,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private boolean updateEmptyMachineSlots(UICommandBuilder update) {
         boolean changed = false;
         if (!"empty".equals(lastInputKey)) {
-            update.set("#InputGrid.Slots", buildEmptySlots(1, true));
+            update.set("#InputGrid.Slots", buildEmptySlots(INPUT_SLOT_COUNT, true));
             lastInputKey = "empty";
             changed = true;
         }
@@ -568,38 +566,38 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private String updateUpgradePanel(UICommandBuilder update, MachineComponent machine, ItemContainer inventory) {
-        int tier = machine == null ? OreCrusherConfig.MIN_TIER : OreCrusherConfig.clampTier(machine.getTier());
+        int tier = machine == null ? AlloySmelterConfig.MIN_TIER : AlloySmelterConfig.clampTier(machine.getTier());
         if (tier != lastTier) {
-            update.set("#CrusherTier.Text", "Tier: " + OreCrusherConfig.getTierName(tier));
+            update.set("#CrusherTier.Text", "Tier: " + AlloySmelterConfig.getTierName(tier));
             lastTier = tier;
         }
 
-        boolean hasNextTier = OreCrusherConfig.hasNextTier(tier);
+        boolean hasNextTier = AlloySmelterConfig.hasNextTier(tier);
         String nextText = hasNextTier
-                ? "Next: " + OreCrusherConfig.getTierName(tier + 1)
+                ? "Next: " + AlloySmelterConfig.getTierName(tier + 1)
                 : "Next: Max";
         update.set("#CrusherNextTier.Text", nextText);
 
         String statsText = hasNextTier
-                ? "Capacity: " + EnergyUnits.formatJoules(OreCrusherConfig.getCapacityForTier(tier + 1))
+                ? "Capacity: " + EnergyUnits.formatJoules(AlloySmelterConfig.getCapacityForTier(tier + 1))
                         + " | Consumption: "
-                        + EnergyUnits.formatJoulesPerSecond(OreCrusherConfig.getConsumptionPerSecond(tier + 1))
+                        + EnergyUnits.formatJoulesPerSecond(AlloySmelterConfig.getConsumptionPerSecond(tier + 1))
                         + " | Speed: " + String.format(
                                 Locale.US,
                                 "%.2fs",
-                                OreCrusherConfig.getProcessingSecondsForTier(tier + 1))
-                        + " | Yield: " + OreCrusherConfig.getOutputMultiplierForTier(tier + 1) + "x"
+                                AlloySmelterConfig.getProcessingSecondsForTier(tier + 1))
+                        + " | Yield: " + AlloySmelterConfig.getOutputMultiplierForTier(tier + 1) + "x"
                 : "Max tier reached.";
         update.set("#CrusherUpgradeStats.Text", statsText);
 
-        OreCrusherConfig.Requirement[] requirements =
-                hasNextTier ? OreCrusherConfig.getUpgradeRequirements(tier)
-                        : new OreCrusherConfig.Requirement[0];
+        AlloySmelterConfig.Requirement[] requirements =
+                hasNextTier ? AlloySmelterConfig.getUpgradeRequirements(tier)
+                        : new AlloySmelterConfig.Requirement[0];
         int[] owned = new int[requirements.length];
         boolean canUpgrade = hasNextTier && inventory != null;
         StringBuilder reqKey = new StringBuilder();
         for (int i = 0; i < requirements.length; i++) {
-            OreCrusherConfig.Requirement requirement = requirements[i];
+            AlloySmelterConfig.Requirement requirement = requirements[i];
             owned[i] = inventory == null ? 0 : countItem(inventory, requirement.getItemId());
             if (owned[i] < requirement.getQuantity()) {
                 canUpgrade = false;
@@ -624,7 +622,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             boolean visible = hasNextTier && i < requirements.length;
             update.set(UPGRADE_ROW_IDS[i] + ".Visible", visible);
             if (visible) {
-                OreCrusherConfig.Requirement requirement = requirements[i];
+                AlloySmelterConfig.Requirement requirement = requirements[i];
                 update.set(UPGRADE_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(requirement.getItemId()));
                 update.set(UPGRADE_NAME_IDS[i] + ".Text", formatRequirementName(requirement.getItemId()));
                 update.set(UPGRADE_QTY_IDS[i] + ".Text", owned[i] + "/" + requirement.getQuantity());
@@ -640,18 +638,14 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private boolean updateBonusPanel(UICommandBuilder update, MachineComponent machine, ItemContainer container) {
-        int tier = machine == null ? OreCrusherConfig.MIN_TIER : OreCrusherConfig.clampTier(machine.getTier());
-        ItemStack input = container == null || container.getCapacity() <= INPUT_SLOT
-                ? null
-                : container.getItemStack(INPUT_SLOT);
-        String oreId = input == null || ItemStack.isEmpty(input) ? null : input.getItemId();
-        OreCrusherRecipes.RecipeEntry recipe = oreId == null ? null : OreCrusherRecipes.findByInput(oreId);
-        String recipeOutputId = recipe == null ? null : recipe.outputItemId;
-        List<OreCrusherConfig.BonusDrop> drops = OreCrusherConfig.getBonusDropsForOre(oreId, recipeOutputId);
+        int tier = machine == null ? AlloySmelterConfig.MIN_TIER : AlloySmelterConfig.clampTier(machine.getTier());
+        ItemStack input = getFirstInputStack(container);
+        String inputId = input == null || ItemStack.isEmpty(input) ? null : input.getItemId();
+        List<AlloySmelterConfig.BonusDrop> drops = AlloySmelterConfig.getBonusDropsForInput(inputId);
 
         StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.append(tier).append('|');
-        for (OreCrusherConfig.BonusDrop drop : drops) {
+        for (AlloySmelterConfig.BonusDrop drop : drops) {
             if (drop == null) {
                 continue;
             }
@@ -671,7 +665,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         update.set("#BonusHeader.Text", "Bonus Drops");
         boolean hasDrops = !drops.isEmpty();
         update.set("#BonusEmpty.Visible", !hasDrops);
-        update.set("#BonusEmpty.Text", hasDrops ? "" : "Insert ore to see bonus drops.");
+        update.set("#BonusEmpty.Text", hasDrops ? "" : "Insert alloy input to see bonus drops.");
 
         int count = Math.min(drops.size(), BONUS_ROW_IDS.length);
         for (int i = 0; i < BONUS_ROW_IDS.length; i++) {
@@ -680,7 +674,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             if (!visible) {
                 continue;
             }
-            OreCrusherConfig.BonusDrop drop = drops.get(i);
+            AlloySmelterConfig.BonusDrop drop = drops.get(i);
             if (drop == null) {
                 update.set(BONUS_SLOT_IDS[i] + ".ItemId", UiItemIds.safeItemId(null));
                 update.set(BONUS_NAME_IDS[i] + ".Text", "");
@@ -688,9 +682,6 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 continue;
             }
             String bonusItemId = drop.getItemId();
-            if ("__ore_powder__".equals(bonusItemId)) {
-                bonusItemId = OreCrusherConfig.resolvePowderId(oreId, recipeOutputId);
-            }
             if ("__random_crystal__".equals(bonusItemId)) {
                 bonusItemId = "Ingredient_Crystal_Blue";
             }
@@ -704,13 +695,13 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private boolean updateRecipeGrid(UICommandBuilder update) {
-        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+        List<AlloySmelterRecipes.RecipeEntry> recipes = AlloySmelterRecipes.getRecipes();
         StringBuilder keyBuilder = new StringBuilder();
-        for (OreCrusherRecipes.RecipeEntry entry : recipes) {
+        for (AlloySmelterRecipes.RecipeEntry entry : recipes) {
             if (entry == null) {
                 continue;
             }
-            keyBuilder.append(entry.inputItemId).append('|');
+            keyBuilder.append(entry.outputItemId).append('|');
         }
         String key = keyBuilder.toString();
         if (key.equals(lastRecipeGridKey)) {
@@ -719,11 +710,11 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         lastRecipeGridKey = key;
 
         List<ItemGridSlot> slots = new ArrayList<>(recipes.size());
-        for (OreCrusherRecipes.RecipeEntry entry : recipes) {
+        for (AlloySmelterRecipes.RecipeEntry entry : recipes) {
             if (entry == null) {
                 continue;
             }
-            ItemStack stack = new ItemStack(entry.inputItemId, Math.max(1, entry.inputQuantity));
+            ItemStack stack = new ItemStack(entry.outputItemId, Math.max(1, entry.outputQuantity));
             slots.add(createSlot(stack, true));
         }
         update.set("#RecipeGrid.Slots", slots);
@@ -731,7 +722,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private boolean updateRecipeDetails(UICommandBuilder update, MachineComponent machine, ItemContainer inventory) {
-        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        AlloySmelterRecipes.RecipeEntry entry = getSelectedRecipeEntry();
         if (entry == null) {
             String key = "empty";
             if (key.equals(lastRecipeDetailsKey)) {
@@ -747,9 +738,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
 
         int quantity = Math.max(1, recipeQuantity);
         int outputQty = Math.max(1, entry.outputQuantity) * quantity;
-        int available = inventory == null ? 0 : countItem(inventory, entry.inputItemId);
-        int needed = Math.max(1, entry.inputQuantity) * quantity;
-        String detailKey = entry.inputItemId + "|" + quantity + "|" + outputQty + "|" + available;
+        int available = inventory == null ? 0 : resolveMaxCrafts(entry, inventory);
+        int needed = quantity;
+        String detailKey = entry.outputItemId + "|" + quantity + "|" + outputQty + "|" + available;
         if (detailKey.equals(lastRecipeDetailsKey)) {
             return false;
         }
@@ -801,8 +792,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         update.set("#RecipeCostText.Text", "");
     }
 
-    private void handleRecipeSelect(Store<EntityStore> store, OreCrusherUiEvent data) {
-        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+    private void handleRecipeSelect(Store<EntityStore> store, AlloySmelterUiEvent data) {
+        List<AlloySmelterRecipes.RecipeEntry> recipes = AlloySmelterRecipes.getRecipes();
         if (recipes.isEmpty()) {
             return;
         }
@@ -827,7 +818,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private void handleRecipeQuantity(String action, Store<EntityStore> store) {
-        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        AlloySmelterRecipes.RecipeEntry entry = getSelectedRecipeEntry();
         if (entry == null) {
             return;
         }
@@ -855,7 +846,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         if (store == null) {
             return false;
         }
-        OreCrusherRecipes.RecipeEntry entry = getSelectedRecipeEntry();
+        AlloySmelterRecipes.RecipeEntry entry = getSelectedRecipeEntry();
         if (entry == null) {
             return false;
         }
@@ -868,29 +859,18 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return false;
         }
         ItemContainer machineContainer = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
-        if (machineContainer == null || machineContainer.getCapacity() <= INPUT_SLOT) {
+        if (machineContainer == null || machineContainer.getCapacity() < INPUT_SLOT_COUNT) {
             return false;
         }
 
         int quantity = Math.max(1, recipeQuantity);
-        int required = Math.max(1, entry.inputQuantity) * quantity;
-        ItemStack requiredStack = new ItemStack(entry.inputItemId, required);
-
-        ItemStack existing = machineContainer.getItemStack(INPUT_SLOT);
-        boolean slotEmpty = existing == null || ItemStack.isEmpty(existing);
-        if (existing != null && !ItemStack.isEmpty(existing)
-                && !existing.getItemId().equalsIgnoreCase(entry.inputItemId)) {
-            sendPlayerMessage(playerRef.getReference(), store, "Input slot is occupied.");
+        List<ItemStack> requiredStacks = buildRequiredInputStacks(entry, quantity);
+        if (requiredStacks.isEmpty()) {
             return false;
         }
-        boolean canAdd = machineContainer.canAddItemStackToSlot(INPUT_SLOT, requiredStack, true, true);
-        boolean forceInsert = false;
-        if (!canAdd) {
-            if (!slotEmpty) {
-                sendPlayerMessage(playerRef.getReference(), store, "Input slot is full.");
-                return false;
-            }
-            forceInsert = true;
+        if (!canFitInputStacks(machineContainer, requiredStacks)) {
+            sendPlayerMessage(playerRef.getReference(), store, "Input slots are full.");
+            return false;
         }
 
         Inventory inventoryFull = getPlayerInventoryFull(store);
@@ -904,29 +884,27 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         if (combined == null) {
             return false;
         }
-        if (!combined.canRemoveItemStack(requiredStack)) {
-            sendPlayerMessage(playerRef.getReference(), store, "Missing ore.");
-            return false;
-        }
-        ItemStackTransaction remove = combined.removeItemStack(requiredStack);
-        if (remove == null || !remove.succeeded()) {
-            sendPlayerMessage(playerRef.getReference(), store, "Failed to take ore.");
-            return false;
+        for (ItemStack required : requiredStacks) {
+            if (!combined.canRemoveItemStack(required)) {
+                sendPlayerMessage(playerRef.getReference(), store, "Missing alloy ingredients.");
+                return false;
+            }
         }
 
-        ItemStackSlotTransaction add = forceInsert
-                ? machineContainer.setItemStackForSlot(INPUT_SLOT, requiredStack, true)
-                : machineContainer.addItemStackToSlot(INPUT_SLOT, requiredStack);
-        if (add == null || !add.succeeded()) {
-            ItemStackTransaction refund = combined.addItemStack(requiredStack);
-            if (refund == null || !refund.succeeded()) {
-                sendPlayerMessage(playerRef.getReference(), store, "Failed to load ore (refund failed).");
-            } else {
-                sendPlayerMessage(
-                        playerRef.getReference(),
-                        store,
-                        forceInsert ? "Invalid ore for this machine." : "Failed to load ore.");
+        List<ItemStack> removedStacks = new ArrayList<>();
+        for (ItemStack required : requiredStacks) {
+            ItemStackTransaction remove = combined.removeItemStack(required);
+            if (remove == null || !remove.succeeded()) {
+                refundStacks(combined, removedStacks);
+                sendPlayerMessage(playerRef.getReference(), store, "Failed to take alloy ingredients.");
+                return false;
             }
+            removedStacks.add(required);
+        }
+
+        if (!addInputStacks(machineContainer, requiredStacks)) {
+            refundStacks(combined, removedStacks);
+            sendPlayerMessage(playerRef.getReference(), store, "Failed to load alloy ingredients.");
             return false;
         }
         MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
@@ -939,7 +917,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return true;
     }
 
-    private int resolveMaxRecipeQuantity(OreCrusherRecipes.RecipeEntry entry, Store<EntityStore> store) {
+    private int resolveMaxRecipeQuantity(AlloySmelterRecipes.RecipeEntry entry, Store<EntityStore> store) {
         if (entry == null || store == null) {
             return 1;
         }
@@ -947,14 +925,190 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         if (inventory == null) {
             return 1;
         }
-        int available = countItem(inventory, entry.inputItemId);
-        int perRecipe = Math.max(1, entry.inputQuantity);
-        int max = available / perRecipe;
+        int max = resolveMaxCrafts(entry, inventory);
         return Math.max(1, max);
     }
 
-    private OreCrusherRecipes.RecipeEntry getSelectedRecipeEntry() {
-        List<OreCrusherRecipes.RecipeEntry> recipes = OreCrusherRecipes.getRecipes();
+    private int resolveMaxCrafts(AlloySmelterRecipes.RecipeEntry entry, ItemContainer inventory) {
+        if (entry == null || inventory == null) {
+            return 0;
+        }
+        MaterialQuantity[] inputs = entry.inputs == null ? MaterialQuantity.EMPTY_ARRAY : entry.inputs;
+        int max = Integer.MAX_VALUE;
+        for (MaterialQuantity input : inputs) {
+            if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+                continue;
+            }
+            int per = Math.max(1, input.getQuantity());
+            int have = countItem(inventory, input.getItemId());
+            int possible = have / per;
+            if (possible < max) {
+                max = possible;
+            }
+        }
+        if (max == Integer.MAX_VALUE) {
+            return 0;
+        }
+        return Math.max(0, max);
+    }
+
+    private List<ItemStack> buildRequiredInputStacks(AlloySmelterRecipes.RecipeEntry entry, int quantity) {
+        List<ItemStack> stacks = new ArrayList<>();
+        if (entry == null) {
+            return stacks;
+        }
+        MaterialQuantity[] inputs = entry.inputs == null ? MaterialQuantity.EMPTY_ARRAY : entry.inputs;
+        for (MaterialQuantity input : inputs) {
+            if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+                continue;
+            }
+            int required = Math.max(1, input.getQuantity()) * Math.max(1, quantity);
+            stacks.add(new ItemStack(input.getItemId(), required));
+        }
+        return stacks;
+    }
+
+    private boolean canFitInputStacks(ItemContainer container, List<ItemStack> stacks) {
+        if (container == null || stacks == null) {
+            return false;
+        }
+        String[] slotItemIds = new String[INPUT_SLOT_COUNT];
+        int[] slotQty = new int[INPUT_SLOT_COUNT];
+        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+            ItemStack stack = getInputStack(container, i);
+            if (stack == null || ItemStack.isEmpty(stack)) {
+                slotItemIds[i] = null;
+                slotQty[i] = 0;
+            } else {
+                slotItemIds[i] = stack.getItemId();
+                slotQty[i] = stack.getQuantity();
+            }
+        }
+        for (ItemStack required : stacks) {
+            if (required == null || required.getItemId() == null || required.getItemId().isEmpty()) {
+                continue;
+            }
+            int remaining = Math.max(1, required.getQuantity());
+            int maxStack = getMaxStack(required.getItemId());
+            for (int i = 0; i < INPUT_SLOT_COUNT && remaining > 0; i++) {
+                if (slotItemIds[i] == null) {
+                    continue;
+                }
+                if (!slotItemIds[i].equalsIgnoreCase(required.getItemId())) {
+                    continue;
+                }
+                int space = Math.max(0, maxStack - slotQty[i]);
+                if (space <= 0) {
+                    continue;
+                }
+                int add = Math.min(space, remaining);
+                slotQty[i] += add;
+                remaining -= add;
+            }
+            for (int i = 0; i < INPUT_SLOT_COUNT && remaining > 0; i++) {
+                if (slotItemIds[i] != null) {
+                    continue;
+                }
+                int add = Math.min(maxStack, remaining);
+                slotItemIds[i] = required.getItemId();
+                slotQty[i] = add;
+                remaining -= add;
+            }
+            if (remaining > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean addInputStacks(ItemContainer container, List<ItemStack> stacks) {
+        if (container == null || stacks == null) {
+            return false;
+        }
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItemId() == null || stack.getItemId().isEmpty()) {
+                continue;
+            }
+            if (!addToInputSlots(container, stack.getItemId(), Math.max(1, stack.getQuantity()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean addToInputSlots(ItemContainer container, String itemId, int quantity) {
+        if (container == null || itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        int remaining = Math.max(1, quantity);
+        int maxStack = getMaxStack(itemId);
+
+        for (int i = 0; i < INPUT_SLOT_COUNT && remaining > 0; i++) {
+            short slot = (short) (INPUT_SLOT_START + i);
+            if (slot < 0 || slot >= container.getCapacity()) {
+                continue;
+            }
+            ItemStack existing = container.getItemStack(slot);
+            if (existing == null || ItemStack.isEmpty(existing)) {
+                continue;
+            }
+            if (!existing.getItemId().equalsIgnoreCase(itemId)) {
+                continue;
+            }
+            int space = Math.max(0, maxStack - existing.getQuantity());
+            if (space <= 0) {
+                continue;
+            }
+            int add = Math.min(space, remaining);
+            ItemStack merged = new ItemStack(itemId, existing.getQuantity() + add, existing.getMetadata());
+            container.setItemStackForSlot(slot, merged, true);
+            remaining -= add;
+        }
+
+        for (int i = 0; i < INPUT_SLOT_COUNT && remaining > 0; i++) {
+            short slot = (short) (INPUT_SLOT_START + i);
+            if (slot < 0 || slot >= container.getCapacity()) {
+                continue;
+            }
+            ItemStack existing = container.getItemStack(slot);
+            if (existing != null && !ItemStack.isEmpty(existing)) {
+                continue;
+            }
+            int add = Math.min(maxStack, remaining);
+            ItemStack newStack = new ItemStack(itemId, add);
+            container.setItemStackForSlot(slot, newStack, true);
+            remaining -= add;
+        }
+
+        return remaining <= 0;
+    }
+
+    private void refundStacks(ItemContainer container, List<ItemStack> stacks) {
+        if (container == null || stacks == null) {
+            return;
+        }
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItemId() == null || stack.getItemId().isEmpty()) {
+                continue;
+            }
+            container.addItemStack(stack);
+        }
+    }
+
+    private int getMaxStack(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return 100;
+        }
+        Item item = Item.getAssetMap().getAsset(itemId);
+        if (item == null || item == Item.UNKNOWN) {
+            return 100;
+        }
+        int max = item.getMaxStack();
+        return max > 0 ? max : 100;
+    }
+
+    private AlloySmelterRecipes.RecipeEntry getSelectedRecipeEntry() {
+        List<AlloySmelterRecipes.RecipeEntry> recipes = AlloySmelterRecipes.getRecipes();
         if (selectedRecipeIndex < 0 || selectedRecipeIndex >= recipes.size()) {
             return null;
         }
@@ -1019,9 +1173,9 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         if (world == null || machine == null || node == null) {
             return false;
         }
-        int currentTier = OreCrusherConfig.clampTier(machine.getTier());
-        if (!OreCrusherConfig.hasNextTier(currentTier)) {
-            sendPlayerMessage(playerRef, store, "Ore crusher is already at max tier.");
+        int currentTier = AlloySmelterConfig.clampTier(machine.getTier());
+        if (!AlloySmelterConfig.hasNextTier(currentTier)) {
+            sendPlayerMessage(playerRef, store, "Alloy smelter is already at max tier.");
             return false;
         }
 
@@ -1030,10 +1184,10 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return false;
         }
 
-        OreCrusherConfig.Requirement[] requirements =
-                OreCrusherConfig.getUpgradeRequirements(currentTier);
+        AlloySmelterConfig.Requirement[] requirements =
+                AlloySmelterConfig.getUpgradeRequirements(currentTier);
         List<ItemStack> stacks = new ArrayList<>(requirements.length);
-        for (OreCrusherConfig.Requirement requirement : requirements) {
+        for (AlloySmelterConfig.Requirement requirement : requirements) {
             stacks.add(new ItemStack(requirement.getItemId(), requirement.getQuantity()));
         }
 
@@ -1059,17 +1213,17 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
 
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, nextTier);
             BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
             String blockId = blockType == null ? null : blockType.getId();
-            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_ORE_CRUSHER, upgradedId);
+            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER, upgradedId);
             UpgradePersistence.queueBlockSwapWithContainer(world, pos, upgradedId, node);
         }
 
         sendPlayerMessage(
                 playerRef,
                 store,
-                "Upgraded ore crusher to " + OreCrusherConfig.getTierName(nextTier) + ".");
+                "Upgraded alloy smelter to " + AlloySmelterConfig.getTierName(nextTier) + ".");
         update(node, machine, true);
         return true;
     }
@@ -1087,11 +1241,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return false;
         }
         ItemContainer machineContainer = MachineItemAccess.getContainer(world, pos.getX(), pos.getY(), pos.getZ());
-        if (machineContainer == null || machineContainer.getCapacity() <= INPUT_SLOT) {
-            return false;
-        }
-        ItemStack input = machineContainer.getItemStack(INPUT_SLOT);
-        if (input == null || ItemStack.isEmpty(input)) {
+        if (machineContainer == null || machineContainer.getCapacity() < INPUT_SLOT_COUNT) {
             return false;
         }
         Inventory inventory = getPlayerInventoryFull(store);
@@ -1100,21 +1250,34 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         }
         ItemContainer hotbar = inventory.getHotbar();
         ItemContainer storage = inventory.getStorage();
-        ItemContainer target = null;
-        if (hotbar != null && hotbar.canAddItemStack(input)) {
-            target = hotbar;
-        } else if (storage != null && storage.canAddItemStack(input)) {
-            target = storage;
+        boolean movedAny = false;
+        for (short slot = 0; slot < INPUT_SLOT_COUNT; slot++) {
+            if (slot >= machineContainer.getCapacity()) {
+                continue;
+            }
+            ItemStack input = machineContainer.getItemStack(slot);
+            if (input == null || ItemStack.isEmpty(input)) {
+                continue;
+            }
+            ItemContainer target = null;
+            if (hotbar != null && hotbar.canAddItemStack(input)) {
+                target = hotbar;
+            } else if (storage != null && storage.canAddItemStack(input)) {
+                target = storage;
+            }
+            if (target == null) {
+                continue;
+            }
+            int quantity = input.getQuantity();
+            MoveTransaction<?> move = machineContainer.moveItemStackFromSlot(slot, quantity, target);
+            if (move == null || !move.succeeded()) {
+                move = machineContainer.moveItemStackFromSlot(slot, target);
+            }
+            if (move != null && move.succeeded()) {
+                movedAny = true;
+            }
         }
-        if (target == null) {
-            return false;
-        }
-        int quantity = input.getQuantity();
-        MoveTransaction<?> move = machineContainer.moveItemStackFromSlot(INPUT_SLOT, quantity, target);
-        if (move == null || !move.succeeded()) {
-            move = machineContainer.moveItemStackFromSlot(INPUT_SLOT, target);
-        }
-        if (move != null && move.succeeded()) {
+        if (movedAny) {
             MachineItemAccess.markContainerDirty(world, pos.getX(), pos.getY(), pos.getZ());
             return refreshSlots(store);
         }
@@ -1179,15 +1342,15 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private void applyTier(MachineComponent machine, EnergyNodeComponent node, int tier) {
-        int capacity = OreCrusherConfig.getCapacityForTier(tier);
+        int capacity = AlloySmelterConfig.getCapacityForTier(tier);
         node.setCapacity(capacity);
         if (node.getEnergy() > capacity) {
             node.setEnergy(capacity);
         }
-        node.setConsumption(OreCrusherConfig.getConsumptionPerSecond(tier));
-        node.setMaxTransfer(OreCrusherConfig.getMaxTransferForTier(tier));
+        node.setConsumption(AlloySmelterConfig.getConsumptionPerSecond(tier));
+        node.setMaxTransfer(AlloySmelterConfig.getMaxTransferForTier(tier));
 
-        int progressMax = OreCrusherConfig.getProcessingDelayTicks(tier);
+        int progressMax = AlloySmelterConfig.getProcessingDelayTicks(tier);
         machine.setProgressMax(progressMax);
         if (machine.getProgress() > progressMax) {
             machine.setProgress(progressMax);
@@ -1309,6 +1472,15 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return key;
     }
 
+    private String buildInputKey(ItemContainer container) {
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+            ItemStack stack = getInputStack(container, i);
+            appendStackKey(key, stack);
+        }
+        return key.toString();
+    }
+
     private String buildOutputKey(ItemContainer container) {
         StringBuilder key = new StringBuilder();
         for (int i = 0; i < OUTPUT_SLOT_COUNT; i++) {
@@ -1326,9 +1498,11 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return slots;
     }
 
-    private List<ItemGridSlot> buildSingleSlotList(ItemStack stack) {
-        List<ItemGridSlot> slots = new ArrayList<>(1);
-        slots.add(createSlot(stack, true));
+    private List<ItemGridSlot> buildInputSlots(ItemContainer container) {
+        List<ItemGridSlot> slots = new ArrayList<>(INPUT_SLOT_COUNT);
+        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+            slots.add(createSlot(getInputStack(container, i), true));
+        }
         return slots;
     }
 
@@ -1374,6 +1548,30 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return null;
         }
         return container.getItemStack(slot);
+    }
+
+    private ItemStack getInputStack(ItemContainer container, int inputIndex) {
+        if (container == null || inputIndex < 0 || inputIndex >= INPUT_SLOT_COUNT) {
+            return null;
+        }
+        short slot = (short) (INPUT_SLOT_START + inputIndex);
+        if (slot < 0 || slot >= container.getCapacity()) {
+            return null;
+        }
+        return container.getItemStack(slot);
+    }
+
+    private ItemStack getFirstInputStack(ItemContainer container) {
+        if (container == null) {
+            return null;
+        }
+        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+            ItemStack stack = getInputStack(container, i);
+            if (stack != null && !ItemStack.isEmpty(stack)) {
+                return stack;
+            }
+        }
+        return null;
     }
 
     private ItemGridSlot createSlot(ItemStack stack, boolean skipQualityBackground) {
@@ -1725,7 +1923,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 || ACTION_INVENTORY_DROP.equalsIgnoreCase(action);
     }
 
-    private boolean handleClickDrop(Store<EntityStore> store, OreCrusherUiEvent data, GridType targetGrid) {
+    private boolean handleClickDrop(Store<EntityStore> store, AlloySmelterUiEvent data, GridType targetGrid) {
         if (store == null || data == null || targetGrid == null) {
             return false;
         }
@@ -1742,7 +1940,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                         || data.getSourceInventorySectionId() != null
                         || data.getSourceItemGridIndex() != null;
         if (hasExplicitSource) {
-            OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+            AlloySmelterUiEvent dropEvent = new AlloySmelterUiEvent();
             dropEvent.setAction(action);
             dropEvent.setSlotIndex(targetSlot);
             dropEvent.setTarget(data.getTarget());
@@ -1770,7 +1968,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 return true;
             }
 
-            OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+            AlloySmelterUiEvent dropEvent = new AlloySmelterUiEvent();
             String sourceSectionId = gridSectionId(cursor.grid);
             Integer sourceGridIndex = gridIndexFor(cursor.grid);
             Integer quantity = cursor.quantity > 0 ? cursor.quantity : null;
@@ -1823,7 +2021,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return false;
         }
 
-        OreCrusherUiEvent dropEvent = new OreCrusherUiEvent();
+        AlloySmelterUiEvent dropEvent = new AlloySmelterUiEvent();
         String sourceSectionId = gridSectionId(snapshot.grid);
         Integer sourceGridIndex = gridIndexFor(snapshot.grid);
         Integer quantity = snapshot.quantity > 0 ? snapshot.quantity : null;
@@ -1887,7 +2085,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
 
-    private void handleDrag(Store<EntityStore> store, OreCrusherUiEvent data) {
+    private void handleDrag(Store<EntityStore> store, AlloySmelterUiEvent data) {
         boolean updateSent = false;
         try {
             if (store == null || data == null) {
@@ -2163,7 +2361,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         }
     }
 
-    private void debugDragEvent(Store<EntityStore> store, OreCrusherUiEvent data) {
+    private void debugDragEvent(Store<EntityStore> store, AlloySmelterUiEvent data) {
         String msg = "DBG Drag action=" + data.getAction()
                 + " target=" + data.getTarget()
                 + " slotIndex=" + data.getSlotIndex()
@@ -2179,7 +2377,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         System.out.println("[Machinarium] v2 " + msg);
     }
 
-    private void debugClickEvent(String label, OreCrusherUiEvent data) {
+    private void debugClickEvent(String label, AlloySmelterUiEvent data) {
         if (data == null) {
             return;
         }
@@ -2358,7 +2556,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
 
     private GridType reconcileSourceGrid(
             GridType sourceGrid,
-            OreCrusherUiEvent data,
+            AlloySmelterUiEvent data,
             Inventory inventory,
             ItemContainer machineContainer) {
         if (sourceGrid == null || data == null || machineContainer == null) {
@@ -2384,10 +2582,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             }
         }
 
-        ItemStack input = machineContainer.getCapacity() > INPUT_SLOT
-                ? machineContainer.getItemStack(INPUT_SLOT)
-                : null;
-        boolean matchesInput = stackMatches(input, itemId);
+        boolean matchesInput = matchesAnyInput(machineContainer, itemId);
         boolean matchesOutput = matchesAnyOutput(machineContainer, itemId);
 
         if (matchesOutput && !matchesInput) {
@@ -2408,6 +2603,22 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             return false;
         }
         for (short slot = OUTPUT_SLOT_START; slot <= OUTPUT_SLOT_END && slot < container.getCapacity(); slot++) {
+            ItemStack stack = container.getItemStack(slot);
+            if (stackMatches(stack, itemId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean matchesAnyInput(ItemContainer container, String itemId) {
+        if (container == null || itemId == null) {
+            return false;
+        }
+        if (container.getCapacity() < INPUT_SLOT_COUNT) {
+            return false;
+        }
+        for (short slot = INPUT_SLOT_START; slot < INPUT_SLOT_COUNT && slot < container.getCapacity(); slot++) {
             ItemStack stack = container.getItemStack(slot);
             if (stackMatches(stack, itemId)) {
                 return true;
@@ -2440,7 +2651,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return null;
     }
 
-    private void captureDragSource(OreCrusherUiEvent data) {
+    private void captureDragSource(AlloySmelterUiEvent data) {
         if (data == null) {
             return;
         }
@@ -2470,7 +2681,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 System.currentTimeMillis());
     }
 
-    private void captureClickSource(GridType grid, OreCrusherUiEvent data) {
+    private void captureClickSource(GridType grid, AlloySmelterUiEvent data) {
         if (data == null || grid == null) {
             return;
         }
@@ -2511,7 +2722,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return clickCursor;
     }
 
-    private boolean dragMatchesSnapshot(OreCrusherUiEvent data, DragSnapshot snapshot) {
+    private boolean dragMatchesSnapshot(AlloySmelterUiEvent data, DragSnapshot snapshot) {
         if (snapshot == null) {
             return false;
         }
@@ -2546,7 +2757,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         return null;
     }
 
-    private String resolveEventItemId(OreCrusherUiEvent data) {
+    private String resolveEventItemId(AlloySmelterUiEvent data) {
         if (data == null) {
             return null;
         }
@@ -2560,7 +2771,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private SlotRef resolvePlayerSourceRef(
             Inventory inventory,
             Integer sourceSlotId,
-            OreCrusherUiEvent data,
+            AlloySmelterUiEvent data,
             PlayerIndexMode playerIndexMode) {
         String itemId = resolveEventItemId(data);
         Integer desiredQty = data == null ? null : data.getItemStackQuantity();
@@ -2653,7 +2864,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private GridType inferSourceGrid(
-            OreCrusherUiEvent data,
+            AlloySmelterUiEvent data,
             GridType targetGrid,
             Inventory inventory,
             ItemContainer machineContainer) {
@@ -2682,8 +2893,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         }
 
         if (itemId != null && machineContainer != null) {
-            ItemStack input = machineContainer.getItemStack(INPUT_SLOT);
-            if (input != null && !ItemStack.isEmpty(input) && itemId.equals(input.getItemId())) {
+            if (matchesAnyInput(machineContainer, itemId)) {
                 return GridType.INPUT;
             }
             if (matchesAnyOutput(machineContainer, itemId)) {
@@ -2717,7 +2927,17 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
             ItemContainer machineContainer,
             PlayerIndexMode playerIndexMode) {
         if (gridType == GridType.INPUT) {
-            return machineContainer == null ? null : new SlotRef(machineContainer, INPUT_SLOT);
+            if (machineContainer == null) {
+                return null;
+            }
+            if (slotIndex < 0 || slotIndex >= INPUT_SLOT_COUNT) {
+                return null;
+            }
+            short inputSlot = (short) (INPUT_SLOT_START + slotIndex);
+            if (inputSlot < INPUT_SLOT_START || inputSlot >= INPUT_SLOT_START + INPUT_SLOT_COUNT) {
+                return null;
+            }
+            return new SlotRef(machineContainer, inputSlot);
         }
         if (gridType == GridType.OUTPUT) {
             if (machineContainer == null) {

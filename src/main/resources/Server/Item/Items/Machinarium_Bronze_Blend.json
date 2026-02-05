@@ -6,6 +6,31 @@
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 3
+      },
+      {
+        "ItemId": "Machinarium_Tin_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Ingredient_Bar_Bronze"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
   "Texture": "Items/CraftingItems/textures/iron_powder.png",
   "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Steel.png",

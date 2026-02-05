@@ -372,6 +372,26 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
                     }
                     oreCrusherPage.update(node, machine);
                 }
+            } else if (page instanceof AlloySmelterPage) {
+                AlloySmelterPage alloySmelterPage = (AlloySmelterPage) page;
+                Vector3i pos = alloySmelterPage.resolveBlockPosition(world);
+                EnergyNodeComponent node = pos == null
+                        ? null
+                        : getEnergyNodeAt(world, pos.getX(), pos.getY(), pos.getZ());
+                if (node == null) {
+                    Ref<ChunkStore> ref = alloySmelterPage.resolveBlockRef(world);
+                    node = chunkStore.getComponent(ref, energyType);
+                }
+                if (node != null) {
+                    MachineComponent machine = pos == null
+                            ? null
+                            : getMachineAt(world, pos.getX(), pos.getY(), pos.getZ());
+                    if (machine == null) {
+                        Ref<ChunkStore> ref = alloySmelterPage.resolveBlockRef(world);
+                        machine = chunkStore.getComponent(ref, machineType);
+                    }
+                    alloySmelterPage.update(node, machine);
+                }
             } else if (page instanceof QuarryPage) {
                 QuarryPage quarryPage = (QuarryPage) page;
                 Vector3i pos = quarryPage.resolveBlockPosition(world);

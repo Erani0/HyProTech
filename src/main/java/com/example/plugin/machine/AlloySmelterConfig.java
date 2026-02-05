@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class OreCrusherConfig {
+public final class AlloySmelterConfig {
     public static final int MIN_TIER = 0;
     public static final int MAX_TIER = 5;
+    public static final int INPUT_SLOT_COUNT = 4;
     public static final int OUTPUT_SLOT_COUNT = 6;
     private static final int TICKS_PER_SECOND = 20;
 
@@ -142,18 +143,15 @@ public final class OreCrusherConfig {
     };
 
     private static final List<BonusDrop> DEFAULT_BONUS_DROPS;
-    private static final BonusDrop BONUS_POWDER_DROP = new BonusDrop("__ore_powder__", 1, 0.0, 0.20);
 
     static {
-        List<BonusDrop> drops = new ArrayList<>(4);
+        List<BonusDrop> drops = new ArrayList<>(2);
         drops.add(new BonusDrop("Machinarium_Slag", 1, 0.50, 0.00));
         drops.add(new BonusDrop("Machinarium_Ore_Chips", 1, 0.10, 0.00));
-        drops.add(new BonusDrop("Machinarium_Stone_Dust", 1, 0.50, 0.00));
-        drops.add(new BonusDrop("Machinarium_Scrap", 1, 0.70, 0.00));
         DEFAULT_BONUS_DROPS = Collections.unmodifiableList(drops);
     }
 
-    private OreCrusherConfig() {
+    private AlloySmelterConfig() {
     }
 
     public static int clampTier(int tier) {
@@ -211,50 +209,10 @@ public final class OreCrusherConfig {
         return requirements;
     }
 
-    public static List<BonusDrop> getBonusDropsForOre(String oreId) {
-        return getBonusDropsForOre(oreId, null);
-    }
-
-    public static List<BonusDrop> getBonusDropsForOre(String oreId, String recipeOutputId) {
-        if (oreId == null || oreId.isEmpty()) {
+    public static List<BonusDrop> getBonusDropsForInput(String inputId) {
+        if (inputId == null || inputId.isEmpty()) {
             return Collections.emptyList();
         }
-        if (!isOreId(oreId)) {
-            return Collections.emptyList();
-        }
-        String powderId = resolvePowderId(oreId, recipeOutputId);
-        if (powderId == null || powderId.isEmpty()) {
-            return DEFAULT_BONUS_DROPS;
-        }
-        List<BonusDrop> combined = new ArrayList<>(DEFAULT_BONUS_DROPS.size() + 1);
-        combined.addAll(DEFAULT_BONUS_DROPS);
-        combined.add(BONUS_POWDER_DROP);
-        return combined;
-    }
-
-    public static String resolvePowderId(String oreId, String recipeOutputId) {
-        if (recipeOutputId != null && recipeOutputId.contains("Powder")) {
-            return recipeOutputId;
-        }
-        if (oreId == null || oreId.isEmpty()) {
-            return null;
-        }
-        if (oreId.startsWith("Ore_") && oreId.length() > 4) {
-            return "Machinarium_" + oreId.substring(4) + "_Powder";
-        }
-        if (oreId.startsWith("Machinarium_") && oreId.endsWith("_Ore")) {
-            return oreId.substring(0, oreId.length() - 4) + "_Powder";
-        }
-        return null;
-    }
-
-    private static boolean isOreId(String oreId) {
-        if (oreId == null || oreId.isEmpty()) {
-            return false;
-        }
-        if (oreId.startsWith("Ore_")) {
-            return true;
-        }
-        return oreId.startsWith("Machinarium_") && oreId.endsWith("_Ore");
+        return DEFAULT_BONUS_DROPS;
     }
 }

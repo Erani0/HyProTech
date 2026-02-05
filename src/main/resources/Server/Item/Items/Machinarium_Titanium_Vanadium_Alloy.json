@@ -6,6 +6,31 @@
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Machinarium_Titanium_Ingot",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Vanadium_Ingot",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "Machinarium_Titanium_Vanadium_Alloy"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
   "Texture": "Items/CraftingItems/Alloys/titanium-vanadium.png",
   "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Vanadium_Alloy.png",

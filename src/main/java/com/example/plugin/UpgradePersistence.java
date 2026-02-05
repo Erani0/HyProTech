@@ -66,7 +66,9 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
     }
 
     public static ItemStack buildDropStack(World world, Vector3i pos, BlockType blockType, String blockId) {
@@ -504,7 +506,9 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
                 || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN);
+                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
     }
 
     private static String resolveItemId(BlockType blockType, String blockId) {
@@ -558,6 +562,18 @@ public final class UpgradePersistence {
                     : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
             if (tier >= 0) {
                 return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ELECTRIC_FURNACE, tier);
+            }
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+            if (tier >= 0) {
+                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, tier);
+            }
+        }
+        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+            if (tier >= 0) {
+                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, tier);
             }
         }
         if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_BATTERY)) {
