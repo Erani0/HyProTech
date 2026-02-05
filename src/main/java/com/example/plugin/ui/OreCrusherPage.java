@@ -64,7 +64,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     private static final String ACTION_RECIPE_QTY_PLUS = "RecipeQtyPlus";
     private static final String ACTION_RECIPE_QTY_PLUS_TEN = "RecipeQtyPlusTen";
     private static final String ACTION_RECIPE_QTY_ALL = "RecipeQtyAll";
-    private static final String PAGE_LAYOUT = "Machinarium_OreCrusher_HyUI.ui";
+    private static final String PAGE_LAYOUT = "Machinarium_OreCrusher_HyUI_v2.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final long DRAG_DEDUP_WINDOW_MS = 120L;
     private static final long DRAG_SOURCE_WINDOW_MS = 1500L;
@@ -356,8 +356,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         updateUpgradePanel(update, null, null);
         update.set("#InputGrid.Slots", buildEmptySlots(1, true));
         update.set("#OutputGrid.Slots", buildEmptySlots(OUTPUT_SLOT_COUNT, true));
-        update.set("#PlayerInventoryGrid.Slots",
-                buildEmptySlots(Inventory.DEFAULT_HOTBAR_CAPACITY + Inventory.DEFAULT_STORAGE_CAPACITY, true));
+        // Player inventory grid removed from this UI.
         updateRecipeGrid(update);
         updateRecipeDetails(update, null, null);
         updateBonusPanel(update, null, null);
@@ -518,37 +517,7 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
     }
 
     private boolean updatePlayerInventorySlots(UICommandBuilder update, Store<EntityStore> store) {
-        Inventory inventory = getPlayerInventoryFull(store);
-        int hotbarCapacity = getHotbarCapacity(inventory);
-        int storageCapacity = getStorageCapacity(inventory);
-        int totalSlots = hotbarCapacity + storageCapacity;
-        String inventoryKey = buildInventoryKey(inventory, hotbarCapacity, storageCapacity);
-        if (!inventoryKey.equals(lastInventoryKey)) {
-            if (inventory != null) {
-                ItemContainer hotbar = inventory.getHotbar();
-                ItemContainer storage = inventory.getStorage();
-                ItemContainer utility = inventory.getUtility();
-                ItemContainer tools = inventory.getTools();
-                ItemContainer armor = inventory.getArmor();
-                ItemContainer backpack = inventory.getBackpack();
-                System.out.println(
-                        "[Machinarium] DBG Inv slots hotbar=" + hotbarCapacity
-                                + " storage=" + storageCapacity
-                                + " total=" + totalSlots
-                                + " caps[hotbar=" + (hotbar == null ? "null" : hotbar.getCapacity())
-                                + " storage=" + (storage == null ? "null" : storage.getCapacity())
-                                + " utility=" + (utility == null ? "null" : utility.getCapacity())
-                                + " tools=" + (tools == null ? "null" : tools.getCapacity())
-                                + " armor=" + (armor == null ? "null" : armor.getCapacity())
-                                + " backpack=" + (backpack == null ? "null" : backpack.getCapacity())
-                                + "]");
-            }
-            update.set(
-                    "#PlayerInventoryGrid.Slots",
-                    buildPlayerSlots(inventory, hotbarCapacity, storageCapacity));
-            lastInventoryKey = inventoryKey;
-            return true;
-        }
+        // Player inventory grid removed from this UI.
         return false;
     }
 
@@ -1672,10 +1641,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
                 EventData.of("Action", ACTION_RECIPE_SELECT));
         bindDrag(uiEventBuilder, "#InputGrid", ACTION_INPUT_DROP);
         bindDrag(uiEventBuilder, "#OutputGrid", ACTION_OUTPUT_DROP);
-        bindDrag(uiEventBuilder, "#PlayerInventoryGrid", ACTION_INVENTORY_DROP);
         bindClick(uiEventBuilder, "#InputGrid", ACTION_INPUT_CLICK);
         bindClick(uiEventBuilder, "#OutputGrid", ACTION_OUTPUT_CLICK);
-        bindClick(uiEventBuilder, "#PlayerInventoryGrid", ACTION_INVENTORY_CLICK);
     }
 
     private void bindDrag(UIEventBuilder uiEventBuilder, String selector, String action) {

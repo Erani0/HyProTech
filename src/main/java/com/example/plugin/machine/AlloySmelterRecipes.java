@@ -5,6 +5,7 @@ import com.hypixel.hytale.protocol.BenchType;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.inventory.MaterialQuantity;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 public final class AlloySmelterRecipes {
     private static volatile List<RecipeEntry> RECIPE_CACHE;
+    private static volatile Field itemRecipeField;
 
     private AlloySmelterRecipes() {
     }
@@ -44,40 +46,92 @@ public final class AlloySmelterRecipes {
         Map<String, CraftingRecipe> map = CraftingRecipe.getAssetMap().getAssetMap();
         if (map != null && !map.isEmpty()) {
             for (CraftingRecipe recipe : map.values()) {
-                if (recipe == null || !isAlloySmelterRecipe(recipe)) {
-                    continue;
-                }
-                MaterialQuantity input = resolvePrimaryInput(recipe);
-                if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
-                    continue;
-                }
-                String inputId = input.getItemId();
-                MaterialQuantity output = resolvePrimaryOutput(recipe);
-                if (output == null || output.getItemId() == null || output.getItemId().isEmpty()) {
-                    continue;
-                }
-                if (!isAlloyOutput(output.getItemId())) {
-                    continue;
-                }
-                String outputId = output.getItemId();
-                if (!byOutput.containsKey(outputId)) {
-                    RecipeEntry entry = new RecipeEntry(
-                            recipe.getId(),
-                            inputId,
-                            Math.max(1, input.getQuantity()),
-                            outputId,
-                            Math.max(1, output.getQuantity()),
-                            recipe.getInput(),
-                            recipe.getOutputs());
-                    byOutput.put(outputId, entry);
-                }
+                addRecipeIfMatch(byOutput, recipe);
             }
         }
+        addItemGeneratedRecipes(byOutput);
 
         addFallbackEntries(byOutput);
         List<RecipeEntry> entries = new ArrayList<>(byOutput.values());
         entries.sort(Comparator.comparing(o -> o.outputItemId.toLowerCase(Locale.ROOT)));
         return entries;
+    }
+
+    private static void addItemGeneratedRecipes(Map<String, RecipeEntry> byOutput) {
+        Map<String, Item> items = Item.getAssetMap().getAssetMap();
+        if (items == null || items.isEmpty()) {
+            return;
+        }
+        List<CraftingRecipe> generated = new ArrayList<>();
+        for (Item item : items.values()) {
+            if (item == null || item == Item.UNKNOWN) {
+                continue;
+            }
+            CraftingRecipe direct = getRecipeToGenerate(item);
+            if (direct != null) {
+                addRecipeIfMatch(byOutput, direct);
+            }
+            if (item.hasRecipesToGenerate()) {
+                generated.clear();
+                item.collectRecipesToGenerate(generated);
+                if (!generated.isEmpty()) {
+                    for (CraftingRecipe recipe : generated) {
+                        addRecipeIfMatch(byOutput, recipe);
+                    }
+                }
+            }
+        }
+    }
+
+    private static CraftingRecipe getRecipeToGenerate(Item item) {
+        if (item == null) {
+            return null;
+        }
+        Field field = itemRecipeField;
+        if (field == null) {
+            try {
+                field = Item.class.getDeclaredField("recipeToGenerate");
+                field.setAccessible(true);
+                itemRecipeField = field;
+            } catch (NoSuchFieldException e) {
+                return null;
+            }
+        }
+        try {
+            return (CraftingRecipe) field.get(item);
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    private static void addRecipeIfMatch(Map<String, RecipeEntry> byOutput, CraftingRecipe recipe) {
+        if (recipe == null || !isAlloySmelterRecipe(recipe)) {
+            return;
+        }
+        MaterialQuantity input = resolvePrimaryInput(recipe);
+        if (input == null || input.getItemId() == null || input.getItemId().isEmpty()) {
+            return;
+        }
+        String inputId = input.getItemId();
+        MaterialQuantity output = resolvePrimaryOutput(recipe);
+        if (output == null || output.getItemId() == null || output.getItemId().isEmpty()) {
+            return;
+        }
+        if (!isAlloyOutput(output.getItemId())) {
+            return;
+        }
+        String outputId = output.getItemId();
+        if (!byOutput.containsKey(outputId)) {
+            RecipeEntry entry = new RecipeEntry(
+                    recipe.getId(),
+                    inputId,
+                    Math.max(1, input.getQuantity()),
+                    outputId,
+                    Math.max(1, output.getQuantity()),
+                    recipe.getInput(),
+                    recipe.getOutputs());
+            byOutput.put(outputId, entry);
+        }
     }
 
     private static void addFallbackEntries(Map<String, RecipeEntry> byOutput) {

@@ -126,7 +126,7 @@
             ],
             "TimeSeconds": 3
           },
-          "CraftingTimeReductionModifier": 0.8,
+          "CraftingTimeReductionModifier": 0.0,
           "ExtraInputSlot": 3
         },
         {
@@ -151,7 +151,7 @@
             ],
             "TimeSeconds": 3
           },
-          "CraftingTimeReductionModifier": 1.0,
+          "CraftingTimeReductionModifier": 0.18,
           "ExtraInputSlot": 3
         },
         {
@@ -180,7 +180,7 @@
             ],
             "TimeSeconds": 3
           },
-          "CraftingTimeReductionModifier": 1.0,
+          "CraftingTimeReductionModifier": 0.36,
           "ExtraInputSlot": 3
         },
         {
@@ -209,7 +209,7 @@
             ],
             "TimeSeconds": 3
           },
-          "CraftingTimeReductionModifier": 1.0,
+          "CraftingTimeReductionModifier": 0.54,
           "ExtraInputSlot": 3
         },
         {
@@ -238,11 +238,11 @@
             ],
             "TimeSeconds": 3
           },
-          "CraftingTimeReductionModifier": 1.0,
+          "CraftingTimeReductionModifier": 0.72,
           "ExtraInputSlot": 3
         },
         {
-          "CraftingTimeReductionModifier": 1.0,
+          "CraftingTimeReductionModifier": 0.9,
           "ExtraInputSlot": 3
         }
       ]
