@@ -577,6 +577,7 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
         return null;
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveBenchBasePosition(World world, ProcessingBenchWindow window) {
         int x = window.getX();
         int y = window.getY();

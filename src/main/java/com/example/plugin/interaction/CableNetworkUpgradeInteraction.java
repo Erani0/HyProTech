@@ -90,6 +90,7 @@ public class CableNetworkUpgradeInteraction extends SimpleBlockInteraction {
         // Server-side only.
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveTargetBlockPosition(InteractionContext context, World world) {
         BlockPosition target = context.getTargetBlock();
         if (target == null || world == null) {

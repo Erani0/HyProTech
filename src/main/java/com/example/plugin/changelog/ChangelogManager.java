@@ -16,150 +16,102 @@ import java.util.UUID;
 public final class ChangelogManager {
     public static final String CHANGELOG_VERSION = "1.3.1";
     public static final String CHANGELOG_TEXT = """
-## Changelog
+Changelog
 
-### [1.3.1] (from 1.3.0)
-- Added macOS support for **modlist** and **config**.
-- Added automatic **config file generation** inside the `mods` folder.
-- Completely reworked the **Quarry** feature due to bugs that (with border enabled) changed surrounding blocks and sometimes returned `null`.
-- Updated Quarry setup:
-  - Click **Give Border Torch** and place **2 torches**.
-  - Torch #1 should be placed at the same height/width/length level, ideally right next to the Quarry.
-  - Torch #2 should be placed at the opposite corner depending on the desired Quarry size.
-  - Maximum Quarry size: **50x50**.
+Version 1.3.1 (from 1.3.0)
+Added macOS support for modlist and config.
+Added automatic config file generation inside the mods folder.
+Completely reworked the Quarry feature due to bugs that (with border enabled) changed surrounding blocks and sometimes returned null.
+Updated Quarry setup:
+Click Give Border Torch and place 2 torches.
+Torch 1 should be placed at the same height/width/length level, ideally right next to the Quarry.
+Torch 2 should be placed at the opposite corner depending on the desired Quarry size.
+Maximum Quarry size: 50x50.
 
-# 📌 Changelog BIG UPDATE!
-
-## Version 1.3.1 *(from 1.2.8 and 1.3.0)*
+Changelog Big Update
+Version 1.3.1 (from 1.2.8 and 1.3.0)
 
 IMPORTANT! IF THERE ARE MISSING/ERROR BLOCKS, THEY WILL NEED TO BE REBUILT. THERE HAVE BEEN CHANGES TO UI AND FUNCTIONALITY
 
----
+Unlocked recipes from Bronze
+Weapons
+Armor
 
-## 🔓 Unlocked Recipes from Bronze
+New content
+Added the Alloy Smelter for advanced alloy production.
+Added the Ore Crusher for ore doubling through powder processing.
+Introduced Ore Powders as a new intermediate refining material.
+Added a Bronze Ingot crafting recipe.
+Implemented the Wind Turbine as a new renewable power source.
 
-- **Weapons**
-- **Armor**
+New ores added
+Bauxite
+Cassiterite
+Chromite
+Ilmenite
+Manganese
+Pentlandite
+Quartzite
+Scheelite
+Spodumene
+Uraninite
+Vanadinite
 
----
+New materials and ingots
+Bauxite -> Machinarium_Aluminum_Ingot
+Cassiterite -> Machinarium_Tin_Ingot
+Chromite -> Machinarium_Chromium_Ingot
+Ilmenite -> Machinarium_Titanium_Ingot
+Manganese -> Machinarium_Manganese_Ingot
+Pentlandite -> Machinarium_Nickel_Ingot
+Quartzite -> Machinarium_Silicon (raw silicon material, not an ingot)
+Scheelite -> Machinarium_Tungsten_Ingot
+Spodumene -> Machinarium_Lithium_Ingot
+Uraninite -> Machinarium_Uranium_Ingot
+Vanadinite -> Machinarium_Vanadium_Ingot
 
-## ✨ New Content
+New alloys and advanced blends
+Electrum Alloy
+Steel Alloy
+Invar Alloy
+Constantan Alloy
+High-Tier Alloy Blend
+Composite Alloy Ingot
+Superalloy Blend
+Titanium-Vanadium Alloy
 
-- Added the **Alloy Smelter** for advanced alloy production.
-- Added the **Ore Crusher** for ore doubling through powder processing.
-- Introduced **Ore Powders** as a new intermediate refining material.
-- Added a **Bronze Ingot** crafting recipe.
-- Implemented the **Wind Turbine** as a new renewable power source.
+New core crafting components
+Iron Gear
+Reinforced Gear
+Iron Plate
+Reinforced Plate
+Titanium Plate
+Tungsten Plate
+Iron Rod
+Reinforced Rod
 
----
+New items added
+Machine Frame
+Reinforced Machine Frame
+Circuit Board
+Spring
 
-## ⛏️ New Ores Added
+New machines and storage
+Added the Large Battery for improved energy storage.
+Added the Metal Press machine for advanced component crafting.
 
-The following new ores are now available in world generation and processing:
+Visual and UI improvements
+Updated the Electric Furnace model.
+Improved general UI layout and usability.
+Enhanced item filter UI for better inventory management.
+Updated textures for energy cables and item transport cables.
 
-- **Bauxite**
-- **Cassiterite**
-- **Chromite**
-- **Ilmenite**
-- **Manganese**
-- **Pentlandite**
-- **Quartzite**
-- **Scheelite**
-- **Spodumene**
-- **Uraninite**
-- **Vanadinite**
+Bug fixes
+Fixed an issue where Solar Panels generated power even when covered or blocked.
 
----
-
-## 🔩 New Materials & Ingots
-
-New ingots and processed materials obtained from ores:
-
-- Bauxite → `Machinarium_Aluminum_Ingot`
-- Cassiterite → `Machinarium_Tin_Ingot`
-- Chromite → `Machinarium_Chromium_Ingot`
-- Ilmenite → `Machinarium_Titanium_Ingot`
-- Manganese → `Machinarium_Manganese_Ingot`
-- Pentlandite → `Machinarium_Nickel_Ingot`
-- Quartzite → `Machinarium_Silicon` *(raw silicon material, not an ingot)*
-- Scheelite → `Machinarium_Tungsten_Ingot`
-- Spodumene → `Machinarium_Lithium_Ingot`
-- Uraninite → `Machinarium_Uranium_Ingot`
-- Vanadinite → `Machinarium_Vanadium_Ingot`
-
----
-
-## 🏭 New Alloys & Advanced Blends
-
-Added multiple new alloy types for mid- and late-game progression:
-
-- **Electrum Alloy**
-- **Steel Alloy**
-- **Invar Alloy**
-- **Constantan Alloy**
-- **High-Tier Alloy Blend**
-- **Composite Alloy Ingot**
-- **Superalloy Blend**
-- **Titanium-Vanadium Alloy**
-
----
-
-## ⚙️ New Core Crafting Components
-
-Introduced additional fundamental crafting parts:
-
-- Iron Gear
-- Reinforced Gear
-- Iron Plate
-- Reinforced Plate
-- Titanium Plate
-- Tungsten Plate
-- Iron Rod
-- Reinforced Rod
-
----
-
-## 🧱 New Items Added
-
-New essential machine-building components:
-
-- **Machine Frame**
-- **Reinforced Machine Frame**
-- **Circuit Board**
-- **Spring**
-
----
-
-## 🔋 New Machines & Storage
-
-- Added the **Large Battery** for improved energy storage.
-- Added the **Metal Press** machine for advanced component crafting.
-
----
-
-## 🎨 Visual & UI Improvements
-
-- Updated the **Electric Furnace** model.
-- Improved general UI layout and usability.
-- Enhanced **item filter UI** for better inventory management.
-- Updated textures for:
-  - Energy cables
-  - Item transport cables
-
----
-
-## 🐛 Bug Fixes
-
-- Fixed an issue where **Solar Panels generated power even when covered/blocked**.
-
----
-
-## 🧩 Components & Future Expansion
-
-- Added a large set of new items and crafting components *(currently placeholders, to be expanded in upcoming updates)*.
-- Early preparation work for upcoming:
-  - **Nuclear Science**
-  - **Heat Science**
+Components and future expansion
+Added a large set of new items and crafting components (currently placeholders, to be expanded in upcoming updates).
+Early preparation work for upcoming Nuclear Science and Heat Science.
 """;
     public static final String CHANGELOG_ID =
             CHANGELOG_VERSION + ":" + Integer.toHexString(CHANGELOG_TEXT.hashCode());

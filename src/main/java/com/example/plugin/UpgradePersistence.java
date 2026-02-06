@@ -915,6 +915,7 @@ public final class UpgradePersistence {
         return tick - pending.createdTick > PENDING_TTL_TICKS;
     }
 
+    @SuppressWarnings("removal")
     private static void ensureBlockState(World world, int x, int y, int z) {
         if (world == null) {
             return;
@@ -1128,6 +1129,7 @@ public final class UpgradePersistence {
                 z);
     }
 
+    @SuppressWarnings("removal")
     private static ItemContainerState getOrCreateItemContainerState(World world, int x, int y, int z) {
         if (world == null) {
             return null;
@@ -1172,6 +1174,7 @@ public final class UpgradePersistence {
                 z);
     }
 
+    @SuppressWarnings("removal")
     private static ProcessingBenchState getOrCreateProcessingBenchState(World world, int x, int y, int z) {
         if (world == null) {
             return null;

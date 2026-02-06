@@ -822,6 +822,7 @@ public class ItemNetworkPriorityPage extends InteractiveCustomUIPage<ItemNetwork
         return null;
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveBasePosition(World world, Vector3i pos) {
         if (world == null || pos == null) {
             return pos;

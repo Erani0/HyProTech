@@ -28,6 +28,7 @@ public final class MachineItemAccess {
     private MachineItemAccess() {
     }
 
+    @SuppressWarnings("removal")
     public static ItemContainerBlockState getContainerState(World world, int x, int y, int z) {
         if (world == null) {
             return null;
@@ -120,6 +121,7 @@ public final class MachineItemAccess {
         });
     }
 
+    @SuppressWarnings("removal")
     private static void scheduleContainerState(
             World world,
             int x,
@@ -155,6 +157,7 @@ public final class MachineItemAccess {
         });
     }
 
+    @SuppressWarnings("removal")
     public static ItemContainerBlockState ensureContainerState(World world, int x, int y, int z) {
         if (world == null) {
             return null;

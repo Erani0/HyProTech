@@ -117,6 +117,7 @@ public class OpenCustomUIWithWindowsInteraction extends SimpleInstantInteraction
         pageManager.openCustomPage(playerEntityRef, store, page);
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveTargetBlockPosition(
             InteractionContext context,
             CommandBuffer<EntityStore> commandBuffer) {

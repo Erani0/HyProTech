@@ -1480,6 +1480,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         return null;
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveBasePosition(World world, Vector3i pos) {
         if (world == null || pos == null) {
             return pos;

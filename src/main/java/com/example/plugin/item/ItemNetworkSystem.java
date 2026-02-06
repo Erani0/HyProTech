@@ -1278,6 +1278,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return resolveChunkStoragePriority(chunkStore, chunkIndex, x, y, z, fallback);
     }
 
+    @SuppressWarnings("removal")
     private void cleanupStorageConfig(World world, ChunkStore chunkStore, int x, int y, int z) {
         if (world == null || chunkStore == null || MachinariumComponents.ITEM_STORAGE == null) {
             return;
@@ -1380,6 +1381,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return config == null ? fallback : config.getPriority();
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveBasePosition(World world, Vector3i pos) {
         if (world == null || pos == null) {
             return pos;
@@ -1662,6 +1664,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return null;
     }
 
+    @SuppressWarnings("removal")
     private void scheduleBenchState(World world, int x, int y, int z) {
         BlockType blockType = world.getBlockType(x, y, z);
         if (blockType == null || blockType.getBench() == null) {

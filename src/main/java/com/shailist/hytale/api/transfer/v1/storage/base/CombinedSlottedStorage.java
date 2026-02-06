@@ -39,7 +39,23 @@ public class CombinedSlottedStorage<T, S extends SingleSlotStorage<T>> implement
 
     @Override
     public Iterator<StorageView<T>> iterator() {
-        return (Iterator<StorageView<T>>) (Iterator<?>) parts.iterator();
+        Iterator<S> iterator = parts.iterator();
+        return new Iterator<StorageView<T>>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public StorageView<T> next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
+        };
     }
 
     public int getSlotCount() {

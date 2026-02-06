@@ -95,6 +95,7 @@ public class OpenPoweredBenchInteraction extends SimpleInstantInteraction {
                 windows);
     }
 
+    @SuppressWarnings("removal")
     private Vector3i resolveTargetBlockPosition(InteractionContext context, World world) {
         BlockPosition target = context.getTargetBlock();
         if (target == null || world == null) {
