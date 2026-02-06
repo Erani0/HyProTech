@@ -15,6 +15,9 @@
 
 !.github/
 !.github/**
+!gradlew
+!gradlew.bat
+!settings.gradle
 
 # ALLOW .gitignore ITSELF
 !.gitignore
