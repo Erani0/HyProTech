@@ -36,6 +36,7 @@ public final class MachinariumIds {
     public static final String BLOCK_ELECTRICAL_WORKBENCH = "Machinarium_Electrical_Workbench";
     public static final String BLOCK_QUARRY = "Machinarium_Quarry";
     public static final String BLOCK_QUARRY_BORDER = "Machinarium_Quarry_Border";
+    public static final String BLOCK_BORDER_TORCH = "Machinarium_Border_Torch";
 
     public static final String ITEM_COPPER_POWDER = "Machinarium_Copper_Powder";
     public static final String ITEM_IRON_POWDER = "Machinarium_Iron_Powder";

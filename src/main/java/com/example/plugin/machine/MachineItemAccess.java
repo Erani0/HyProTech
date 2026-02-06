@@ -213,7 +213,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
+        if (blockId == null || isQuarryBorder(blockId) || !isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -310,6 +310,29 @@ public final class MachineItemAccess {
         char separator = normalized.charAt(baseId.length());
         return !Character.isLetterOrDigit(separator)
                 || normalized.regionMatches(true, 0, MACHINARIUM_PREFIX, 0, MACHINARIUM_PREFIX.length());
+    }
+
+    private static boolean isQuarryBorder(String blockId) {
+        if (blockId == null || blockId.isEmpty()) {
+            return false;
+        }
+        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        return blockId.equalsIgnoreCase(baseId)
+                || blockId.regionMatches(true, 0, baseId, 0, baseId.length())
+                || containsIgnoreCase(blockId, baseId);
+    }
+
+    private static boolean containsIgnoreCase(String value, String needle) {
+        if (value == null || needle == null || needle.isEmpty()) {
+            return false;
+        }
+        int limit = value.length() - needle.length();
+        for (int i = 0; i <= limit; i++) {
+            if (value.regionMatches(true, i, needle, 0, needle.length())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void copyContainerItems(

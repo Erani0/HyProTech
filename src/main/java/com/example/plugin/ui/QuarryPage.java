@@ -49,8 +49,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String[] STORAGE_QTY_IDS = buildSlotIds("#StorageQty");
     private static final int DEFAULT_AREA = 5;
     private static final int MIN_AREA = 2;
-    private static final String SHOW_AREA_LABEL = "SHOW AREA";
-    private static final String HIDE_AREA_LABEL = "HIDE AREA";
+    private static final String GIVE_TORCH_LABEL = "Give Border Torch";
     private static final String ENABLE_LABEL = "TURN ON";
     private static final String DISABLE_LABEL = "TURN OFF";
     private static final String[] UPGRADE_ROW_IDS = {
@@ -96,6 +95,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private Boolean lastEnabled;
     private long lastAreaToggleMs;
     private long lastUpdateMs;
+    private long lastBorderParticleMs;
 
     public QuarryPage(
             PlayerRef playerRef,
@@ -152,8 +152,21 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         int newWidth = width;
         int newDepth = depth;
         boolean newVisible = visible;
+        Vector3i pos = resolveBlockPosition(world);
+        QuarryAreaManager.TorchBounds torchBounds =
+                pos == null ? null : QuarryAreaManager.getTorchBounds(world, pos);
+        boolean hasTorchBounds = torchBounds != null;
 
         String action = data.getAction();
+        if (hasTorchBounds) {
+            if ("WidthMinus".equalsIgnoreCase(action)
+                    || "WidthPlus".equalsIgnoreCase(action)
+                    || "DepthMinus".equalsIgnoreCase(action)
+                    || "DepthPlus".equalsIgnoreCase(action)) {
+                sendPlayerMessage(playerRef, store, "Area is defined by border torches.");
+                return;
+            }
+        }
         if (ACTION_UPGRADE.equalsIgnoreCase(action)) {
             if (!handleUpgrade(playerRef, store, world, machine, node)) {
                 sendUpdate(new UICommandBuilder());
@@ -163,6 +176,9 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             if (!handleTakeItems(store)) {
                 sendUpdate(new UICommandBuilder());
             }
+            return;
+        } else if ("GiveTorch".equalsIgnoreCase(action)) {
+            handleGiveTorch(store);
             return;
         } else if ("WidthMinus".equalsIgnoreCase(action)) {
             newWidth = clampArea(width - 1, maxArea);
@@ -191,7 +207,6 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             return;
         }
 
-        Vector3i pos = resolveBlockPosition(world);
         boolean changed = false;
         if (newWidth != width || newDepth != depth) {
             machine.setAreaWidth(newWidth);
@@ -274,9 +289,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private void initStaticUi(UICommandBuilder update) {
         update.set("#QuarryTier.Text", "Tier: " + QuarryConfig.getTierName(QuarryConfig.MIN_TIER));
         update.set("#QuarryArea.Text", "Area: " + DEFAULT_AREA + " x " + DEFAULT_AREA);
-        update.set("#QuarryWidthValue.Text", Integer.toString(DEFAULT_AREA));
-        update.set("#QuarryDepthValue.Text", Integer.toString(DEFAULT_AREA));
-        update.set("#ShowAreaButton.Text", SHOW_AREA_LABEL);
+        update.set("#GiveTorchButton.Text", GIVE_TORCH_LABEL);
         update.set("#QuarryStatus.Text", "Status: ON");
         update.set("#QuarryToggleButton.Text", DISABLE_LABEL);
         updateUpgradePanel(update, null, null);
@@ -419,21 +432,45 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         int maxArea = QuarryConfig.getMaxAreaForTier(tier);
         int width = clampArea(normalizeArea(machine == null ? 0 : machine.getAreaWidth()), maxArea);
         int depth = clampArea(normalizeArea(machine == null ? 0 : machine.getAreaDepth()), maxArea);
+        Ref<EntityStore> playerEntityRef = playerRef.getReference();
+        Store<EntityStore> store = playerEntityRef == null ? null : playerEntityRef.getStore();
+        World world = getWorld(store);
+        Vector3i pos = resolveBlockPosition(world);
+        QuarryAreaManager.TorchBounds torchBounds =
+                world != null && pos != null ? QuarryAreaManager.getTorchBounds(world, pos) : null;
+        String torchText = "";
+        if (torchBounds != null) {
+            width = torchBounds.getWidth();
+            depth = torchBounds.getDepth();
+            torchText = "Torch bounds: "
+                    + torchBounds.getWidth() + " x " + torchBounds.getDepth()
+                    + " (" + torchBounds.minX + "," + torchBounds.minZ
+                    + " -> " + torchBounds.maxX + "," + torchBounds.maxZ + ")";
+        } else if (world != null && pos != null) {
+            torchText = "Torch bounds: NOT FOUND";
+        }
         boolean visible = machine != null && machine.isAreaVisible();
 
         boolean changed = false;
         if (width != lastAreaWidth || depth != lastAreaDepth) {
             update.set("#QuarryArea.Text", "Area: " + width + " x " + depth);
-            update.set("#QuarryWidthValue.Text", Integer.toString(width));
-            update.set("#QuarryDepthValue.Text", Integer.toString(depth));
             lastAreaWidth = width;
             lastAreaDepth = depth;
             changed = true;
         }
+        update.set("#QuarryTorchDebug.Text", torchText);
         if (lastAreaVisible == null || visible != lastAreaVisible) {
-            update.set("#ShowAreaButton.Text", visible ? HIDE_AREA_LABEL : SHOW_AREA_LABEL);
             lastAreaVisible = visible;
             changed = true;
+        }
+        if (visible) {
+            long now = System.currentTimeMillis();
+            if (lastBorderParticleMs == 0L || now - lastBorderParticleMs > 1000L) {
+                if (world != null && pos != null) {
+                    QuarryAreaManager.spawnBorderParticles(world, pos, width, depth);
+                }
+                lastBorderParticleMs = now;
+            }
         }
         return changed;
     }
@@ -638,6 +675,28 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             return refreshStorage(store);
         }
         return false;
+    }
+
+    private void handleGiveTorch(Store<EntityStore> store) {
+        if (store == null) {
+            return;
+        }
+        Inventory inventory = getPlayerInventoryFull(store);
+        if (inventory == null) {
+            return;
+        }
+        ItemStack torch = new ItemStack(MachinariumIds.BLOCK_BORDER_TORCH, 4);
+        ItemContainer hotbar = inventory.getHotbar();
+        ItemContainer storage = inventory.getStorage();
+        if (hotbar != null && hotbar.canAddItemStack(torch)) {
+            hotbar.addItemStack(torch);
+            return;
+        }
+        if (storage != null && storage.canAddItemStack(torch)) {
+            storage.addItemStack(torch);
+            return;
+        }
+        sendPlayerMessage(playerRef.getReference(), store, "No space for Border Torch.");
     }
 
     private void applyTier(MachineComponent machine, EnergyNodeComponent node, int tier) {
@@ -964,24 +1023,8 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private void bindButtons(UIEventBuilder uiEventBuilder) {
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
-                "#WidthMinus",
-                EventData.of("Action", "WidthMinus"));
-        uiEventBuilder.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#WidthPlus",
-                EventData.of("Action", "WidthPlus"));
-        uiEventBuilder.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#DepthMinus",
-                EventData.of("Action", "DepthMinus"));
-        uiEventBuilder.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#DepthPlus",
-                EventData.of("Action", "DepthPlus"));
-        uiEventBuilder.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#ShowAreaButton",
-                EventData.of("Action", "ToggleArea"));
+                "#GiveTorchButton",
+                EventData.of("Action", "GiveTorch"));
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#UpgradeButton",

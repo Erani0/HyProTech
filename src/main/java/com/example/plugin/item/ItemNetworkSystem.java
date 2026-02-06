@@ -1605,7 +1605,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             SlotRange output = new SlotRange(outputStart, outputCount);
             return new MachineSlotLayout(input, output);
         }
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
+        if (isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY) && !isQuarryBorder(blockId)) {
             SlotRange input = new SlotRange(0, 0);
             SlotRange output = new SlotRange(0, capacity);
             return new MachineSlotLayout(input, output);
@@ -1630,6 +1630,15 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return false;
         }
         return firstId.equalsIgnoreCase(secondId);
+    }
+
+    private boolean isQuarryBorder(String blockId) {
+        if (blockId == null || blockId.isEmpty()) {
+            return false;
+        }
+        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        return blockId.equalsIgnoreCase(baseId)
+                || blockId.regionMatches(true, 0, baseId, 0, baseId.length());
     }
 
     @SuppressWarnings("removal")

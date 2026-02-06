@@ -3,12 +3,17 @@ package com.example.plugin.machine;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.hypixel.hytale.math.util.ChunkUtil;
+import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3i;
+import com.hypixel.hytale.server.core.universe.world.ParticleUtil;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.Rotation;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.RotationTuple;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
+import com.hypixel.hytale.component.Store;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -39,19 +44,23 @@ public final class QuarryAreaManager {
     private static final int BORDER_OFFSET_Y = -1;
     private static final int BORDER_OFFSET_Z = -2;
     private static final int BORDER_ROTATION_INDEX = RotationTuple.NONE_INDEX;
+    private static final String BORDER_PARTICLE_ID = "Server/Particles/Weapon/LaserRifle/Laser_Impact";
+    private static final int TORCH_SCAN_RADIUS = 64;
+    private static final long TORCH_CACHE_MS = 1000L;
     private static final Map<World, Map<String, BlockSnapshot>> STORED_BLOCKS = new WeakHashMap<>();
     private static final Map<World, Map<String, BorderRecord>> BORDER_RECORDS = new WeakHashMap<>();
     private static final Map<World, Map<String, BorderRecord>> BORDER_RECORDS_BY_XZ = new WeakHashMap<>();
+    private static final Map<World, Map<String, TorchBoundsCache>> TORCH_BOUNDS_CACHE = new WeakHashMap<>();
 
     private QuarryAreaManager() {
     }
 
     public static void showArea(World world, Vector3i origin, int width, int depth) {
-        applyArea(world, origin, width, depth, true);
+        // Disabled: border placement causes unload/load issues.
     }
 
     public static void hideArea(World world, Vector3i origin, int width, int depth) {
-        applyArea(world, origin, width, depth, false);
+        clearGhostArea(world, origin, width, depth);
     }
 
     public static void updateArea(
@@ -61,23 +70,38 @@ public final class QuarryAreaManager {
             int oldDepth,
             int newWidth,
             int newDepth) {
+        // Disabled: border placement causes unload/load issues.
+    }
+
+    public static void spawnBorderParticles(World world, Vector3i origin, int width, int depth) {
         if (world == null || origin == null) {
             return;
         }
         world.execute(() -> {
-            applyAreaInternal(world, origin, oldWidth, oldDepth, false);
-            applyAreaInternal(world, origin, newWidth, newDepth, true);
+            TorchBounds torchBounds = getTorchBoundsInternal(world, origin);
+            if (torchBounds != null) {
+                spawnBorderParticlesInternal(world, torchBounds);
+            } else {
+                spawnBorderParticlesInternal(world, origin, width, depth);
+            }
         });
     }
 
-    private static void applyArea(World world, Vector3i origin, int width, int depth, boolean place) {
+    public static TorchBounds getTorchBounds(World world, Vector3i origin) {
+        if (world == null || origin == null) {
+            return null;
+        }
+        return getTorchBoundsInternal(world, origin);
+    }
+
+    private static void clearGhostArea(World world, Vector3i origin, int width, int depth) {
         if (world == null || origin == null) {
             return;
         }
-        world.execute(() -> applyAreaInternal(world, origin, width, depth, place));
+        world.execute(() -> clearGhostAreaInternal(world, origin, width, depth));
     }
 
-    private static void applyAreaInternal(World world, Vector3i origin, int width, int depth, boolean place) {
+    private static void clearGhostAreaInternal(World world, Vector3i origin, int width, int depth) {
         int w = Math.max(1, width);
         int d = Math.max(1, depth);
         int baseY = origin.getY() + 1 + BORDER_OFFSET_Y;
@@ -85,93 +109,238 @@ public final class QuarryAreaManager {
             return;
         }
         int topY = Math.min(baseY + BORDER_HEIGHT_BLOCKS - 1, ChunkUtil.HEIGHT - 1);
+        Bounds bounds = computeBounds(w, d);
+        if (BORDER_OFFSET_Z != 0) {
+            bounds = new Bounds(bounds.minX, bounds.maxX, bounds.minZ + BORDER_OFFSET_Z, bounds.maxZ + BORDER_OFFSET_Z);
+        }
+        clearBorderAreaSimple(world, origin, w, d, baseY, topY);
+    }
 
-        if (!place) {
-            clearBorderFromRecord(world, origin);
-            clearBorderArea(world, origin, w, d, baseY, topY);
+    private static TorchBounds getTorchBoundsInternal(World world, Vector3i origin) {
+        Map<String, TorchBoundsCache> cache = getTorchBoundsCache(world);
+        String key = originKeyXZ(origin);
+        TorchBoundsCache cached = cache.get(key);
+        long now = System.currentTimeMillis();
+        if (cached != null && now - cached.lastUpdatedMs < TORCH_CACHE_MS) {
+            return cached.bounds;
+        }
+        TorchBounds bounds = computeTorchBounds(world, origin);
+        cache.put(key, new TorchBoundsCache(bounds, now));
+        return bounds;
+    }
+
+    private static TorchBounds computeTorchBounds(World world, Vector3i origin) {
+        int originX = origin.getX();
+        int originY = origin.getY();
+        int originZ = origin.getZ();
+        return computeTorchBoundsAnyHeight(world, originX, originY, originZ);
+    }
+
+    private static TorchBounds computeTorchBoundsAnyHeight(
+            World world,
+            int originX,
+            int originY,
+            int originZ) {
+        Map<String, Vector3i> torches = new HashMap<>();
+
+        int startX = originX - TORCH_SCAN_RADIUS;
+        int endX = originX + TORCH_SCAN_RADIUS;
+        int startZ = originZ - TORCH_SCAN_RADIUS;
+        int endZ = originZ + TORCH_SCAN_RADIUS;
+
+        for (int x = startX; x <= endX; x++) {
+            for (int z = startZ; z <= endZ; z++) {
+                long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+                BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+                if (accessor == null) {
+                    continue;
+                }
+                int foundY = Integer.MIN_VALUE;
+                for (int y = ChunkUtil.MIN_Y; y < ChunkUtil.HEIGHT; y++) {
+                    BlockType blockType = accessor.getBlockType(x, y, z);
+                    if (isBorderTorch(blockType)) {
+                        foundY = y;
+                        break;
+                    }
+                }
+                if (foundY == Integer.MIN_VALUE) {
+                    continue;
+                }
+                torches.put(blockKey(x, foundY, z), new Vector3i(x, foundY, z));
+            }
+        }
+
+        if (torches.size() < 2) {
+            return null;
+        }
+
+        TorchBounds best = null;
+        int bestCornerCount = -1;
+        long bestArea = Long.MAX_VALUE;
+        Vector3i[] torchArray = torches.values().toArray(new Vector3i[0]);
+        for (int i = 0; i < torchArray.length; i++) {
+            Vector3i a = torchArray[i];
+            for (int j = i + 1; j < torchArray.length; j++) {
+                Vector3i b = torchArray[j];
+                if (a.getX() == b.getX() || a.getZ() == b.getZ()) {
+                    continue;
+                }
+                int minX = Math.min(a.getX(), b.getX());
+                int maxX = Math.max(a.getX(), b.getX());
+                int minZ = Math.min(a.getZ(), b.getZ());
+                int maxZ = Math.max(a.getZ(), b.getZ());
+                if (originX < minX || originX > maxX || originZ < minZ || originZ > maxZ) {
+                    continue;
+                }
+                boolean hasMinMin = hasTorchAtXZ(torches, minX, minZ);
+                boolean hasMinMax = hasTorchAtXZ(torches, minX, maxZ);
+                boolean hasMaxMin = hasTorchAtXZ(torches, maxX, minZ);
+                boolean hasMaxMax = hasTorchAtXZ(torches, maxX, maxZ);
+                int cornerCount = 0;
+                if (hasMinMin) {
+                    cornerCount++;
+                }
+                if (hasMinMax) {
+                    cornerCount++;
+                }
+                if (hasMaxMin) {
+                    cornerCount++;
+                }
+                if (hasMaxMax) {
+                    cornerCount++;
+                }
+                boolean hasOppositeCorners = (hasMinMin && hasMaxMax) || (hasMinMax && hasMaxMin);
+                if (!hasOppositeCorners && cornerCount < 4) {
+                    continue;
+                }
+                long area = (long) (maxX - minX + 1) * (maxZ - minZ + 1);
+                if (cornerCount > bestCornerCount || (cornerCount == bestCornerCount && area < bestArea)) {
+                    bestCornerCount = cornerCount;
+                    bestArea = area;
+                    best = new TorchBounds(minX, maxX, minZ, maxZ, originY);
+                }
+            }
+        }
+
+        return best;
+    }
+
+    private static Map<String, TorchBoundsCache> getTorchBoundsCache(World world) {
+        Map<String, TorchBoundsCache> cache = TORCH_BOUNDS_CACHE.get(world);
+        if (cache == null) {
+            cache = new HashMap<>();
+            TORCH_BOUNDS_CACHE.put(world, cache);
+        }
+        return cache;
+    }
+
+    private static boolean hasTorchAtXZ(Map<String, Vector3i> torches, int x, int z) {
+        for (Vector3i pos : torches.values()) {
+            if (pos.getX() == x && pos.getZ() == z) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasTorchAtX(Map<String, Vector3i> torches, int x) {
+        for (Vector3i pos : torches.values()) {
+            if (pos.getX() == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasTorchAtZ(Map<String, Vector3i> torches, int z) {
+        for (Vector3i pos : torches.values()) {
+            if (pos.getZ() == z) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void spawnBorderParticlesInternal(World world, Vector3i origin, int width, int depth) {
+        int w = Math.max(1, width);
+        int d = Math.max(1, depth);
+        int baseY = origin.getY() + 1 + BORDER_OFFSET_Y;
+        if (baseY < ChunkUtil.MIN_Y || baseY >= ChunkUtil.HEIGHT) {
             return;
         }
 
-        startBorderRecord(world, origin);
         Rotation yaw = getBlockYaw(world, origin);
         Bounds bounds = computeBounds(w, d);
         if (BORDER_OFFSET_Z != 0) {
             bounds = new Bounds(bounds.minX, bounds.maxX, bounds.minZ + BORDER_OFFSET_Z, bounds.maxZ + BORDER_OFFSET_Z);
         }
         Bounds stateBounds = rotateBounds(bounds, yaw);
-        for (int x = bounds.minX; x <= bounds.maxX; x++) {
-            updateBorderStack(world, origin, stateBounds, x, bounds.minZ, baseY, topY, place, yaw);
+
+        Store<EntityStore> store = world.getEntityStore().getStore();
+        if (store == null) {
+            return;
+        }
+
+        int step = 2;
+        for (int x = bounds.minX; x <= bounds.maxX; x += step) {
+            spawnAtEdge(world, origin, stateBounds, x, bounds.minZ, baseY, yaw, store);
             if (bounds.maxZ != bounds.minZ) {
-                updateBorderStack(world, origin, stateBounds, x, bounds.maxZ, baseY, topY, place, yaw);
+                spawnAtEdge(world, origin, stateBounds, x, bounds.maxZ, baseY, yaw, store);
             }
         }
-        for (int z = bounds.minZ; z <= bounds.maxZ; z++) {
+        for (int z = bounds.minZ; z <= bounds.maxZ; z += step) {
             if (z == bounds.minZ || z == bounds.maxZ) {
                 continue;
             }
-            updateBorderStack(world, origin, stateBounds, bounds.minX, z, baseY, topY, place, yaw);
+            spawnAtEdge(world, origin, stateBounds, bounds.minX, z, baseY, yaw, store);
             if (bounds.maxX != bounds.minX) {
-                updateBorderStack(world, origin, stateBounds, bounds.maxX, z, baseY, topY, place, yaw);
+                spawnAtEdge(world, origin, stateBounds, bounds.maxX, z, baseY, yaw, store);
             }
         }
     }
 
-    private static void updateBorderStack(
+    private static void spawnBorderParticlesInternal(World world, TorchBounds bounds) {
+        Store<EntityStore> store = world.getEntityStore().getStore();
+        if (store == null) {
+            return;
+        }
+        int y = bounds.y + 1 + BORDER_OFFSET_Y;
+        int step = 2;
+        for (int x = bounds.minX; x <= bounds.maxX; x += step) {
+            spawnParticleAt(x, y, bounds.minZ, store);
+            if (bounds.maxZ != bounds.minZ) {
+                spawnParticleAt(x, y, bounds.maxZ, store);
+            }
+        }
+        for (int z = bounds.minZ; z <= bounds.maxZ; z += step) {
+            if (z == bounds.minZ || z == bounds.maxZ) {
+                continue;
+            }
+            spawnParticleAt(bounds.minX, y, z, store);
+            if (bounds.maxX != bounds.minX) {
+                spawnParticleAt(bounds.maxX, y, z, store);
+            }
+        }
+    }
+
+    private static void spawnParticleAt(int x, int y, int z, Store<EntityStore> store) {
+        Vector3d pos = new Vector3d(x + 0.5, y + 0.6, z + 0.5);
+        ParticleUtil.spawnParticleEffect(BORDER_PARTICLE_ID, pos, store);
+    }
+
+    private static void spawnAtEdge(
             World world,
             Vector3i origin,
             Bounds stateBounds,
             int localX,
             int localZ,
-            int baseY,
-            int topY,
-            boolean place,
-            Rotation yaw) {
+            int y,
+            Rotation yaw,
+            Store<EntityStore> store) {
         Vector3i offset = rotateLocalOffset(localX, localZ, yaw);
         int worldX = origin.getX() + offset.getX();
         int worldZ = origin.getZ() + offset.getZ();
-        int stateX = offset.getX();
-        int stateZ = offset.getZ();
-        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
-        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
-        if (accessor == null) {
-            return;
-        }
-        boolean hasWidth = stateBounds.minX != stateBounds.maxX;
-        boolean hasDepth = stateBounds.minZ != stateBounds.maxZ;
-        boolean isCorner = hasWidth && hasDepth
-                && (stateX == stateBounds.minX || stateX == stateBounds.maxX)
-                && (stateZ == stateBounds.minZ || stateZ == stateBounds.maxZ);
-        if (place) {
-            for (int y = baseY; y <= topY; y++) {
-                String stateName;
-                if (isCorner) {
-                    if (y == baseY) {
-                        stateName = cornerState(stateBounds, stateX, stateZ);
-                    } else if (y == topY) {
-                        stateName = cornerUpState(stateBounds, stateX, stateZ);
-                    } else {
-                        stateName = cornerMiddleState(stateBounds, stateX, stateZ);
-                    }
-                } else {
-                    if (y != baseY && y != topY) {
-                        continue;
-                    }
-                    boolean isTop = y == topY;
-                    stateName = lineState(stateBounds, stateX, stateZ, hasWidth, hasDepth, isTop);
-                }
-                if (placeBorderBlock(world, accessor, worldX, y, worldZ, stateName)) {
-                    recordBorderPosition(world, origin, worldX, y, worldZ);
-                }
-            }
-            return;
-        }
-
-        for (int y = baseY; y <= topY; y++) {
-            BlockType current = accessor.getBlockType(worldX, y, worldZ);
-            if (isBorder(current)) {
-                restoreOrClear(world, accessor, worldX, y, worldZ);
-            }
-        }
+        spawnParticleAt(worldX, y, worldZ, store);
     }
 
     private static boolean placeBorderBlock(
@@ -184,6 +353,16 @@ public final class QuarryAreaManager {
         BlockType current = accessor.getBlockType(x, y, z);
         if (isQuarry(current)) {
             return false;
+        }
+        if (!isBorder(current) && !isEmpty(current)) {
+            return false;
+        }
+        if (!isBorder(current) && hasBlockComponents(world, x, y, z)) {
+            return false;
+        }
+        if (isBorder(current)) {
+            accessor.setBlockInteractionState(x, y, z, current, stateName, false);
+            return true;
         }
         if (!isBorder(current)) {
             storeSnapshot(world, x, y, z, current);
@@ -282,6 +461,20 @@ public final class QuarryAreaManager {
             return false;
         }
         String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        return id.equalsIgnoreCase(baseId)
+                || id.regionMatches(true, 0, baseId, 0, baseId.length())
+                || containsIgnoreCase(id, baseId);
+    }
+
+    private static boolean isBorderTorch(BlockType blockType) {
+        if (blockType == null) {
+            return false;
+        }
+        String id = blockType.getId();
+        if (id == null) {
+            return false;
+        }
+        String baseId = MachinariumIds.BLOCK_BORDER_TORCH;
         return id.equalsIgnoreCase(baseId)
                 || id.regionMatches(true, 0, baseId, 0, baseId.length())
                 || containsIgnoreCase(id, baseId);
@@ -426,6 +619,58 @@ public final class QuarryAreaManager {
         } else {
             accessor.setBlock(x, y, z, BlockType.EMPTY);
         }
+    }
+
+    private static void clearBorderAreaSimple(
+            World world,
+            Vector3i origin,
+            int width,
+            int depth,
+            int baseY,
+            int topY) {
+        Bounds bounds = computeBounds(width, depth);
+        if (BORDER_OFFSET_Z != 0) {
+            bounds = new Bounds(bounds.minX, bounds.maxX, bounds.minZ + BORDER_OFFSET_Z, bounds.maxZ + BORDER_OFFSET_Z);
+        }
+        int maxX = Math.max(Math.abs(bounds.minX), Math.abs(bounds.maxX));
+        int maxZ = Math.max(Math.abs(bounds.minZ), Math.abs(bounds.maxZ));
+        int radius = Math.max(maxX, maxZ) + Math.abs(BORDER_OFFSET_Z) + 2;
+        int minX = origin.getX() - radius;
+        int maxXWorld = origin.getX() + radius;
+        int minZ = origin.getZ() - radius;
+        int maxZWorld = origin.getZ() + radius;
+
+        for (int x = minX; x <= maxXWorld; x++) {
+            for (int z = minZ; z <= maxZWorld; z++) {
+                long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+                BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+                if (accessor == null) {
+                    continue;
+                }
+                for (int y = baseY; y <= topY; y++) {
+                    BlockType current = accessor.getBlockType(x, y, z);
+                    if (isBorder(current) && !hasBlockComponents(world, x, y, z)) {
+                        accessor.setBlock(x, y, z, BlockType.EMPTY);
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean hasBlockComponents(World world, int x, int y, int z) {
+        if (world == null) {
+            return false;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        BlockComponentChunk components =
+                world.getChunkStore().getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (components == null) {
+            return false;
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
+        return components.getEntityHolder(blockIndex) != null;
     }
 
     private static Map<String, BlockSnapshot> getSnapshotMap(World world) {
@@ -576,5 +821,39 @@ public final class QuarryAreaManager {
 
     private static final class BorderRecord {
         private final Map<String, Vector3i> positions = new HashMap<>();
+    }
+
+    public static final class TorchBounds {
+        public final int minX;
+        public final int maxX;
+        public final int minZ;
+        public final int maxZ;
+        public final int y;
+
+        private TorchBounds(int minX, int maxX, int minZ, int maxZ, int y) {
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minZ = minZ;
+            this.maxZ = maxZ;
+            this.y = y;
+        }
+
+        public int getWidth() {
+            return Math.max(1, maxX - minX + 1);
+        }
+
+        public int getDepth() {
+            return Math.max(1, maxZ - minZ + 1);
+        }
+    }
+
+    private static final class TorchBoundsCache {
+        private final TorchBounds bounds;
+        private final long lastUpdatedMs;
+
+        private TorchBoundsCache(TorchBounds bounds, long lastUpdatedMs) {
+            this.bounds = bounds;
+            this.lastUpdatedMs = lastUpdatedMs;
+        }
     }
 }

@@ -95,7 +95,15 @@ public final class QuarryMachine extends MasterMachine {
             return false;
         }
 
-        boolean changed = applyTierSettings(machine, energy);
+        Vector3i originPos = new Vector3i(context.getX(), context.getY(), context.getZ());
+        QuarryAreaManager.TorchBounds torchBounds =
+                QuarryAreaManager.getTorchBounds(world, originPos);
+        if (torchBounds != null) {
+            machine.setAreaWidth(torchBounds.getWidth());
+            machine.setAreaDepth(torchBounds.getDepth());
+        }
+
+        boolean changed = applyTierSettings(machine, energy, torchBounds != null);
         if (changed) {
             context.markDirty();
         }
@@ -111,7 +119,18 @@ public final class QuarryMachine extends MasterMachine {
         Rotation yaw = getBlockYaw(world, originX, originY, originZ);
         Bounds bounds = computeMiningBounds(width, depth);
 
-        BlockTarget target = findNextTarget(world, originX, originY, originZ, bounds, yaw);
+        BlockTarget target;
+        if (torchBounds != null) {
+            target = findNextTargetInBounds(
+                    world,
+                    torchBounds.minX,
+                    torchBounds.maxX,
+                    torchBounds.minZ,
+                    torchBounds.maxZ,
+                    originY);
+        } else {
+            target = findNextTarget(world, originX, originY, originZ, bounds, yaw);
+        }
         if (target == null) {
             if (machine.getProgress() != 0) {
                 machine.setProgress(0);
@@ -162,7 +181,10 @@ public final class QuarryMachine extends MasterMachine {
         return true;
     }
 
-    private boolean applyTierSettings(MachineComponent machine, EnergyNodeComponent energy) {
+    private boolean applyTierSettings(
+            MachineComponent machine,
+            EnergyNodeComponent energy,
+            boolean allowLargeArea) {
         if (machine == null || energy == null) {
             return false;
         }
@@ -173,8 +195,12 @@ public final class QuarryMachine extends MasterMachine {
             changed = true;
         }
 
-        int width = QuarryConfig.clampAreaForTier(tier, machine.getAreaWidth());
-        int depth = QuarryConfig.clampAreaForTier(tier, machine.getAreaDepth());
+        int width = allowLargeArea
+                ? Math.max(QuarryConfig.MIN_AREA, machine.getAreaWidth())
+                : QuarryConfig.clampAreaForTier(tier, machine.getAreaWidth());
+        int depth = allowLargeArea
+                ? Math.max(QuarryConfig.MIN_AREA, machine.getAreaDepth())
+                : QuarryConfig.clampAreaForTier(tier, machine.getAreaDepth());
         if (width != machine.getAreaWidth()) {
             machine.setAreaWidth(width);
             changed = true;
@@ -215,6 +241,34 @@ public final class QuarryMachine extends MasterMachine {
         }
 
         return changed;
+    }
+
+    private BlockTarget findNextTargetInBounds(
+            World world,
+            int minX,
+            int maxX,
+            int minZ,
+            int maxZ,
+            int originY) {
+        int startY = originY - 1;
+        int minY = ChunkUtil.MIN_Y;
+        for (int y = startY; y >= minY; y--) {
+            for (int z = maxZ; z >= minZ; z--) {
+                for (int x = minX; x <= maxX; x++) {
+                    long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+                    BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+                    if (accessor == null) {
+                        continue;
+                    }
+                    BlockType blockType = accessor.getBlockType(x, y, z);
+                    if (!isMineable(blockType)) {
+                        continue;
+                    }
+                    return new BlockTarget(new Vector3i(x, y, z), blockType);
+                }
+            }
+        }
+        return null;
     }
 
     private BlockTarget findNextTarget(

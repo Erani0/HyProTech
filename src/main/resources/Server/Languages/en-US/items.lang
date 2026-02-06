@@ -1357,3 +1357,7 @@ items.Machinarium_Titanium_Vanadium_Alloy_Powder.name = Titanium-Vanadium Alloy 
 items.Machinarium_Titanium_Vanadium_Alloy_Powder.description = A fine powder used for crafting.
 server.items.Machinarium_Titanium_Vanadium_Alloy_Powder.name = Titanium-Vanadium Alloy Powder
 server.items.Machinarium_Titanium_Vanadium_Alloy_Powder.description = A fine powder used for crafting.
+items.Machinarium_Border_Torch.name = Border Torch
+items.Machinarium_Border_Torch.description = Marks quarry border corners.
+server.items.Machinarium_Border_Torch.name = Border Torch
+server.items.Machinarium_Border_Torch.description = Marks quarry border corners.

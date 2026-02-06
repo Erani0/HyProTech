@@ -366,87 +366,21 @@ $C.@PageOverlay {
           Text: "Area: 5 x 5";
         }
 
-        Group {
-          LayoutMode: Left;
-          Padding: (Top: 6);
-
-          Label {
-            Anchor: (Width: 36);
-            Style: (
-              FontSize: 12,
-              TextColor: #96a9be
-            );
-            Text: "Width";
-          }
-
-          TextButton #WidthMinus {
-            Style: $C.@SmallSecondaryTextButtonStyle;
-            Anchor: (Width: 22, Height: 22);
-            Padding: (Horizontal: 0, Vertical: 0);
-            Text: "-";
-          }
-
-          Label #QuarryWidthValue {
-            Anchor: (Width: 40);
-            Style: (
-              FontSize: 12,
-              TextColor: #d6cfb2,
-              HorizontalAlignment: Center
-            );
-            Text: "5";
-          }
-
-          TextButton #WidthPlus {
-            Style: $C.@SmallSecondaryTextButtonStyle;
-            Anchor: (Width: 22, Height: 22);
-            Padding: (Horizontal: 0, Vertical: 0);
-            Text: "+";
-          }
-        }
-
-        Group {
-          LayoutMode: Left;
+        Label #QuarryTorchDebug {
+          Style: (
+            FontSize: 12,
+            TextColor: #96a9be,
+            Wrap: true
+          );
           Padding: (Top: 4);
-
-          Label {
-            Anchor: (Width: 36);
-            Style: (
-              FontSize: 12,
-              TextColor: #96a9be
-            );
-            Text: "Depth";
-          }
-
-          TextButton #DepthMinus {
-            Style: $C.@SmallSecondaryTextButtonStyle;
-            Anchor: (Width: 22, Height: 22);
-            Padding: (Horizontal: 0, Vertical: 0);
-            Text: "-";
-          }
-
-          Label #QuarryDepthValue {
-            Anchor: (Width: 40);
-            Style: (
-              FontSize: 12,
-              TextColor: #d6cfb2,
-              HorizontalAlignment: Center
-            );
-            Text: "5";
-          }
-
-          TextButton #DepthPlus {
-            Style: $C.@SmallSecondaryTextButtonStyle;
-            Anchor: (Width: 22, Height: 22);
-            Padding: (Horizontal: 0, Vertical: 0);
-            Text: "+";
-          }
+          Text: "";
         }
 
         Group { Anchor: (Height: 6); }
 
-        $C.@TextButton #ShowAreaButton {
+        $C.@TextButton #GiveTorchButton {
           Anchor: (Left: 0, Right: 0, Height: 30);
-          Text: "Show Area";
+          Text: "Give Border Torch";
         }
       }
 
