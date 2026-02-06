@@ -34,6 +34,10 @@ import java.util.List;
 public final class QuarryMachine extends MasterMachine {
     public static final String ID = "machinarium:quarry";
     private static final int MINING_OFFSET_Z = -2;
+    private static final int BACKFILL_PLACE_DELAY_TICKS = 10;
+    private static final int BACKFILL_POST_DELAY_TICKS = 10;
+    private static final java.util.Map<World, java.util.Map<String, BackfillState>> BACKFILL_STATE =
+            new java.util.HashMap<>();
 
     @Override
     public String id() {
@@ -119,7 +123,42 @@ public final class QuarryMachine extends MasterMachine {
         Bounds bounds = computeMiningBounds(width, depth);
 
         boolean replaceMode = QuarryConfig.isForceReplaceBlocks() || machine.isReplaceMinedBlocks();
+        BackfillState backfillState = replaceMode ? getBackfillState(world, originPos, true) : null;
+        if (!replaceMode) {
+            clearBackfillState(world, originPos);
+        }
+
+        long tick = world.getTick();
+        if (backfillState != null) {
+            if (backfillState.pending != null) {
+                if (tick < backfillState.pending.placeAtTick) {
+                    return changed;
+                }
+                if (!backfillState.pending.consumed) {
+                    if (!consumeItemFromContainer(container, backfillState.pending.replacement)) {
+                        backfillState.pending = null;
+                        backfillState.resumeAtTick = tick + BACKFILL_POST_DELAY_TICKS;
+                        return changed;
+                    }
+                    backfillState.pending.consumed = true;
+                }
+                scheduleBlockReplace(
+                        world,
+                        backfillState.pending.pos,
+                        backfillState.pending.replacement.getItemId(),
+                        backfillState.pending.fallbackBlockType,
+                        backfillState.pending.rotationIndex);
+                backfillState.pending = null;
+                backfillState.resumeAtTick = tick + BACKFILL_POST_DELAY_TICKS;
+                return true;
+            }
+            if (backfillState.resumeAtTick > tick) {
+                return changed;
+            }
+        }
+
         BlockTarget target;
+        Vector3i startAfter = backfillState == null ? null : backfillState.lastPos;
         if (torchBounds != null) {
             target = findNextTargetInBounds(
                     world,
@@ -128,9 +167,10 @@ public final class QuarryMachine extends MasterMachine {
                     torchBounds.minZ,
                     torchBounds.maxZ,
                     originY,
+                    startAfter,
                     replaceMode);
         } else {
-            target = findNextTarget(world, originX, originY, originZ, bounds, yaw, replaceMode);
+            target = findNextTarget(world, originX, originY, originZ, bounds, yaw, startAfter, replaceMode);
         }
         if (target == null) {
             if (machine.getProgress() != 0) {
@@ -147,13 +187,20 @@ public final class QuarryMachine extends MasterMachine {
         boolean backfill = replaceMode && !isOreBlockId(target.blockType.getId());
         List<ItemStack> drops = resolveDrops(target.blockType);
         ItemStack replacement = backfill ? pickReplacementStack(drops, target.blockType) : null;
+        boolean preConsumed = false;
 
         if (container != null && isContainerFull(container)) {
             if (!backfill) {
                 return changed;
             }
-            if (replacement == null || !container.canAddItemStack(replacement)) {
+            if (replacement == null) {
                 return changed;
+            }
+            if (!container.canAddItemStack(replacement)) {
+                if (!consumeItemFromContainer(container, replacement)) {
+                    return changed;
+                }
+                preConsumed = true;
             }
         }
 
@@ -185,14 +232,23 @@ public final class QuarryMachine extends MasterMachine {
             }
         }
 
-        if (backfill && container != null && replacement != null) {
-            if (consumeItemFromContainer(container, replacement)) {
-                scheduleBlockReplace(world, target.pos, target.blockType, target.rotationIndex);
-            } else {
-                scheduleBlockBreak(world, target.pos);
-            }
-        } else {
-            scheduleBlockBreak(world, target.pos);
+        scheduleBlockBreak(world, target.pos);
+
+        if (backfill && container != null && replacement != null && backfillState != null) {
+            boolean consumed = preConsumed || consumeItemFromContainer(container, replacement);
+            backfillState.lastPos = target.pos;
+            backfillState.pending = new PendingBackfill(
+                    target.pos,
+                    replacement,
+                    target.blockType,
+                    target.rotationIndex,
+                    tick + BACKFILL_PLACE_DELAY_TICKS,
+                    consumed);
+            context.markDirty();
+            return true;
+        }
+        if (backfillState != null) {
+            backfillState.lastPos = target.pos;
         }
 
         context.markDirty();
@@ -268,12 +324,45 @@ public final class QuarryMachine extends MasterMachine {
             int minZ,
             int maxZ,
             int originY,
+            Vector3i startAfter,
             boolean replaceMode) {
+        BlockTarget target = findNextTargetInBoundsInternal(
+                world, minX, maxX, minZ, maxZ, originY, startAfter, replaceMode, true);
+        if (target != null || startAfter == null) {
+            return target;
+        }
+        return findNextTargetInBoundsInternal(
+                world, minX, maxX, minZ, maxZ, originY, startAfter, replaceMode, false);
+    }
+
+    private BlockTarget findNextTargetInBoundsInternal(
+            World world,
+            int minX,
+            int maxX,
+            int minZ,
+            int maxZ,
+            int originY,
+            Vector3i startAfter,
+            boolean replaceMode,
+            boolean skipUntilStart) {
         int startY = originY - 1;
         int minY = ChunkUtil.MIN_Y;
+        boolean skipping = skipUntilStart && startAfter != null;
         for (int y = startY; y >= minY; y--) {
             for (int z = maxZ; z >= minZ; z--) {
                 for (int x = minX; x <= maxX; x++) {
+                    if (startAfter != null) {
+                        if (skipping) {
+                            if (startAfter.getX() == x && startAfter.getY() == y && startAfter.getZ() == z) {
+                                skipping = false;
+                            }
+                            continue;
+                        }
+                        if (!skipUntilStart
+                                && startAfter.getX() == x && startAfter.getY() == y && startAfter.getZ() == z) {
+                            return null;
+                        }
+                    }
                     long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
                     BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
                     if (accessor == null) {
@@ -298,15 +387,52 @@ public final class QuarryMachine extends MasterMachine {
             int originZ,
             Bounds bounds,
             Rotation yaw,
+            Vector3i startAfter,
             boolean replaceMode) {
+        BlockTarget target = findNextTargetInternal(
+                world, originX, originY, originZ, bounds, yaw, startAfter, replaceMode, true);
+        if (target != null || startAfter == null) {
+            return target;
+        }
+        return findNextTargetInternal(
+                world, originX, originY, originZ, bounds, yaw, startAfter, replaceMode, false);
+    }
+
+    private BlockTarget findNextTargetInternal(
+            World world,
+            int originX,
+            int originY,
+            int originZ,
+            Bounds bounds,
+            Rotation yaw,
+            Vector3i startAfter,
+            boolean replaceMode,
+            boolean skipUntilStart) {
         int startY = originY - 1;
         int minY = ChunkUtil.MIN_Y;
+        boolean skipping = skipUntilStart && startAfter != null;
         for (int y = startY; y >= minY; y--) {
             for (int localZ = bounds.maxZ; localZ >= bounds.minZ; localZ--) {
                 for (int localX = bounds.minX; localX <= bounds.maxX; localX++) {
                     Vector3i offset = rotateLocalOffset(localX, localZ, yaw);
                     int worldX = originX + offset.getX();
                     int worldZ = originZ + offset.getZ();
+                    if (startAfter != null) {
+                        if (skipping) {
+                            if (startAfter.getX() == worldX
+                                    && startAfter.getY() == y
+                                    && startAfter.getZ() == worldZ) {
+                                skipping = false;
+                            }
+                            continue;
+                        }
+                        if (!skipUntilStart
+                                && startAfter.getX() == worldX
+                                && startAfter.getY() == y
+                                && startAfter.getZ() == worldZ) {
+                            return null;
+                        }
+                    }
                     long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
                     BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
                     if (accessor == null) {
@@ -571,11 +697,19 @@ public final class QuarryMachine extends MasterMachine {
         });
     }
 
-    private void scheduleBlockReplace(World world, Vector3i pos, BlockType blockType, int rotationIndex) {
-        if (world == null || pos == null || blockType == null) {
+    private void scheduleBlockReplace(
+            World world,
+            Vector3i pos,
+            String replacementItemId,
+            BlockType fallbackBlockType,
+            int rotationIndex) {
+        if (world == null || pos == null) {
             return;
         }
-        String blockId = blockType.getId();
+        String blockId = replacementItemId;
+        if (blockId == null || blockId.isEmpty()) {
+            blockId = fallbackBlockType == null ? null : fallbackBlockType.getId();
+        }
         if (blockId == null || blockId.isEmpty()) {
             scheduleBlockBreak(world, pos);
             return;
@@ -583,18 +717,30 @@ public final class QuarryMachine extends MasterMachine {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
+        final String finalBlockId = blockId;
+        final BlockType finalFallbackBlockType = fallbackBlockType;
+        final int finalRotationIndex = rotationIndex;
         world.execute(() -> {
             long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
             if (accessor == null) {
                 return;
             }
-            int blockIndex = BlockType.getAssetMap().getIndex(blockId);
+            int blockIndex = BlockType.getAssetMap().getIndex(finalBlockId);
             if (blockIndex == Integer.MIN_VALUE) {
-                accessor.setBlock(x, y, z, blockType);
+                if (finalFallbackBlockType != null) {
+                    accessor.setBlock(x, y, z, finalFallbackBlockType);
+                }
                 return;
             }
-            accessor.setBlock(x, y, z, blockIndex, blockType, rotationIndex, 0, 0);
+            BlockType blockType = BlockType.getAssetMap().getAsset(blockIndex);
+            if (blockType == null) {
+                if (finalFallbackBlockType != null) {
+                    accessor.setBlock(x, y, z, finalFallbackBlockType);
+                }
+                return;
+            }
+            accessor.setBlock(x, y, z, blockIndex, blockType, finalRotationIndex, 0, 0);
         });
     }
 
@@ -639,6 +785,75 @@ public final class QuarryMachine extends MasterMachine {
             return true;
         }
         return false;
+    }
+
+    private static final class PendingBackfill {
+        private final Vector3i pos;
+        private final ItemStack replacement;
+        private final BlockType fallbackBlockType;
+        private final int rotationIndex;
+        private final long placeAtTick;
+        private boolean consumed;
+
+        private PendingBackfill(
+                Vector3i pos,
+                ItemStack replacement,
+                BlockType fallbackBlockType,
+                int rotationIndex,
+                long placeAtTick,
+                boolean consumed) {
+            this.pos = pos;
+            this.replacement = replacement;
+            this.fallbackBlockType = fallbackBlockType;
+            this.rotationIndex = rotationIndex;
+            this.placeAtTick = placeAtTick;
+            this.consumed = consumed;
+        }
+    }
+
+    private static final class BackfillState {
+        private Vector3i lastPos;
+        private PendingBackfill pending;
+        private long resumeAtTick;
+    }
+
+    private BackfillState getBackfillState(World world, Vector3i origin, boolean create) {
+        if (world == null || origin == null) {
+            return null;
+        }
+        java.util.Map<String, BackfillState> byWorld = BACKFILL_STATE.get(world);
+        if (byWorld == null) {
+            if (!create) {
+                return null;
+            }
+            byWorld = new java.util.HashMap<>();
+            BACKFILL_STATE.put(world, byWorld);
+        }
+        String key = originKey(origin);
+        BackfillState state = byWorld.get(key);
+        if (state == null && create) {
+            state = new BackfillState();
+            byWorld.put(key, state);
+        }
+        return state;
+    }
+
+    private void clearBackfillState(World world, Vector3i origin) {
+        if (world == null || origin == null) {
+            return;
+        }
+        java.util.Map<String, BackfillState> byWorld = BACKFILL_STATE.get(world);
+        if (byWorld == null) {
+            return;
+        }
+        byWorld.remove(originKey(origin));
+        if (byWorld.isEmpty()) {
+            BACKFILL_STATE.remove(world);
+        }
+    }
+
+    private static String originKey(Vector3i origin) {
+        return origin.getX() + ":" + origin.getY() + ":" + origin.getZ();
     }
 
     private static final class BlockTarget {
