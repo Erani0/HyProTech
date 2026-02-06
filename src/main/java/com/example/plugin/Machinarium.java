@@ -1,5 +1,7 @@
 package com.example.plugin;
 
+import com.example.plugin.changelog.ChangelogConfig;
+import com.example.plugin.changelog.ChangelogManager;
 import com.example.plugin.energy.BatteryUpgradeConfig;
 import com.example.plugin.energy.CableUpgradeConfig;
 import com.example.plugin.energy.EnergyNetworkSystem;
@@ -22,6 +24,7 @@ import com.example.plugin.machine.AlloySmelterMachine;
 import com.example.plugin.machine.QuarryMachine;
 import com.example.plugin.machine.OreCrusherConfig;
 import com.example.plugin.machine.QuarryConfig;
+import com.example.plugin.mac.MacConfigBridge;
 import com.example.plugin.sound.MachinariumSounds;
 import com.example.plugin.interaction.CableSideToolInteraction;
 import com.example.plugin.interaction.CableNetworkUpgradeInteraction;
@@ -36,9 +39,12 @@ import com.example.plugin.ui.PlayerUiSystem;
 import com.example.plugin.ui.SolarPage;
 import com.example.plugin.ui.WindPage;
 import com.example.plugin.interaction.OpenPoweredBenchInteraction;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.DamageBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
@@ -50,6 +56,7 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.ser
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
@@ -76,6 +83,7 @@ public class Machinarium extends JavaPlugin {
     private static final String CONFIG_ORE_CRUSHER = CONFIG_DIR + "/ore-crusher";
     private static final String CONFIG_ALLOY_SMELTER = CONFIG_DIR + "/alloy-smelter";
     private static final String CONFIG_QUARRY = CONFIG_DIR + "/quarry";
+    private static final String CONFIG_CHANGELOG_STATE = CONFIG_DIR + "/changelog-state";
     private final AtomicBoolean tutbooksDownloadQueued = new AtomicBoolean(false);
     private final Config<BatteryUpgradeConfig.ConfigData> batteryConfig;
     private final Config<SolarUpgradeConfig.ConfigData> solarConfig;
@@ -85,6 +93,8 @@ public class Machinarium extends JavaPlugin {
     private final Config<OreCrusherConfig.ConfigData> oreCrusherConfig;
     private final Config<AlloySmelterConfig.ConfigData> alloySmelterConfig;
     private final Config<QuarryConfig.ConfigData> quarryConfig;
+    private final Config<ChangelogConfig> changelogStateConfig;
+    private ChangelogManager changelogManager;
 
     public Machinarium(@NonNullDecl JavaPluginInit init) {
         super(init);
@@ -96,6 +106,7 @@ public class Machinarium extends JavaPlugin {
         oreCrusherConfig = withConfig(CONFIG_ORE_CRUSHER, OreCrusherConfig.ConfigData.CODEC);
         alloySmelterConfig = withConfig(CONFIG_ALLOY_SMELTER, AlloySmelterConfig.ConfigData.CODEC);
         quarryConfig = withConfig(CONFIG_QUARRY, QuarryConfig.ConfigData.CODEC);
+        changelogStateConfig = withConfig(CONFIG_CHANGELOG_STATE, ChangelogConfig.CODEC);
     }
 
     @Override
@@ -103,10 +114,16 @@ public class Machinarium extends JavaPlugin {
         super.setup();
 
         loadConfigs();
+        changelogManager = new ChangelogManager(
+                this,
+                changelogStateConfig,
+                resolveConfigPath(CONFIG_CHANGELOG_STATE));
+        changelogManager.load();
 
         MachinariumSounds.registerDefaultsIfMissing();
 
         registerTutbooksDownloadOnPlayerJoin();
+        registerChangelogPopupOnPlayerJoin();
 
         ComponentType<ChunkStore, EnergyNodeComponent> energyType =
                 getChunkStoreRegistry().registerComponent(
@@ -194,7 +211,7 @@ public class Machinarium extends JavaPlugin {
                 CableNetworkUpgradeInteraction.class,
                 CableNetworkUpgradeInteraction.CODEC);
 
-        getCommandRegistry().registerCommand(new MachinariumCommand());
+        getCommandRegistry().registerCommand(new MachinariumCommand(changelogManager));
 
         OpenCustomUIInteraction.registerBlockEntityCustomPage(
                 this,
@@ -357,6 +374,17 @@ public class Machinarium extends JavaPlugin {
                 alloySmelterConfig,
                 AlloySmelterConfig.ConfigData::new));
         QuarryConfig.applyConfig(loadConfig(CONFIG_QUARRY, quarryConfig, QuarryConfig.ConfigData::new));
+        MacConfigBridge.applyIfPresent(
+                this,
+                new MacConfigBridge.ConfigBundle(
+                        batteryConfig,
+                        solarConfig,
+                        windConfig,
+                        cableConfig,
+                        furnaceConfig,
+                        oreCrusherConfig,
+                        alloySmelterConfig,
+                        quarryConfig));
     }
 
     private <T> T loadConfig(String name, Config<T> config, Supplier<T> fallbackSupplier) {
@@ -410,6 +438,30 @@ public class Machinarium extends JavaPlugin {
                                         ex.getMessage());
                                 return null;
                             });
+                });
+    }
+
+    private void registerChangelogPopupOnPlayerJoin() {
+        getEventRegistry().registerGlobal(
+                PlayerReadyEvent.class,
+                event -> {
+                    if (changelogManager == null) {
+                        return;
+                    }
+                    Player player = event.getPlayer();
+                    Ref<EntityStore> playerEntityRef = event.getPlayerRef();
+                    if (player == null || playerEntityRef == null) {
+                        return;
+                    }
+                    Store<EntityStore> store = playerEntityRef.getStore();
+                    if (store == null) {
+                        return;
+                    }
+                    PlayerRef playerRef = store.getComponent(playerEntityRef, PlayerRef.getComponentType());
+                    if (playerRef == null) {
+                        return;
+                    }
+                    changelogManager.openForPlayer(player, playerRef, false);
                 });
     }
 

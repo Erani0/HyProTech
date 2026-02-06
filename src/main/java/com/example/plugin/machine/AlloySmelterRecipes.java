@@ -122,6 +122,12 @@ public final class AlloySmelterRecipes {
         }
         String outputId = output.getItemId();
         if (!byOutput.containsKey(outputId)) {
+            if (!isKnownItemId(outputId) || !isKnownItemId(inputId)) {
+                return;
+            }
+            if (!areMaterialsKnown(recipe.getInput())) {
+                return;
+            }
             RecipeEntry entry = new RecipeEntry(
                     recipe.getId(),
                     inputId,
@@ -254,6 +260,25 @@ public final class AlloySmelterRecipes {
         }
         Item item = Item.getAssetMap().getAsset(itemId);
         return item != null && item != Item.UNKNOWN && !item.isState();
+    }
+
+    private static boolean areMaterialsKnown(MaterialQuantity[] materials) {
+        if (materials == null || materials.length == 0) {
+            return true;
+        }
+        for (MaterialQuantity material : materials) {
+            if (material == null) {
+                continue;
+            }
+            String itemId = material.getItemId();
+            if (itemId == null || itemId.isEmpty()) {
+                continue;
+            }
+            if (!isKnownItemId(itemId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static final class RecipeEntry {

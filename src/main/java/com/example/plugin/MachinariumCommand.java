@@ -1,5 +1,6 @@
 package com.example.plugin;
 
+import com.example.plugin.changelog.ChangelogManager;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
@@ -23,20 +24,22 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class MachinariumCommand extends AbstractPlayerCommand {
     private final RequiredArg<String> actionArg =
-            withRequiredArg("action", "Akce: give", ArgTypes.STRING);
+            withRequiredArg("action", "Akce: give/changelog", ArgTypes.STRING);
     private final OptionalArg<String> itemArg =
             withOptionalArg(
                     "item",
-                    "ID itemu (solar/battery/cable/energy_cable/item_cable/thin_cable_black/"
+                    "ID itemu (pro give: solar/battery/cable/energy_cable/item_cable/thin_cable_black/"
                             + "thin_cable_brown/thin_cable_blue/thin_cable_green/furnace/ore_crusher/alloy_smelter/workbench)",
                     ArgTypes.STRING);
     private final OptionalArg<Integer> countArg =
             withOptionalArg("count", "Mnozstvi (default 1)", ArgTypes.INTEGER);
+    private final ChangelogManager changelogManager;
 
-    public MachinariumCommand() {
+    public MachinariumCommand(ChangelogManager changelogManager) {
         super("hyprotech", "HyProTech prikazy", false);
         addAliases("hpt");
         setAllowsExtraArguments(true);
+        this.changelogManager = changelogManager;
     }
 
     @Override
@@ -52,9 +55,20 @@ public class MachinariumCommand extends AbstractPlayerCommand {
         }
 
         String action = actionArg.get(commandContext);
+        if ("changelog".equalsIgnoreCase(action)) {
+            if (changelogManager == null) {
+                player.sendMessage(Message.raw("Changelog neni dostupny."));
+                return;
+            }
+            boolean opened = changelogManager.openForPlayer(player, playerRef, true);
+            if (!opened) {
+                player.sendMessage(Message.raw("Zavri otevrene okno a zkus prikaz znovu."));
+            }
+            return;
+        }
         if (!"give".equalsIgnoreCase(action)) {
             player.sendMessage(Message.raw(
-                    "Pouziti: /hyprotech give [item] [count] nebo /hpt give --item=... --count=..."));
+                    "Pouziti: /hyprotech give [item] [count] | /hpt changelog"));
             return;
         }
 

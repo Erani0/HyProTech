@@ -1,0 +1,45 @@
+$C = "Common.ui";
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 880, Height: 720);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "HyProTech Changelog";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+      Group {
+        LayoutMode: Top;
+        Padding: (Top: 8, Left: 10, Right: 10, Bottom: 10);
+
+        Group #HeaderRow {
+          LayoutMode: Left;
+          Padding: (Bottom: 6);
+
+          $C.@SmallSecondaryTextButton #CloseButton {
+            Anchor: (Width: 90, Height: 28, Vertical: 0);
+            Text: "Close";
+          }
+        }
+
+        MultilineTextField #ChangelogText {
+          Anchor: (Width: 840, Height: 620);
+          ScrollbarStyle: $C.@DefaultScrollbarStyle;
+          Background: $C.@InputBoxBackground;
+          PlaceholderStyle: $C.@DefaultInputFieldPlaceholderStyle;
+          Style: $C.@DefaultInputFieldStyle;
+          ContentPadding: (Horizontal: 10, Vertical: 8);
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

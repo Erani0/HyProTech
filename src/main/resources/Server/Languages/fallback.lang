@@ -40,6 +40,16 @@ items.Machinarium_Alloy_Smelter_T4.name = Alloy Smelter - Precision
 items.Machinarium_Alloy_Smelter_T4.description = Smelts alloys using energy.
 items.Machinarium_Alloy_Smelter_T5.name = Alloy Smelter - Quantum
 items.Machinarium_Alloy_Smelter_T5.description = Smelts alloys using energy.
+server.items.Machinarium_Alloy_Smelter_T1.name = Alloy Smelter - Reinforced
+server.items.Machinarium_Alloy_Smelter_T1.description = Smelts alloys using energy.
+server.items.Machinarium_Alloy_Smelter_T2.name = Alloy Smelter - Industrial
+server.items.Machinarium_Alloy_Smelter_T2.description = Smelts alloys using energy.
+server.items.Machinarium_Alloy_Smelter_T3.name = Alloy Smelter - Advanced
+server.items.Machinarium_Alloy_Smelter_T3.description = Smelts alloys using energy.
+server.items.Machinarium_Alloy_Smelter_T4.name = Alloy Smelter - Precision
+server.items.Machinarium_Alloy_Smelter_T4.description = Smelts alloys using energy.
+server.items.Machinarium_Alloy_Smelter_T5.name = Alloy Smelter - Quantum
+server.items.Machinarium_Alloy_Smelter_T5.description = Smelts alloys using energy.
 items.Machinarium_Electrical_Workbench.name = Electrical Workbench
 items.Machinarium_Electrical_Workbench.description = Crafts Machinarium components.
 server.benchCategories.machinarium.crafting = Machinarium
@@ -161,6 +171,10 @@ server.items.Machinarium_Alloy_Electrum.name = Electrum Alloy
 server.items.Machinarium_Alloy_Steel.name = Steel Alloy
 server.items.Machinarium_Alloy_Invar.name = Invar Alloy
 server.items.Machinarium_Alloy_Constantan.name = Constantan Alloy
+server.items.Machinarium_Alloy_Electrum.description = A crafted component used in advanced recipes.
+server.items.Machinarium_Alloy_Steel.description = A crafted component used in advanced recipes.
+server.items.Machinarium_Alloy_Invar.description = A crafted component used in advanced recipes.
+server.items.Machinarium_Alloy_Constantan.description = A crafted component used in advanced recipes.
 
 
 items.Machinarium_Wind_Turbine.name = Wind Turbine

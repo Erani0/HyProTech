@@ -155,6 +155,14 @@ public final class OreCrusherConfig {
             }
             return Math.min(1.0, value);
         }
+
+        public double getBaseChance() {
+            return baseChance;
+        }
+
+        public double getPerTierChance() {
+            return perTierChance;
+        }
     }
 
     private static final ArrayCodec<Requirement> REQUIREMENT_ARRAY_CODEC =
@@ -397,6 +405,14 @@ public final class OreCrusherConfig {
         combined.addAll(bonusDropList);
         combined.add(powderBonusDrop);
         return combined;
+    }
+
+    public static List<BonusDrop> getBonusDropConfig() {
+        return bonusDropList;
+    }
+
+    public static BonusDrop getPowderBonusDropConfig() {
+        return powderBonusDrop;
     }
 
     public static String resolvePowderId(String oreId, String recipeOutputId) {

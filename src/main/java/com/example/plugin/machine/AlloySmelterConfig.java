@@ -156,6 +156,14 @@ public final class AlloySmelterConfig {
             }
             return Math.min(1.0, value);
         }
+
+        public double getBaseChance() {
+            return baseChance;
+        }
+
+        public double getPerTierChance() {
+            return perTierChance;
+        }
     }
 
     private static final ArrayCodec<Requirement> REQUIREMENT_ARRAY_CODEC =
@@ -370,6 +378,10 @@ public final class AlloySmelterConfig {
         if (inputId == null || inputId.isEmpty()) {
             return Collections.emptyList();
         }
+        return bonusDropList;
+    }
+
+    public static List<BonusDrop> getBonusDropConfig() {
         return bonusDropList;
     }
 
