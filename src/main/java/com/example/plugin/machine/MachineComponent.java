@@ -12,8 +12,6 @@ public class MachineComponent implements Component<ChunkStore> {
     private static final IntegerCodec INTEGER_CODEC = new IntegerCodec();
     private static final StringCodec STRING_CODEC = new StringCodec();
     private static final BooleanCodec BOOLEAN_CODEC = new BooleanCodec();
-    private static final int DEFAULT_AREA_SIZE = 5;
-    private static final int MIN_AREA_SIZE = 2;
 
     public static final BuilderCodec<MachineComponent> CODEC =
             BuilderCodec.<MachineComponent>builder(MachineComponent.class, MachineComponent::new)
@@ -47,6 +45,9 @@ public class MachineComponent implements Component<ChunkStore> {
                     .addField(new KeyedCodec<>("AreaVisible", BOOLEAN_CODEC),
                             (component, value) -> component.areaVisible = value != null && value,
                             component -> component.areaVisible)
+                    .addField(new KeyedCodec<>("ReplaceMinedBlocks", BOOLEAN_CODEC),
+                            (component, value) -> component.replaceMinedBlocks = value != null && value,
+                            component -> component.replaceMinedBlocks)
                     .build();
 
     private String machineId = "";
@@ -56,9 +57,10 @@ public class MachineComponent implements Component<ChunkStore> {
     private boolean enabled = true;
     private boolean working;
     private int lastAnimTier;
-    private int areaWidth = DEFAULT_AREA_SIZE;
-    private int areaDepth = DEFAULT_AREA_SIZE;
+    private int areaWidth = defaultAreaSize();
+    private int areaDepth = defaultAreaSize();
     private boolean areaVisible;
+    private boolean replaceMinedBlocks;
     private transient long nextSoundMs;
 
     public String getMachineId() {
@@ -141,6 +143,14 @@ public class MachineComponent implements Component<ChunkStore> {
         this.areaVisible = areaVisible;
     }
 
+    public boolean isReplaceMinedBlocks() {
+        return replaceMinedBlocks;
+    }
+
+    public void setReplaceMinedBlocks(boolean replaceMinedBlocks) {
+        this.replaceMinedBlocks = replaceMinedBlocks;
+    }
+
     public long getNextSoundMs() {
         return nextSoundMs;
     }
@@ -162,6 +172,7 @@ public class MachineComponent implements Component<ChunkStore> {
         copy.areaWidth = areaWidth;
         copy.areaDepth = areaDepth;
         copy.areaVisible = areaVisible;
+        copy.replaceMinedBlocks = replaceMinedBlocks;
         copy.nextSoundMs = nextSoundMs;
         return copy;
     }
@@ -172,13 +183,23 @@ public class MachineComponent implements Component<ChunkStore> {
     }
 
     private static int clampArea(Integer value) {
+        int defaultSize = defaultAreaSize();
+        int minSize = minAreaSize();
         if (value == null || value <= 0) {
-            return DEFAULT_AREA_SIZE;
+            return defaultSize;
         }
-        if (value < MIN_AREA_SIZE) {
-            return MIN_AREA_SIZE;
+        if (value < minSize) {
+            return minSize;
         }
         return value;
+    }
+
+    private static int defaultAreaSize() {
+        return Math.max(1, QuarryConfig.BASE_AREA);
+    }
+
+    private static int minAreaSize() {
+        return Math.max(1, QuarryConfig.MIN_AREA);
     }
 
 }

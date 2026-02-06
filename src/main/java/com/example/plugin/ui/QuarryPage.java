@@ -52,6 +52,11 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String GIVE_TORCH_LABEL = "Give Border Torch";
     private static final String ENABLE_LABEL = "TURN ON";
     private static final String DISABLE_LABEL = "TURN OFF";
+    private static final String REPLACE_STATUS_ON = "Backfill: ON";
+    private static final String REPLACE_STATUS_ON_LOCKED = "Backfill: ON (locked)";
+    private static final String REPLACE_STATUS_OFF = "Backfill: OFF";
+    private static final String REPLACE_ENABLE_LABEL = "BACKFILL ON";
+    private static final String REPLACE_DISABLE_LABEL = "BACKFILL OFF";
     private static final String[] UPGRADE_ROW_IDS = {
             "#UpgradeReqRow1",
             "#UpgradeReqRow2",
@@ -93,6 +98,9 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private int lastAreaDepth = Integer.MIN_VALUE;
     private Boolean lastAreaVisible;
     private Boolean lastEnabled;
+    private Boolean lastReplaceToggleVisible;
+    private String lastReplaceStatusText = "";
+    private String lastReplaceButtonText = "";
     private long lastAreaToggleMs;
     private long lastUpdateMs;
     private long lastBorderParticleMs;
@@ -203,6 +211,17 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             updateControls(update, machine);
             sendUpdate(update);
             return;
+        } else if ("ToggleReplace".equalsIgnoreCase(action)) {
+            if (QuarryConfig.isForceReplaceBlocks()) {
+                sendPlayerMessage(playerRef, store, "Backfill mode is locked by config.");
+                return;
+            }
+            machine.setReplaceMinedBlocks(!machine.isReplaceMinedBlocks());
+            storeMachine(world, machine);
+            UICommandBuilder update = new UICommandBuilder();
+            updateControls(update, machine);
+            sendUpdate(update);
+            return;
         } else {
             return;
         }
@@ -292,6 +311,8 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         update.set("#GiveTorchButton.Text", GIVE_TORCH_LABEL);
         update.set("#QuarryStatus.Text", "Status: ON");
         update.set("#QuarryToggleButton.Text", DISABLE_LABEL);
+        update.set("#QuarryReplaceStatus.Text", REPLACE_STATUS_OFF);
+        update.set("#QuarryReplaceToggleButton.Text", REPLACE_ENABLE_LABEL);
         updateUpgradePanel(update, null, null);
     }
 
@@ -482,6 +503,31 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             update.set("#QuarryStatus.Text", enabled ? "Status: ON" : "Status: OFF");
             update.set("#QuarryToggleButton.Text", enabled ? DISABLE_LABEL : ENABLE_LABEL);
             lastEnabled = enabled;
+            changed = true;
+        }
+
+        boolean forceReplace = QuarryConfig.isForceReplaceBlocks();
+        boolean replaceMode = forceReplace || (machine != null && machine.isReplaceMinedBlocks());
+        String replaceStatus = replaceMode
+                ? (forceReplace ? REPLACE_STATUS_ON_LOCKED : REPLACE_STATUS_ON)
+                : REPLACE_STATUS_OFF;
+        if (!replaceStatus.equals(lastReplaceStatusText)) {
+            update.set("#QuarryReplaceStatus.Text", replaceStatus);
+            lastReplaceStatusText = replaceStatus;
+            changed = true;
+        }
+
+        boolean toggleVisible = !forceReplace;
+        if (lastReplaceToggleVisible == null || toggleVisible != lastReplaceToggleVisible) {
+            update.set("#QuarryReplaceToggleButton.Visible", toggleVisible);
+            lastReplaceToggleVisible = toggleVisible;
+            changed = true;
+        }
+
+        String replaceButtonText = replaceMode ? REPLACE_DISABLE_LABEL : REPLACE_ENABLE_LABEL;
+        if (!replaceButtonText.equals(lastReplaceButtonText)) {
+            update.set("#QuarryReplaceToggleButton.Text", replaceButtonText);
+            lastReplaceButtonText = replaceButtonText;
             changed = true;
         }
 
@@ -1037,6 +1083,10 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
                 CustomUIEventBindingType.Activating,
                 "#QuarryToggleButton",
                 EventData.of("Action", "ToggleEnabled"));
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#QuarryReplaceToggleButton",
+                EventData.of("Action", "ToggleReplace"));
     }
 
     private static int normalizeArea(int value) {

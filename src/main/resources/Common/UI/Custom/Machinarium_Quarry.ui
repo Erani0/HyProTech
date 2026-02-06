@@ -355,6 +355,25 @@ $C.@PageOverlay {
           }
         }
 
+        Label #QuarryReplaceStatus {
+          Style: (
+            FontSize: 13,
+            TextColor: #96a9be
+          );
+          Padding: (Top: 2);
+          Text: "Backfill: OFF";
+        }
+
+        Group {
+          LayoutMode: Left;
+          Padding: (Top: 4);
+
+          $C.@SmallSecondaryTextButton #QuarryReplaceToggleButton {
+            Anchor: (Width: 160, Height: 26);
+            Text: "BACKFILL ON";
+          }
+        }
+
         Group { Anchor: (Height: 6); }
 
         Label #QuarryArea {

@@ -1,15 +1,42 @@
 package com.example.plugin.machine;
 
+import com.example.plugin.config.ConfigArrays;
+import com.hypixel.hytale.codec.KeyedCodec;
+import com.hypixel.hytale.codec.builder.BuilderCodec;
+import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
+import com.hypixel.hytale.codec.codecs.array.DoubleArrayCodec;
+import com.hypixel.hytale.codec.codecs.array.IntArrayCodec;
+import com.hypixel.hytale.codec.codecs.simple.BooleanCodec;
+import com.hypixel.hytale.codec.codecs.simple.DoubleCodec;
+import com.hypixel.hytale.codec.codecs.simple.IntegerCodec;
+import com.hypixel.hytale.codec.codecs.simple.StringCodec;
+import java.util.ArrayList;
+import java.util.List;
+
 public final class QuarryConfig {
     public static final int MIN_TIER = 0;
     public static final int MAX_TIER = 5;
-    public static final int BASE_AREA = 5;
-    public static final int MIN_AREA = 2;
+    public static int BASE_AREA = 5;
+    public static int MIN_AREA = 2;
     private static final int TICKS_PER_SECOND = 20;
-    private static final double BASIC_SPEED_SECONDS = 0.7;
-    private static final double QUANTUM_SPEED_SECONDS = 0.1;
+    private static final int TIER_COUNT = MAX_TIER - MIN_TIER + 1;
 
-    private static final String[] TIER_NAMES = {
+    private static final StringCodec STRING_CODEC = new StringCodec();
+    private static final IntegerCodec INTEGER_CODEC = new IntegerCodec();
+    private static final DoubleCodec DOUBLE_CODEC = new DoubleCodec();
+    private static final BooleanCodec BOOLEAN_CODEC = new BooleanCodec();
+    private static final IntArrayCodec INT_ARRAY_CODEC = new IntArrayCodec();
+    private static final DoubleArrayCodec DOUBLE_ARRAY_CODEC = new DoubleArrayCodec();
+    private static final ArrayCodec<String> STRING_ARRAY_CODEC =
+            new ArrayCodec<>(STRING_CODEC, String[]::new);
+
+    private static final int DEFAULT_BASE_AREA = 5;
+    private static final int DEFAULT_MIN_AREA = 2;
+    private static final double DEFAULT_BASIC_SPEED_SECONDS = 0.7;
+    private static final double DEFAULT_QUANTUM_SPEED_SECONDS = 0.1;
+    private static final boolean DEFAULT_FORCE_REPLACE_BLOCKS = false;
+
+    private static final String[] DEFAULT_TIER_NAMES = {
             "Basic",
             "Reinforced",
             "Industrial",
@@ -18,14 +45,27 @@ public final class QuarryConfig {
             "Quantum"
     };
 
-
     public static final class Requirement {
-        private final String itemId;
-        private final int quantity;
+        private String itemId;
+        private int quantity;
+
+        public static final BuilderCodec<Requirement> CODEC =
+                BuilderCodec.builder(Requirement.class, Requirement::new)
+                        .addField(new KeyedCodec<>("ItemId", STRING_CODEC),
+                                (requirement, value) -> requirement.itemId = normalizeItemId(value),
+                                requirement -> requirement.itemId)
+                        .addField(new KeyedCodec<>("Quantity", INTEGER_CODEC),
+                                (requirement, value) -> requirement.quantity = normalizeQuantity(value),
+                                requirement -> requirement.quantity)
+                        .build();
+
+        public Requirement() {
+            this("", 0);
+        }
 
         public Requirement(String itemId, int quantity) {
-            this.itemId = itemId;
-            this.quantity = quantity;
+            this.itemId = normalizeItemId(itemId);
+            this.quantity = normalizeQuantity(quantity);
         }
 
         public String getItemId() {
@@ -39,7 +79,7 @@ public final class QuarryConfig {
 
     private static final Requirement[] NO_REQUIREMENTS = new Requirement[0];
 
-    private static final int[] CAPACITY = {
+    private static final int[] DEFAULT_CAPACITY = {
             5000,
             50000,
             100000,
@@ -48,7 +88,7 @@ public final class QuarryConfig {
             1000000
     };
 
-    private static final int[] CONSUMPTION_PER_SECOND = {
+    private static final int[] DEFAULT_CONSUMPTION_PER_SECOND = {
             2000,
             4000,
             7900,
@@ -57,7 +97,7 @@ public final class QuarryConfig {
             60000
     };
 
-    private static final int[] MAX_AREA = {
+    private static final int[] DEFAULT_MAX_AREA = {
             5,
             10,
             20,
@@ -66,7 +106,165 @@ public final class QuarryConfig {
             50
     };
 
+    private static final Requirement[][] DEFAULT_UPGRADE_REQUIREMENTS = {
+            new Requirement[] {
+                    new Requirement("Ingredient_Bar_Copper", 1),
+                    new Requirement("Ingredient_Hide_Medium", 1)
+            },
+            new Requirement[] {
+                    new Requirement("Ingredient_Bar_Iron", 1),
+                    new Requirement("Ingredient_Fire_Essence", 1)
+            },
+            new Requirement[] {
+                    new Requirement("Ingredient_Bar_Silver", 1),
+                    new Requirement("Ingredient_Bar_Cobalt", 1)
+            },
+            new Requirement[] {
+                    new Requirement("Ingredient_Bar_Gold", 1),
+                    new Requirement("Ingredient_Bar_Thorium", 1),
+                    new Requirement("Ingredient_Fire_Essence", 1)
+            },
+            new Requirement[] {
+                    new Requirement("Ingredient_Bar_Adamantite", 1),
+                    new Requirement("Ingredient_Bar_Cobalt", 1),
+                    new Requirement("Ingredient_Hide_Medium", 1)
+            },
+            new Requirement[0]
+    };
+
+    private static final ArrayCodec<Requirement> REQUIREMENT_ARRAY_CODEC =
+            ArrayCodec.ofBuilderCodec(Requirement.CODEC, Requirement[]::new);
+    private static final ArrayCodec<Requirement[]> REQUIREMENT_TABLE_CODEC =
+            new ArrayCodec<>(REQUIREMENT_ARRAY_CODEC, Requirement[][]::new);
+
+    private static String[] tierNames = DEFAULT_TIER_NAMES.clone();
+    private static int[] capacity = DEFAULT_CAPACITY.clone();
+    private static int[] consumptionPerSecond = DEFAULT_CONSUMPTION_PER_SECOND.clone();
+    private static int[] maxArea = DEFAULT_MAX_AREA.clone();
+    private static Requirement[][] upgradeRequirements = copyRequirements(DEFAULT_UPGRADE_REQUIREMENTS);
+    private static double basicSpeedSeconds = DEFAULT_BASIC_SPEED_SECONDS;
+    private static double quantumSpeedSeconds = DEFAULT_QUANTUM_SPEED_SECONDS;
+    private static boolean forceReplaceBlocks = DEFAULT_FORCE_REPLACE_BLOCKS;
+
+    public static final class ConfigData {
+        public static final BuilderCodec<ConfigData> CODEC =
+                BuilderCodec.builder(ConfigData.class, ConfigData::new)
+                        .addField(new KeyedCodec<>("BaseArea", INTEGER_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.baseArea = value;
+                                    }
+                                },
+                                config -> config.baseArea)
+                        .addField(new KeyedCodec<>("MinArea", INTEGER_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.minArea = value;
+                                    }
+                                },
+                                config -> config.minArea)
+                        .addField(new KeyedCodec<>("BasicSpeedSeconds", DOUBLE_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.basicSpeedSeconds = value;
+                                    }
+                                },
+                                config -> config.basicSpeedSeconds)
+                        .addField(new KeyedCodec<>("QuantumSpeedSeconds", DOUBLE_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.quantumSpeedSeconds = value;
+                                    }
+                                },
+                                config -> config.quantumSpeedSeconds)
+                        .addField(new KeyedCodec<>("TierNames", STRING_ARRAY_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.tierNames = value;
+                                    }
+                                },
+                                config -> config.tierNames)
+                        .addField(new KeyedCodec<>("Capacity", INT_ARRAY_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.capacity = value;
+                                    }
+                                },
+                                config -> config.capacity)
+                        .addField(new KeyedCodec<>("ConsumptionPerSecond", INT_ARRAY_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.consumptionPerSecond = value;
+                                    }
+                                },
+                                config -> config.consumptionPerSecond)
+                        .addField(new KeyedCodec<>("MaxArea", INT_ARRAY_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.maxArea = value;
+                                    }
+                                },
+                                config -> config.maxArea)
+                        .addField(new KeyedCodec<>("UpgradeRequirements", REQUIREMENT_TABLE_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.upgradeRequirements = value;
+                                    }
+                                },
+                                config -> config.upgradeRequirements)
+                        .addField(new KeyedCodec<>("ForceReplaceBlocks", BOOLEAN_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.forceReplaceBlocks = value;
+                                    }
+                                },
+                                config -> config.forceReplaceBlocks)
+                        .build();
+
+        private int baseArea = DEFAULT_BASE_AREA;
+        private int minArea = DEFAULT_MIN_AREA;
+        private double basicSpeedSeconds = DEFAULT_BASIC_SPEED_SECONDS;
+        private double quantumSpeedSeconds = DEFAULT_QUANTUM_SPEED_SECONDS;
+        private String[] tierNames = DEFAULT_TIER_NAMES.clone();
+        private int[] capacity = DEFAULT_CAPACITY.clone();
+        private int[] consumptionPerSecond = DEFAULT_CONSUMPTION_PER_SECOND.clone();
+        private int[] maxArea = DEFAULT_MAX_AREA.clone();
+        private Requirement[][] upgradeRequirements = copyRequirements(DEFAULT_UPGRADE_REQUIREMENTS);
+        private boolean forceReplaceBlocks = DEFAULT_FORCE_REPLACE_BLOCKS;
+
+        public ConfigData() {
+        }
+    }
+
     private QuarryConfig() {
+    }
+
+    public static void applyConfig(ConfigData data) {
+        if (data == null) {
+            return;
+        }
+        int baseAreaValue = Math.max(1, data.baseArea);
+        int minAreaValue = Math.max(1, data.minArea);
+        if (baseAreaValue < minAreaValue) {
+            baseAreaValue = minAreaValue;
+        }
+        BASE_AREA = baseAreaValue;
+        MIN_AREA = minAreaValue;
+
+        basicSpeedSeconds = normalizeSpeedSeconds(data.basicSpeedSeconds, DEFAULT_BASIC_SPEED_SECONDS);
+        quantumSpeedSeconds = normalizeSpeedSeconds(data.quantumSpeedSeconds, DEFAULT_QUANTUM_SPEED_SECONDS);
+
+        tierNames = ConfigArrays.mergeStringArray(data.tierNames, DEFAULT_TIER_NAMES, TIER_COUNT);
+        capacity = ConfigArrays.mergeIntArray(data.capacity, DEFAULT_CAPACITY, TIER_COUNT, 0);
+        consumptionPerSecond = ConfigArrays.mergeIntArray(
+                data.consumptionPerSecond,
+                DEFAULT_CONSUMPTION_PER_SECOND,
+                TIER_COUNT,
+                0);
+        maxArea = ConfigArrays.mergeIntArray(data.maxArea, DEFAULT_MAX_AREA, TIER_COUNT, MIN_AREA);
+        clampMaxArea();
+        upgradeRequirements = mergeRequirements(data.upgradeRequirements, DEFAULT_UPGRADE_REQUIREMENTS);
+        forceReplaceBlocks = data.forceReplaceBlocks;
     }
 
     public static int clampTier(int tier) {
@@ -84,15 +282,15 @@ public final class QuarryConfig {
     }
 
     public static String getTierName(int tier) {
-        return TIER_NAMES[clampTier(tier)];
+        return tierNames[clampTier(tier)];
     }
 
     public static int getCapacityForTier(int tier) {
-        return CAPACITY[clampTier(tier)];
+        return capacity[clampTier(tier)];
     }
 
     public static int getConsumptionPerSecond(int tier) {
-        return CONSUMPTION_PER_SECOND[clampTier(tier)];
+        return consumptionPerSecond[clampTier(tier)];
     }
 
     public static int getMaxTransferForTier(int tier) {
@@ -100,7 +298,7 @@ public final class QuarryConfig {
     }
 
     public static int getMaxAreaForTier(int tier) {
-        return MAX_AREA[clampTier(tier)];
+        return maxArea[clampTier(tier)];
     }
 
     public static int clampAreaForTier(int tier, int value) {
@@ -132,48 +330,110 @@ public final class QuarryConfig {
     public static double getMiningSecondsForTier(int tier) {
         int safeTier = clampTier(tier);
         if (MAX_TIER == MIN_TIER) {
-            return BASIC_SPEED_SECONDS;
+            return basicSpeedSeconds;
         }
         double ratio = (double) (safeTier - MIN_TIER) / (double) (MAX_TIER - MIN_TIER);
-        return BASIC_SPEED_SECONDS + (QUANTUM_SPEED_SECONDS - BASIC_SPEED_SECONDS) * ratio;
+        return basicSpeedSeconds + (quantumSpeedSeconds - basicSpeedSeconds) * ratio;
     }
-
 
     public static Requirement[] getUpgradeRequirements(int currentTier) {
         int safeTier = clampTier(currentTier);
         if (safeTier >= MAX_TIER) {
             return NO_REQUIREMENTS;
         }
-        switch (safeTier) {
-            case 0:
-                return new Requirement[] {
-                        new Requirement("Ingredient_Bar_Copper", 1),
-                        new Requirement("Ingredient_Hide_Medium", 1)
-                };
-            case 1:
-                return new Requirement[] {
-                        new Requirement("Ingredient_Bar_Iron", 1),
-                        new Requirement("Ingredient_Fire_Essence", 1)
-                };
-            case 2:
-                return new Requirement[] {
-                        new Requirement("Ingredient_Bar_Silver", 1),
-                        new Requirement("Ingredient_Bar_Cobalt", 1)
-                };
-            case 3:
-                return new Requirement[] {
-                        new Requirement("Ingredient_Bar_Gold", 1),
-                        new Requirement("Ingredient_Bar_Thorium", 1),
-                        new Requirement("Ingredient_Fire_Essence", 1)
-                };
-            case 4:
-                return new Requirement[] {
-                        new Requirement("Ingredient_Bar_Adamantite", 1),
-                        new Requirement("Ingredient_Bar_Cobalt", 1),
-                        new Requirement("Ingredient_Hide_Medium", 1)
-                };
-            default:
-                return NO_REQUIREMENTS;
+        Requirement[] requirements = upgradeRequirements[safeTier];
+        if (requirements == null) {
+            return NO_REQUIREMENTS;
         }
+        return requirements;
+    }
+
+    public static boolean isForceReplaceBlocks() {
+        return forceReplaceBlocks;
+    }
+
+    private static void clampMaxArea() {
+        for (int i = 0; i < maxArea.length; i++) {
+            if (maxArea[i] < MIN_AREA) {
+                maxArea[i] = MIN_AREA;
+            }
+        }
+    }
+
+    private static Requirement[][] mergeRequirements(Requirement[][] value, Requirement[][] defaults) {
+        Requirement[][] result = new Requirement[TIER_COUNT][];
+        for (int i = 0; i < TIER_COUNT; i++) {
+            Requirement[] fallback = defaults != null && i < defaults.length ? defaults[i] : NO_REQUIREMENTS;
+            result[i] = sanitizeRequirements(fallback);
+        }
+        if (value != null) {
+            int limit = Math.min(value.length, TIER_COUNT);
+            for (int i = 0; i < limit; i++) {
+                Requirement[] cleaned = sanitizeRequirements(value[i]);
+                if (cleaned != null) {
+                    result[i] = cleaned;
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Requirement[][] copyRequirements(Requirement[][] source) {
+        return mergeRequirements(source, source);
+    }
+
+    private static Requirement[] sanitizeRequirements(Requirement[] requirements) {
+        if (requirements == null || requirements.length == 0) {
+            return NO_REQUIREMENTS;
+        }
+        List<Requirement> cleaned = new ArrayList<>(requirements.length);
+        for (Requirement requirement : requirements) {
+            if (requirement == null) {
+                continue;
+            }
+            String itemId = normalizeItemId(requirement.itemId);
+            int quantity = normalizeQuantity(requirement.quantity);
+            if (itemId.isEmpty() || quantity <= 0) {
+                continue;
+            }
+            cleaned.add(new Requirement(itemId, quantity));
+        }
+        if (cleaned.isEmpty()) {
+            return NO_REQUIREMENTS;
+        }
+        return cleaned.toArray(new Requirement[0]);
+    }
+
+    private static String normalizeItemId(String value) {
+        if (value == null) {
+            return "";
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? "" : trimmed;
+    }
+
+    private static int normalizeQuantity(Integer value) {
+        if (value == null) {
+            return 0;
+        }
+        return normalizeQuantity(value.intValue());
+    }
+
+    private static int normalizeQuantity(int value) {
+        return Math.max(0, value);
+    }
+
+    private static double normalizeSpeedSeconds(Double value, double fallback) {
+        if (value == null) {
+            return fallback;
+        }
+        return normalizeSpeedSeconds(value.doubleValue(), fallback);
+    }
+
+    private static double normalizeSpeedSeconds(double value, double fallback) {
+        if (!Double.isFinite(value)) {
+            return fallback;
+        }
+        return Math.max(0.01, value);
     }
 }

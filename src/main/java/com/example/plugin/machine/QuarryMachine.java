@@ -33,7 +33,6 @@ import java.util.List;
 
 public final class QuarryMachine extends MasterMachine {
     public static final String ID = "machinarium:quarry";
-    private static final int BASIC_AREA = 5;
     private static final int MINING_OFFSET_Z = -2;
 
     @Override
@@ -55,10 +54,10 @@ public final class QuarryMachine extends MasterMachine {
         }
         if (machine != null) {
             if (machine.getAreaWidth() <= 0) {
-                machine.setAreaWidth(BASIC_AREA);
+                machine.setAreaWidth(QuarryConfig.BASE_AREA);
             }
             if (machine.getAreaDepth() <= 0) {
-                machine.setAreaDepth(BASIC_AREA);
+                machine.setAreaDepth(QuarryConfig.BASE_AREA);
             }
         }
     }
@@ -119,6 +118,7 @@ public final class QuarryMachine extends MasterMachine {
         Rotation yaw = getBlockYaw(world, originX, originY, originZ);
         Bounds bounds = computeMiningBounds(width, depth);
 
+        boolean replaceMode = QuarryConfig.isForceReplaceBlocks() || machine.isReplaceMinedBlocks();
         BlockTarget target;
         if (torchBounds != null) {
             target = findNextTargetInBounds(
@@ -127,9 +127,10 @@ public final class QuarryMachine extends MasterMachine {
                     torchBounds.maxX,
                     torchBounds.minZ,
                     torchBounds.maxZ,
-                    originY);
+                    originY,
+                    replaceMode);
         } else {
-            target = findNextTarget(world, originX, originY, originZ, bounds, yaw);
+            target = findNextTarget(world, originX, originY, originZ, bounds, yaw, replaceMode);
         }
         if (target == null) {
             if (machine.getProgress() != 0) {
@@ -249,7 +250,8 @@ public final class QuarryMachine extends MasterMachine {
             int maxX,
             int minZ,
             int maxZ,
-            int originY) {
+            int originY,
+            boolean replaceMode) {
         int startY = originY - 1;
         int minY = ChunkUtil.MIN_Y;
         for (int y = startY; y >= minY; y--) {
@@ -261,7 +263,7 @@ public final class QuarryMachine extends MasterMachine {
                         continue;
                     }
                     BlockType blockType = accessor.getBlockType(x, y, z);
-                    if (!isMineable(blockType)) {
+                    if (!isMineable(blockType, replaceMode)) {
                         continue;
                     }
                     return new BlockTarget(new Vector3i(x, y, z), blockType);
@@ -277,7 +279,8 @@ public final class QuarryMachine extends MasterMachine {
             int originY,
             int originZ,
             Bounds bounds,
-            Rotation yaw) {
+            Rotation yaw,
+            boolean replaceMode) {
         int startY = originY - 1;
         int minY = ChunkUtil.MIN_Y;
         for (int y = startY; y >= minY; y--) {
@@ -292,7 +295,7 @@ public final class QuarryMachine extends MasterMachine {
                         continue;
                     }
                     BlockType blockType = accessor.getBlockType(worldX, y, worldZ);
-                    if (!isMineable(blockType)) {
+                    if (!isMineable(blockType, replaceMode)) {
                         continue;
                     }
                     return new BlockTarget(new Vector3i(worldX, y, worldZ), blockType);
@@ -427,7 +430,7 @@ public final class QuarryMachine extends MasterMachine {
         store.addEntities(holders, AddReason.SPAWN);
     }
 
-    private boolean isMineable(BlockType blockType) {
+    private boolean isMineable(BlockType blockType, boolean replaceMode) {
         if (blockType == null || blockType == BlockType.EMPTY) {
             return false;
         }
@@ -441,7 +444,32 @@ public final class QuarryMachine extends MasterMachine {
         if (isBorderId(id) || TieredIdUtil.isTieredId(id, MachinariumIds.BLOCK_QUARRY)) {
             return false;
         }
+        if (replaceMode && !isOreBlockId(id)) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean isOreBlockId(String id) {
+        if (id == null || id.isEmpty()) {
+            return false;
+        }
+        String normalized = id;
+        int colon = normalized.indexOf(':');
+        if (colon >= 0 && colon + 1 < normalized.length()) {
+            normalized = normalized.substring(colon + 1);
+        }
+        int slash = normalized.lastIndexOf('/');
+        if (slash >= 0 && slash + 1 < normalized.length()) {
+            normalized = normalized.substring(slash + 1);
+        }
+        if (normalized.startsWith("Ore_")) {
+            return true;
+        }
+        if (normalized.endsWith("_Ore")) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isBorderId(String id) {

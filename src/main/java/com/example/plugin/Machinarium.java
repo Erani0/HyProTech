@@ -1,19 +1,27 @@
 package com.example.plugin;
 
+import com.example.plugin.energy.BatteryUpgradeConfig;
+import com.example.plugin.energy.CableUpgradeConfig;
 import com.example.plugin.energy.EnergyNetworkSystem;
 import com.example.plugin.energy.EnergyNodeComponent;
+import com.example.plugin.energy.SolarUpgradeConfig;
+import com.example.plugin.energy.WindUpgradeConfig;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorageLookup;
 import com.example.plugin.item.ItemNetworkSystem;
 import com.example.plugin.item.ItemNodeComponent;
 import com.example.plugin.item.ItemStorageConfigChunk;
 import com.example.plugin.item.ItemStorageConfigComponent;
+import com.example.plugin.furnace.FurnaceConfig;
 import com.example.plugin.machine.MachineComponent;
 import com.example.plugin.machine.MachineRegistry;
 import com.example.plugin.machine.MachineSystem;
 import com.example.plugin.machine.QuarryAreaManager;
+import com.example.plugin.machine.AlloySmelterConfig;
 import com.example.plugin.machine.OreCrusherMachine;
 import com.example.plugin.machine.AlloySmelterMachine;
 import com.example.plugin.machine.QuarryMachine;
+import com.example.plugin.machine.OreCrusherConfig;
+import com.example.plugin.machine.QuarryConfig;
 import com.example.plugin.sound.MachinariumSounds;
 import com.example.plugin.interaction.CableSideToolInteraction;
 import com.example.plugin.interaction.CableNetworkUpgradeInteraction;
@@ -41,13 +49,17 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Int
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.util.Config;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.math.util.ChunkUtil;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class Machinarium extends JavaPlugin {
@@ -55,15 +67,42 @@ public class Machinarium extends JavaPlugin {
             "https://github.com/YoofeCZ/HyProTechBook/releases/latest/download/HyProTechBook.zip";
     private static final String TUTBOOKS_MOD_ID = "HyProTech";
     private static final int WIND_TURBINE_BLOCK_HEIGHT = 5;
+    private static final String CONFIG_DIR = "configs";
+    private static final String CONFIG_BATTERY = CONFIG_DIR + "/battery-upgrades";
+    private static final String CONFIG_SOLAR = CONFIG_DIR + "/solar-upgrades";
+    private static final String CONFIG_WIND = CONFIG_DIR + "/wind-upgrades";
+    private static final String CONFIG_CABLE = CONFIG_DIR + "/cable-upgrades";
+    private static final String CONFIG_FURNACE = CONFIG_DIR + "/furnace";
+    private static final String CONFIG_ORE_CRUSHER = CONFIG_DIR + "/ore-crusher";
+    private static final String CONFIG_ALLOY_SMELTER = CONFIG_DIR + "/alloy-smelter";
+    private static final String CONFIG_QUARRY = CONFIG_DIR + "/quarry";
     private final AtomicBoolean tutbooksDownloadQueued = new AtomicBoolean(false);
+    private final Config<BatteryUpgradeConfig.ConfigData> batteryConfig;
+    private final Config<SolarUpgradeConfig.ConfigData> solarConfig;
+    private final Config<WindUpgradeConfig.ConfigData> windConfig;
+    private final Config<CableUpgradeConfig.ConfigData> cableConfig;
+    private final Config<FurnaceConfig.ConfigData> furnaceConfig;
+    private final Config<OreCrusherConfig.ConfigData> oreCrusherConfig;
+    private final Config<AlloySmelterConfig.ConfigData> alloySmelterConfig;
+    private final Config<QuarryConfig.ConfigData> quarryConfig;
 
     public Machinarium(@NonNullDecl JavaPluginInit init) {
         super(init);
+        batteryConfig = withConfig(CONFIG_BATTERY, BatteryUpgradeConfig.ConfigData.CODEC);
+        solarConfig = withConfig(CONFIG_SOLAR, SolarUpgradeConfig.ConfigData.CODEC);
+        windConfig = withConfig(CONFIG_WIND, WindUpgradeConfig.ConfigData.CODEC);
+        cableConfig = withConfig(CONFIG_CABLE, CableUpgradeConfig.ConfigData.CODEC);
+        furnaceConfig = withConfig(CONFIG_FURNACE, FurnaceConfig.ConfigData.CODEC);
+        oreCrusherConfig = withConfig(CONFIG_ORE_CRUSHER, OreCrusherConfig.ConfigData.CODEC);
+        alloySmelterConfig = withConfig(CONFIG_ALLOY_SMELTER, AlloySmelterConfig.ConfigData.CODEC);
+        quarryConfig = withConfig(CONFIG_QUARRY, QuarryConfig.ConfigData.CODEC);
     }
 
     @Override
     protected void setup() {
         super.setup();
+
+        loadConfigs();
 
         MachinariumSounds.registerDefaultsIfMissing();
 
@@ -304,6 +343,42 @@ public class Machinarium extends JavaPlugin {
                     UpgradePersistence.storePending(world, pos, blockId, stack);
                 });
         // Furnace custom UI removed; vanilla bench opens via interaction.
+    }
+
+    private void loadConfigs() {
+        BatteryUpgradeConfig.applyConfig(loadConfig(CONFIG_BATTERY, batteryConfig, BatteryUpgradeConfig.ConfigData::new));
+        SolarUpgradeConfig.applyConfig(loadConfig(CONFIG_SOLAR, solarConfig, SolarUpgradeConfig.ConfigData::new));
+        WindUpgradeConfig.applyConfig(loadConfig(CONFIG_WIND, windConfig, WindUpgradeConfig.ConfigData::new));
+        CableUpgradeConfig.applyConfig(loadConfig(CONFIG_CABLE, cableConfig, CableUpgradeConfig.ConfigData::new));
+        FurnaceConfig.applyConfig(loadConfig(CONFIG_FURNACE, furnaceConfig, FurnaceConfig.ConfigData::new));
+        OreCrusherConfig.applyConfig(loadConfig(CONFIG_ORE_CRUSHER, oreCrusherConfig, OreCrusherConfig.ConfigData::new));
+        AlloySmelterConfig.applyConfig(loadConfig(
+                CONFIG_ALLOY_SMELTER,
+                alloySmelterConfig,
+                AlloySmelterConfig.ConfigData::new));
+        QuarryConfig.applyConfig(loadConfig(CONFIG_QUARRY, quarryConfig, QuarryConfig.ConfigData::new));
+    }
+
+    private <T> T loadConfig(String name, Config<T> config, Supplier<T> fallbackSupplier) {
+        boolean exists = Files.exists(resolveConfigPath(name));
+        T loaded;
+        try {
+            loaded = config.load().join();
+        } catch (Exception ex) {
+            getLogger().atWarning().log("[HyProTech] Failed to load config %s: %s", name, ex.getMessage());
+            loaded = fallbackSupplier.get();
+        }
+        if (!exists) {
+            config.save().exceptionally(ex -> {
+                getLogger().atWarning().log("[HyProTech] Failed to save config %s: %s", name, ex.getMessage());
+                return null;
+            });
+        }
+        return loaded;
+    }
+
+    private Path resolveConfigPath(String name) {
+        return getDataDirectory().resolve(name + ".json");
     }
 
     private void registerTutbooksDownloadOnPlayerJoin() {
