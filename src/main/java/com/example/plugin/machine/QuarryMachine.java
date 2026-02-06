@@ -143,8 +143,18 @@ public final class QuarryMachine extends MasterMachine {
 
         int progressMax = Math.max(1, machine.getProgressMax());
         int currentProgress = machine.getProgress();
+
+        boolean backfill = replaceMode && !isOreBlockId(target.blockType.getId());
+        List<ItemStack> drops = resolveDrops(target.blockType);
+        ItemStack replacement = backfill ? pickReplacementStack(drops, target.blockType) : null;
+
         if (container != null && isContainerFull(container)) {
-            return changed;
+            if (!backfill) {
+                return changed;
+            }
+            if (replacement == null || !container.canAddItemStack(replacement)) {
+                return changed;
+            }
         }
 
         int consumptionPerSecond = Math.max(0, energy.getConsumption());
@@ -167,7 +177,6 @@ public final class QuarryMachine extends MasterMachine {
         }
         machine.setProgress(0);
 
-        List<ItemStack> drops = resolveDrops(target.blockType);
         if (drops != null && !drops.isEmpty()) {
             if (container != null) {
                 addDropsToContainerOrWorld(container, world, drops, target.pos);
@@ -176,7 +185,15 @@ public final class QuarryMachine extends MasterMachine {
             }
         }
 
-        scheduleBlockBreak(world, target.pos);
+        if (backfill && container != null && replacement != null) {
+            if (consumeItemFromContainer(container, replacement)) {
+                scheduleBlockReplace(world, target.pos, target.blockType, target.rotationIndex);
+            } else {
+                scheduleBlockBreak(world, target.pos);
+            }
+        } else {
+            scheduleBlockBreak(world, target.pos);
+        }
 
         context.markDirty();
         return true;
@@ -266,7 +283,8 @@ public final class QuarryMachine extends MasterMachine {
                     if (!isMineable(blockType, replaceMode)) {
                         continue;
                     }
-                    return new BlockTarget(new Vector3i(x, y, z), blockType);
+                    int rotationIndex = world.getBlockRotationIndex(x, y, z);
+                    return new BlockTarget(new Vector3i(x, y, z), blockType, rotationIndex);
                 }
             }
         }
@@ -298,7 +316,8 @@ public final class QuarryMachine extends MasterMachine {
                     if (!isMineable(blockType, replaceMode)) {
                         continue;
                     }
-                    return new BlockTarget(new Vector3i(worldX, y, worldZ), blockType);
+                    int rotationIndex = world.getBlockRotationIndex(worldX, y, worldZ);
+                    return new BlockTarget(new Vector3i(worldX, y, worldZ), blockType, rotationIndex);
                 }
             }
         }
@@ -444,9 +463,6 @@ public final class QuarryMachine extends MasterMachine {
         if (isBorderId(id) || TieredIdUtil.isTieredId(id, MachinariumIds.BLOCK_QUARRY)) {
             return false;
         }
-        if (replaceMode && !isOreBlockId(id)) {
-            return false;
-        }
         return true;
     }
 
@@ -555,13 +571,85 @@ public final class QuarryMachine extends MasterMachine {
         });
     }
 
+    private void scheduleBlockReplace(World world, Vector3i pos, BlockType blockType, int rotationIndex) {
+        if (world == null || pos == null || blockType == null) {
+            return;
+        }
+        String blockId = blockType.getId();
+        if (blockId == null || blockId.isEmpty()) {
+            scheduleBlockBreak(world, pos);
+            return;
+        }
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        world.execute(() -> {
+            long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+            BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+            if (accessor == null) {
+                return;
+            }
+            int blockIndex = BlockType.getAssetMap().getIndex(blockId);
+            if (blockIndex == Integer.MIN_VALUE) {
+                accessor.setBlock(x, y, z, blockType);
+                return;
+            }
+            accessor.setBlock(x, y, z, blockIndex, blockType, rotationIndex, 0, 0);
+        });
+    }
+
+    private ItemStack pickReplacementStack(List<ItemStack> drops, BlockType blockType) {
+        if (drops != null) {
+            for (ItemStack drop : drops) {
+                if (drop == null || ItemStack.isEmpty(drop)) {
+                    continue;
+                }
+                String itemId = drop.getItemId();
+                if (itemId == null || itemId.isEmpty()) {
+                    continue;
+                }
+                return new ItemStack(itemId, 1, drop.getMetadata());
+            }
+        }
+        if (blockType != null && blockType.getId() != null && !blockType.getId().isEmpty()) {
+            return new ItemStack(blockType.getId(), 1);
+        }
+        return null;
+    }
+
+    private boolean consumeItemFromContainer(ItemContainer container, ItemStack stack) {
+        if (container == null || stack == null || ItemStack.isEmpty(stack)) {
+            return false;
+        }
+        String itemId = stack.getItemId();
+        Object metadata = stack.getMetadata();
+        short capacity = container.getCapacity();
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack existing = container.getItemStack(slot);
+            if (existing == null || ItemStack.isEmpty(existing)) {
+                continue;
+            }
+            if (!existing.getItemId().equalsIgnoreCase(itemId)) {
+                continue;
+            }
+            if (!java.util.Objects.equals(existing.getMetadata(), metadata)) {
+                continue;
+            }
+            container.removeItemStackFromSlot(slot, existing, 1);
+            return true;
+        }
+        return false;
+    }
+
     private static final class BlockTarget {
         private final Vector3i pos;
         private final BlockType blockType;
+        private final int rotationIndex;
 
-        private BlockTarget(Vector3i pos, BlockType blockType) {
+        private BlockTarget(Vector3i pos, BlockType blockType, int rotationIndex) {
             this.pos = pos;
             this.blockType = blockType;
+            this.rotationIndex = rotationIndex;
         }
     }
 
