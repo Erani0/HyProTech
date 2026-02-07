@@ -87,6 +87,8 @@ public final class MacSettings {
         public Integer minArea;
         public Double basicSpeedSeconds;
         public Double quantumSpeedSeconds;
+        public Integer backfillPlaceDelayTicks;
+        public Integer backfillPostDelayTicks;
         public List<String> tierNames;
         public List<Integer> capacity;
         public List<Integer> consumptionPerSecond;

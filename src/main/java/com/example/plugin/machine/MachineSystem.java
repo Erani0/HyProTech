@@ -21,6 +21,7 @@ import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 public class MachineSystem extends EntityTickingSystem<ChunkStore> {
     private final ComponentType<ChunkStore, MachineComponent> machineType;
@@ -65,9 +66,32 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
         int chunkX = worldChunk.getX();
         int chunkZ = worldChunk.getZ();
 
+        IntArrayList duplicateHolders = null;
         for (Int2ObjectMap.Entry<Holder<ChunkStore>> entry : blockComponents.getEntityHolders().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
             Holder<ChunkStore> holder = entry.getValue();
+            Ref<ChunkStore> existingRef = blockComponents.getEntityReference(blockIndex);
+            if (existingRef != null) {
+                if (!existingRef.isValid()) {
+                    blockComponents.removeEntityReference(blockIndex, existingRef);
+                } else {
+                    if (store != null && holder != null) {
+                        MachineComponent holderMachine = holder.getComponent(machineType);
+                        if (holderMachine != null) {
+                            store.putComponent(existingRef, machineType, holderMachine);
+                        }
+                        EnergyNodeComponent holderEnergy = holder.getComponent(energyType);
+                        if (holderEnergy != null) {
+                            store.putComponent(existingRef, energyType, holderEnergy);
+                        }
+                    }
+                    if (duplicateHolders == null) {
+                        duplicateHolders = new IntArrayList();
+                    }
+                    duplicateHolders.add(blockIndex);
+                    continue;
+                }
+            }
             processBlock(blockComponents, commandBuffer, chunkStore, world, chunkX, chunkZ, blockIndex, holder, null, delta);
         }
 
@@ -75,6 +99,13 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
             int blockIndex = entry.getIntKey();
             Ref<ChunkStore> ref = entry.getValue();
             processBlock(blockComponents, commandBuffer, chunkStore, world, chunkX, chunkZ, blockIndex, null, ref, delta);
+        }
+
+        if (duplicateHolders != null && !duplicateHolders.isEmpty()) {
+            for (int i = 0; i < duplicateHolders.size(); i++) {
+                blockComponents.removeEntityHolder(duplicateHolders.getInt(i));
+            }
+            blockComponents.markNeedsSaving();
         }
     }
 

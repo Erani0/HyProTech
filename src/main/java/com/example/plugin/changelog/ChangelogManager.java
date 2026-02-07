@@ -27,6 +27,8 @@ Click Give Border Torch and place 2 torches.
 Torch 1 should be placed at the same height/width/length level, ideally right next to the Quarry.
 Torch 2 should be placed at the opposite corner depending on the desired Quarry size.
 Maximum Quarry size: 50x50.
+In quarry you can set -BACKFILL OR NOT .. with backfill quarry is slower (you cant set forcebackfill in config)
+
 
 Changelog Big Update
 Version 1.3.1 (from 1.2.8 and 1.3.0)

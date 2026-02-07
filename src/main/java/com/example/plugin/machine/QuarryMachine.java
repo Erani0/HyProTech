@@ -6,6 +6,7 @@ import com.example.plugin.energy.EnergyNodeComponent;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Holder;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -25,7 +26,9 @@ import com.hypixel.hytale.server.core.modules.entity.item.ItemComponent;
 import com.hypixel.hytale.server.core.modules.interaction.BlockHarvestUtils;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
 import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import java.util.ArrayList;
@@ -34,8 +37,6 @@ import java.util.List;
 public final class QuarryMachine extends MasterMachine {
     public static final String ID = "machinarium:quarry";
     private static final int MINING_OFFSET_Z = -2;
-    private static final int BACKFILL_PLACE_DELAY_TICKS = 10;
-    private static final int BACKFILL_POST_DELAY_TICKS = 10;
     private static final java.util.Map<World, java.util.Map<String, BackfillState>> BACKFILL_STATE =
             new java.util.HashMap<>();
 
@@ -129,6 +130,8 @@ public final class QuarryMachine extends MasterMachine {
         }
 
         long tick = world.getTick();
+        int backfillPlaceDelay = QuarryConfig.getBackfillPlaceDelayTicks();
+        int backfillPostDelay = QuarryConfig.getBackfillPostDelayTicks();
         if (backfillState != null) {
             if (backfillState.pending != null) {
                 if (tick < backfillState.pending.placeAtTick) {
@@ -137,7 +140,7 @@ public final class QuarryMachine extends MasterMachine {
                 if (!backfillState.pending.consumed) {
                     if (!consumeItemFromContainer(container, backfillState.pending.replacement)) {
                         backfillState.pending = null;
-                        backfillState.resumeAtTick = tick + BACKFILL_POST_DELAY_TICKS;
+                        backfillState.resumeAtTick = tick + backfillPostDelay;
                         return changed;
                     }
                     backfillState.pending.consumed = true;
@@ -149,7 +152,7 @@ public final class QuarryMachine extends MasterMachine {
                         backfillState.pending.fallbackBlockType,
                         backfillState.pending.rotationIndex);
                 backfillState.pending = null;
-                backfillState.resumeAtTick = tick + BACKFILL_POST_DELAY_TICKS;
+                backfillState.resumeAtTick = tick + backfillPostDelay;
                 return true;
             }
             if (backfillState.resumeAtTick > tick) {
@@ -242,7 +245,7 @@ public final class QuarryMachine extends MasterMachine {
                     replacement,
                     target.blockType,
                     target.rotationIndex,
-                    tick + BACKFILL_PLACE_DELAY_TICKS,
+                    tick + backfillPlaceDelay,
                     consumed);
             context.markDirty();
             return true;
@@ -692,6 +695,7 @@ public final class QuarryMachine extends MasterMachine {
             long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
             if (accessor != null) {
+                clearBlockComponents(world, x, y, z);
                 accessor.setBlock(x, y, z, BlockType.EMPTY);
             }
         });
@@ -726,6 +730,7 @@ public final class QuarryMachine extends MasterMachine {
             if (accessor == null) {
                 return;
             }
+            clearBlockComponents(world, x, y, z);
             int blockIndex = BlockType.getAssetMap().getIndex(finalBlockId);
             if (blockIndex == Integer.MIN_VALUE) {
                 if (finalFallbackBlockType != null) {
@@ -761,6 +766,36 @@ public final class QuarryMachine extends MasterMachine {
             return new ItemStack(blockType.getId(), 1);
         }
         return null;
+    }
+
+    private void clearBlockComponents(World world, int x, int y, int z) {
+        if (world == null) {
+            return;
+        }
+        ChunkStore chunkStore = world.getChunkStore();
+        if (chunkStore == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        BlockComponentChunk blockComponents =
+                chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return;
+        }
+        int localX = ChunkUtil.localCoordinate((long) x);
+        int localZ = ChunkUtil.localCoordinate((long) z);
+        int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
+        Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+        if (ref != null) {
+            blockComponents.removeEntityReference(blockIndex, ref);
+        }
+        Holder<ChunkStore> holder = blockComponents.getEntityHolder(blockIndex);
+        if (holder != null) {
+            blockComponents.removeEntityHolder(blockIndex);
+        }
+        if (ref != null || holder != null) {
+            blockComponents.markNeedsSaving();
+        }
     }
 
     private boolean consumeItemFromContainer(ItemContainer container, ItemStack stack) {

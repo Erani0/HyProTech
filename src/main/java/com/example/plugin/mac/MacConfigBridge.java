@@ -293,6 +293,10 @@ public final class MacConfigBridge {
         builder.defaultsTo(basicField, safe.basicSpeedSeconds);
         Object quantumField = builder.numberField("Quantum Speed Seconds");
         builder.defaultsTo(quantumField, safe.quantumSpeedSeconds);
+        Object backfillPlaceField = builder.numberField("Backfill Place Delay Ticks");
+        builder.defaultsTo(backfillPlaceField, safe.backfillPlaceDelayTicks);
+        Object backfillPostField = builder.numberField("Backfill Post Delay Ticks");
+        builder.defaultsTo(backfillPostField, safe.backfillPostDelayTicks);
         builder.arrayField("Tier Names", fields.stringField("Name"), safe.tierNames);
         builder.arrayField("Capacity", fields.numberField("Value"), safe.capacity);
         builder.arrayField("Consumption Per Second", fields.numberField("Value"), safe.consumptionPerSecond);
@@ -1270,6 +1274,12 @@ public final class MacConfigBridge {
         Double quantumSpeed = value != null && value.quantumSpeedSeconds != null
                 ? value.quantumSpeedSeconds
                 : base == null ? null : base.quantumSpeedSeconds;
+        Integer backfillPlaceDelay = value != null && value.backfillPlaceDelayTicks != null
+                ? value.backfillPlaceDelayTicks
+                : base == null ? null : base.backfillPlaceDelayTicks;
+        Integer backfillPostDelay = value != null && value.backfillPostDelayTicks != null
+                ? value.backfillPostDelayTicks
+                : base == null ? null : base.backfillPostDelayTicks;
         Boolean forceReplace = value != null && value.forceReplaceBlocks != null
                 ? value.forceReplaceBlocks
                 : base == null ? null : base.forceReplaceBlocks;
@@ -1307,6 +1317,8 @@ public final class MacConfigBridge {
         setField(data, "minArea", minArea);
         setField(data, "basicSpeedSeconds", basicSpeed);
         setField(data, "quantumSpeedSeconds", quantumSpeed);
+        setField(data, "backfillPlaceDelayTicks", backfillPlaceDelay);
+        setField(data, "backfillPostDelayTicks", backfillPostDelay);
         setField(data, "tierNames", tierNames);
         setField(data, "capacity", capacity);
         setField(data, "consumptionPerSecond", consumptionPerSecond);
@@ -1631,6 +1643,12 @@ public final class MacConfigBridge {
         if (settings.quarry.quantumSpeedSeconds == null) {
             settings.quarry.quantumSpeedSeconds = baseQuarry.quantumSpeedSeconds;
         }
+        if (settings.quarry.backfillPlaceDelayTicks == null) {
+            settings.quarry.backfillPlaceDelayTicks = baseQuarry.backfillPlaceDelayTicks;
+        }
+        if (settings.quarry.backfillPostDelayTicks == null) {
+            settings.quarry.backfillPostDelayTicks = baseQuarry.backfillPostDelayTicks;
+        }
         settings.quarry.tierNames = mergeList(settings.quarry.tierNames, baseQuarry.tierNames);
         settings.quarry.capacity = mergeList(settings.quarry.capacity, baseQuarry.capacity);
         settings.quarry.consumptionPerSecond = mergeList(
@@ -1704,6 +1722,8 @@ public final class MacConfigBridge {
             copy.quarry.minArea = defaults.quarry.minArea;
             copy.quarry.basicSpeedSeconds = defaults.quarry.basicSpeedSeconds;
             copy.quarry.quantumSpeedSeconds = defaults.quarry.quantumSpeedSeconds;
+            copy.quarry.backfillPlaceDelayTicks = defaults.quarry.backfillPlaceDelayTicks;
+            copy.quarry.backfillPostDelayTicks = defaults.quarry.backfillPostDelayTicks;
             copy.quarry.tierNames = copyList(defaults.quarry.tierNames);
             copy.quarry.capacity = copyList(defaults.quarry.capacity);
             copy.quarry.consumptionPerSecond = copyList(defaults.quarry.consumptionPerSecond);
@@ -2095,6 +2115,8 @@ public final class MacConfigBridge {
         defaults.quarry.minArea = QuarryConfig.MIN_AREA;
         defaults.quarry.basicSpeedSeconds = QuarryConfig.getMiningSecondsForTier(QuarryConfig.MIN_TIER);
         defaults.quarry.quantumSpeedSeconds = QuarryConfig.getMiningSecondsForTier(QuarryConfig.MAX_TIER);
+        defaults.quarry.backfillPlaceDelayTicks = QuarryConfig.getBackfillPlaceDelayTicks();
+        defaults.quarry.backfillPostDelayTicks = QuarryConfig.getBackfillPostDelayTicks();
         defaults.quarry.tierNames = buildStringList(
                 QuarryConfig.MIN_TIER,
                 QuarryConfig.MAX_TIER,

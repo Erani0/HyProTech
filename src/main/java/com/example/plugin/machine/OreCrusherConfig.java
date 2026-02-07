@@ -57,12 +57,12 @@ public final class OreCrusherConfig {
     };
 
     private static final int[] DEFAULT_OUTPUT_MULTIPLIER = {
-            1,
             2,
-            2,
-            2,
-            2,
-            2
+            3,
+            3,
+            3,
+            3,
+            3
     };
 
     private static final double[] DEFAULT_PROCESSING_SECONDS = {

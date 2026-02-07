@@ -450,13 +450,25 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
                 int localX = ChunkUtil.localCoordinate((long) pos.getX());
                 int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
                 int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
-                Holder<ChunkStore> holder = blockComponents.getEntityHolder(blockIndex);
-                if (holder == null) {
-                    holder = ChunkStore.REGISTRY.newHolder();
-                    holder.putComponent(energyType, node);
-                    blockComponents.storeEntityHolder(blockIndex, holder);
+                Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+                if (ref != null && !ref.isValid()) {
+                    blockComponents.removeEntityReference(blockIndex, ref);
+                    ref = null;
+                }
+                if (ref != null) {
+                    Store<ChunkStore> store = world.getChunkStore().getStore();
+                    if (store != null) {
+                        store.putComponent(ref, energyType, node);
+                    }
                 } else {
-                    holder.putComponent(energyType, node);
+                    Holder<ChunkStore> holder = blockComponents.getEntityHolder(blockIndex);
+                    if (holder == null) {
+                        holder = ChunkStore.REGISTRY.newHolder();
+                        holder.putComponent(energyType, node);
+                        blockComponents.storeEntityHolder(blockIndex, holder);
+                    } else {
+                        holder.putComponent(energyType, node);
+                    }
                 }
                 blockComponents.markNeedsSaving();
                 return;

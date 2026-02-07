@@ -34,6 +34,8 @@ public final class QuarryConfig {
     private static final int DEFAULT_MIN_AREA = 2;
     private static final double DEFAULT_BASIC_SPEED_SECONDS = 0.7;
     private static final double DEFAULT_QUANTUM_SPEED_SECONDS = 0.1;
+    private static final int DEFAULT_BACKFILL_PLACE_DELAY_TICKS = 2;
+    private static final int DEFAULT_BACKFILL_POST_DELAY_TICKS = 2;
     private static final boolean DEFAULT_FORCE_REPLACE_BLOCKS = false;
 
     private static final String[] DEFAULT_TIER_NAMES = {
@@ -144,6 +146,8 @@ public final class QuarryConfig {
     private static Requirement[][] upgradeRequirements = copyRequirements(DEFAULT_UPGRADE_REQUIREMENTS);
     private static double basicSpeedSeconds = DEFAULT_BASIC_SPEED_SECONDS;
     private static double quantumSpeedSeconds = DEFAULT_QUANTUM_SPEED_SECONDS;
+    private static int backfillPlaceDelayTicks = DEFAULT_BACKFILL_PLACE_DELAY_TICKS;
+    private static int backfillPostDelayTicks = DEFAULT_BACKFILL_POST_DELAY_TICKS;
     private static boolean forceReplaceBlocks = DEFAULT_FORCE_REPLACE_BLOCKS;
 
     public static final class ConfigData {
@@ -177,6 +181,20 @@ public final class QuarryConfig {
                                     }
                                 },
                                 config -> config.quantumSpeedSeconds)
+                        .addField(new KeyedCodec<>("BackfillPlaceDelayTicks", INTEGER_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.backfillPlaceDelayTicks = value;
+                                    }
+                                },
+                                config -> config.backfillPlaceDelayTicks)
+                        .addField(new KeyedCodec<>("BackfillPostDelayTicks", INTEGER_CODEC),
+                                (config, value) -> {
+                                    if (value != null) {
+                                        config.backfillPostDelayTicks = value;
+                                    }
+                                },
+                                config -> config.backfillPostDelayTicks)
                         .addField(new KeyedCodec<>("TierNames", STRING_ARRAY_CODEC),
                                 (config, value) -> {
                                     if (value != null) {
@@ -225,6 +243,8 @@ public final class QuarryConfig {
         private int minArea = DEFAULT_MIN_AREA;
         private double basicSpeedSeconds = DEFAULT_BASIC_SPEED_SECONDS;
         private double quantumSpeedSeconds = DEFAULT_QUANTUM_SPEED_SECONDS;
+        private int backfillPlaceDelayTicks = DEFAULT_BACKFILL_PLACE_DELAY_TICKS;
+        private int backfillPostDelayTicks = DEFAULT_BACKFILL_POST_DELAY_TICKS;
         private String[] tierNames = DEFAULT_TIER_NAMES.clone();
         private int[] capacity = DEFAULT_CAPACITY.clone();
         private int[] consumptionPerSecond = DEFAULT_CONSUMPTION_PER_SECOND.clone();
@@ -253,6 +273,10 @@ public final class QuarryConfig {
 
         basicSpeedSeconds = normalizeSpeedSeconds(data.basicSpeedSeconds, DEFAULT_BASIC_SPEED_SECONDS);
         quantumSpeedSeconds = normalizeSpeedSeconds(data.quantumSpeedSeconds, DEFAULT_QUANTUM_SPEED_SECONDS);
+        backfillPlaceDelayTicks =
+                normalizeDelayTicks(data.backfillPlaceDelayTicks, DEFAULT_BACKFILL_PLACE_DELAY_TICKS);
+        backfillPostDelayTicks =
+                normalizeDelayTicks(data.backfillPostDelayTicks, DEFAULT_BACKFILL_POST_DELAY_TICKS);
 
         tierNames = ConfigArrays.mergeStringArray(data.tierNames, DEFAULT_TIER_NAMES, TIER_COUNT);
         capacity = ConfigArrays.mergeIntArray(data.capacity, DEFAULT_CAPACITY, TIER_COUNT, 0);
@@ -334,6 +358,14 @@ public final class QuarryConfig {
         }
         double ratio = (double) (safeTier - MIN_TIER) / (double) (MAX_TIER - MIN_TIER);
         return basicSpeedSeconds + (quantumSpeedSeconds - basicSpeedSeconds) * ratio;
+    }
+
+    public static int getBackfillPlaceDelayTicks() {
+        return backfillPlaceDelayTicks;
+    }
+
+    public static int getBackfillPostDelayTicks() {
+        return backfillPostDelayTicks;
     }
 
     public static Requirement[] getUpgradeRequirements(int currentTier) {
@@ -435,5 +467,19 @@ public final class QuarryConfig {
             return fallback;
         }
         return Math.max(0.01, value);
+    }
+
+    private static int normalizeDelayTicks(Integer value, int fallback) {
+        if (value == null) {
+            return fallback;
+        }
+        return normalizeDelayTicks(value.intValue(), fallback);
+    }
+
+    private static int normalizeDelayTicks(int value, int fallback) {
+        if (value < 0) {
+            return fallback;
+        }
+        return value;
     }
 }
