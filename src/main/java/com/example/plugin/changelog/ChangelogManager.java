@@ -14,9 +14,24 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 public final class ChangelogManager {
-    public static final String CHANGELOG_VERSION = "1.3.1";
+    public static final String CHANGELOG_VERSION = "1.3.2";
     public static final String CHANGELOG_TEXT = """
 Changelog
+
+Version 1.3.2 (from 1.3.1)
+Fixed a crash when opening machines near the Quarry.
+Fixed Ore Gen.
+Improved Quarry speed when Backfill is enabled.
+Fixed a teleport bug while the Quarry is running.
+
+Quarry Border Setup (Detailed)
+1) Click "Give Border Torch" to receive 2 Border Torches.
+2) Place Torch 1 on the same Y level as the Quarry, right next to the Quarry block.
+3) Place Torch 2 at the opposite corner of the desired area (X/Z rectangle).
+4) The Quarry must be inside the rectangle formed by the two torches.
+5) Torches must not share the same X or the same Z, and must be within 64 blocks of the Quarry.
+6) Maximum Quarry size: 50x50.
+See the image below for the correct placement.
 
 Version 1.3.1 (from 1.3.0)
 Added macOS support for modlist and config.

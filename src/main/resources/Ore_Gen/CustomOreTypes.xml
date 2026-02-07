@@ -12,10 +12,7 @@
       <Variant oreBlock="Ore_Bauxite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Bauxite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Bauxite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Bauxite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Bauxite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Bauxite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Bauxite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Bauxite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -30,10 +27,7 @@
       <Variant oreBlock="Ore_Cassiterite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Cassiterite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Cassiterite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Cassiterite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Cassiterite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Cassiterite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Cassiterite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Cassiterite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -48,10 +42,7 @@
       <Variant oreBlock="Ore_Chromite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Chromite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Chromite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Chromite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Chromite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Chromite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Chromite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Chromite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -66,10 +57,7 @@
       <Variant oreBlock="Ore_Ilmenite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Ilmenite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Ilmenite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Ilmenite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Ilmenite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Ilmenite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Ilmenite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Ilmenite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -84,10 +72,7 @@
       <Variant oreBlock="Ore_Manganese_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Manganese_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Manganese_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Manganese_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Manganese_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Manganese_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Manganese_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Manganese_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -102,10 +87,7 @@
       <Variant oreBlock="Ore_Pentlandite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Pentlandite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Pentlandite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Pentlandite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Pentlandite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Pentlandite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Pentlandite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Pentlandite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -120,10 +102,7 @@
       <Variant oreBlock="Ore_Quartzite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Quartzite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Quartzite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Quartzite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Quartzite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Quartzite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Quartzite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Quartzite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -138,10 +117,7 @@
       <Variant oreBlock="Ore_Scheelite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Scheelite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Scheelite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Scheelite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Scheelite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Scheelite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Scheelite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Scheelite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -156,10 +132,7 @@
       <Variant oreBlock="Ore_Spodumene_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Spodumene_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Spodumene_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Spodumene_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Spodumene_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Spodumene_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Spodumene_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Spodumene_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -174,10 +147,7 @@
       <Variant oreBlock="Ore_Uraninite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Uraninite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Uraninite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Uraninite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Uraninite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Uraninite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Uraninite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Uraninite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>
@@ -192,10 +162,7 @@
       <Variant oreBlock="Ore_Vanadinite_Shale"><Host>Rock_Shale</Host></Variant>
       <Variant oreBlock="Ore_Vanadinite_Slate"><Host>Rock_Slate</Host></Variant>
       <Variant oreBlock="Ore_Vanadinite_Basalt"><Host>Rock_Basalt</Host></Variant>
-      <Variant oreBlock="Ore_Vanadinite_Sandstone"><Host>Rock_Sandstone</Host></Variant>
-      <Variant oreBlock="Ore_Vanadinite_Calcite"><Host>Rock_Calcite</Host></Variant>
       <Variant oreBlock="Ore_Vanadinite_Volcanic"><Host>Rock_Volcanic</Host></Variant>
-      <Variant oreBlock="Ore_Vanadinite_Dry_Mud"><Host>Rock_Dry_Mud</Host></Variant>
       <Variant oreBlock="Ore_Vanadinite_Magma"><Host>Rock_Magma_Cooled</Host></Variant>
     </Spawn>
   </Ore>

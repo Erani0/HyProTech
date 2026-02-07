@@ -57,7 +57,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
     private static final int MAX_BUDGET_PER_TICK = 256;
     private static final int MAX_MOVES_PER_SLOT = 8;
     private static final int MAX_NETWORKS_PER_TICK = 64;
-    private static final long MAX_TICK_NANOS = 5_000_000L;
+    private static final long MAX_TICK_NANOS = 100_000_000L;
     private static final String[] CABLE_STATE_NAMES = buildCableStateNames();
     private static volatile Field benchInputContainerField;
     private static volatile Field benchFuelContainerField;

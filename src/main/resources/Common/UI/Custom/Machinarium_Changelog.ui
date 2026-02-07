@@ -30,12 +30,23 @@ $C.@PageOverlay {
         }
 
         MultilineTextField #ChangelogText {
-          Anchor: (Width: 840, Height: 620);
+          Anchor: (Width: 840, Height: 320);
           ScrollbarStyle: $C.@DefaultScrollbarStyle;
           Background: $C.@InputBoxBackground;
           PlaceholderStyle: $C.@DefaultInputFieldPlaceholderStyle;
           Style: $C.@DefaultInputFieldStyle;
           ContentPadding: (Horizontal: 10, Vertical: 8);
+        }
+
+        Group #QuarrySetupImageRow {
+          LayoutMode: Middle;
+          Anchor: (Width: 840, Height: 300);
+          Padding: (Top: 8);
+
+          Group #QuarrySetupImage {
+            Anchor: (Width: 300, Height: 300);
+            Background: "TexturesUI/quarrysetup.png";
+          }
         }
       }
     }

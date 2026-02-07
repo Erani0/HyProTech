@@ -731,7 +731,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (inventory == null) {
             return;
         }
-        ItemStack torch = new ItemStack(MachinariumIds.BLOCK_BORDER_TORCH, 4);
+        ItemStack torch = new ItemStack(MachinariumIds.BLOCK_BORDER_TORCH, 2);
         ItemContainer hotbar = inventory.getHotbar();
         ItemContainer storage = inventory.getStorage();
         if (hotbar != null && hotbar.canAddItemStack(torch)) {
