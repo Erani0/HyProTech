@@ -422,13 +422,61 @@ public final class OreCrusherConfig {
         if (oreId == null || oreId.isEmpty()) {
             return null;
         }
-        if (oreId.startsWith("Ore_") && oreId.length() > 4) {
-            return "Machinarium_" + oreId.substring(4) + "_Powder";
+        String normalized = oreId;
+        int colon = normalized.indexOf(':');
+        if (colon >= 0 && colon + 1 < normalized.length()) {
+            normalized = normalized.substring(colon + 1);
         }
-        if (oreId.startsWith("Machinarium_") && oreId.endsWith("_Ore")) {
-            return oreId.substring(0, oreId.length() - 4) + "_Powder";
+        String base = normalized;
+        if (normalized.startsWith("Ore_")) {
+            int extra = normalized.indexOf('_', 4);
+            if (extra > 4) {
+                base = normalized.substring(0, extra);
+            }
+        }
+        String override = resolvePowderOverride(base);
+        if (override != null) {
+            return override;
+        }
+        if (base.startsWith("Ore_") && base.length() > 4) {
+            return "Machinarium_" + base.substring(4) + "_Powder";
+        }
+        if (normalized.startsWith("Machinarium_") && normalized.endsWith("_Ore")) {
+            return normalized.substring(0, normalized.length() - 4) + "_Powder";
         }
         return null;
+    }
+
+    private static String resolvePowderOverride(String oreId) {
+        if (oreId == null) {
+            return null;
+        }
+        switch (oreId) {
+            case "Ore_Bauxite":
+                return "Machinarium_Aluminum_Powder";
+            case "Ore_Cassiterite":
+                return "Machinarium_Tin_Powder";
+            case "Ore_Chromite":
+                return "Machinarium_Chromium_Powder";
+            case "Ore_Ilmenite":
+                return "Machinarium_Titanium_Powder";
+            case "Ore_Manganese":
+                return "Machinarium_Manganese_Powder";
+            case "Ore_Pentlandite":
+                return "Machinarium_Nickel_Powder";
+            case "Ore_Quartzite":
+                return "Machinarium_Silicon_Powder";
+            case "Ore_Scheelite":
+                return "Machinarium_Tungsten_Powder";
+            case "Ore_Spodumene":
+                return "Machinarium_Lithium_Powder";
+            case "Ore_Uraninite":
+                return "Machinarium_Uranium_Powder";
+            case "Ore_Vanadinite":
+                return "Machinarium_Vanadium_Powder";
+            default:
+                return null;
+        }
     }
 
     private static boolean isOreId(String oreId) {

@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import java.lang.reflect.Method;
 
 public final class ChangelogPage extends InteractiveCustomUIPage<ChangelogEvent> {
     private static final String PAGE_LAYOUT = "Machinarium_Changelog.ui";
@@ -49,6 +50,9 @@ public final class ChangelogPage extends InteractiveCustomUIPage<ChangelogEvent>
         if (!ACTION_CLOSE.equalsIgnoreCase(data.getAction())) {
             return;
         }
+        if (changelogManager != null) {
+            changelogManager.markSeen(getPlayerUuid());
+        }
         dismiss(playerRef, store);
     }
 
@@ -72,16 +76,84 @@ public final class ChangelogPage extends InteractiveCustomUIPage<ChangelogEvent>
         if (pageManager == null) {
             return;
         }
+        if (tryClosePage(pageManager, playerRef, store)) {
+            return;
+        }
         try {
             pageManager.handleEvent(
                     playerRef,
                     store,
                     new CustomPageEvent(CustomPageEventType.Dismiss, ""));
         } catch (Throwable ignored) {
+            // Avoid leaving the client in a loading state if dismissal fails.
+            sendUpdate(new UICommandBuilder());
         }
     }
 
     private java.util.UUID getPlayerUuid() {
         return playerRef == null ? null : playerRef.getUuid();
+    }
+
+    private boolean tryClosePage(PageManager pageManager, Ref<EntityStore> playerRef, Store<EntityStore> store) {
+        if (pageManager == null) {
+            return false;
+        }
+        String[] methods = {
+                "closeCustomPage",
+                "dismissCustomPage",
+                "closePage",
+                "dismissPage",
+                "close",
+                "dismiss"
+        };
+        for (String method : methods) {
+            if (invokePageMethod(pageManager, method, playerRef, store)) {
+                return true;
+            }
+            if (invokePageMethod(pageManager, method, playerRef)) {
+                return true;
+            }
+            if (invokePageMethod(pageManager, method)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean invokePageMethod(PageManager pageManager, String name, Object... args) {
+        if (pageManager == null || name == null) {
+            return false;
+        }
+        Method[] methods = pageManager.getClass().getMethods();
+        for (Method method : methods) {
+            if (!name.equals(method.getName())) {
+                continue;
+            }
+            Class<?>[] params = method.getParameterTypes();
+            if (params.length != args.length) {
+                continue;
+            }
+            boolean matches = true;
+            for (int i = 0; i < params.length; i++) {
+                Object arg = args[i];
+                if (arg == null) {
+                    continue;
+                }
+                if (!params[i].isAssignableFrom(arg.getClass())) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (!matches) {
+                continue;
+            }
+            try {
+                method.invoke(pageManager, args);
+                return true;
+            } catch (Exception ignored) {
+                // Try next overload.
+            }
+        }
+        return false;
     }
 }

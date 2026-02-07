@@ -44,7 +44,7 @@ public final class OreCrusherRecipes {
         Map<String, CraftingRecipe> map = CraftingRecipe.getAssetMap().getAssetMap();
         if (map != null && !map.isEmpty()) {
             for (CraftingRecipe recipe : map.values()) {
-                if (recipe == null || !isOreCrusherRecipe(recipe)) {
+                if (recipe == null || !isProcessingRecipe(recipe)) {
                     continue;
                 }
                 MaterialQuantity input = resolvePrimaryInput(recipe);
@@ -55,7 +55,17 @@ public final class OreCrusherRecipes {
                 if (!isBaseOreId(inputId)) {
                     continue;
                 }
-                MaterialQuantity output = resolvePrimaryOutput(recipe);
+                MaterialQuantity primaryOutput = resolvePrimaryOutput(recipe);
+                if (primaryOutput == null
+                        || primaryOutput.getItemId() == null
+                        || primaryOutput.getItemId().isEmpty()) {
+                    continue;
+                }
+                MaterialQuantity[] outputs = normalizeOutputs(
+                        recipe.getOutputs(),
+                        inputId,
+                        primaryOutput);
+                MaterialQuantity output = resolvePrimaryOutputFromOutputs(primaryOutput, outputs);
                 if (output == null || output.getItemId() == null || output.getItemId().isEmpty()) {
                     continue;
                 }
@@ -67,7 +77,7 @@ public final class OreCrusherRecipes {
                             output.getItemId(),
                             Math.max(1, output.getQuantity()),
                             recipe.getInput(),
-                            recipe.getOutputs());
+                            outputs);
                     byInput.put(inputId, entry);
                 }
             }
@@ -110,7 +120,7 @@ public final class OreCrusherRecipes {
         }
     }
 
-    private static boolean isOreCrusherRecipe(CraftingRecipe recipe) {
+    private static boolean isProcessingRecipe(CraftingRecipe recipe) {
         BenchRequirement[] requirements = recipe.getBenchRequirement();
         if (requirements == null || requirements.length == 0) {
             return false;
@@ -119,7 +129,8 @@ public final class OreCrusherRecipes {
             if (requirement == null || requirement.type != BenchType.Processing) {
                 continue;
             }
-            if ("OreCrusher".equalsIgnoreCase(requirement.id)) {
+            if ("OreCrusher".equalsIgnoreCase(requirement.id)
+                    || "Furnace".equalsIgnoreCase(requirement.id)) {
                 return true;
             }
         }
@@ -154,6 +165,38 @@ public final class OreCrusherRecipes {
             }
         }
         return null;
+    }
+
+    private static MaterialQuantity resolvePrimaryOutputFromOutputs(
+            MaterialQuantity fallback,
+            MaterialQuantity[] outputs) {
+        if (outputs != null) {
+            for (MaterialQuantity output : outputs) {
+                if (output == null || output.getItemId() == null || output.getItemId().isEmpty()) {
+                    continue;
+                }
+                return output;
+            }
+        }
+        return fallback;
+    }
+
+    private static MaterialQuantity[] normalizeOutputs(
+            MaterialQuantity[] outputs,
+            String inputId,
+            MaterialQuantity primaryOutput) {
+        String powderId = OreCrusherConfig.resolvePowderId(
+                inputId,
+                primaryOutput == null ? null : primaryOutput.getItemId());
+        if (powderId == null || powderId.isEmpty()) {
+            return outputs == null ? MaterialQuantity.EMPTY_ARRAY : outputs;
+        }
+        int powderQty = primaryOutput == null ? 1 : Math.max(1, primaryOutput.getQuantity());
+        List<MaterialQuantity> resolved = new ArrayList<>(3);
+        resolved.add(new MaterialQuantity(powderId, null, null, powderQty, null));
+        resolved.add(new MaterialQuantity("Machinarium_Ore_Chips", null, null, 1, null));
+        resolved.add(new MaterialQuantity("Machinarium_Slag", null, null, 1, null));
+        return resolved.toArray(new MaterialQuantity[0]);
     }
 
     private static boolean isBaseOreId(String itemId) {

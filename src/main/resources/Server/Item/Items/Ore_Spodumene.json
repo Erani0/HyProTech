@@ -1,67 +1,61 @@
 {
-  "TranslationProperties": {
-    "Name": "server.items.Ore_Spodumene.name",
-    "Description": "server.items.Ore_Spodumene.description"
-  },
-  "Categories": [
-    "Blocks.Ores"
-  ],
-  "Recipe": {
-    "Input": [
-      {
-        "ItemId": "Ore_Spodumene",
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "ItemId": "Machinarium_Lithium_Powder"
-      },
-      {
-        "ItemId": "Machinarium_Ore_Chips"
-      },
-      {
-        "ItemId": "Machinarium_Slag"
-      }
-    ],
-    "BenchRequirement": [
-      {
-        "Type": "Processing",
-        "Id": "OreCrusher"
-      }
-    ],
-    "OutputQuantity": 1,
-    "TimeSeconds": 10
-  },
-  "Model": "Items/CraftingItems/Ores/Ore.blockymodel",
-  "Texture": "Items/CraftingItems/Ores/Spodumene.png",
-  "Icon": "Icons/ItemsGenerated/Ore_Spodumene.png",
-  "ItemLevel": 1,
-  "PlayerAnimationsId": "Block",
-  "IconProperties": {
-    "Scale": 0.58,
-    "Translation": [
-      0.0,
-      -13.5
-    ],
-    "Rotation": [
-      22.5,
-      45.0,
-      22.5
-    ]
-  },
-  "Tags": {
-    "Type": [
-      "Ore"
-    ],
-    "Family": [
-      "Spodumene"
-    ]
-  },
-  "ItemEntity": {
-    "ParticleSystemId": null
-  },
-  "MaxStack": 25,
-  "ItemSoundSetId": "ISS_Blocks_Stone",
-  "DropOnDeath": true
+    "TranslationProperties":  {
+                                  "Name":  "server.items.Ore_Spodumene.name",
+                                  "Description":  "server.items.Ore_Spodumene.description"
+                              },
+    "Categories":  [
+                       "Blocks.Ores"
+                   ],
+    "Recipe":  {
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ore_Spodumene",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "Output":  [
+                                  {
+                                      "ItemId":  "Machinarium_Lithium_Ingot"
+                                  }
+                              ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Id":  "Furnace",
+                                                "Type":  "Processing"
+                                            }
+                                        ],
+                   "OutputQuantity":  1,
+                   "TimeSeconds":  10
+               },
+    "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
+    "Texture":  "Items/CraftingItems/Ores/Spodumene.png",
+    "Icon":  "Icons/ItemsGenerated/Ore_Spodumene.png",
+    "ItemLevel":  1,
+    "PlayerAnimationsId":  "Block",
+    "IconProperties":  {
+                           "Scale":  0.58,
+                           "Translation":  [
+                                               0.0,
+                                               -13.5
+                                           ],
+                           "Rotation":  [
+                                            22.5,
+                                            45.0,
+                                            22.5
+                                        ]
+                       },
+    "Tags":  {
+                 "Type":  [
+                              "Ore"
+                          ],
+                 "Family":  [
+                                "Spodumene"
+                            ]
+             },
+    "ItemEntity":  {
+                       "ParticleSystemId":  null
+                   },
+    "MaxStack":  25,
+    "ItemSoundSetId":  "ISS_Blocks_Stone",
+    "DropOnDeath":  true
 }

@@ -1,108 +1,104 @@
 {
-  "TranslationProperties": {
-    "Name": "server.items.Ore_Manganese_Magma.name",
-    "Description": "server.items.Ore_Manganese_Magma.description"
-  },
-  "Categories": [
-    "Blocks.Ores"
-  ],
-  "Recipe": {
-    "Input": [
-      {
-        "ItemId": "Ore_Manganese_Magma",
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "ItemId": "Machinarium_Manganese_Powder"
-      },
-      {
-        "ItemId": "Machinarium_Ore_Chips"
-      },
-      {
-        "ItemId": "Machinarium_Slag"
-      }
-    ],
-    "BenchRequirement": [
-      {
-        "Type": "Processing",
-        "Id": "OreCrusher"
-      }
-    ],
-    "OutputQuantity": 1,
-    "TimeSeconds": 10
-  },
-  "BlockType": {
-    "Material": "Solid",
-    "DrawType": "CubeWithModel",
-    "CustomModel": "Items/CraftingItems/Ores/Ore.blockymodel",
-    "CustomModelTexture": [
-      {
-        "Texture": "Items/CraftingItems/Ores/Manganese.png",
-        "Weight": 1
-      }
-    ],
-    "Group": "OreManganese",
-    "Flags": {},
-    "RandomRotation": "YawStep90",
-    "Gathering": {
-      "Breaking": {
-        "GatherType": "Rocks",
-        "Quality": 2,
-        "DropList": {
-          "Container": {
-            "Type": "Multiple",
-            "Containers": [
-              {
-                "Type": "Single",
-                "Item": {
-                  "ItemId": "Ore_Manganese"
-                }
-              },
-              {
-                "Type": "Single",
-                "Item": {
-                  "ItemId": "Rock_Stone_Cobble"
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    "BlockParticleSetId": "Ore",
-    "Textures": [
-      {
-        "Weight": 1,
-        "All": "BlockTextures/Rock_Magma_Cooled.png"
-      }
-    ],
-    "ParticleColor": "#d2efec",
-    "BlockSoundSetId": "Ore"
-  },
-  "PlayerAnimationsId": "Block",
-  "Tags": {
-    "Type": [
-      "Ore"
-    ],
-    "Family": [
-      "Manganese"
-    ]
-  },
-  "Icon": "Icons/ItemsGenerated/Ore_Manganese_Magma.png",
-  "IconProperties": {
-    "Scale": 0.58823,
-    "Rotation": [
-      22.5,
-      45.0,
-      22.5
-    ],
-    "Translation": [
-      0.0,
-      -13.5
-    ]
-  },
-  "MaxStack": 25,
-  "ItemSoundSetId": "ISS_Blocks_Stone"
+    "TranslationProperties":  {
+                                  "Name":  "server.items.Ore_Manganese_Magma.name",
+                                  "Description":  "server.items.Ore_Manganese_Magma.description"
+                              },
+    "Categories":  [
+                       "Blocks.Ores"
+                   ],
+    "Recipe":  {
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ore_Manganese_Magma",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "Output":  [
+                                  {
+                                      "ItemId":  "Machinarium_Manganese_Ingot"
+                                  }
+                              ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Id":  "Furnace",
+                                                "Type":  "Processing"
+                                            }
+                                        ],
+                   "OutputQuantity":  1,
+                   "TimeSeconds":  10
+               },
+    "BlockType":  {
+                      "Material":  "Solid",
+                      "DrawType":  "CubeWithModel",
+                      "CustomModel":  "Items/CraftingItems/Ores/Ore.blockymodel",
+                      "CustomModelTexture":  [
+                                                 {
+                                                     "Texture":  "Items/CraftingItems/Ores/Manganese.png",
+                                                     "Weight":  1
+                                                 }
+                                             ],
+                      "Group":  "OreManganese",
+                      "Flags":  {
+
+                                },
+                      "RandomRotation":  "YawStep90",
+                      "Gathering":  {
+                                        "Breaking":  {
+                                                         "GatherType":  "Rocks",
+                                                         "Quality":  2,
+                                                         "DropList":  {
+                                                                          "Container":  {
+                                                                                            "Type":  "Multiple",
+                                                                                            "Containers":  [
+                                                                                                               {
+                                                                                                                   "Type":  "Single",
+                                                                                                                   "Item":  {
+                                                                                                                                "ItemId":  "Ore_Manganese"
+                                                                                                                            }
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "Type":  "Single",
+                                                                                                                   "Item":  {
+                                                                                                                                "ItemId":  "Rock_Stone_Cobble"
+                                                                                                                            }
+                                                                                                               }
+                                                                                                           ]
+                                                                                        }
+                                                                      }
+                                                     }
+                                    },
+                      "BlockParticleSetId":  "Ore",
+                      "Textures":  [
+                                       {
+                                           "Weight":  1,
+                                           "All":  "BlockTextures/Rock_Magma_Cooled.png"
+                                       }
+                                   ],
+                      "ParticleColor":  "#d2efec",
+                      "BlockSoundSetId":  "Ore"
+                  },
+    "PlayerAnimationsId":  "Block",
+    "Tags":  {
+                 "Type":  [
+                              "Ore"
+                          ],
+                 "Family":  [
+                                "Manganese"
+                            ]
+             },
+    "Icon":  "Icons/ItemsGenerated/Ore_Manganese_Magma.png",
+    "IconProperties":  {
+                           "Scale":  0.58823,
+                           "Rotation":  [
+                                            22.5,
+                                            45.0,
+                                            22.5
+                                        ],
+                           "Translation":  [
+                                               0.0,
+                                               -13.5
+                                           ]
+                       },
+    "MaxStack":  25,
+    "ItemSoundSetId":  "ISS_Blocks_Stone"
 }
