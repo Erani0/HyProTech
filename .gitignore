@@ -1,23 +1,24 @@
-# IGNORE EVERYTHING
-*
 
-# ALLOW ONLY THESE FOLDERS
-!src/
-!src/**
 
-!.gradle/
-!.gradle/**
+.gradle/
+.gradle/**
 !gradle/
 !gradle/**
 
-!.idea/
-!.idea/**
+/.idea/
+build/
+docs/
+server/
 
+# ALLOW ONLY THESE FOLDERS
 !.github/
 !.github/**
+!src/
+!src/**
 !gradlew
 !gradlew.bat
-!settings.gradle
+!settings.gradle.kts
 
 # ALLOW .gitignore ITSELF
 !.gitignore
+/checkui
