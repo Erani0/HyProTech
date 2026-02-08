@@ -70,6 +70,7 @@ $C.@PageOverlay {
                 SlotsPerRow: 4;
                 AreItemsDraggable: false;
                 ShowScrollbar: true;
+                InfoDisplay: None;
                 RenderItemQualityBackground: false;
                 Style: (
                   SlotSize: @InvSlotSize,
@@ -112,6 +113,7 @@ $C.@PageOverlay {
                     SlotsPerRow: 1;
                     AreItemsDraggable: true;
                     ShowScrollbar: false;
+                    InfoDisplay: None;
                     RenderItemQualityBackground: false;
                     Style: (
                       SlotSize: @ItemSlotInner,
@@ -142,6 +144,7 @@ $C.@PageOverlay {
                     SlotsPerRow: 6;
                     AreItemsDraggable: true;
                     ShowScrollbar: false;
+                    InfoDisplay: None;
                     RenderItemQualityBackground: false;
                     Style: (
                       SlotSize: @ItemSlotInner,
@@ -428,6 +431,7 @@ $C.@PageOverlay {
                 SlotsPerRow: 9;
                 AreItemsDraggable: true;
                 RenderItemQualityBackground: false;
+                InfoDisplay: None;
                 Style: (
                   SlotSize: @InvSlotSize,
                   SlotIconSize: @InvSlotSize,
@@ -938,6 +942,7 @@ $C.@PageOverlay {
 
       }
     }
+
   }
 }
 

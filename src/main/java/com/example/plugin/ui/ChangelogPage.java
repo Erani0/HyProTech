@@ -53,6 +53,11 @@ public final class ChangelogPage extends InteractiveCustomUIPage<ChangelogEvent>
         if (changelogManager != null) {
             changelogManager.markSeen(getPlayerUuid());
         }
+        try {
+            close();
+            return;
+        } catch (Throwable ignored) {
+        }
         dismiss(playerRef, store);
     }
 

@@ -302,6 +302,8 @@ public class OreCrusherPage extends InteractiveCustomUIPage<OreCrusherUiEvent> i
         }
     }
 
+
+
     public void update(EnergyNodeComponent node, MachineComponent machine) {
         update(node, machine, false);
     }

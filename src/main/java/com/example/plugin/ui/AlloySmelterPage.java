@@ -304,6 +304,8 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
         }
     }
 
+
+
     public void update(EnergyNodeComponent node, MachineComponent machine) {
         update(node, machine, false);
     }
