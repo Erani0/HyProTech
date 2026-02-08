@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./.idea/icon.png" alt="HyProTech Logo" width="800">
+  <img src="./README/icon.png" alt="HyProTech Logo" width="800">
 </p>
 
 <h1 align="center">
