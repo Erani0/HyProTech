@@ -45,6 +45,11 @@
           "Id": "Machinarium_Crafting",
           "Icon": "Icons/CraftingCategories/Workbench/Processing.png",
           "Name": "server.benchCategories.machinarium.crafting"
+        },
+        {
+          "Id": "Machinarium_Parts",
+          "Icon": "Icons/CraftingCategories/Workbench/Processing.png",
+          "Name": "server.benchCategories.machinarium.crafting_parts"
         }
       ],
       "LocalOpenSoundEventId": "SFX_Workbench_Open",
