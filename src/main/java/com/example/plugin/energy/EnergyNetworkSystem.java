@@ -1,5 +1,6 @@
 package com.example.plugin.energy;
 
+import com.example.plugin.BlockIdUtil;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.furnace.FurnaceConfig;
@@ -1779,60 +1780,11 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (blockType == null || blockType.getId() == null) {
             return -1;
         }
-        String blockId = blockType.getId();
-        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
-        int tier = TieredIdUtil.parseTierSuffix(normalized, baseId);
-        if (tier >= 0) {
-            return tier;
-        }
-        if (normalized == null || !normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
-            return -1;
-        }
-        return parseCableTierFromState(normalized);
-    }
-
-    private int parseCableTierFromState(String blockId) {
-        if (blockId == null) {
-            return -1;
-        }
-        int stateIndex = blockId.indexOf("Cable_T");
-        if (stateIndex < 0) {
-            return -1;
-        }
-        int i = stateIndex + "Cable_T".length();
-        int value = 0;
-        boolean found = false;
-        while (i < blockId.length()) {
-            char c = blockId.charAt(i);
-            if (c < '0' || c > '9') {
-                break;
-            }
-            value = (value * 10) + (c - '0');
-            found = true;
-            i++;
-        }
-        return found ? value : -1;
+        return BlockIdUtil.parseCableTierFromIdOrState(blockType.getId(), baseId);
     }
 
     private boolean isIdOrState(String blockId, String baseId) {
-        if (blockId == null || baseId == null) {
-            return false;
-        }
-        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
-        if (normalized == null) {
-            return false;
-        }
-        if (normalized.equalsIgnoreCase(baseId)) {
-            return true;
-        }
-        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
-            return false;
-        }
-        if (normalized.length() == baseId.length()) {
-            return false;
-        }
-        char separator = normalized.charAt(baseId.length());
-        return !Character.isLetterOrDigit(separator);
+        return BlockIdUtil.isIdOrState(blockId, baseId);
     }
 
     private boolean setBenchFuelTime(ProcessingBenchState benchState, float value) {
