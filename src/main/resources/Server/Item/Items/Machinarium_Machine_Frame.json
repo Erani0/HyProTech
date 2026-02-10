@@ -10,11 +10,11 @@
     "TimeSeconds": 3,
     "Input": [
       {
-        "ItemId": "Machinarium_Metal_Plate",
+        "ItemId": "Machinarium_Plate_Iron",
         "Quantity": 4
       },
       {
-        "ItemId": "Machinarium_Metal_Rod",
+        "ItemId": "Machinarium_Rod_Iron",
         "Quantity": 4
       },
       {

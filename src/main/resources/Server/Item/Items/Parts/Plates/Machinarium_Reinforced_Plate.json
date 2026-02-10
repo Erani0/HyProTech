@@ -1,16 +1,20 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Metal_Plate.name",
-    "Description": "server.items.Machinarium_Metal_Plate.description"
+    "Name": "server.items.Machinarium_Reinforced_Plate.name",
+    "Description": "server.items.Machinarium_Reinforced_Plate.description"
   },
   "Categories": [
     "Items"
   ],
   "Recipe": {
-    "TimeSeconds": 1,
+    "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Iron",
+        "ItemId": "Machinarium_Plate_Iron",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Alloy_Steel",
         "Quantity": 1
       }
     ],
@@ -25,8 +29,8 @@
     ]
   },
   "Model": "Items/CraftingItems/Metal Plates/Plate_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Metal Plates/Iron Plate.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Metal_Plate.png",
+  "Texture": "Items/CraftingItems/Metal Plates/Reinforced Iron Plate.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Reinforced_Plate.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

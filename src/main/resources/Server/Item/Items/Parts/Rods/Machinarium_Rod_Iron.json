@@ -1,8 +1,9 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Metal_Rod.name",
-    "Description": "server.items.Machinarium_Metal_Rod.description"
+    "Name": "server.items.Machinarium_Rod_Iron.name",
+    "Description": "server.items.Machinarium_Rod_Iron.description"
   },
+  "Id": "Machinarium_Rod_Iron",
   "Categories": [
     "Items"
   ],
@@ -19,14 +20,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Rods/Rod_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Rods/Iron Rod.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Metal_Rod.png",
+  "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Rods/Rod_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Rod_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
