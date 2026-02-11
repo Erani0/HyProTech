@@ -1,5 +1,6 @@
 package com.example.plugin.machine;
 
+import com.example.plugin.BlockIdUtil;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
@@ -526,26 +527,6 @@ public final class AlloySmelterMachine implements MachineDefinition {
     }
 
     private static boolean isIdOrState(String blockId, String baseId) {
-        if (blockId == null || baseId == null) {
-            return false;
-        }
-        if (TieredIdUtil.isTieredId(blockId, baseId)) {
-            return true;
-        }
-        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
-        if (normalized == null) {
-            return false;
-        }
-        if (normalized.equalsIgnoreCase(baseId)) {
-            return true;
-        }
-        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
-            return false;
-        }
-        if (normalized.length() == baseId.length()) {
-            return false;
-        }
-        char separator = normalized.charAt(baseId.length());
-        return !Character.isLetterOrDigit(separator);
+        return BlockIdUtil.isIdOrState(blockId, baseId);
     }
 }
