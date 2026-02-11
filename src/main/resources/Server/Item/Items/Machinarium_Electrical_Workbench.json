@@ -47,9 +47,19 @@
           "Name": "server.benchCategories.machinarium.crafting"
         },
         {
+          "Id": "Machinarium_Cables",
+          "Icon": "Icons/CraftingCategories/Workbench/Processing.png",
+          "Name": "server.benchCategories.machinarium.crafting_cables"
+        },
+        {
           "Id": "Machinarium_Parts",
           "Icon": "Icons/CraftingCategories/Workbench/Processing.png",
           "Name": "server.benchCategories.machinarium.crafting_parts"
+        },
+        {
+          "Id": "Machinarium_Generators",
+          "Icon": "Icons/CraftingCategories/Workbench/Processing.png",
+          "Name": "server.benchCategories.machinarium.crafting_generators"
         }
       ],
       "LocalOpenSoundEventId": "SFX_Workbench_Open",
