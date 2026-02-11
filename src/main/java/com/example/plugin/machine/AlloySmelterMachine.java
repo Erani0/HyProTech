@@ -1,5 +1,6 @@
 package com.example.plugin.machine;
 
+import com.example.plugin.BlockIdUtil;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
@@ -9,8 +10,6 @@ import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.MaterialQuantity;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
-import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
-import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import java.util.List;
 
 public final class AlloySmelterMachine implements MachineDefinition {
@@ -332,30 +331,12 @@ public final class AlloySmelterMachine implements MachineDefinition {
     }
 
     private boolean canFitOutput(ItemContainer container, String itemId, int quantity) {
-        if (container == null || itemId == null || itemId.isEmpty()) {
-            return false;
-        }
-        int remaining = Math.max(1, quantity);
-        int maxStack = getMaxStack(itemId);
-        for (int i = 0; i < OUTPUT_SLOT_COUNT && remaining > 0; i++) {
-            short slot = (short) (OUTPUT_SLOT_START + i);
-            if (slot < 0 || slot >= container.getCapacity()) {
-                continue;
-            }
-            ItemStack existing = container.getItemStack(slot);
-            if (existing == null || ItemStack.isEmpty(existing)) {
-                remaining -= maxStack;
-                continue;
-            }
-            if (!existing.getItemId().equalsIgnoreCase(itemId)) {
-                continue;
-            }
-            int space = Math.max(0, maxStack - existing.getQuantity());
-            if (space > 0) {
-                remaining -= space;
-            }
-        }
-        return remaining <= 0;
+        return MachineCommonUtil.canFitOutput(
+                container,
+                itemId,
+                quantity,
+                OUTPUT_SLOT_START,
+                OUTPUT_SLOT_COUNT);
     }
 
     private boolean applyOutputs(
@@ -396,64 +377,12 @@ public final class AlloySmelterMachine implements MachineDefinition {
     }
 
     private boolean addToOutputSlots(ItemContainer container, String itemId, int quantity) {
-        if (container == null || itemId == null || itemId.isEmpty()) {
-            return false;
-        }
-        int remaining = Math.max(1, quantity);
-        int maxStack = getMaxStack(itemId);
-
-        // First pass: top up existing stacks.
-        for (int i = 0; i < OUTPUT_SLOT_COUNT && remaining > 0; i++) {
-            short slot = (short) (OUTPUT_SLOT_START + i);
-            if (slot < 0 || slot >= container.getCapacity()) {
-                continue;
-            }
-            ItemStack existing = container.getItemStack(slot);
-            if (existing == null || ItemStack.isEmpty(existing)) {
-                continue;
-            }
-            if (!existing.getItemId().equalsIgnoreCase(itemId)) {
-                continue;
-            }
-            int space = Math.max(0, maxStack - existing.getQuantity());
-            if (space <= 0) {
-                continue;
-            }
-            int add = Math.min(space, remaining);
-            ItemStack merged = new ItemStack(itemId, existing.getQuantity() + add, existing.getMetadata());
-            container.setItemStackForSlot(slot, merged, true);
-            remaining -= add;
-        }
-
-        // Second pass: place into empty slots.
-        for (int i = 0; i < OUTPUT_SLOT_COUNT && remaining > 0; i++) {
-            short slot = (short) (OUTPUT_SLOT_START + i);
-            if (slot < 0 || slot >= container.getCapacity()) {
-                continue;
-            }
-            ItemStack existing = container.getItemStack(slot);
-            if (existing != null && !ItemStack.isEmpty(existing)) {
-                continue;
-            }
-            int add = Math.min(maxStack, remaining);
-            ItemStack stack = new ItemStack(itemId, add);
-            container.setItemStackForSlot(slot, stack, true);
-            remaining -= add;
-        }
-
-        return remaining <= 0;
-    }
-
-    private int getMaxStack(String itemId) {
-        if (itemId == null || itemId.isEmpty()) {
-            return 100;
-        }
-        Item item = Item.getAssetMap().getAsset(itemId);
-        if (item == null || item == Item.UNKNOWN) {
-            return 100;
-        }
-        int max = item.getMaxStack();
-        return max > 0 ? max : 100;
+        return MachineCommonUtil.addToOutputSlots(
+                container,
+                itemId,
+                quantity,
+                OUTPUT_SLOT_START,
+                OUTPUT_SLOT_COUNT);
     }
 
     private List<MaterialQuantity> buildOutputList(
@@ -511,41 +440,10 @@ public final class AlloySmelterMachine implements MachineDefinition {
     }
 
     private boolean consumeEnergy(EnergyStorage storage, int amount) {
-        if (storage == null || amount <= 0) {
-            return false;
-        }
-        TransactionContext context = TransactionContext.current();
-        try (Transaction transaction = Transaction.openNested(context)) {
-            long extracted = storage.extract(amount, transaction);
-            if (extracted >= amount) {
-                transaction.commit();
-                return true;
-            }
-        }
-        return false;
+        return MachineCommonUtil.consumeEnergy(storage, amount);
     }
 
     private static boolean isIdOrState(String blockId, String baseId) {
-        if (blockId == null || baseId == null) {
-            return false;
-        }
-        if (TieredIdUtil.isTieredId(blockId, baseId)) {
-            return true;
-        }
-        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
-        if (normalized == null) {
-            return false;
-        }
-        if (normalized.equalsIgnoreCase(baseId)) {
-            return true;
-        }
-        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
-            return false;
-        }
-        if (normalized.length() == baseId.length()) {
-            return false;
-        }
-        char separator = normalized.charAt(baseId.length());
-        return !Character.isLetterOrDigit(separator);
+        return BlockIdUtil.isIdOrState(blockId, baseId);
     }
 }

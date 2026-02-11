@@ -5,6 +5,7 @@ import com.example.plugin.energy.EnergyUnits;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.hypixel.hytale.builtin.crafting.state.ProcessingBenchState;
+import com.hypixel.hytale.builtin.crafting.window.BenchWindow;
 import com.hypixel.hytale.builtin.crafting.window.ProcessingBenchWindow;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -328,16 +329,22 @@ public class FurnacePage extends InteractiveCustomUIPage<FurnacePage.FurnaceEven
         }
 
         UUID playerId = uuidComponent.getUuid();
-        Map<UUID, ProcessingBenchWindow> windows = benchState.getWindows();
-        ProcessingBenchWindow existing = windows.get(playerId);
+        Map<UUID, BenchWindow> windows = benchState.getWindows();
+        BenchWindow existing = windows.get(playerId);
         if (existing != null) {
-            return existing;
+            if (existing instanceof ProcessingBenchWindow) {
+                return (ProcessingBenchWindow) existing;
+            }
+            return null;
         }
 
         ProcessingBenchWindow window = new ProcessingBenchWindow(benchState);
-        ProcessingBenchWindow prior = windows.putIfAbsent(playerId, window);
+        BenchWindow prior = windows.putIfAbsent(playerId, window);
         if (prior != null) {
-            return prior;
+            if (prior instanceof ProcessingBenchWindow) {
+                return (ProcessingBenchWindow) prior;
+            }
+            return null;
         }
 
         benchState.updateFuelValues();

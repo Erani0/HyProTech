@@ -1,5 +1,6 @@
 package com.example.plugin.machine;
 
+import com.example.plugin.BlockIdUtil;
 import com.example.plugin.MachinariumIds;
 import com.example.plugin.TieredIdUtil;
 import com.example.plugin.energy.EnergyNodeComponent;
@@ -29,8 +30,6 @@ import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
-import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -454,18 +453,7 @@ public final class QuarryMachine extends MasterMachine {
     }
 
     private boolean consumeEnergy(EnergyStorage storage, int amount) {
-        if (storage == null || amount <= 0) {
-            return false;
-        }
-        TransactionContext context = TransactionContext.current();
-        try (Transaction transaction = Transaction.openNested(context)) {
-            long extracted = storage.extract(amount, transaction);
-            if (extracted >= amount) {
-                transaction.commit();
-                return true;
-            }
-        }
-        return false;
+        return MachineCommonUtil.consumeEnergy(storage, amount);
     }
 
     private boolean isContainerFull(ItemContainer container) {
@@ -918,23 +906,6 @@ public final class QuarryMachine extends MasterMachine {
     }
 
     private static boolean isIdOrState(String blockId, String baseId) {
-        if (blockId == null || baseId == null) {
-            return false;
-        }
-        String normalized = TieredIdUtil.stripNamespace(blockId, baseId);
-        if (normalized == null) {
-            return false;
-        }
-        if (normalized.equalsIgnoreCase(baseId)) {
-            return true;
-        }
-        if (!normalized.regionMatches(true, 0, baseId, 0, baseId.length())) {
-            return false;
-        }
-        if (normalized.length() == baseId.length()) {
-            return false;
-        }
-        char separator = normalized.charAt(baseId.length());
-        return !Character.isLetterOrDigit(separator);
+        return BlockIdUtil.isIdOrState(blockId, baseId);
     }
 }
