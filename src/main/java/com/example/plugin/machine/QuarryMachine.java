@@ -30,8 +30,6 @@ import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import com.shailist.hytale.api.transfer.v1.transaction.Transaction;
-import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -455,18 +453,7 @@ public final class QuarryMachine extends MasterMachine {
     }
 
     private boolean consumeEnergy(EnergyStorage storage, int amount) {
-        if (storage == null || amount <= 0) {
-            return false;
-        }
-        TransactionContext context = TransactionContext.current();
-        try (Transaction transaction = Transaction.openNested(context)) {
-            long extracted = storage.extract(amount, transaction);
-            if (extracted >= amount) {
-                transaction.commit();
-                return true;
-            }
-        }
-        return false;
+        return MachineCommonUtil.consumeEnergy(storage, amount);
     }
 
     private boolean isContainerFull(ItemContainer container) {
