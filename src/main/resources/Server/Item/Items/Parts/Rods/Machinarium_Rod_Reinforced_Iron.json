@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Reinforced_Plate.name",
-    "Description": "server.items.Machinarium_Reinforced_Plate.description"
+    "Name": "server.items.Machinarium_Rod_Reinforced_Iron.name",
+    "Description": "server.items.Machinarium_Rod_Reinforced_Iron.description"
   },
   "Categories": [
     "Items"
@@ -10,7 +10,7 @@
     "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Machinarium_Plate_Iron",
+        "ItemId": "Machinarium_Rod_Iron",
         "Quantity": 1
       },
       {
@@ -23,14 +23,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Metal Plates/Plate_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Metal Plates/Reinforced Iron Plate.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Reinforced_Plate.png",
+  "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Rods/Rod_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Rod_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

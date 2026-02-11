@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Titanium_Plate.name",
-    "Description": "server.items.Machinarium_Titanium_Plate.description"
+    "Name": "server.items.Machinarium_Plate_Titanium.name",
+    "Description": "server.items.Machinarium_Plate_Titanium.description"
   },
   "Categories": [
     "Items"
@@ -19,14 +19,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Metal Plates/Plate_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Metal Plates/Titanium Plate.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Plate.png",
+  "Model": "Items/Models/Parts/Plates/Plate_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Plates/Plate_Titanium.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Plate_Titanium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Gears.name",
-    "Description": "server.items.Machinarium_Gears.description"
+    "Name": "server.items.Machinarium_Gear_Iron.name",
+    "Description": "server.items.Machinarium_Gear_Iron.description"
   },
   "Categories": [
     "Items"
@@ -19,14 +19,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Gear/Gear_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Gear/Iron Gear.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Gears.png",
+  "Model": "Items/Models/Parts/Gear/Gear_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Gear/Gear_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Gear_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

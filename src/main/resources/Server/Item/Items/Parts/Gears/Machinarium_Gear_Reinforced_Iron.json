@@ -1,16 +1,16 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Reinforced_Rod.name",
-    "Description": "server.items.Machinarium_Reinforced_Rod.description"
+    "Name": "server.items.Machinarium_Gear_Reinforced_Iron.name",
+    "Description": "server.items.Machinarium_Gear_Reinforced_Iron.description"
   },
   "Categories": [
     "Items"
   ],
   "Recipe": {
-    "TimeSeconds": 2,
+    "TimeSeconds": 3,
     "Input": [
       {
-        "ItemId": "Machinarium_Rod_Iron",
+        "ItemId": "Machinarium_Gear_Iron",
         "Quantity": 1
       },
       {
@@ -23,14 +23,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Rods/Rod_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Rods/Reinforced Rod.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Reinforced_Rod.png",
+  "Model": "Items/Models/Parts/Gear/Gear_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Gear/Gear_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Gear_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

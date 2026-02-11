@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Dense_Composite_Plate.name",
-    "Description": "server.items.Machinarium_Dense_Composite_Plate.description"
+    "Name": "server.items.Machinarium_Plate_Dense_Composite.name",
+    "Description": "server.items.Machinarium_Plate_Dense_Composite.description"
   },
   "Categories": [
     "Items"

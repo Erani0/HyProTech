@@ -1,20 +1,16 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Reinforced_Gears.name",
-    "Description": "server.items.Machinarium_Reinforced_Gears.description"
+    "Name": "server.items.Machinarium_Plate_Tungsten.name",
+    "Description": "server.items.Machinarium_Plate_Tungsten.description"
   },
   "Categories": [
     "Items"
   ],
   "Recipe": {
-    "TimeSeconds": 3,
+    "TimeSeconds": 1,
     "Input": [
       {
-        "ItemId": "Machinarium_Gears",
-        "Quantity": 1
-      },
-      {
-        "ItemId": "Machinarium_Alloy_Steel",
+        "ItemId": "Machinarium_Tungsten_Ingot",
         "Quantity": 1
       }
     ],
@@ -23,14 +19,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Gear/Gear_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Gear/Reinforced Gear.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Reinforced_Gears.png",
+  "Model": "Items/Models/Parts/Plates/Plate_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Plates/Plate_Tungsten.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Plate_Tungsten.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

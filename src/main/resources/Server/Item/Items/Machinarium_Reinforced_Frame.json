@@ -10,15 +10,15 @@
     "TimeSeconds": 4,
     "Input": [
       {
-        "ItemId": "Machinarium_Reinforced_Plate",
+        "ItemId": "Machinarium_Plate_Reinforced_Iron",
         "Quantity": 4
       },
       {
-        "ItemId": "Machinarium_Reinforced_Rod",
+        "ItemId": "Machinarium_Rod_Reinforced_Iron",
         "Quantity": 4
       },
       {
-        "ItemId": "Machinarium_Reinforced_Gears",
+        "ItemId": "Machinarium_Gear_Reinforced_Iron",
         "Quantity": 2
       }
     ],

@@ -1,16 +1,20 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Tungsten_Plate.name",
-    "Description": "server.items.Machinarium_Tungsten_Plate.description"
+    "Name": "server.items.Machinarium_Plate_Reinforced_Iron.name",
+    "Description": "server.items.Machinarium_Plate_Reinforced_Iron.description"
   },
   "Categories": [
     "Items"
   ],
   "Recipe": {
-    "TimeSeconds": 1,
+    "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Machinarium_Tungsten_Ingot",
+        "ItemId": "Machinarium_Plate_Iron",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Alloy_Steel",
         "Quantity": 1
       }
     ],
@@ -19,14 +23,14 @@
         "Type": "Crafting",
         "Id": "Machinarium_Workbench",
         "Categories": [
-          "Machinarium_Crafting"
+          "Machinarium_Parts"
         ]
       }
     ]
   },
-  "Model": "Items/CraftingItems/Metal Plates/Plate_Base.blockymodel",
-  "Texture": "Items/CraftingItems/Metal Plates/Tungsten Plate.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Tungsten_Plate.png",
+  "Model": "Items/Models/Parts/Plates/Plate_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Plates/Plate_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Plate_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
