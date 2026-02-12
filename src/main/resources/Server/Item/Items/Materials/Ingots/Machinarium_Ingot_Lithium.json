@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Tin_Ingot.name",
-    "Description": "server.items.Machinarium_Tin_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Lithium.name",
+    "Description": "server.items.Machinarium_Ingot_Lithium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Tin.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Tin_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Lithium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Lithium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

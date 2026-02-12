@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Aluminum_Ingot.name",
-    "Description": "server.items.Machinarium_Aluminum_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Nickel.name",
+    "Description": "server.items.Machinarium_Ingot_Nickel.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Aluminum.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Aluminum_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Nickel.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Nickel.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

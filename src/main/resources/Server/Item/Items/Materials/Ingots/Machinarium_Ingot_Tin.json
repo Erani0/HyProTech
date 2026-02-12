@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Vanadium_Ingot.name",
-    "Description": "server.items.Machinarium_Vanadium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Tin.name",
+    "Description": "server.items.Machinarium_Ingot_Tin.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Vanadium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Vanadium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Tin.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Tin.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

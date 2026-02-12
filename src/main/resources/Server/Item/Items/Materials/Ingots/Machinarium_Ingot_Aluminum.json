@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Tungsten_Ingot.name",
-    "Description": "server.items.Machinarium_Tungsten_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Aluminum.name",
+    "Description": "server.items.Machinarium_Ingot_Aluminum.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Tungsten.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Tungsten_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Aluminum.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Aluminum.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

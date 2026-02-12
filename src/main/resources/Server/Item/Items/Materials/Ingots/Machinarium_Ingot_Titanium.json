@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Plutonium_Ingot.name",
-    "Description": "server.items.Machinarium_Plutonium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Titanium.name",
+    "Description": "server.items.Machinarium_Ingot_Titanium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Plutonium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Plutonium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Titanium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Titanium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

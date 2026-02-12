@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Titanium_Ingot.name",
-    "Description": "server.items.Machinarium_Titanium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Tungsten.name",
+    "Description": "server.items.Machinarium_Ingot_Tungsten.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Titanium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Tungsten.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Tungsten.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

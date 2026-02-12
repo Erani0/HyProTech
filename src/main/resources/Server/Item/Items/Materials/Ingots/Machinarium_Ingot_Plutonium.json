@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Manganese_Ingot.name",
-    "Description": "server.items.Machinarium_Manganese_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Plutonium.name",
+    "Description": "server.items.Machinarium_Ingot_Plutonium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Manganese.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Manganese_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Plutonium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Plutonium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

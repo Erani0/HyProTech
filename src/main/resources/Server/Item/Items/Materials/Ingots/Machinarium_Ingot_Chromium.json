@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Uranium_Ingot.name",
-    "Description": "server.items.Machinarium_Uranium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Chromium.name",
+    "Description": "server.items.Machinarium_Ingot_Chromium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Uranium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Uranium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Chromium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Chromium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

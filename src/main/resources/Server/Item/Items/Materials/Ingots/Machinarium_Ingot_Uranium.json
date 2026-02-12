@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Lithium_Ingot.name",
-    "Description": "server.items.Machinarium_Lithium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Uranium.name",
+    "Description": "server.items.Machinarium_Ingot_Uranium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Lithium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Lithium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Uranium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Uranium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

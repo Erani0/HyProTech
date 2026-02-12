@@ -1,14 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Chromium_Ingot.name",
-    "Description": "server.items.Machinarium_Chromium_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Vanadium.name",
+    "Description": "server.items.Machinarium_Ingot_Vanadium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/Ingots/Ingot.blockymodel",
-  "Texture": "Items/CraftingItems/Ingots/Chromium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Chromium_Ingot.png",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Vanadium.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Machinarium_Ingot_Vanadium.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
