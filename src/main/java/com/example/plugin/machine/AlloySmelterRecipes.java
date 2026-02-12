@@ -150,7 +150,7 @@ public final class AlloySmelterRecipes {
             return;
         }
         String copperId = "Ingredient_Bar_Copper";
-        String tinId = "Machinarium_Tin_Ingot";
+        String tinId = "Machinarium_Ingot_Tin";
         if (!isKnownItemId(outputId) || !isKnownItemId(copperId) || !isKnownItemId(tinId)) {
             return;
         }
