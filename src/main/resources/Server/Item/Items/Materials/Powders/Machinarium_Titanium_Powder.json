@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Manganese_Powder.name"
+    "Name": "server.items.Machinarium_Titanium_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,13 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Manganese_Powder",
+        "ItemId": "Machinarium_Titanium_Powder",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Manganese_Ingot"
+        "ItemId": "Machinarium_Ingot_Titanium"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +27,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/manganese_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_manganese_powder.png",
+  "Texture": "Items/CraftingItems/textures/titanium_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_titanium_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

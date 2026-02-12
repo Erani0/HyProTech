@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Nickel_Powder.name"
+    "Name": "server.items.Machinarium_Lithium_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,13 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Nickel_Powder",
+        "ItemId": "Machinarium_Lithium_Powder",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Nickel_Ingot"
+        "ItemId": "Machinarium_Ingot_Lithium"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +27,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/nickel_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_nickel_powder.png",
+  "Texture": "Items/CraftingItems/textures/lithium_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_lithium_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

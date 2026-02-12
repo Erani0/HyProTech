@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Lithium_Powder.name"
+    "Name": "server.items.Machinarium_Tungsten_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,13 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Lithium_Powder",
+        "ItemId": "Machinarium_Tungsten_Powder",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Lithium_Ingot"
+        "ItemId": "Machinarium_Ingot_Tungsten"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +27,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/lithium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_lithium_powder.png",
+  "Texture": "Items/CraftingItems/textures/tungsten_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_tungsten_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

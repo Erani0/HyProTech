@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Vanadium_Powder.name"
+    "Name": "server.items.Machinarium_Chromium_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,13 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Vanadium_Powder",
+        "ItemId": "Machinarium_Chromium_Powder",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Vanadium_Ingot"
+        "ItemId": "Machinarium_Ingot_Chromium"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +27,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/vanadium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_vanadium_powder.png",
+  "Texture": "Items/CraftingItems/textures/chromium_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_chromium_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

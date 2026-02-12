@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Uranium_Powder.name"
+    "Name": "server.items.Machinarium_Nickel_Powder.name"
   },
   "Categories": [
     "Items"
@@ -8,13 +8,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Uranium_Powder",
+        "ItemId": "Machinarium_Nickel_Powder",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Uranium_Ingot"
+        "ItemId": "Machinarium_Ingot_Nickel"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +27,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/uranium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_uranium_powder.png",
+  "Texture": "Items/CraftingItems/textures/nickel_powder.png",
+  "Icon": "Icons/ItemsGenerated/machinarium_nickel_powder.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"
