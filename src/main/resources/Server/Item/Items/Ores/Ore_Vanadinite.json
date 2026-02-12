@@ -1,0 +1,61 @@
+{
+    "TranslationProperties":  {
+                                  "Name":  "server.items.Ore_Vanadinite.name",
+                                  "Description":  "server.items.Ore_Vanadinite.description"
+                              },
+    "Categories":  [
+                       "Blocks.Ores"
+                   ],
+    "Recipe":  {
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ore_Vanadinite",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "Output":  [
+                                  {
+                                      "ItemId":  "Machinarium_Ingot_Vanadium"
+                                  }
+                              ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Id":  "Furnace",
+                                                "Type":  "Processing"
+                                            }
+                                        ],
+                   "OutputQuantity":  1,
+                   "TimeSeconds":  10
+               },
+    "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
+    "Texture":  "Items/CraftingItems/Ores/Vanadinite.png",
+    "Icon":  "Icons/ItemsGenerated/Ore_Vanadinite.png",
+    "ItemLevel":  1,
+    "PlayerAnimationsId":  "Block",
+    "IconProperties":  {
+                           "Scale":  0.58,
+                           "Translation":  [
+                                               0.0,
+                                               -13.5
+                                           ],
+                           "Rotation":  [
+                                            22.5,
+                                            45.0,
+                                            22.5
+                                        ]
+                       },
+    "Tags":  {
+                 "Type":  [
+                              "Ore"
+                          ],
+                 "Family":  [
+                                "Vanadinite"
+                            ]
+             },
+    "ItemEntity":  {
+                       "ParticleSystemId":  null
+                   },
+    "MaxStack":  25,
+    "ItemSoundSetId":  "ISS_Blocks_Stone",
+    "DropOnDeath":  true
+}
