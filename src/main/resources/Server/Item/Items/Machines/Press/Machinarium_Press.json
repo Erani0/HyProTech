@@ -1,10 +1,10 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Metal_Plate_Press.name",
-    "Description": "server.items.Machinarium_Metal_Plate_Press.description"
+    "Name": "server.items.Machinarium_Press.name",
+    "Description": "server.items.Machinarium_Press.description"
   },
   "MaxStack": 100,
-  "Icon": "Icons/ItemsGenerated/News/Machinarium_Metal_Plate_Press.png",
+  "Icon": "Icons/ItemsGenerated/News/Machinarium_Press.png",
   "Categories": [
     "Blocks.Misc"
   ],
