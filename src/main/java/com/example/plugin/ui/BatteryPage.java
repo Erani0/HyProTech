@@ -98,7 +98,7 @@ public class BatteryPage extends InteractiveCustomUIPage<SideToggleEvent> {
             UICommandBuilder uiCommandBuilder,
             UIEventBuilder uiEventBuilder,
             Store<EntityStore> store) {
-        uiCommandBuilder.append("Machinarium_Battery.ui");
+        uiCommandBuilder.append("Machinarium_Battery_Rack_S.ui");
         bindSideButtons(uiEventBuilder);
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,

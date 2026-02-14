@@ -1,10 +1,10 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Battery_T4.name",
-    "Description": "server.items.Machinarium_Battery_T4.description"
+    "Name": "server.items.Machinarium_Battery_Rack_S_T1.name",
+    "Description": "server.items.Machinarium_Battery_Rack_S_T1.description"
   },
   "MaxStack": 100,
-  "Icon": "Icons/ItemsGenerated/machinarium_battery_T4.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Battery_Rack_S_T1.png",
   "Categories": [
     "Blocks.Misc"
   ],
@@ -12,15 +12,11 @@
     "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Gold",
+        "ItemId": "Ingredient_Bar_Copper",
         "Quantity": 1
       },
       {
-        "ItemId": "Ingredient_Bar_Thorium",
-        "Quantity": 1
-      },
-      {
-        "ItemId": "Ingredient_Fire_Essence",
+        "ItemId": "Ingredient_Leather_Medium",
         "Quantity": 1
       }
     ],
@@ -54,7 +50,7 @@
     "CustomModel": "Blocks/Machinarium/BasicBattery/BasicBattery.blockymodel",
     "CustomModelTexture": [
       {
-        "Texture": "BlockTextures/BasicBaterry_T4.png",
+        "Texture": "BlockTextures/BasicBaterry_T1.png",
         "Weight": 1
       }
     ],
@@ -67,8 +63,8 @@
         "machinarium:energy_node": {
           "NodeType": "Battery",
           "Energy": 0,
-          "Capacity": 12800000,
-          "MaxTransfer": 1280000,
+          "Capacity": 200000,
+          "MaxTransfer": 20000,
           "InputMask": 48,
           "OutputMask": 48
         }
@@ -80,7 +76,7 @@
           {
             "Type": "OpenCustomUI",
             "Page": {
-              "Id": "machinarium_battery_page"
+              "Id": "Machinarium_Battery_Rack_S_page"
             }
           }
         ]

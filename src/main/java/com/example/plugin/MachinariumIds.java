@@ -11,7 +11,7 @@ public final class MachinariumIds {
     public static final String OPEN_POWERED_BENCH_INTERACTION_ID = "machinarium_open_powered_bench";
     public static final String TOGGLE_CABLE_SIDE_INTERACTION_ID = "machinarium_toggle_cable_side";
     public static final String UPGRADE_CABLE_NETWORK_INTERACTION_ID = "machinarium_upgrade_cable_network";
-    public static final String BATTERY_PAGE_ID = "machinarium_battery_page";
+    public static final String BATTERY_PAGE_ID = "machinarium_battery_rack_s_page";
     public static final String SOLAR_PAGE_ID = "machinarium_solar_page";
     public static final String WIND_PAGE_ID = "machinarium_wind_page";
     public static final String FURNACE_PAGE_ID = "machinarium_furnace_page";
@@ -29,7 +29,7 @@ public final class MachinariumIds {
     public static final String BLOCK_THIN_CABLE_BROWN = "Machinarium_Thin_Cable_Brown";
     public static final String BLOCK_THIN_CABLE_BLUE = "Machinarium_Thin_Cable_Blue";
     public static final String BLOCK_THIN_CABLE_GREEN = "Machinarium_Thin_Cable_Green";
-    public static final String BLOCK_BATTERY = "Machinarium_Battery";
+    public static final String BLOCK_BATTERY = "Machinarium_Battery_Rack_S";
     public static final String BLOCK_ELECTRIC_FURNACE = "Machinarium_Electric_Furnace";
     public static final String BLOCK_ORE_CRUSHER = "Machinarium_Ore_Crusher";
     public static final String BLOCK_ALLOY_SMELTER = "Machinarium_Alloy_Smelter";
