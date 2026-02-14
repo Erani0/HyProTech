@@ -465,7 +465,7 @@ public final class OreCrusherConfig {
             case "Ore_Pentlandite":
                 return "Machinarium_Nickel_Powder";
             case "Ore_Quartzite":
-                return "Machinarium_Silicon_Powder";
+                return "Machinarium_Powder_Silicon";
             case "Ore_Scheelite":
                 return "Machinarium_Tungsten_Powder";
             case "Ore_Spodumene":

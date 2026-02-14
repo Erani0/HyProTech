@@ -97,7 +97,7 @@ public final class OreCrusherRecipes {
                 {"Ore_Silver", "Machinarium_Silver_Powder"},
                 {"Ore_Cobalt", "Machinarium_Cobalt_Powder"},
                 {"Ore_Thorium", "Machinarium_Thorium_Powder"},
-                {"Ore_Adamantite", "Machinarium_Adamantite_Powder"}
+                {"Ore_Adamantite", "Machinarium_Powder_Adamantite"}
         };
         for (String[] pair : vanilla) {
             String inputId = pair[0];

@@ -43,7 +43,7 @@ public final class MachinariumIds {
     public static final String ITEM_COBALT_POWDER = "Machinarium_Cobalt_Powder";
     public static final String ITEM_SILVER_POWDER = "Machinarium_Silver_Powder";
     public static final String ITEM_GOLD_POWDER = "Machinarium_Gold_Powder";
-    public static final String ITEM_ADAMANTITE_POWDER = "Machinarium_Adamantite_Powder";
+    public static final String ITEM_ADAMANTITE_POWDER = "Machinarium_Powder_Adamantite";
     public static final String ITEM_THORIUM_POWDER = "Machinarium_Thorium_Powder";
 
     public static final String ITEM_SCRAP = "Machinarium_Scrap";

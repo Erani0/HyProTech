@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Silicon_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Adamantite.name",
+    "Description": "server.items.Machinarium_Powder_Adamantite.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Silicon_Powder",
+        "ItemId": "Machinarium_Powder_Adamantite",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Silicon"
+        "ItemId": "Ingredient_Bar_Adamantite"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/silicon_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_silicon_powder.png",
+  "Texture": "Items/CraftingItems/textures/Adamantite_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Adamantite.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"
