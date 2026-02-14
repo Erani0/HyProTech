@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.example"
-version = "1.0-SNAPSHOT"
+version = "1.4-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
