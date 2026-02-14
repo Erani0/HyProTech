@@ -48,6 +48,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.DamageBlockEvent;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
+import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -333,6 +334,7 @@ public class Machinarium extends JavaPlugin {
                     event.setCancelled(true);
                     UpgradePersistence.queueBreakAndDrop(world, pos, blockType, drop, extraDrops);
                 });
+
         getEventRegistry().registerGlobal(
                 PlaceBlockEvent.class,
                 event -> {
@@ -360,6 +362,9 @@ public class Machinarium extends JavaPlugin {
                     }
                     UpgradePersistence.storePending(world, pos, blockId, stack);
                 });
+                
+        // Registration of upgrade IDs event
+        getEventRegistry().registerGlobal(PlayerConnectEvent.class, com.example.plugin.ItemMigrationListener::onPlayerJoin);
         // Furnace custom UI removed; vanilla bench opens via interaction.
     }
 
