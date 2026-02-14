@@ -27,7 +27,7 @@
   },
   "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
   "Texture": "Items/Textures/Parts/Rods/Rod_Iron.png",
-  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Rod_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Rod_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

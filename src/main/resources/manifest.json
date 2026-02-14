@@ -1,5 +1,5 @@
 {
-    "Group": "com.example",
+    "Group": "HyProTechTeam",
     "Name": "HyProTech",
     "Version": "1.4.0",
     "Description": "A Hytale Modern Technology mod!",
@@ -17,6 +17,6 @@
         "Ellie:HyUI": "*"
     },
     "DisabledByDefault": false,
-    "Main": "com.example.plugin.Machinarium",
+    "Main": "HyProTechTeam.Machinarium",
     "IncludesAssetPack": true
 }

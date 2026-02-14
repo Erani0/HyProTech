@@ -30,7 +30,7 @@
   },
   "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
   "Texture": "Items/Textures/Parts/Rods/Rod_Reinforced_Iron.png",
-  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Rod_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Rod_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

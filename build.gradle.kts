@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "com.example"
+group = "HyProTechTeam"
 version = "1.4-SNAPSHOT"
 
 java {

@@ -30,7 +30,7 @@
   },
   "Model": "Items/Models/Parts/Gear/Gear_Base.blockymodel",
   "Texture": "Items/Textures/Parts/Gear/Gear_Reinforced_Iron.png",
-  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Gear_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Gear_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

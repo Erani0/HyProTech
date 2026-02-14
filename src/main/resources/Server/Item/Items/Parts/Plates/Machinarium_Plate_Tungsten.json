@@ -26,7 +26,7 @@
   },
   "Model": "Items/Models/Parts/Plates/Plate_Base.blockymodel",
   "Texture": "Items/Textures/Parts/Plates/Plate_Tungsten.png",
-  "Icon": "Icons/ItemsGenerated/Parts/Machinarium_Plate_Tungsten.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Plate_Tungsten.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

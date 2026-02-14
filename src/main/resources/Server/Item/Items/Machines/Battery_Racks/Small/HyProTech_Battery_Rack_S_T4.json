@@ -1,0 +1,92 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Battery_Rack_S_T4.name",
+    "Description": "server.items.HyProTech_Battery_Rack_S_T4.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/Machines/Battery_Racks/Small/Battery_Rack_S_T4.png",
+  "Categories": [
+    "Blocks.Misc"
+  ],
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Gold",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Bar_Thorium",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Fire_Essence",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Machinarium_Workbench",
+        "Categories": [
+          "Machinarium_Crafting"
+        ]
+      }
+    ]
+  },
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": "Block_Secondary"
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/Machinarium/BasicBattery/BasicBattery.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/BasicBaterry_T4.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#9ccf5a",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "BlockEntity": {
+      "Components": {
+        "machinarium:energy_node": {
+          "NodeType": "Battery",
+          "Energy": 0,
+          "Capacity": 12800000,
+          "MaxTransfer": 1280000,
+          "InputMask": 48,
+          "OutputMask": 48
+        }
+      }
+    },
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "OpenCustomUI",
+            "Page": {
+              "Id": "HyProTech_Battery_Rack_S_page"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+
