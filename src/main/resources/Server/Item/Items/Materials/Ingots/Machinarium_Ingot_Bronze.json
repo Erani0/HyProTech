@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Composite_Alloy_Ingot.name",
-    "Description": "server.items.Machinarium_Composite_Alloy_Ingot.description"
+    "Name": "server.items.Machinarium_Ingot_Bronze.name",
+    "Description": "server.items.Machinarium_Ingot_Bronze.description"
   },
   "Categories": [
     "Items"
@@ -9,21 +9,17 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Alloy_Steel",
-        "Quantity": 1
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 3
       },
       {
-        "ItemId": "Machinarium_Titanium_Vanadium_Alloy",
-        "Quantity": 1
-      },
-      {
-        "ItemId": "Machinarium_Ingot_Tungsten",
+        "ItemId": "Machinarium_Ingot_Tin",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Composite_Alloy_Ingot"
+        "ItemId": "Ingredient_Bar_Bronze"
       }
     ],
     "BenchRequirement": [
@@ -32,12 +28,12 @@
         "Id": "AlloySmelter"
       }
     ],
-    "OutputQuantity": 1,
+    "OutputQuantity": 4,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/compositealloy.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Composite_Alloy_Ingot.png",
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/iron_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Bronze.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

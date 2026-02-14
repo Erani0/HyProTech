@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Invar_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Tin.name",
+    "Description": "server.items.Machinarium_Powder_Tin.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Alloy_Invar_Powder",
+        "ItemId": "Machinarium_Powder_Tin",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Invar"
+        "ItemId": "Machinarium_Ingot_Tin"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/invar_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_invar_powder.png",
+  "Texture": "Items/CraftingItems/textures/tin_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Tin.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

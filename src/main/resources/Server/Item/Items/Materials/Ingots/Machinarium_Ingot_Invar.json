@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Invar.name",
-    "Description": "server.items.Machinarium_Alloy_Invar.description"
+    "Name": "server.items.Machinarium_Ingot_Invar.name",
+    "Description": "server.items.Machinarium_Ingot_Invar.description"
   },
   "Categories": [
     "Items"
@@ -19,7 +19,7 @@
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Invar"
+        "ItemId": "Machinarium_Ingot_Invar"
       }
     ],
     "BenchRequirement": [
@@ -33,7 +33,7 @@
   },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
   "Texture": "Items/CraftingItems/Alloys/Invar.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Invar.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Invar.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

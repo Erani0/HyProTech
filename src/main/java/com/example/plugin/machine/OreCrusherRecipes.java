@@ -91,12 +91,12 @@ public final class OreCrusherRecipes {
 
     private static void addVanillaOreEntries(Map<String, RecipeEntry> byInput) {
         String[][] vanilla = {
-                {"Ore_Copper", "Machinarium_Copper_Powder"},
-                {"Ore_Iron", "Machinarium_Iron_Powder"},
-                {"Ore_Gold", "Machinarium_Gold_Powder"},
-                {"Ore_Silver", "Machinarium_Silver_Powder"},
-                {"Ore_Cobalt", "Machinarium_Cobalt_Powder"},
-                {"Ore_Thorium", "Machinarium_Thorium_Powder"},
+                {"Ore_Copper", "Machinarium_Powder_Copper"},
+                {"Ore_Iron", "Machinarium_Powder_Iron"},
+                {"Ore_Gold", "Machinarium_Powder_Gold"},
+                {"Ore_Silver", "Machinarium_Powder_Silver"},
+                {"Ore_Cobalt", "Machinarium_Powder_Cobalt"},
+                {"Ore_Thorium", "Machinarium_Powder_Thorium"},
                 {"Ore_Adamantite", "Machinarium_Powder_Adamantite"}
         };
         for (String[] pair : vanilla) {

@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Manganese_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Constantan.name",
+    "Description": "server.items.Machinarium_Powder_Constantan.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Manganese_Powder",
+        "ItemId": "Machinarium_Powder_Constantan",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Ingot_Manganese"
+        "ItemId": "Machinarium_Ingot_Constantan"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/manganese_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_manganese_powder.png",
+  "Texture": "Items/CraftingItems/textures/constantan_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Constantan.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

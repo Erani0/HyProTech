@@ -1,20 +1,29 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Aluminum_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Thorium.name",
+    "Description": "server.items.Machinarium_Powder_Thorium.description"
   },
   "Categories": [
     "Items"
   ],
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/Thorium_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Thorium.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Aluminum_Powder",
+        "ItemId": "Machinarium_Powder_Thorium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Ingot_Aluminum"
+        "ItemId": "Ingredient_Bar_Thorium"
       }
     ],
     "BenchRequirement": [
@@ -26,14 +35,6 @@
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/aluminum_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_aluminum_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

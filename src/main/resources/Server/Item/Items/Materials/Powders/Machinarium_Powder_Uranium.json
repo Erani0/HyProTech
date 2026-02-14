@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Lithium_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Uranium.name",
+    "Description": "server.items.Machinarium_Powder_Uranium.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Lithium_Powder",
+        "ItemId": "Machinarium_Powder_Uranium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Ingot_Lithium"
+        "ItemId": "Machinarium_Ingot_Uranium"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/lithium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_lithium_powder.png",
+  "Texture": "Items/CraftingItems/textures/uranium_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Uranium.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

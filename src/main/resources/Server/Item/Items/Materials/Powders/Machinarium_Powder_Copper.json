@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Titanium_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Copper.name",
+    "Description": "server.items.Machinarium_Powder_Copper.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Titanium_Powder",
+        "ItemId": "Machinarium_Powder_Copper",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Ingot_Titanium"
+        "ItemId": "Ingredient_Bar_Copper"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/titanium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_titanium_powder.png",
+  "Texture": "Items/CraftingItems/textures/copper_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Copper.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

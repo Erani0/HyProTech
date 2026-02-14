@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_High_Tier_Alloy_Blend_Powder.name",
-    "Description": "server.items.Machinarium_High_Tier_Alloy_Blend_Powder.description"
+    "Name": "server.items.Machinarium_Powder_Manganese.name",
+    "Description": "server.items.Machinarium_Powder_Manganese.description"
   },
   "Categories": [
     "Items"
@@ -9,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_High_Tier_Alloy_Blend_Powder",
+        "ItemId": "Machinarium_Powder_Manganese",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_High_Tier_Alloy_Blend"
+        "ItemId": "Machinarium_Ingot_Manganese"
       }
     ],
     "BenchRequirement": [
@@ -28,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/high_tier_alloy_blend_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_high_tier_alloy_blend_powder.png",
+  "Texture": "Items/CraftingItems/textures/manganese_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Manganese.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

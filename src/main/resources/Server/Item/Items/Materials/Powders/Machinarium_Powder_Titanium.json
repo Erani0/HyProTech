@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Iron_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Titanium.name",
+    "Description": "server.items.Machinarium_Powder_Titanium.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Iron_Powder",
+        "ItemId": "Machinarium_Powder_Titanium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Iron"
+        "ItemId": "Machinarium_Ingot_Titanium"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_iron_powder.png",
+  "Texture": "Items/CraftingItems/textures/titanium_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Titanium.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

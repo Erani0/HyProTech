@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Cobalt_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Steel.name",
+    "Description": "server.items.Machinarium_Powder_Steel.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Cobalt_Powder",
+        "ItemId": "Machinarium_Powder_Steel",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Cobalt"
+        "ItemId": "Machinarium_Ingot_Steel"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/cobalt_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_cobalt_powder.png",
+  "Texture": "Items/CraftingItems/textures/steel_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Steel.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

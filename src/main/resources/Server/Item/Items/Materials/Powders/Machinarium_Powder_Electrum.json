@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Steel.name",
-    "Description": "server.items.Machinarium_Alloy_Steel.description"
+    "Name": "server.items.Machinarium_Powder_Electrum.name",
+    "Description": "server.items.Machinarium_Powder_Electrum.description"
   },
   "Categories": [
     "Items"
@@ -9,31 +9,32 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Iron",
-        "Quantity": 2
-      },
-      {
-        "ItemId": "Machinarium_Ingot_Manganese",
+        "ItemId": "Machinarium_Powder_Electrum",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Steel"
+        "ItemId": "Machinarium_Ingot_Electrum"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "AlloySmelter"
+        "Id": "Furnace"
       }
     ],
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/Steel.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Steel.png",
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/electrum_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Electrum.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,10 +57,5 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true,
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ]
+  "DropOnDeath": true
 }

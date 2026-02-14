@@ -190,21 +190,21 @@ public final class OreCrusherConfig {
                     new Requirement("Ingredient_Bar_Adamantite", 4),
                     new Requirement("Machinarium_Slag", 12),
                     new Requirement("Machinarium_Ore_Chips", 8),
-                    new Requirement("Machinarium_Cobalt_Powder", 10)
+                    new Requirement("Machinarium_Powder_Cobalt", 10)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 10),
                     new Requirement("Ingredient_Bar_Thorium", 6),
                     new Requirement("Machinarium_Slag", 18),
                     new Requirement("Machinarium_Ore_Chips", 12),
-                    new Requirement("Machinarium_Iron_Powder", 16)
+                    new Requirement("Machinarium_Powder_Iron", 16)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 20),
                     new Requirement("Ingredient_Bar_Thorium", 10),
                     new Requirement("Machinarium_Slag", 25),
                     new Requirement("Machinarium_Ore_Chips", 18),
-                    new Requirement("Machinarium_Gold_Powder", 20)
+                    new Requirement("Machinarium_Powder_Gold", 20)
             },
             new Requirement[0]
     };
@@ -212,7 +212,7 @@ public final class OreCrusherConfig {
     private static final BonusDrop[] DEFAULT_BONUS_DROPS = {
             new BonusDrop("Machinarium_Slag", 1, 0.50, 0.00),
             new BonusDrop("Machinarium_Ore_Chips", 1, 0.10, 0.00),
-            new BonusDrop("Machinarium_Stone_Dust", 1, 0.50, 0.00),
+            new BonusDrop("Machinarium_Powder_Stone", 1, 0.50, 0.00),
             new BonusDrop("Machinarium_Scrap", 1, 0.70, 0.00)
     };
     private static final BonusDrop DEFAULT_POWDER_DROP = new BonusDrop("__ore_powder__", 1, 0.0, 0.20);
@@ -453,27 +453,27 @@ public final class OreCrusherConfig {
         }
         switch (oreId) {
             case "Ore_Bauxite":
-                return "Machinarium_Aluminum_Powder";
+                return "Machinarium_Powder_Aluminum";
             case "Ore_Cassiterite":
-                return "Machinarium_Tin_Powder";
+                return "Machinarium_Powder_Tin";
             case "Ore_Chromite":
-                return "Machinarium_Chromium_Powder";
+                return "Machinarium_Powder_Chromium";
             case "Ore_Ilmenite":
-                return "Machinarium_Titanium_Powder";
+                return "Machinarium_Powder_Titanium";
             case "Ore_Manganese":
-                return "Machinarium_Manganese_Powder";
+                return "Machinarium_Powder_Manganese";
             case "Ore_Pentlandite":
-                return "Machinarium_Nickel_Powder";
+                return "Machinarium_Powder_Nickel";
             case "Ore_Quartzite":
                 return "Machinarium_Powder_Silicon";
             case "Ore_Scheelite":
-                return "Machinarium_Tungsten_Powder";
+                return "Machinarium_Powder_Tungsten";
             case "Ore_Spodumene":
-                return "Machinarium_Lithium_Powder";
+                return "Machinarium_Powder_Lithium";
             case "Ore_Uraninite":
-                return "Machinarium_Uranium_Powder";
+                return "Machinarium_Powder_Uranium";
             case "Ore_Vanadinite":
-                return "Machinarium_Vanadium_Powder";
+                return "Machinarium_Powder_Vanadium";
             default:
                 return null;
         }

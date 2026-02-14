@@ -191,21 +191,21 @@ public final class AlloySmelterConfig {
                     new Requirement("Ingredient_Bar_Adamantite", 4),
                     new Requirement("Machinarium_Slag", 12),
                     new Requirement("Machinarium_Ore_Chips", 8),
-                    new Requirement("Machinarium_Cobalt_Powder", 10)
+                    new Requirement("Machinarium_Powder_Cobalt", 10)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 10),
                     new Requirement("Ingredient_Bar_Thorium", 6),
                     new Requirement("Machinarium_Slag", 18),
                     new Requirement("Machinarium_Ore_Chips", 12),
-                    new Requirement("Machinarium_Iron_Powder", 16)
+                    new Requirement("Machinarium_Powder_Iron", 16)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 20),
                     new Requirement("Ingredient_Bar_Thorium", 10),
                     new Requirement("Machinarium_Slag", 25),
                     new Requirement("Machinarium_Ore_Chips", 18),
-                    new Requirement("Machinarium_Gold_Powder", 20)
+                    new Requirement("Machinarium_Powder_Gold", 20)
             },
             new Requirement[0]
     };

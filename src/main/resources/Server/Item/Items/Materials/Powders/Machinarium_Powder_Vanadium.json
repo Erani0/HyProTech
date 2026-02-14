@@ -1,28 +1,21 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Thorium_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Vanadium.name",
+    "Description": "server.items.Machinarium_Powder_Vanadium.description"
   },
   "Categories": [
     "Items"
   ],
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/Thorium_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_thorium_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Thorium_Powder",
+        "ItemId": "Machinarium_Powder_Vanadium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Thorium"
+        "ItemId": "Machinarium_Ingot_Vanadium"
       }
     ],
     "BenchRequirement": [
@@ -34,6 +27,14 @@
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/vanadium_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Vanadium.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

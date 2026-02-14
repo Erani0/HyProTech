@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Titanium_Vanadium_Alloy.name",
-    "Description": "server.items.Machinarium_Titanium_Vanadium_Alloy.description"
+    "Name": "server.items.Machinarium_Ingot_Composite_Alloy.name",
+    "Description": "server.items.Machinarium_Ingot_Composite_Alloy.description"
   },
   "Categories": [
     "Items"
@@ -9,17 +9,21 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Ingot_Titanium",
+        "ItemId": "Machinarium_Ingot_Steel",
         "Quantity": 1
       },
       {
-        "ItemId": "Machinarium_Ingot_Vanadium",
+        "ItemId": "Machinarium_Ingot_TiV",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Ingot_Tungsten",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Titanium_Vanadium_Alloy"
+        "ItemId": "Machinarium_Ingot_Composite_Alloy"
       }
     ],
     "BenchRequirement": [
@@ -32,8 +36,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/titanium-vanadium.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Titanium_Vanadium_Alloy.png",
+  "Texture": "Items/CraftingItems/Alloys/compositealloy.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Composite_Alloy.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

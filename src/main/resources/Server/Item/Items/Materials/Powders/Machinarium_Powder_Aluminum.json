@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Steel_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Aluminum.name",
+    "Description": "server.items.Machinarium_Powder_Aluminum.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Alloy_Steel_Powder",
+        "ItemId": "Machinarium_Powder_Aluminum",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Steel"
+        "ItemId": "Machinarium_Ingot_Aluminum"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/steel_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_steel_powder.png",
+  "Texture": "Items/CraftingItems/textures/aluminum_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Aluminum.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

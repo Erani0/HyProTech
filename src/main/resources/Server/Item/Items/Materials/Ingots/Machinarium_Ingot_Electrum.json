@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Constantan_Powder.name"
+    "Name": "server.items.Machinarium_Ingot_Electrum.name",
+    "Description": "server.items.Machinarium_Ingot_Electrum.description"
   },
   "Categories": [
     "Items"
@@ -8,32 +9,31 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Alloy_Constantan_Powder",
+        "ItemId": "Ingredient_Bar_Gold",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Bar_Silver",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Constantan"
+        "ItemId": "Machinarium_Ingot_Electrum"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "Furnace"
+        "Id": "AlloySmelter"
       }
     ],
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/constantan_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_alloy_constantan_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
+  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
+  "Texture": "Items/CraftingItems/Alloys/Electrum.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Electrum.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,5 +56,10 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Constantan.name",
-    "Description": "server.items.Machinarium_Alloy_Constantan.description"
+    "Name": "server.items.Machinarium_Powder_Cobalt.name",
+    "Description": "server.items.Machinarium_Powder_Cobalt.description"
   },
   "Categories": [
     "Items"
@@ -9,31 +9,32 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Copper",
-        "Quantity": 1
-      },
-      {
-        "ItemId": "Machinarium_Ingot_Nickel",
+        "ItemId": "Machinarium_Powder_Cobalt",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Constantan"
+        "ItemId": "Ingredient_Bar_Cobalt"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "AlloySmelter"
+        "Id": "Furnace"
       }
     ],
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/Constantan Ingot.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Constantan.png",
+  "Model": "Items/CraftingItems/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/cobalt_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Cobalt.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,10 +57,5 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true,
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ]
+  "DropOnDeath": true
 }

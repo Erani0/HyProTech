@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Alloy_Electrum.name",
-    "Description": "server.items.Machinarium_Alloy_Electrum.description"
+    "Name": "server.items.Machinarium_Ingot_TiV.name",
+    "Description": "server.items.Machinarium_Ingot_TiV.description"
   },
   "Categories": [
     "Items"
@@ -9,17 +9,17 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Gold",
+        "ItemId": "Machinarium_Ingot_Titanium",
         "Quantity": 1
       },
       {
-        "ItemId": "Ingredient_Bar_Silver",
+        "ItemId": "Machinarium_Ingot_Vanadium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Alloy_Electrum"
+        "ItemId": "Machinarium_Ingot_TiV"
       }
     ],
     "BenchRequirement": [
@@ -28,12 +28,12 @@
         "Id": "AlloySmelter"
       }
     ],
-    "OutputQuantity": 1,
+    "OutputQuantity": 2,
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/Electrum.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Electrum.png",
+  "Texture": "Items/CraftingItems/Alloys/titanium-vanadium.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_TiV.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

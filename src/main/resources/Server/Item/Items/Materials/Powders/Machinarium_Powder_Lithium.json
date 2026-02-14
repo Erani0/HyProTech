@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Bronze_Blend.name",
-    "Description": "server.items.Machinarium_Bronze_Blend.description"
+    "Name": "server.items.Machinarium_Powder_Lithium.name",
+    "Description": "server.items.Machinarium_Powder_Lithium.description"
   },
   "Categories": [
     "Items"
@@ -9,31 +9,32 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Copper",
-        "Quantity": 3
-      },
-      {
-        "ItemId": "Machinarium_Ingot_Tin",
+        "ItemId": "Machinarium_Powder_Lithium",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Bronze"
+        "ItemId": "Machinarium_Ingot_Lithium"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "AlloySmelter"
+        "Id": "Furnace"
       }
     ],
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Bronze.png",
+  "Texture": "Items/CraftingItems/textures/lithium_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Lithium.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,10 +57,5 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true,
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ]
+  "DropOnDeath": true
 }

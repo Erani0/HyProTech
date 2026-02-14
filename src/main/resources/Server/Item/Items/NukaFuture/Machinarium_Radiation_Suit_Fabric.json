@@ -8,7 +8,7 @@
   ],
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
   "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Alloy_Steel.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Steel.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

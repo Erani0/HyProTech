@@ -9,7 +9,7 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Composite_Alloy_Ingot",
+        "ItemId": "Machinarium_Ingot_Composite_Alloy",
         "Quantity": 1
       },
       {

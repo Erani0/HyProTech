@@ -235,7 +235,7 @@ public final class AlloySmelterRecipes {
         if ("Ingredient_Bar_Bronze".equalsIgnoreCase(itemId)) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_Titanium_Vanadium_Alloy")) {
+        if (itemId.equalsIgnoreCase("Machinarium_Ingot_TiV")) {
             return true;
         }
         if (itemId.equalsIgnoreCase("Machinarium_High_Tier_Alloy_Blend")) {

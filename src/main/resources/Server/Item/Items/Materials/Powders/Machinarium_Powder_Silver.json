@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Gold_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Silver.name",
+    "Description": "server.items.Machinarium_Powder_Silver.description"
   },
   "Categories": [
     "Items"
@@ -8,13 +9,13 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Gold_Powder",
+        "ItemId": "Machinarium_Powder_Silver",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Gold"
+        "ItemId": "Ingredient_Bar_Silver"
       }
     ],
     "BenchRequirement": [
@@ -27,8 +28,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/gold_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_gold_powder.png",
+  "Texture": "Items/CraftingItems/textures/silver_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Silver.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

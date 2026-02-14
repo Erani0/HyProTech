@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Titanium_Vanadium_Alloy_Powder.name"
+    "Name": "server.items.Machinarium_Ingot_Constantan.name",
+    "Description": "server.items.Machinarium_Ingot_Constantan.description"
   },
   "Categories": [
     "Items"
@@ -8,32 +9,31 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Titanium_Vanadium_Alloy_Powder",
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Machinarium_Ingot_Nickel",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Titanium_Vanadium_Alloy"
+        "ItemId": "Machinarium_Ingot_Constantan"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "Furnace"
+        "Id": "AlloySmelter"
       }
     ],
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/titanium_vanadium_alloy_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_titanium_vanadium_alloy_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
+  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
+  "Texture": "Items/CraftingItems/Alloys/Constantan Ingot.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Constantan.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,5 +56,10 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
 }

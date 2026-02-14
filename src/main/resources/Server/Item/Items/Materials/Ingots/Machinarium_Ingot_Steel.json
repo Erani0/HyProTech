@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Silver_Powder.name"
+    "Name": "server.items.Machinarium_Ingot_Steel.name",
+    "Description": "server.items.Machinarium_Ingot_Steel.description"
   },
   "Categories": [
     "Items"
@@ -8,32 +9,31 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Silver_Powder",
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 2
+      },
+      {
+        "ItemId": "Machinarium_Ingot_Manganese",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Ingredient_Bar_Silver"
+        "ItemId": "Machinarium_Ingot_Steel"
       }
     ],
     "BenchRequirement": [
       {
         "Type": "Processing",
-        "Id": "Furnace"
+        "Id": "AlloySmelter"
       }
     ],
-    "OutputQuantity": 1,
+    "OutputQuantity": 3,
     "TimeSeconds": 10
   },
-  "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/silver_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_silver_powder.png",
-  "ResourceTypes": [
-    {
-      "Id": "Metal_Bars"
-    }
-  ],
+  "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
+  "Texture": "Items/CraftingItems/Alloys/Steel.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_Steel.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,
@@ -56,5 +56,10 @@
     "ParticleSystemId": null
   },
   "ItemSoundSetId": "ISS_Items_Ingots",
-  "DropOnDeath": true
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
 }

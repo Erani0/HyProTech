@@ -1,34 +1,14 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Tin_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Stone.name",
+    "Description": "server.items.Machinarium_Powder_Stone.description"
   },
   "Categories": [
     "Items"
   ],
-  "Recipe": {
-    "Input": [
-      {
-        "ItemId": "Machinarium_Tin_Powder",
-        "Quantity": 1
-      }
-    ],
-    "Output": [
-      {
-        "ItemId": "Machinarium_Ingot_Tin"
-      }
-    ],
-    "BenchRequirement": [
-      {
-        "Type": "Processing",
-        "Id": "Furnace"
-      }
-    ],
-    "OutputQuantity": 1,
-    "TimeSeconds": 10
-  },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/tin_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_tin_powder.png",
+  "Texture": "Items/CraftingItems/textures/stone_dust.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Stone.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

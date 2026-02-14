@@ -32,7 +32,7 @@
         "Quantity": 8
       },
       {
-        "ItemId": "Machinarium_Cobalt_Powder",
+        "ItemId": "Machinarium_Powder_Cobalt",
         "Quantity": 10
       },
       {
@@ -178,7 +178,7 @@
                 "Quantity": 8
               },
               {
-                "ItemId": "Machinarium_Cobalt_Powder",
+                "ItemId": "Machinarium_Powder_Cobalt",
                 "Quantity": 10
               }
             ],
@@ -207,7 +207,7 @@
                 "Quantity": 12
               },
               {
-                "ItemId": "Machinarium_Iron_Powder",
+                "ItemId": "Machinarium_Powder_Iron",
                 "Quantity": 16
               }
             ],
@@ -236,7 +236,7 @@
                 "Quantity": 18
               },
               {
-                "ItemId": "Machinarium_Gold_Powder",
+                "ItemId": "Machinarium_Powder_Gold",
                 "Quantity": 20
               }
             ],

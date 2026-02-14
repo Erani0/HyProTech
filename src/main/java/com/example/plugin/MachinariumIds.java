@@ -38,23 +38,23 @@ public final class MachinariumIds {
     public static final String BLOCK_QUARRY_BORDER = "Machinarium_Quarry_Border";
     public static final String BLOCK_BORDER_TORCH = "Machinarium_Border_Torch";
 
-    public static final String ITEM_COPPER_POWDER = "Machinarium_Copper_Powder";
-    public static final String ITEM_IRON_POWDER = "Machinarium_Iron_Powder";
-    public static final String ITEM_COBALT_POWDER = "Machinarium_Cobalt_Powder";
-    public static final String ITEM_SILVER_POWDER = "Machinarium_Silver_Powder";
-    public static final String ITEM_GOLD_POWDER = "Machinarium_Gold_Powder";
+    public static final String ITEM_COPPER_POWDER = "Machinarium_Powder_Copper";
+    public static final String ITEM_IRON_POWDER = "Machinarium_Powder_Iron";
+    public static final String ITEM_COBALT_POWDER = "Machinarium_Powder_Cobalt";
+    public static final String ITEM_SILVER_POWDER = "Machinarium_Powder_Silver";
+    public static final String ITEM_GOLD_POWDER = "Machinarium_Powder_Gold";
     public static final String ITEM_ADAMANTITE_POWDER = "Machinarium_Powder_Adamantite";
-    public static final String ITEM_THORIUM_POWDER = "Machinarium_Thorium_Powder";
+    public static final String ITEM_THORIUM_POWDER = "Machinarium_Powder_Thorium";
 
     public static final String ITEM_SCRAP = "Machinarium_Scrap";
     public static final String ITEM_SLAG = "Machinarium_Slag";
     public static final String ITEM_ORE_CHIPS = "Machinarium_Ore_Chips";
-    public static final String ITEM_STONE_DUST = "Machinarium_Stone_Dust";
+    public static final String ITEM_STONE_DUST = "Machinarium_Powder_Stone";
 
-    public static final String ITEM_ALLOY_ELECTRUM = "Machinarium_Alloy_Electrum";
-    public static final String ITEM_ALLOY_STEEL = "Machinarium_Alloy_Steel";
-    public static final String ITEM_ALLOY_INVAR = "Machinarium_Alloy_Invar";
-    public static final String ITEM_ALLOY_CONSTANTAN = "Machinarium_Alloy_Constantan";
+    public static final String ITEM_ALLOY_ELECTRUM = "Machinarium_Ingot_Electrum";
+    public static final String ITEM_ALLOY_STEEL = "Machinarium_Ingot_Steel";
+    public static final String ITEM_ALLOY_INVAR = "Machinarium_Ingot_Invar";
+    public static final String ITEM_ALLOY_CONSTANTAN = "Machinarium_Ingot_Constantan";
 
     private MachinariumIds() {
     }
