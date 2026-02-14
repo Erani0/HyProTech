@@ -81,7 +81,7 @@ Chromite -> Machinarium_Ingot_Chromium
 Ilmenite -> Machinarium_Ingot_Titanium
 Manganese -> Machinarium_Ingot_Manganese
 Pentlandite -> Machinarium_Ingot_Nickel
-Quartzite -> Machinarium_Silicon (raw silicon material, not an ingot)
+Quartzite -> Machinarium_Ingot_Silicon (raw silicon material, not an ingot)
 Scheelite -> Machinarium_Ingot_Tungsten
 Spodumene -> Machinarium_Ingot_Lithium
 Uraninite -> Machinarium_Ingot_Uranium

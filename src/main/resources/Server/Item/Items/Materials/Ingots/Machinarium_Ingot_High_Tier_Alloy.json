@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Superalloy_Blend.name",
-    "Description": "server.items.Machinarium_Superalloy_Blend.description"
+    "Name": "server.items.Machinarium_Ingot_High_Tier_Alloy.name",
+    "Description": "server.items.Machinarium_Ingot_High_Tier_Alloy.description"
   },
   "Categories": [
     "Items"
@@ -9,21 +9,21 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_High_Tier_Alloy_Blend",
+        "ItemId": "Machinarium_Ingot_Composite_Alloy",
         "Quantity": 1
       },
       {
-        "ItemId": "Machinarium_Ingot_Tungsten",
+        "ItemId": "Machinarium_Ingot_Chromium",
         "Quantity": 1
       },
       {
-        "ItemId": "Machinarium_Ingot_Titanium",
+        "ItemId": "Machinarium_Ingot_Aluminum",
         "Quantity": 1
       }
     ],
     "Output": [
       {
-        "ItemId": "Machinarium_Superalloy_Blend"
+        "ItemId": "Machinarium_Ingot_High_Tier_Alloy"
       }
     ],
     "BenchRequirement": [
@@ -36,8 +36,8 @@
     "TimeSeconds": 10
   },
   "Model": "Items/CraftingItems/Alloys/Alloy.blockymodel",
-  "Texture": "Items/CraftingItems/Alloys/SuperAlloy.png",
-  "Icon": "Icons/ItemsGenerated/Machinarium_Superalloy_Blend.png",
+  "Texture": "Items/CraftingItems/Alloys/hightier.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Ingot_High_Tier_Alloy.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

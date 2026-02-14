@@ -1,6 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Superalloy_Blend_Powder.name"
+    "Name": "server.items.Machinarium_Powder_Superalloy.name",
+    "Description": "server.items.Machinarium_Powder_Superalloy.description"
   },
   "Categories": [
     "Items"
@@ -8,7 +9,7 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_Superalloy_Blend_Powder",
+        "ItemId": "Machinarium_Powder_Superalloy",
         "Quantity": 1
       }
     ],
@@ -28,7 +29,7 @@
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
   "Texture": "Items/CraftingItems/textures/superalloy_blend_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_superalloy_blend_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_Superalloy.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"

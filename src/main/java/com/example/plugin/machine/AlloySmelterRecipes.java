@@ -238,10 +238,10 @@ public final class AlloySmelterRecipes {
         if (itemId.equalsIgnoreCase("Machinarium_Ingot_TiV")) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_High_Tier_Alloy_Blend")) {
+        if (itemId.equalsIgnoreCase("Machinarium_Ingot_High_Tier_Alloy")) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_Superalloy_Blend")) {
+        if (itemId.equalsIgnoreCase("Machinarium_Ingot_Superalloy")) {
             return true;
         }
         if (itemId.contains("_Alloy_")) {

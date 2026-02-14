@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_Silicon.name",
-    "Description": "server.items.Machinarium_Silicon.description"
+    "Name": "server.items.Machinarium_Ingot_Silicon.name",
+    "Description": "server.items.Machinarium_Ingot_Silicon.description"
   },
   "Categories": [
     "Items"
