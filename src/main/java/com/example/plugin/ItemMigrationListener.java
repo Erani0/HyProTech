@@ -79,6 +79,7 @@ public class ItemMigrationListener {
         replace_map.put("Machinarium_Composite_Alloy_Powder",             "Machinarium_Powder_Composite_Alloy");
         replace_map.put("Machinarium_Ingot_Invar_Powder",                 "Machinarium_Invar_Powder");
         replace_map.put("Machinarium_Superalloy_Blend_Powder",            "Machinarium_Powder_Superalloy");
+        replace_map.put("Machinarium_High_Tier_Alloy_Blend_Powder",       "Machinarium_Powder_High_Tier_Alloy");
     }
 
     public static void onPlayerJoin(PlayerConnectEvent event) {

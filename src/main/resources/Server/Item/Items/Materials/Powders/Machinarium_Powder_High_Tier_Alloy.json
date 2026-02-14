@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Machinarium_High_Tier_Alloy_Blend_Powder.name",
-    "Description": "server.items.Machinarium_High_Tier_Alloy_Blend_Powder.description"
+    "Name": "server.items.Machinarium_Powder_High_Tier_Alloy.name",
+    "Description": "server.items.Machinarium_Powder_High_Tier_Alloy.description"
   },
   "Categories": [
     "Items"
@@ -9,7 +9,7 @@
   "Recipe": {
     "Input": [
       {
-        "ItemId": "Machinarium_High_Tier_Alloy_Blend_Powder",
+        "ItemId": "Machinarium_Powder_High_Tier_Alloy",
         "Quantity": 1
       }
     ],
@@ -29,7 +29,7 @@
   },
   "Model": "Items/CraftingItems/PowderBag.blockymodel",
   "Texture": "Items/CraftingItems/textures/high_tier_alloy_blend_powder.png",
-  "Icon": "Icons/ItemsGenerated/machinarium_high_tier_alloy_blend_powder.png",
+  "Icon": "Icons/ItemsGenerated/Machinarium_Powder_High_Tier_Alloy.png",
   "ResourceTypes": [
     {
       "Id": "Metal_Bars"
