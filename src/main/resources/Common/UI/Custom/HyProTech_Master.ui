@@ -1,0 +1,18 @@
+$C = "Common.ui";
+// HyProTech master tokens for standard HyUI layouts.
+@ReqSlotSize = 32;
+@ItemSlotSize = 48;
+@ItemSlotInner = 44;
+@SlotBorderColor = #000000(0);
+@SlotInnerColor = #0b1623(0.6);
+@InvSlotSize = 36;
+@InvSlotGap = 4;
+@InvSlotBorder = #2a3d54(0.9);
+@InvSlotInner = #0b1623(0.45);
+@InvGridHeight = 196;
+@PanelBorderColor = #2a3d54(0.85);
+@PanelFillColor = #0b1623(0.35);
+@PanelDividerColor = #2b3542(0.75);
+@LeftColumnWidth = 640;
+@RightColumnWidth = 320;
+@PanelGap = 10;

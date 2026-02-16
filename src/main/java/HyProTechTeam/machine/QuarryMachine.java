@@ -1,7 +1,7 @@
 package HyProTechTeam.machine;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class QuarryMachine extends MasterMachine {
-    public static final String ID = "machinarium:quarry";
+    public static final String ID = "HyProTech:quarry";
     private static final int MINING_OFFSET_Z = -2;
     private static final java.util.Map<World, java.util.Map<String, BackfillState>> BACKFILL_STATE =
             new java.util.HashMap<>();
@@ -46,8 +46,8 @@ public final class QuarryMachine extends MasterMachine {
 
     @Override
     public boolean matchesBlockId(String blockId) {
-        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_QUARRY)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY);
+        return TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_QUARRY)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_QUARRY);
     }
 
     @Override
@@ -577,7 +577,7 @@ public final class QuarryMachine extends MasterMachine {
         if (containsIgnoreCase(id, "bedrock")) {
             return false;
         }
-        if (isBorderId(id) || TieredIdUtil.isTieredId(id, MachinariumIds.BLOCK_QUARRY)) {
+        if (isBorderId(id) || TieredIdUtil.isTieredId(id, HyProTechIds.BLOCK_QUARRY)) {
             return false;
         }
         return true;
@@ -609,7 +609,7 @@ public final class QuarryMachine extends MasterMachine {
         if (id == null) {
             return false;
         }
-        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        String baseId = HyProTechIds.BLOCK_QUARRY_BORDER;
         return id.equalsIgnoreCase(baseId)
                 || id.regionMatches(true, 0, baseId, 0, baseId.length())
                 || containsIgnoreCase(id, baseId);

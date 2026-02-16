@@ -150,7 +150,7 @@ public final class AlloySmelterRecipes {
             return;
         }
         String copperId = "Ingredient_Bar_Copper";
-        String tinId = "Machinarium_Ingot_Tin";
+        String tinId = "HyProTech_Ingot_Tin";
         if (!isKnownItemId(outputId) || !isKnownItemId(copperId) || !isKnownItemId(tinId)) {
             return;
         }
@@ -226,22 +226,22 @@ public final class AlloySmelterRecipes {
         if (isPowder(itemId) || itemId.contains("Smelter")) {
             return false;
         }
-        if (itemId.startsWith("Machinarium_Alloy_")) {
+        if (itemId.startsWith("HyProTech_Alloy_")) {
             return true;
         }
-        if (itemId.startsWith("Machinarium_Composite_Alloy")) {
+        if (itemId.startsWith("HyProTech_Composite_Alloy")) {
             return true;
         }
         if ("Ingredient_Bar_Bronze".equalsIgnoreCase(itemId)) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_Ingot_TiV")) {
+        if (itemId.equalsIgnoreCase("HyProTech_Ingot_TiV")) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_Ingot_High_Tier_Alloy")) {
+        if (itemId.equalsIgnoreCase("HyProTech_Ingot_High_Tier_Alloy")) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("Machinarium_Ingot_Superalloy")) {
+        if (itemId.equalsIgnoreCase("HyProTech_Ingot_Superalloy")) {
             return true;
         }
         if (itemId.contains("_Alloy_")) {

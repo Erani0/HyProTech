@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Silicon"
+                                      "ItemId":  "HyProTech_Ingot_Silicon"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Quartzite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Quartzite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Quartzite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

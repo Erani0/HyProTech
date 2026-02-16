@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.EnergyNodeComponent;
@@ -65,7 +65,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
     private static final String ACTION_RECIPE_QTY_PLUS = "RecipeQtyPlus";
     private static final String ACTION_RECIPE_QTY_PLUS_TEN = "RecipeQtyPlusTen";
     private static final String ACTION_RECIPE_QTY_ALL = "RecipeQtyAll";
-    private static final String PAGE_LAYOUT = "Machinarium_AlloySmelter_HyUI_v2.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_AlloySmelter_HyUI_v2.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final long DRAG_DEDUP_WINDOW_MS = 120L;
     private static final long DRAG_SOURCE_WINDOW_MS = 1500L;
@@ -78,7 +78,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
     private static final int OUTPUT_SLOT_COUNT = AlloySmelterConfig.OUTPUT_SLOT_COUNT;
     private static final short OUTPUT_SLOT_END =
             (short) (OUTPUT_SLOT_START + OUTPUT_SLOT_COUNT - 1);
-    // ItemGrid index mapping follows UI order in Machinarium_AlloySmelter_HyUI.ui
+    // ItemGrid index mapping follows UI order in HyProTech_AlloySmelter_HyUI.ui
     private static final int GRID_INDEX_RECIPE = 0;
     private static final int GRID_INDEX_INPUT = 1;
     private static final int GRID_INDEX_OUTPUT = 2;
@@ -381,7 +381,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
             if (pos != null) {
                 BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
                 String blockId = blockType == null ? null : blockType.getId();
-                int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+                int parsedTier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
                 if (parsedTier > 0 && machine != null && machine.getTier() != parsedTier && node != null) {
                     machine.setTier(parsedTier);
                     applyTier(machine, node, parsedTier);
@@ -1096,7 +1096,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
             raw = raw.substring(colonIndex + 1);
         }
         boolean isOre = raw.startsWith("Ore_");
-        raw = raw.replaceFirst("^Machinarium_", "");
+        raw = raw.replaceFirst("^HyProTech_", "");
         raw = raw.replaceFirst("^Ingredient_", "");
         if (isOre && raw.length() > 4) {
             raw = raw.substring(4);
@@ -1184,10 +1184,10 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
 
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ALLOY_SMELTER, nextTier);
             BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
             String blockId = blockType == null ? null : blockType.getId();
-            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER, upgradedId);
+            upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER, upgradedId);
             UpgradePersistence.queueBlockSwapWithContainer(world, pos, upgradedId, node);
         }
 
@@ -1421,9 +1421,9 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
             return "Random Crystal";
         }
         String name = itemId;
-        String machinariumPrefix = "Machinarium_";
-        if (name.startsWith(machinariumPrefix)) {
-            name = name.substring(machinariumPrefix.length());
+        String HyProTechPrefix = "HyProTech_";
+        if (name.startsWith(HyProTechPrefix)) {
+            name = name.substring(HyProTechPrefix.length());
         }
         String ingredientPrefix = "Ingredient_";
         if (name.startsWith(ingredientPrefix)) {
@@ -2150,7 +2150,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                     && eventItemId != null
                     && eventItemId.equals(lastInputToInventoryItemId)
                     && (System.currentTimeMillis() - lastInputToInventoryMs) < INPUT_DROP_SUPPRESS_MS) {
-                System.out.println("[Machinarium] DBG Drag suppress input drop after inventory move itemId=" + eventItemId);
+                System.out.println("[HyProTech] DBG Drag suppress input drop after inventory move itemId=" + eventItemId);
                 return;
             }
             if (targetGrid == GridType.PLAYER
@@ -2158,7 +2158,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                     && eventItemId != null
                     && eventItemId.equals(lastInputDropItemId)
                     && (System.currentTimeMillis() - lastInputDropMs) < INPUT_DROP_SUPPRESS_MS) {
-                System.out.println("[Machinarium] DBG Drag suppress inventory drop for itemId=" + eventItemId);
+                System.out.println("[HyProTech] DBG Drag suppress inventory drop for itemId=" + eventItemId);
                 return;
             }
             sourceGrid = reconcileSourceGrid(sourceGrid, data, inventory, machineContainer);
@@ -2204,7 +2204,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 lastInputToInventoryMs = System.currentTimeMillis();
                 lastInputToInventoryItemId = eventItemId;
             }
-            System.out.println("[Machinarium] DBG Drag v2 state target=" + targetGrid
+            System.out.println("[HyProTech] DBG Drag v2 state target=" + targetGrid
                     + " source=" + sourceGrid
                     + " sourceSlotId=" + sourceSlotId
                     + " itemId=" + eventItemId);
@@ -2224,7 +2224,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
             SlotRef targetRef = resolveSlotRef(targetGrid, targetSlotIndex, inventory, machineContainer, playerIndexMode);
             if (sourceRef == null || targetRef == null) {
                 if (targetGrid == GridType.INPUT) {
-                    System.out.println("[Machinarium] DBG Drag input sourceRef/targetRef null"
+                    System.out.println("[HyProTech] DBG Drag input sourceRef/targetRef null"
                             + " sourceRef=" + (sourceRef == null ? "null" : "ok")
                             + " targetRef=" + (targetRef == null ? "null" : "ok")
                             + " itemId=" + eventItemId);
@@ -2262,7 +2262,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
             }
             if (sourceStack == null || ItemStack.isEmpty(sourceStack)) {
                 if (targetGrid == GridType.INPUT) {
-                    System.out.println("[Machinarium] DBG Drag input sourceStack empty itemId=" + eventItemId);
+                    System.out.println("[HyProTech] DBG Drag input sourceStack empty itemId=" + eventItemId);
                 }
                 return;
             }
@@ -2290,12 +2290,12 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 if (targetGrid == GridType.INPUT) {
                     ItemStack targetAfter = targetRef.container.getItemStack(targetRef.slot);
                     boolean ok = stackMatches(targetAfter, eventItemId);
-                    System.out.println("[Machinarium] DBG Drag input move succeeded ok=" + ok
+                    System.out.println("[HyProTech] DBG Drag input move succeeded ok=" + ok
                             + " itemId=" + eventItemId);
                     lastInputDropMs = System.currentTimeMillis();
                     lastInputDropItemId = eventItemId;
                     if (!ok) {
-                        System.out.println("[Machinarium] DBG Drag input move mismatch, trying manual add itemId="
+                        System.out.println("[HyProTech] DBG Drag input move mismatch, trying manual add itemId="
                                 + sourceStack.getItemId());
                         if (tryManualInputTransfer(sourceRef, targetRef, sourceStack, quantity)) {
                             updateSent = refreshSlots(store);
@@ -2307,7 +2307,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 return;
             }
             if (sourceGrid == GridType.INPUT && targetGrid == GridType.PLAYER) {
-                System.out.println("[Machinarium] DBG Drag input->player move failed, trying manual transfer itemId="
+                System.out.println("[HyProTech] DBG Drag input->player move failed, trying manual transfer itemId="
                         + sourceStack.getItemId());
                 if (tryManualTransfer(sourceRef, targetRef, sourceStack, quantity)) {
                     if (pos != null) {
@@ -2318,7 +2318,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 }
             }
             if (targetGrid == GridType.INPUT && sourceGrid == GridType.PLAYER) {
-                System.out.println("[Machinarium] DBG Drag input move failed, trying manual add itemId="
+                System.out.println("[HyProTech] DBG Drag input move failed, trying manual add itemId="
                         + sourceStack.getItemId());
                 if (tryManualInputTransfer(sourceRef, targetRef, sourceStack, quantity)) {
                     if (pos != null) {
@@ -2367,7 +2367,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 + " itemId=" + data.getItemStackId()
                 + " dragItemId=" + data.getDragItemStackId()
                 + " qty=" + data.getItemStackQuantity();
-        System.out.println("[Machinarium] v2 " + msg);
+        System.out.println("[HyProTech] v2 " + msg);
     }
 
     private void debugClickEvent(String label, AlloySmelterUiEvent data) {
@@ -2387,7 +2387,7 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 + " qty=" + data.getItemStackQuantity()
                 + " btn=" + data.getPressedMouseButton()
                 + " target=" + data.getTarget();
-        System.out.println("[Machinarium] v2 " + msg);
+        System.out.println("[HyProTech] v2 " + msg);
     }
 
     private boolean refreshSlots(Store<EntityStore> store) {
@@ -2412,22 +2412,22 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 quantity,
                 sourceStack.getMetadata());
         if (!targetRef.container.canAddItemStackToSlot(targetRef.slot, moveStack, false, false)) {
-            System.out.println("[Machinarium] DBG Drag manual transfer add rejected for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag manual transfer add rejected for itemId=" + moveStack.getItemId());
             return false;
         }
         ItemStackSlotTransaction addTx = targetRef.container.addItemStackToSlot(targetRef.slot, moveStack);
         if (addTx == null || !addTx.succeeded()) {
-            System.out.println("[Machinarium] DBG Drag manual transfer add failed for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag manual transfer add failed for itemId=" + moveStack.getItemId());
             return false;
         }
         ItemStackSlotTransaction removeTx = sourceRef.container.removeItemStackFromSlot(sourceRef.slot, quantity);
         if (removeTx == null || !removeTx.succeeded()) {
-            System.out.println("[Machinarium] DBG Drag manual transfer remove failed for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag manual transfer remove failed for itemId=" + moveStack.getItemId());
             // rollback best-effort
             targetRef.container.removeItemStackFromSlot(targetRef.slot, moveStack, quantity, false, false);
             return false;
         }
-        System.out.println("[Machinarium] DBG Drag manual transfer ok itemId=" + moveStack.getItemId());
+        System.out.println("[HyProTech] DBG Drag manual transfer ok itemId=" + moveStack.getItemId());
         return true;
     }
 
@@ -2444,22 +2444,22 @@ public class AlloySmelterPage extends InteractiveCustomUIPage<AlloySmelterUiEven
                 quantity,
                 sourceStack.getMetadata());
         if (!targetRef.container.canAddItemStackToSlot(targetRef.slot, moveStack, false, false)) {
-            System.out.println("[Machinarium] DBG Drag input add rejected for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag input add rejected for itemId=" + moveStack.getItemId());
             return false;
         }
         ItemStackSlotTransaction addTx = targetRef.container.addItemStackToSlot(targetRef.slot, moveStack);
         if (addTx == null || !addTx.succeeded()) {
-            System.out.println("[Machinarium] DBG Drag input add failed for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag input add failed for itemId=" + moveStack.getItemId());
             return false;
         }
         ItemStackSlotTransaction removeTx = sourceRef.container.removeItemStackFromSlot(sourceRef.slot, quantity);
         if (removeTx == null || !removeTx.succeeded()) {
-            System.out.println("[Machinarium] DBG Drag input remove failed for itemId=" + moveStack.getItemId());
+            System.out.println("[HyProTech] DBG Drag input remove failed for itemId=" + moveStack.getItemId());
             // rollback best-effort
             targetRef.container.removeItemStackFromSlot(targetRef.slot, moveStack, quantity, false, false);
             return false;
         }
-        System.out.println("[Machinarium] DBG Drag input manual transfer ok itemId=" + moveStack.getItemId());
+        System.out.println("[HyProTech] DBG Drag input manual transfer ok itemId=" + moveStack.getItemId());
         return true;
     }
 

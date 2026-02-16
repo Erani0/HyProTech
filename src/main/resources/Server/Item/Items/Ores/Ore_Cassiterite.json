@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Tin"
+                                      "ItemId":  "HyProTech_Ingot_Tin"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Cassiterite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Cassiterite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Cassiterite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

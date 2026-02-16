@@ -1,6 +1,6 @@
 package HyProTechTeam.energy;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -79,10 +79,10 @@ public final class WindUtil {
         if (id == null) {
             return false;
         }
-        if (MachinariumIds.BLOCK_WIND_TURBINE.equals(id)) {
+        if (HyProTechIds.BLOCK_WIND_TURBINE.equals(id)) {
             return true;
         }
-        if (id.startsWith(MachinariumIds.BLOCK_WIND_TURBINE)) {
+        if (id.startsWith(HyProTechIds.BLOCK_WIND_TURBINE)) {
             return true;
         }
         String lower = id.toLowerCase();

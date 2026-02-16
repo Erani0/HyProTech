@@ -91,13 +91,13 @@ public final class OreCrusherRecipes {
 
     private static void addVanillaOreEntries(Map<String, RecipeEntry> byInput) {
         String[][] vanilla = {
-                {"Ore_Copper", "Machinarium_Powder_Copper"},
-                {"Ore_Iron", "Machinarium_Powder_Iron"},
-                {"Ore_Gold", "Machinarium_Powder_Gold"},
-                {"Ore_Silver", "Machinarium_Powder_Silver"},
-                {"Ore_Cobalt", "Machinarium_Powder_Cobalt"},
-                {"Ore_Thorium", "Machinarium_Powder_Thorium"},
-                {"Ore_Adamantite", "Machinarium_Powder_Adamantite"}
+                {"Ore_Copper", "HyProTech_Powder_Copper"},
+                {"Ore_Iron", "HyProTech_Powder_Iron"},
+                {"Ore_Gold", "HyProTech_Powder_Gold"},
+                {"Ore_Silver", "HyProTech_Powder_Silver"},
+                {"Ore_Cobalt", "HyProTech_Powder_Cobalt"},
+                {"Ore_Thorium", "HyProTech_Powder_Thorium"},
+                {"Ore_Adamantite", "HyProTech_Powder_Adamantite"}
         };
         for (String[] pair : vanilla) {
             String inputId = pair[0];
@@ -194,8 +194,8 @@ public final class OreCrusherRecipes {
         int powderQty = primaryOutput == null ? 1 : Math.max(1, primaryOutput.getQuantity());
         List<MaterialQuantity> resolved = new ArrayList<>(3);
         resolved.add(new MaterialQuantity(powderId, null, null, powderQty, null));
-        resolved.add(new MaterialQuantity("Machinarium_Ore_Chips", null, null, 1, null));
-        resolved.add(new MaterialQuantity("Machinarium_Slag", null, null, 1, null));
+        resolved.add(new MaterialQuantity("HyProTech_Ore_Chips", null, null, 1, null));
+        resolved.add(new MaterialQuantity("HyProTech_Slag", null, null, 1, null));
         return resolved.toArray(new MaterialQuantity[0]);
     }
 

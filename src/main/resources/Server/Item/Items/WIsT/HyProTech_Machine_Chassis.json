@@ -1,0 +1,40 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Machine_Chassis.name",
+    "Description": "server.items.HyProTech_Machine_Chassis.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Model": "Items/Models/Materials/Powders/PowderBag.blockymodel",
+  "Texture": "Items/CraftingItems/textures/iron_powder.png",
+  "Icon": "Icons/ItemsGenerated/HyProTech_Ingot_Steel.png",
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
+}

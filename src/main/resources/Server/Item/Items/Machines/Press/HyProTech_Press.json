@@ -1,0 +1,40 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Press.name",
+    "Description": "server.items.HyProTech_Press.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/News/HyProTech_Press.png",
+  "Categories": [
+    "Blocks.Misc"
+  ],
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": "Block_Secondary"
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/HyProTech/CastingTablemetalPress/Metal Plate Press.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/HyProTech/CastingTablemetalPress/metal plate press.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#9d9d9d",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock"
+  }
+}

@@ -1,6 +1,6 @@
 package HyProTechTeam.machine;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import com.hypixel.hytale.component.Archetype;
@@ -157,19 +157,19 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         if (definition instanceof QuarryMachine) {
-            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_QUARRY);
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_QUARRY);
             if (parsedTier > 0 && machine.getTier() != parsedTier) {
                 machine.setTier(parsedTier);
                 changed = true;
             }
         } else if (definition instanceof OreCrusherMachine) {
-            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ORE_CRUSHER);
             if (parsedTier > 0 && machine.getTier() != parsedTier) {
                 machine.setTier(parsedTier);
                 changed = true;
             }
         } else if (definition instanceof AlloySmelterMachine) {
-            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+            int parsedTier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
             if (parsedTier > 0 && machine.getTier() != parsedTier) {
                 machine.setTier(parsedTier);
                 changed = true;

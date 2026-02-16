@@ -1,6 +1,6 @@
 package HyProTechTeam.interaction;
 
-import HyProTechTeam.MachinariumComponents;
+import HyProTechTeam.HyProTechComponents;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import HyProTechTeam.energy.EnergySide;
 import HyProTechTeam.energy.EnergySideMode;
@@ -33,7 +33,7 @@ public class CableSideToolInteraction extends SimpleBlockInteraction {
                             CableSideToolInteraction.class,
                             CableSideToolInteraction::new,
                             SimpleBlockInteraction.CODEC)
-                    .documentation("Toggles Machinarium cable side between input and output.")
+                    .documentation("Toggles HyProTech cable side between input and output.")
                     .build();
     private static final boolean DEBUG = true;
 
@@ -77,7 +77,7 @@ public class CableSideToolInteraction extends SimpleBlockInteraction {
         BlockType blockType = accessor.getBlockType(blockPos.getX(), y, blockPos.getZ());
         String blockId = blockType == null ? "unknown" : blockType.getId();
 
-        if (MachinariumComponents.ENERGY == null || MachinariumComponents.ITEM == null) {
+        if (HyProTechComponents.ENERGY == null || HyProTechComponents.ITEM == null) {
             debug(commandBuffer, context, "CableTool: component types not initialized.");
             return;
         }
@@ -95,12 +95,12 @@ public class CableSideToolInteraction extends SimpleBlockInteraction {
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
 
         boolean updated = false;
-        ItemNodeComponent itemNode = blockComponents.getComponent(blockIndex, MachinariumComponents.ITEM);
+        ItemNodeComponent itemNode = blockComponents.getComponent(blockIndex, HyProTechComponents.ITEM);
         if (itemNode != null) {
             toggleItemSide(itemNode, side);
             updated = true;
         } else {
-            EnergyNodeComponent energyNode = blockComponents.getComponent(blockIndex, MachinariumComponents.ENERGY);
+            EnergyNodeComponent energyNode = blockComponents.getComponent(blockIndex, HyProTechComponents.ENERGY);
             if (energyNode != null && energyNode.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
                 toggleEnergySide(energyNode, side);
                 updated = true;
@@ -111,7 +111,7 @@ public class CableSideToolInteraction extends SimpleBlockInteraction {
             blockComponents.markNeedsSaving();
             debug(commandBuffer, context, "CableTool: toggled " + side.label() + " on " + blockId + ".");
         } else {
-            debug(commandBuffer, context, "CableTool: not a Machinarium cable (" + blockId + ").");
+            debug(commandBuffer, context, "CableTool: not a HyProTech cable (" + blockId + ").");
         }
     }
 

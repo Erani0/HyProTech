@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Titanium"
+                                      "ItemId":  "HyProTech_Ingot_Titanium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Ilmenite"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Ilmenite_Basalt.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Ilmenite_Basalt.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

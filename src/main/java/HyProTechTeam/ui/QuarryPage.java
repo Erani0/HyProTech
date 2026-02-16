@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.EnergyNodeComponent;
@@ -42,7 +42,7 @@ import java.util.List;
 public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
     private static final String ACTION_UPGRADE = "Upgrade";
     private static final String ACTION_TAKE_ITEMS = "TakeItems";
-    private static final String PAGE_LAYOUT = "Machinarium_Quarry.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_Quarry.ui";
     private static final long UPDATE_INTERVAL_MS = 250L;
     private static final int STORAGE_SLOT_COUNT = 10;
     private static final String[] STORAGE_SLOT_IDS = buildSlotIds("#StorageSlot");
@@ -654,10 +654,10 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
 
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_QUARRY, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_QUARRY, nextTier);
             BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
             String blockId = blockType == null ? null : blockType.getId();
-            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_QUARRY, upgradedId);
+            upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_QUARRY, upgradedId);
             UpgradePersistence.queueBlockSwapWithContainer(world, pos, upgradedId, node);
         }
 
@@ -731,7 +731,7 @@ public class QuarryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (inventory == null) {
             return;
         }
-        ItemStack torch = new ItemStack(MachinariumIds.BLOCK_BORDER_TORCH, 2);
+        ItemStack torch = new ItemStack(HyProTechIds.BLOCK_BORDER_TORCH, 2);
         ItemContainer hotbar = inventory.getHotbar();
         ItemContainer storage = inventory.getStorage();
         if (hotbar != null && hotbar.canAddItemStack(torch)) {

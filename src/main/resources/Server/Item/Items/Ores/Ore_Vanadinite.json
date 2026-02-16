@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Vanadium"
+                                      "ItemId":  "HyProTech_Ingot_Vanadium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Vanadinite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Vanadinite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Vanadinite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

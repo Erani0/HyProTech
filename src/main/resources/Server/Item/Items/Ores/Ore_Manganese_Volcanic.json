@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Manganese"
+                                      "ItemId":  "HyProTech_Ingot_Manganese"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Manganese"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Manganese_Volcanic.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Manganese_Volcanic.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Vanadium"
+                                      "ItemId":  "HyProTech_Ingot_Vanadium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Vanadinite"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Vanadinite_Shale.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Vanadinite_Shale.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

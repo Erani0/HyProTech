@@ -1,7 +1,7 @@
 package HyProTechTeam.machine;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import com.hypixel.hytale.builtin.crafting.state.ProcessingBenchState;
 import com.hypixel.hytale.math.util.ChunkUtil;
@@ -24,7 +24,7 @@ public final class MachineItemAccess {
     private static final short ORE_CRUSHER_STORAGE_CAPACITY = 7;
     private static final short ALLOY_SMELTER_STORAGE_CAPACITY =
             (short) (AlloySmelterConfig.INPUT_SLOT_COUNT + AlloySmelterConfig.OUTPUT_SLOT_COUNT);
-    private static final String MACHINARIUM_PREFIX = "Machinarium_";
+    private static final String HyProTech_PREFIX = "HyProTech_";
 
     private MachineItemAccess() {
     }
@@ -38,7 +38,7 @@ public final class MachineItemAccess {
         BlockType blockType = world.getBlockType(x, y, z);
         if (blockType != null && blockType != BlockType.EMPTY) {
             String blockId = blockType.getId();
-            if (blockId != null && isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+            if (blockId != null && isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)) {
                 ItemContainerState containerState = BlockModule.get().getComponent(
                         BlockStateModule.get().getComponentType(ItemContainerState.class),
                         world,
@@ -52,7 +52,7 @@ public final class MachineItemAccess {
                 ensureMachineContainers(world, x, y, z, containerState);
                 return containerState;
             }
-            if (blockId != null && isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+            if (blockId != null && isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)) {
                 ItemContainerState containerState = BlockModule.get().getComponent(
                         BlockStateModule.get().getComponentType(ItemContainerState.class),
                         world,
@@ -217,7 +217,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || isQuarryBorder(blockId) || !isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY)) {
+        if (blockId == null || isQuarryBorder(blockId) || !isIdOrState(blockId, HyProTechIds.BLOCK_QUARRY)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -246,7 +246,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+        if (blockId == null || !isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -275,7 +275,7 @@ public final class MachineItemAccess {
             return;
         }
         String blockId = blockType.getId();
-        if (blockId == null || !isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+        if (blockId == null || !isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)) {
             return;
         }
         ItemContainer container = state.getItemContainer();
@@ -296,14 +296,14 @@ public final class MachineItemAccess {
             return false;
         }
         return BlockIdUtil.isIdOrState(blockId, baseId)
-                || blockId.regionMatches(true, 0, MACHINARIUM_PREFIX, 0, MACHINARIUM_PREFIX.length());
+                || blockId.regionMatches(true, 0, HyProTech_PREFIX, 0, HyProTech_PREFIX.length());
     }
 
     private static boolean isQuarryBorder(String blockId) {
         if (blockId == null || blockId.isEmpty()) {
             return false;
         }
-        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        String baseId = HyProTechIds.BLOCK_QUARRY_BORDER;
         return blockId.equalsIgnoreCase(baseId)
                 || blockId.regionMatches(true, 0, baseId, 0, baseId.length())
                 || containsIgnoreCase(blockId, baseId);

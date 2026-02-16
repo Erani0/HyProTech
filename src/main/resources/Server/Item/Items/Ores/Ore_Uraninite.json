@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Uranium"
+                                      "ItemId":  "HyProTech_Ingot_Uranium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Uraninite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Uraninite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Uraninite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

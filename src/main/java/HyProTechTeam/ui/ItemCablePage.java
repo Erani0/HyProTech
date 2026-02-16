@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumComponents;
+import HyProTechTeam.HyProTechComponents;
 import HyProTechTeam.energy.EnergySide;
 import HyProTechTeam.item.FilterMode;
 import HyProTechTeam.item.ItemMode;
@@ -49,7 +49,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
-    private static final String PAGE_LAYOUT = "Machinarium_Item_Cable.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_Item_Cable.ui";
     private static final String NO_LINK_LABEL = "No link";
     private static final int FILTER_ROW_COUNT = 12;
     private static final int PRESET_SLOT_COUNT = 5;
@@ -917,9 +917,9 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (isKnownItemId(candidate)) {
             return candidate;
         }
-        String machinarium = "Machinarium_" + candidate;
-        if (isKnownItemId(machinarium)) {
-            return machinarium;
+        String HyProTech = "HyProTech_" + candidate;
+        if (isKnownItemId(HyProTech)) {
+            return HyProTech;
         }
         String ore = "Ore_" + candidate;
         if (isKnownItemId(ore)) {
@@ -969,7 +969,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             raw = raw.substring(colonIndex + 1);
         }
         boolean isOre = raw.startsWith("Ore_");
-        raw = raw.replaceFirst("^Machinarium_", "");
+        raw = raw.replaceFirst("^HyProTech_", "");
         raw = raw.replaceFirst("^Ingredient_", "");
         if (isOre && raw.length() > 4) {
             raw = raw.substring(4);
@@ -1063,7 +1063,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
                 || id.contains("wind")) {
             return CATEGORY_MACHINES;
         }
-        if (id.startsWith("machinarium_") || id.startsWith("ingredient_")) {
+        if (id.startsWith("HyProTech_") || id.startsWith("ingredient_")) {
             return CATEGORY_COMPONENTS;
         }
         return CATEGORY_OTHER;
@@ -1244,13 +1244,13 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (y < ChunkUtil.MIN_Y || y >= ChunkUtil.HEIGHT) {
             return null;
         }
-        if (world != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (world != null && HyProTechComponents.ITEM_STORAGE != null) {
             long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
             if (accessor != null) {
                 Holder<ChunkStore> holder = accessor.getBlockComponentHolder(x, y, z);
                 if (holder != null) {
-                    ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
+                    ItemStorageConfigComponent config = holder.getComponent(HyProTechComponents.ITEM_STORAGE);
                     if (config != null) {
                         return config;
                     }
@@ -1263,13 +1263,13 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         BlockComponentChunk components =
                 chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
-        if (components != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (components != null && HyProTechComponents.ITEM_STORAGE != null) {
             int localX = ChunkUtil.localCoordinate((long) x);
             int localZ = ChunkUtil.localCoordinate((long) z);
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
             ItemStorageConfigComponent config = components.getComponent(
                     blockIndex,
-                    MachinariumComponents.ITEM_STORAGE);
+                    HyProTechComponents.ITEM_STORAGE);
             if (config != null) {
                 return config;
             }
@@ -1293,20 +1293,20 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         }
         BlockType blockType = world.getBlockType(x, y, z);
         String blockId = blockType == null ? null : blockType.getId();
-        boolean allowBlockConfig = isMachinariumBlockId(blockId);
+        boolean allowBlockConfig = isHyProTechBlockId(blockId);
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
         BlockComponentChunk components =
                 chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
         boolean stored = false;
-        if (allowBlockConfig && accessor != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (allowBlockConfig && accessor != null && HyProTechComponents.ITEM_STORAGE != null) {
             Holder<ChunkStore> holder = accessor.getBlockComponentHolder(x, y, z);
             if (holder != null) {
-                holder.putComponent(MachinariumComponents.ITEM_STORAGE, config);
+                holder.putComponent(HyProTechComponents.ITEM_STORAGE, config);
                 stored = true;
             }
         }
-        if (!stored && allowBlockConfig && components != null && MachinariumComponents.ITEM_STORAGE != null) {
+        if (!stored && allowBlockConfig && components != null && HyProTechComponents.ITEM_STORAGE != null) {
             int localX = ChunkUtil.localCoordinate((long) x);
             int localZ = ChunkUtil.localCoordinate((long) z);
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
@@ -1314,17 +1314,17 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             if (ref != null) {
                 Store<ChunkStore> store = ref.getStore();
                 if (store != null) {
-                    store.putComponent(ref, MachinariumComponents.ITEM_STORAGE, config);
+                    store.putComponent(ref, HyProTechComponents.ITEM_STORAGE, config);
                     stored = true;
                 }
             } else {
                 Holder<ChunkStore> holder = components.getEntityHolder(blockIndex);
                 if (holder == null) {
                     holder = ChunkStore.REGISTRY.newHolder();
-                    holder.putComponent(MachinariumComponents.ITEM_STORAGE, config);
+                    holder.putComponent(HyProTechComponents.ITEM_STORAGE, config);
                     components.storeEntityHolder(blockIndex, holder);
                 } else {
-                    holder.putComponent(MachinariumComponents.ITEM_STORAGE, config);
+                    holder.putComponent(HyProTechComponents.ITEM_STORAGE, config);
                 }
                 stored = true;
             }
@@ -1335,22 +1335,22 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         storeChunkStorageConfig(chunkStore, x, y, z, config);
     }
 
-    private boolean isMachinariumBlockId(String blockId) {
+    private boolean isHyProTechBlockId(String blockId) {
         if (blockId == null || blockId.isEmpty()) {
             return false;
         }
         int colonIndex = blockId.indexOf(':');
         String normalized = colonIndex >= 0 ? blockId.substring(colonIndex + 1) : blockId;
-        return normalized.regionMatches(true, 0, "Machinarium_", 0, "Machinarium_".length());
+        return normalized.regionMatches(true, 0, "HyProTech_", 0, "HyProTech_".length());
     }
 
     private ItemStorageConfigComponent getChunkStorageConfig(ChunkStore chunkStore, int x, int y, int z) {
-        if (chunkStore == null || MachinariumComponents.ITEM_STORAGE_CHUNK == null) {
+        if (chunkStore == null || HyProTechComponents.ITEM_STORAGE_CHUNK == null) {
             return null;
         }
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         ItemStorageConfigChunk chunkConfig =
-                chunkStore.getChunkComponent(chunkIndex, MachinariumComponents.ITEM_STORAGE_CHUNK);
+                chunkStore.getChunkComponent(chunkIndex, HyProTechComponents.ITEM_STORAGE_CHUNK);
         if (chunkConfig == null) {
             return null;
         }
@@ -1366,12 +1366,12 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             int y,
             int z,
             ItemStorageConfigComponent config) {
-        if (chunkStore == null || MachinariumComponents.ITEM_STORAGE_CHUNK == null || config == null) {
+        if (chunkStore == null || HyProTechComponents.ITEM_STORAGE_CHUNK == null || config == null) {
             return;
         }
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         ItemStorageConfigChunk chunkConfig =
-                chunkStore.getChunkComponent(chunkIndex, MachinariumComponents.ITEM_STORAGE_CHUNK);
+                chunkStore.getChunkComponent(chunkIndex, HyProTechComponents.ITEM_STORAGE_CHUNK);
         if (chunkConfig == null) {
             chunkConfig = new ItemStorageConfigChunk();
         }
@@ -1385,7 +1385,7 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
         }
         Store<ChunkStore> store = chunkRef.getStore();
         if (store != null) {
-            store.putComponent(chunkRef, MachinariumComponents.ITEM_STORAGE_CHUNK, chunkConfig);
+            store.putComponent(chunkRef, HyProTechComponents.ITEM_STORAGE_CHUNK, chunkConfig);
         }
     }
 
@@ -1525,8 +1525,8 @@ public class ItemCablePage extends InteractiveCustomUIPage<SideToggleEvent> {
                 playerRef,
                 blockRef,
                 itemType,
-                MachinariumComponents.ITEM_STORAGE,
-                MachinariumComponents.ITEM_STORAGE_CHUNK);
+                HyProTechComponents.ITEM_STORAGE,
+                HyProTechComponents.ITEM_STORAGE_CHUNK);
         pageManager.openCustomPage(playerEntityRef, store, page);
     }
 

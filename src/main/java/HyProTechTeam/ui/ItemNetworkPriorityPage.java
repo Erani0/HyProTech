@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemNetworkPriorityPage extends InteractiveCustomUIPage<ItemNetworkPriorityEvent> {
-    private static final String PAGE_LAYOUT = "Machinarium_Item_Priority.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_Item_Priority.ui";
     private static final int ROW_COUNT = 6;
     private static final long UPDATE_INTERVAL_MS = 250L;
 
@@ -420,7 +420,7 @@ public class ItemNetworkPriorityPage extends InteractiveCustomUIPage<ItemNetwork
         }
         BlockType blockType = world.getBlockType(x, y, z);
         String blockId = blockType == null ? null : blockType.getId();
-        boolean allowBlockConfig = isMachinariumBlockId(blockId);
+        boolean allowBlockConfig = isHyProTechBlockId(blockId);
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
         BlockComponentChunk components =
@@ -462,13 +462,13 @@ public class ItemNetworkPriorityPage extends InteractiveCustomUIPage<ItemNetwork
         storeChunkStorageConfig(chunkStore, x, y, z, config);
     }
 
-    private boolean isMachinariumBlockId(String blockId) {
+    private boolean isHyProTechBlockId(String blockId) {
         if (blockId == null || blockId.isEmpty()) {
             return false;
         }
         int colonIndex = blockId.indexOf(':');
         String normalized = colonIndex >= 0 ? blockId.substring(colonIndex + 1) : blockId;
-        return normalized.regionMatches(true, 0, "Machinarium_", 0, "Machinarium_".length());
+        return normalized.regionMatches(true, 0, "HyProTech_", 0, "HyProTech_".length());
     }
 
     private ItemStorageConfigComponent getChunkStorageConfig(ChunkStore chunkStore, int x, int y, int z) {

@@ -1,8 +1,8 @@
 package HyProTechTeam.ui;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumComponents;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechComponents;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.CableUpgradeConfig;
@@ -91,7 +91,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             UICommandBuilder uiCommandBuilder,
             UIEventBuilder uiEventBuilder,
             Store<EntityStore> store) {
-        uiCommandBuilder.append("Machinarium_CableUpgrade.ui");
+        uiCommandBuilder.append("HyProTech_CableUpgrade.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#UpgradeButton",
@@ -382,7 +382,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             return;
         }
         int nextTier = currentTier + 1;
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ENERGY_CABLE, nextTier);
+        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ENERGY_CABLE, nextTier);
         for (EnergyCableEntry cable : snapshot.cables) {
             if (cable.node.getCableTier() >= nextTier) {
                 continue;
@@ -391,7 +391,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             applyEnergyCableTier(cable.node, nextTier);
             cable.components.markNeedsSaving();
             if (cable.position != null) {
-                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ENERGY_CABLE, upgradedId, cable.node, null);
+                queueCableUpgrade(world, cable.position, HyProTechIds.BLOCK_ENERGY_CABLE, upgradedId, cable.node, null);
             }
         }
     }
@@ -401,7 +401,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             return;
         }
         int nextTier = currentTier + 1;
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ITEM_CABLE, nextTier);
+        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ITEM_CABLE, nextTier);
         for (ItemCableEntry cable : snapshot.cables) {
             if (cable.node.getCableTier() >= nextTier) {
                 continue;
@@ -410,7 +410,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             applyItemCableTier(cable.node, nextTier);
             cable.components.markNeedsSaving();
             if (cable.position != null) {
-                queueCableUpgrade(world, cable.position, MachinariumIds.BLOCK_ITEM_CABLE, upgradedId, null, cable.node);
+                queueCableUpgrade(world, cable.position, HyProTechIds.BLOCK_ITEM_CABLE, upgradedId, null, cable.node);
             }
         }
     }
@@ -616,7 +616,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
     }
 
     private EnergyNetworkSnapshot collectEnergyNetwork(World world) {
-        if (world == null || MachinariumComponents.ENERGY == null) {
+        if (world == null || HyProTechComponents.ENERGY == null) {
             return null;
         }
 
@@ -641,7 +641,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             int localX = ChunkUtil.localCoordinate((long) pos.getX());
             int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
-            EnergyNodeComponent node = components.getComponent(blockIndex, MachinariumComponents.ENERGY);
+            EnergyNodeComponent node = components.getComponent(blockIndex, HyProTechComponents.ENERGY);
             if (node == null || node.getNodeType() != EnergyNodeComponent.NodeType.CABLE) {
                 continue;
             }
@@ -678,7 +678,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
                 int nLocalZ = ChunkUtil.localCoordinate((long) nz);
                 int neighborIndex = ChunkUtil.indexBlockInColumn(nLocalX, ny, nLocalZ);
                 EnergyNodeComponent neighbor =
-                        neighborComponents.getComponent(neighborIndex, MachinariumComponents.ENERGY);
+                        neighborComponents.getComponent(neighborIndex, HyProTechComponents.ENERGY);
                 EnergySide neighborSide = side.opposite();
                 if (neighbor != null
                         && neighbor.getNodeType() == EnergyNodeComponent.NodeType.CABLE
@@ -693,7 +693,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
     }
 
     private ItemNetworkSnapshot collectItemNetwork(World world) {
-        if (world == null || MachinariumComponents.ITEM == null) {
+        if (world == null || HyProTechComponents.ITEM == null) {
             return null;
         }
 
@@ -718,7 +718,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
             int localX = ChunkUtil.localCoordinate((long) pos.getX());
             int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
-            ItemNodeComponent node = components.getComponent(blockIndex, MachinariumComponents.ITEM);
+            ItemNodeComponent node = components.getComponent(blockIndex, HyProTechComponents.ITEM);
             if (node == null) {
                 continue;
             }
@@ -745,7 +745,7 @@ public class CableUpgradePage extends InteractiveCustomUIPage<CableUpgradeEvent>
                 int nLocalZ = ChunkUtil.localCoordinate((long) nz);
                 int neighborIndex = ChunkUtil.indexBlockInColumn(nLocalX, ny, nLocalZ);
                 ItemNodeComponent neighbor =
-                        neighborComponents.getComponent(neighborIndex, MachinariumComponents.ITEM);
+                        neighborComponents.getComponent(neighborIndex, HyProTechComponents.ITEM);
                 if (neighbor != null) {
                     queue.add(new Vector3i(nx, ny, nz));
                 }

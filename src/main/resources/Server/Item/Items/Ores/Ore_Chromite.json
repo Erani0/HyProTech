@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Chromium"
+                                      "ItemId":  "HyProTech_Ingot_Chromium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Chromite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Chromite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Chromite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

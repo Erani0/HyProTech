@@ -13,7 +13,7 @@ public class SolarHud extends CustomUIHud {
 
     @Override
     protected void build(UICommandBuilder uiCommandBuilder) {
-        uiCommandBuilder.append("Machinarium_SolarHud.ui");
+        uiCommandBuilder.append("HyProTech_SolarHud.ui");
     }
 
     public void updateOutput(int output) {

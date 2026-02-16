@@ -189,30 +189,30 @@ public final class AlloySmelterConfig {
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Cobalt", 12),
                     new Requirement("Ingredient_Bar_Adamantite", 4),
-                    new Requirement("Machinarium_Slag", 12),
-                    new Requirement("Machinarium_Ore_Chips", 8),
-                    new Requirement("Machinarium_Powder_Cobalt", 10)
+                    new Requirement("HyProTech_Slag", 12),
+                    new Requirement("HyProTech_Ore_Chips", 8),
+                    new Requirement("HyProTech_Powder_Cobalt", 10)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 10),
                     new Requirement("Ingredient_Bar_Thorium", 6),
-                    new Requirement("Machinarium_Slag", 18),
-                    new Requirement("Machinarium_Ore_Chips", 12),
-                    new Requirement("Machinarium_Powder_Iron", 16)
+                    new Requirement("HyProTech_Slag", 18),
+                    new Requirement("HyProTech_Ore_Chips", 12),
+                    new Requirement("HyProTech_Powder_Iron", 16)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 20),
                     new Requirement("Ingredient_Bar_Thorium", 10),
-                    new Requirement("Machinarium_Slag", 25),
-                    new Requirement("Machinarium_Ore_Chips", 18),
-                    new Requirement("Machinarium_Powder_Gold", 20)
+                    new Requirement("HyProTech_Slag", 25),
+                    new Requirement("HyProTech_Ore_Chips", 18),
+                    new Requirement("HyProTech_Powder_Gold", 20)
             },
             new Requirement[0]
     };
 
     private static final BonusDrop[] DEFAULT_BONUS_DROPS = {
-            new BonusDrop("Machinarium_Slag", 1, 0.50, 0.00),
-            new BonusDrop("Machinarium_Ore_Chips", 1, 0.10, 0.00)
+            new BonusDrop("HyProTech_Slag", 1, 0.50, 0.00),
+            new BonusDrop("HyProTech_Ore_Chips", 1, 0.10, 0.00)
     };
 
     private static String[] tierNames = DEFAULT_TIER_NAMES.clone();

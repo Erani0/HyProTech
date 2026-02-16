@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Chromium"
+                                      "ItemId":  "HyProTech_Ingot_Chromium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Chromite"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Chromite_Basalt.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Chromite_Basalt.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

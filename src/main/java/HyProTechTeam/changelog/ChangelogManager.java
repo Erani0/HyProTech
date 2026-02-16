@@ -75,17 +75,17 @@ Uraninite
 Vanadinite
 
 New materials and ingots
-Bauxite -> Machinarium_Ingot_Aluminum
-Cassiterite -> Machinarium_Ingot_Tin
-Chromite -> Machinarium_Ingot_Chromium
-Ilmenite -> Machinarium_Ingot_Titanium
-Manganese -> Machinarium_Ingot_Manganese
-Pentlandite -> Machinarium_Ingot_Nickel
-Quartzite -> Machinarium_Ingot_Silicon (raw silicon material, not an ingot)
-Scheelite -> Machinarium_Ingot_Tungsten
-Spodumene -> Machinarium_Ingot_Lithium
-Uraninite -> Machinarium_Ingot_Uranium
-Vanadinite -> Machinarium_Ingot_Vanadium
+Bauxite -> HyProTech_Ingot_Aluminum
+Cassiterite -> HyProTech_Ingot_Tin
+Chromite -> HyProTech_Ingot_Chromium
+Ilmenite -> HyProTech_Ingot_Titanium
+Manganese -> HyProTech_Ingot_Manganese
+Pentlandite -> HyProTech_Ingot_Nickel
+Quartzite -> HyProTech_Ingot_Silicon (raw silicon material, not an ingot)
+Scheelite -> HyProTech_Ingot_Tungsten
+Spodumene -> HyProTech_Ingot_Lithium
+Uraninite -> HyProTech_Ingot_Uranium
+Vanadinite -> HyProTech_Ingot_Vanadium
 
 New alloys and advanced blends
 Electrum Alloy

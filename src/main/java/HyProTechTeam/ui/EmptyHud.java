@@ -11,6 +11,6 @@ public class EmptyHud extends CustomUIHud {
 
     @Override
     protected void build(UICommandBuilder uiCommandBuilder) {
-        uiCommandBuilder.append("Machinarium_EmptyHud.ui");
+        uiCommandBuilder.append("HyProTech_EmptyHud.ui");
     }
 }

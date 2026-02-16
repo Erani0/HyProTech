@@ -18,7 +18,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.lang.reflect.Method;
 
 public final class ChangelogPage extends InteractiveCustomUIPage<ChangelogEvent> {
-    private static final String PAGE_LAYOUT = "Machinarium_Changelog.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_Changelog.ui";
     private static final String ACTION_CLOSE = "Close";
 
     private final ChangelogManager changelogManager;

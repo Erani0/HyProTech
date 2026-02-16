@@ -1,8 +1,8 @@
 package HyProTechTeam.item;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
-import HyProTechTeam.MachinariumComponents;
+import HyProTechTeam.HyProTechIds;
+import HyProTechTeam.HyProTechComponents;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.EnergySide;
@@ -158,7 +158,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (blockType == null || blockType.getId() == null) {
             return null;
         }
-        if (!TieredIdUtil.isTieredId(blockType.getId(), MachinariumIds.BLOCK_ITEM_CABLE)) {
+        if (!TieredIdUtil.isTieredId(blockType.getId(), HyProTechIds.BLOCK_ITEM_CABLE)) {
             return null;
         }
 
@@ -166,7 +166,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, ChunkUtil.xFromBlockInColumn(blockIndex));
         int worldY = ChunkUtil.yFromBlockInColumn(blockIndex);
         int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, ChunkUtil.zFromBlockInColumn(blockIndex));
-        int tier = getCableTierFromBlockId(world, worldX, worldY, worldZ, MachinariumIds.BLOCK_ITEM_CABLE);
+        int tier = getCableTierFromBlockId(world, worldX, worldY, worldZ, HyProTechIds.BLOCK_ITEM_CABLE);
         if (tier >= 0) {
             node.setCableTier(tier);
             node.setMaxTransfer(CableUpgradeConfig.getItemMaxTransferForTier(tier));
@@ -264,7 +264,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (world == null || node == null) {
             return false;
         }
-        int idTier = getCableTierFromBlockId(world, worldX, worldY, worldZ, MachinariumIds.BLOCK_ITEM_CABLE);
+        int idTier = getCableTierFromBlockId(world, worldX, worldY, worldZ, HyProTechIds.BLOCK_ITEM_CABLE);
         if (idTier < 0 || idTier <= node.getCableTier()) {
             return false;
         }
@@ -287,15 +287,15 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return false;
         }
         String blockId = blockType.getId();
-        if (!isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)) {
+        if (!isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)) {
             return false;
         }
         int desiredTier = CableUpgradeConfig.clampTier(node.getCableTier());
         if (desiredTier <= 0) {
             return false;
         }
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ITEM_CABLE, desiredTier);
-        upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_ITEM_CABLE, upgradedId);
+        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ITEM_CABLE, desiredTier);
+        upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_ITEM_CABLE, upgradedId);
         if (isIdOrState(blockId, upgradedId)) {
             return false;
         }
@@ -521,7 +521,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             try {
                 accessor.setBlockInteractionState(cable.x, cable.y, cable.z, blockType, stateName, false);
             } catch (Exception e) {
-                System.out.println("[Machinarium] Item cable state '" + stateName
+                System.out.println("[HyProTech] Item cable state '" + stateName
                         + "' not found for blockType=" + blockType.getId());
             }
         }
@@ -1178,8 +1178,8 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (pos == null) {
             return fallback;
         }
-        boolean hasBlockConfig = MachinariumComponents.ITEM_STORAGE != null;
-        boolean hasChunkConfig = MachinariumComponents.ITEM_STORAGE_CHUNK != null;
+        boolean hasBlockConfig = HyProTechComponents.ITEM_STORAGE != null;
+        boolean hasChunkConfig = HyProTechComponents.ITEM_STORAGE_CHUNK != null;
         if (!hasBlockConfig && !hasChunkConfig) {
             return fallback;
         }
@@ -1196,14 +1196,14 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
             BlockType blockType = world.getBlockType(x, y, z);
             String blockId = blockType == null ? null : blockType.getId();
-            allowBlockConfig = isMachinariumBlockId(blockId);
+            allowBlockConfig = isHyProTechBlockId(blockId);
             if (accessor != null) {
                 if (!allowBlockConfig) {
                     cleanupStorageConfig(world, chunkStore, x, y, z);
                 }
                 Holder<ChunkStore> holder = accessor.getBlockComponentHolder(x, y, z);
                 if (holder != null && hasBlockConfig && allowBlockConfig) {
-                    ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
+                    ItemStorageConfigComponent config = holder.getComponent(HyProTechComponents.ITEM_STORAGE);
                     if (config != null) {
                         return config.getPriority();
                     }
@@ -1222,7 +1222,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
             ItemStorageConfigComponent config = components.getComponent(
                     blockIndex,
-                    MachinariumComponents.ITEM_STORAGE);
+                    HyProTechComponents.ITEM_STORAGE);
             if (config != null) {
                 return config.getPriority();
             }
@@ -1232,7 +1232,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
     @SuppressWarnings("removal")
     private void cleanupStorageConfig(World world, ChunkStore chunkStore, int x, int y, int z) {
-        if (world == null || chunkStore == null || MachinariumComponents.ITEM_STORAGE == null) {
+        if (world == null || chunkStore == null || HyProTechComponents.ITEM_STORAGE == null) {
             return;
         }
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
@@ -1248,7 +1248,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         Ref<ChunkStore> ref = components.getEntityReference(blockIndex);
         if (ref != null) {
             if (store != null) {
-                ItemStorageConfigComponent config = store.getComponent(ref, MachinariumComponents.ITEM_STORAGE);
+                ItemStorageConfigComponent config = store.getComponent(ref, HyProTechComponents.ITEM_STORAGE);
                 if (config != null) {
                     storeChunkStorageConfig(chunkStore, x, y, z, config);
                     BlockState state = BlockState.getBlockState(ref, store);
@@ -1264,7 +1264,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (holder == null) {
             return;
         }
-        ItemStorageConfigComponent config = holder.getComponent(MachinariumComponents.ITEM_STORAGE);
+        ItemStorageConfigComponent config = holder.getComponent(HyProTechComponents.ITEM_STORAGE);
         if (config == null) {
             return;
         }
@@ -1282,12 +1282,12 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int y,
             int z,
             ItemStorageConfigComponent config) {
-        if (chunkStore == null || MachinariumComponents.ITEM_STORAGE_CHUNK == null || config == null) {
+        if (chunkStore == null || HyProTechComponents.ITEM_STORAGE_CHUNK == null || config == null) {
             return;
         }
         long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
         ItemStorageConfigChunk chunkConfig =
-                chunkStore.getChunkComponent(chunkIndex, MachinariumComponents.ITEM_STORAGE_CHUNK);
+                chunkStore.getChunkComponent(chunkIndex, HyProTechComponents.ITEM_STORAGE_CHUNK);
         if (chunkConfig == null) {
             chunkConfig = new ItemStorageConfigChunk();
         }
@@ -1298,17 +1298,17 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         Store<ChunkStore> store = chunkStore.getStore();
         Ref<ChunkStore> chunkRef = chunkStore.getChunkReference(chunkIndex);
         if (store != null && chunkRef != null) {
-            store.putComponent(chunkRef, MachinariumComponents.ITEM_STORAGE_CHUNK, chunkConfig);
+            store.putComponent(chunkRef, HyProTechComponents.ITEM_STORAGE_CHUNK, chunkConfig);
         }
     }
 
-    private boolean isMachinariumBlockId(String blockId) {
+    private boolean isHyProTechBlockId(String blockId) {
         if (blockId == null || blockId.isEmpty()) {
             return false;
         }
         int colonIndex = blockId.indexOf(':');
         String normalized = colonIndex >= 0 ? blockId.substring(colonIndex + 1) : blockId;
-        return normalized.regionMatches(true, 0, "Machinarium_", 0, "Machinarium_".length());
+        return normalized.regionMatches(true, 0, "HyProTech_", 0, "HyProTech_".length());
     }
 
     private int resolveChunkStoragePriority(
@@ -1318,11 +1318,11 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int y,
             int z,
             int fallback) {
-        if (chunkStore == null || MachinariumComponents.ITEM_STORAGE_CHUNK == null) {
+        if (chunkStore == null || HyProTechComponents.ITEM_STORAGE_CHUNK == null) {
             return fallback;
         }
         ItemStorageConfigChunk chunkConfig =
-                chunkStore.getChunkComponent(chunkIndex, MachinariumComponents.ITEM_STORAGE_CHUNK);
+                chunkStore.getChunkComponent(chunkIndex, HyProTechComponents.ITEM_STORAGE_CHUNK);
         if (chunkConfig == null) {
             return fallback;
         }
@@ -1545,13 +1545,13 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
         ItemContainer container = state.getItemContainer();
         short capacity = container == null ? 0 : container.getCapacity();
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)) {
             int outputCount = Math.min(OreCrusherConfig.OUTPUT_SLOT_COUNT, Math.max(0, capacity - 1));
             SlotRange input = new SlotRange(0, capacity > 0 ? 1 : 0);
             SlotRange output = new SlotRange(1, outputCount);
             return new MachineSlotLayout(input, output);
         }
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)) {
             int inputCount = Math.min(AlloySmelterConfig.INPUT_SLOT_COUNT, Math.max(0, capacity));
             int outputStart = inputCount;
             int outputCount = Math.min(AlloySmelterConfig.OUTPUT_SLOT_COUNT, Math.max(0, capacity - outputStart));
@@ -1559,7 +1559,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             SlotRange output = new SlotRange(outputStart, outputCount);
             return new MachineSlotLayout(input, output);
         }
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_QUARRY) && !isQuarryBorder(blockId)) {
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_QUARRY) && !isQuarryBorder(blockId)) {
             SlotRange input = new SlotRange(0, 0);
             SlotRange output = new SlotRange(0, capacity);
             return new MachineSlotLayout(input, output);
@@ -1590,7 +1590,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (blockId == null || blockId.isEmpty()) {
             return false;
         }
-        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        String baseId = HyProTechIds.BLOCK_QUARRY_BORDER;
         return blockId.equalsIgnoreCase(baseId)
                 || blockId.regionMatches(true, 0, baseId, 0, baseId.length());
     }
@@ -1623,7 +1623,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return;
         }
         if (blockType.getId() == null
-                || !TieredIdUtil.isTieredId(blockType.getId(), MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+                || !TieredIdUtil.isTieredId(blockType.getId(), HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             return;
         }
 

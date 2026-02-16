@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Tungsten"
+                                      "ItemId":  "HyProTech_Ingot_Tungsten"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Scheelite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Scheelite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Scheelite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

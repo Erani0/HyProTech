@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.EnergyNodeComponent;
@@ -92,7 +92,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
             UICommandBuilder uiCommandBuilder,
             UIEventBuilder uiEventBuilder,
             Store<EntityStore> store) {
-        uiCommandBuilder.append("Machinarium_Solar.ui");
+        uiCommandBuilder.append("HyProTech_Solar.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#UpgradeButton",
@@ -164,7 +164,7 @@ public class SolarPage extends InteractiveCustomUIPage<SolarUpgradeEvent> {
         storeNode(world, node);
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_SOLAR_PANEL, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_SOLAR_PANEL, nextTier);
             UpgradePersistence.queueBlockSwap(world, pos, upgradedId, node, null);
         }
 

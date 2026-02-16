@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.EnergyNodeComponent;
@@ -92,7 +92,7 @@ public class WindPage extends InteractiveCustomUIPage<WindUpgradeEvent> {
             UICommandBuilder uiCommandBuilder,
             UIEventBuilder uiEventBuilder,
             Store<EntityStore> store) {
-        uiCommandBuilder.append("Machinarium_Wind.ui");
+        uiCommandBuilder.append("HyProTech_Wind.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#UpgradeButton",
@@ -164,7 +164,7 @@ public class WindPage extends InteractiveCustomUIPage<WindUpgradeEvent> {
         storeNode(world, node);
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_WIND_TURBINE, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_WIND_TURBINE, nextTier);
             UpgradePersistence.queueBlockSwap(world, pos, upgradedId, node, null);
         }
 

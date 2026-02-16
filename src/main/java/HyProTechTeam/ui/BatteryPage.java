@@ -1,6 +1,6 @@
 package HyProTechTeam.ui;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.UpgradePersistence;
 import HyProTechTeam.energy.BatteryUpgradeConfig;
@@ -198,10 +198,10 @@ public class BatteryPage extends InteractiveCustomUIPage<SideToggleEvent> {
 
         Vector3i pos = resolveBlockPosition(world);
         if (pos != null) {
-            String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_BATTERY, nextTier);
+            String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_BATTERY, nextTier);
             BlockType blockType = world.getBlockType(pos.getX(), pos.getY(), pos.getZ());
             String blockId = blockType == null ? null : blockType.getId();
-            upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_BATTERY, upgradedId);
+            upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_BATTERY, upgradedId);
             UpgradePersistence.queueBlockSwap(world, pos, upgradedId, node, null);
         }
 
@@ -527,7 +527,7 @@ public class BatteryPage extends InteractiveCustomUIPage<SideToggleEvent> {
         if (blockId == null || blockId.isEmpty()) {
             return BatteryUpgradeConfig.MIN_TIER;
         }
-        int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_BATTERY);
+        int tier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_BATTERY);
         if (tier < 0) {
             tier = BatteryUpgradeConfig.MIN_TIER;
         }

@@ -1,10 +1,10 @@
 package HyProTechTeam.energy;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.furnace.FurnaceConfig;
-import HyProTechTeam.sound.MachinariumSounds;
+import HyProTechTeam.sound.HyProTechSounds;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorageLookup;
 import com.doctorreborn.hytale.api.energy.v1.EnergyStorageUtil;
@@ -191,28 +191,28 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             changed |= syncSolarOutputSide(world, worldX, worldY, worldZ, node);
             syncSolarState(world, worldX, worldY, worldZ, node);
             boolean generating = node.getGeneration() > 0 && nodeSunlightFactor > 0.0;
-            MachinariumSounds.tickLoop(
+            HyProTechSounds.tickLoop(
                     world,
                     worldX,
                     worldY,
                     worldZ,
-                    MachinariumSounds.EVENT_SOLAR_PANEL,
-                    MachinariumSounds.FILE_SOLAR_PANEL,
-                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    HyProTechSounds.EVENT_SOLAR_PANEL,
+                    HyProTechSounds.FILE_SOLAR_PANEL,
+                    HyProTechSounds.DEFAULT_LOOP_MS,
                     generating,
                     node);
         } else if (node.getNodeType() == EnergyNodeComponent.NodeType.WIND) {
             changed |= syncWindOutputSide(world, worldX, worldY, worldZ, node);
             syncWindState(world, worldX, worldY, worldZ, node, nodeWindFactor);
             boolean generating = node.getGeneration() > 0 && nodeWindFactor > 0.0;
-            MachinariumSounds.tickLoop(
+            HyProTechSounds.tickLoop(
                     world,
                     worldX,
                     worldY,
                     worldZ,
-                    MachinariumSounds.EVENT_WIND_TURBINE,
-                    MachinariumSounds.FILE_WIND_TURBINE,
-                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    HyProTechSounds.EVENT_WIND_TURBINE,
+                    HyProTechSounds.FILE_WIND_TURBINE,
+                    HyProTechSounds.DEFAULT_LOOP_MS,
                     generating,
                     node);
         } else if (node.getNodeType() == EnergyNodeComponent.NodeType.BATTERY) {
@@ -435,7 +435,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (blockType == null || blockType.getId() == null) {
             return null;
         }
-        if (!TieredIdUtil.isTieredId(blockType.getId(), MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (!TieredIdUtil.isTieredId(blockType.getId(), HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             return null;
         }
 
@@ -1194,7 +1194,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 accessor.setBlockInteractionState(cable.x, cable.y, cable.z, blockType, stateName, false);
             } catch (Exception e) {
                 // aspo?? jednou zaloguj, a?? m???? d??kaz
-                System.out.println("[Machinarium] Cable state '" + stateName + "' not found for blockType=" + blockType.getId());
+                System.out.println("[HyProTech] Cable state '" + stateName + "' not found for blockType=" + blockType.getId());
             }
         }
     }
@@ -1346,14 +1346,14 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             float deltaSeconds) {
         ProcessingBenchState benchState = getProcessingBenchState(world, worldX, worldY, worldZ);
         if (benchState == null || deltaSeconds <= 0f) {
-            MachinariumSounds.tickLoop(
+            HyProTechSounds.tickLoop(
                     world,
                     worldX,
                     worldY,
                     worldZ,
-                    MachinariumSounds.EVENT_ELECTRIC_FURNACE,
-                    MachinariumSounds.FILE_ELECTRIC_FURNACE,
-                    MachinariumSounds.DEFAULT_LOOP_MS,
+                    HyProTechSounds.EVENT_ELECTRIC_FURNACE,
+                    HyProTechSounds.FILE_ELECTRIC_FURNACE,
+                    HyProTechSounds.DEFAULT_LOOP_MS,
                     false,
                     node);
             return false;
@@ -1467,14 +1467,14 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         syncFurnaceState(world, worldX, worldY, worldZ, Math.max(0, tier - 1), benchState, node);
-        MachinariumSounds.tickLoop(
+        HyProTechSounds.tickLoop(
                 world,
                 worldX,
                 worldY,
                 worldZ,
-                MachinariumSounds.EVENT_ELECTRIC_FURNACE,
-                MachinariumSounds.FILE_ELECTRIC_FURNACE,
-                MachinariumSounds.DEFAULT_LOOP_MS,
+                HyProTechSounds.EVENT_ELECTRIC_FURNACE,
+                HyProTechSounds.FILE_ELECTRIC_FURNACE,
+                HyProTechSounds.DEFAULT_LOOP_MS,
                 node != null && node.isFurnaceWorking(),
                 node);
         syncFurnaceBlockId(world, worldX, worldY, worldZ, tier, benchState, node);
@@ -1505,10 +1505,10 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return -1;
         }
         String blockId = blockType.getId();
-        if (!TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (!TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             return -1;
         }
-        int tierIndex = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
+        int tierIndex = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE);
         if (tierIndex < 0) {
             return -1;
         }
@@ -1531,12 +1531,12 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return;
         }
         String blockId = blockType.getId();
-        if (!TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (!TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             return;
         }
 
         int desiredTierIndex = Math.max(0, tier - 1);
-        int currentTierIndex = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
+        int currentTierIndex = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE);
         if (currentTierIndex < 0) {
             currentTierIndex = 0;
         }
@@ -1548,7 +1548,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return;
         }
 
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ELECTRIC_FURNACE, desiredTierIndex);
+        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ELECTRIC_FURNACE, desiredTierIndex);
         UpgradePersistence.queueBlockSwapWithBench(
                 world,
                 new Vector3i(worldX, worldY, worldZ),
@@ -1613,7 +1613,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 node.setLastWindState(baseState);
                 node.setLastWindAnimMs(0L);
             } catch (Exception ignored) {
-                System.out.println("[Machinarium] Wind state '" + stateName
+                System.out.println("[HyProTech] Wind state '" + stateName
                         + "' not found for blockType=" + blockType.getId());
             }
         }
@@ -1628,7 +1628,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (world == null || node == null) {
             return false;
         }
-        int idTier = getCableTierFromBlockId(world, worldX, worldY, worldZ, MachinariumIds.BLOCK_ENERGY_CABLE);
+        int idTier = getCableTierFromBlockId(world, worldX, worldY, worldZ, HyProTechIds.BLOCK_ENERGY_CABLE);
         if (idTier < 0 || idTier <= node.getCableTier()) {
             return false;
         }
@@ -1656,15 +1656,15 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             return false;
         }
         String blockId = blockType.getId();
-        if (!isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)) {
+        if (!isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)) {
             return false;
         }
         int desiredTier = CableUpgradeConfig.clampTier(node.getCableTier());
         if (desiredTier <= 0) {
             return false;
         }
-        String upgradedId = TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ENERGY_CABLE, desiredTier);
-        upgradedId = TieredIdUtil.applyNamespace(blockId, MachinariumIds.BLOCK_ENERGY_CABLE, upgradedId);
+        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ENERGY_CABLE, desiredTier);
+        upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_ENERGY_CABLE, upgradedId);
         if (isIdOrState(blockId, upgradedId)) {
             return false;
         }
@@ -1700,7 +1700,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         try {
             accessor.setBlockInteractionState(worldX, worldY, worldZ, blockType, stateName, false);
         } catch (Exception e) {
-            System.out.println("[Machinarium] " + label + " state '" + stateName
+            System.out.println("[HyProTech] " + label + " state '" + stateName
                     + "' not found for blockType=" + blockType.getId());
         }
     }
@@ -1766,7 +1766,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
                     node.setLastFurnaceState(baseState);
                 }
             } catch (Exception ignored) {
-                System.out.println("[Machinarium] Furnace state '" + stateName
+                System.out.println("[HyProTech] Furnace state '" + stateName
                         + "' not found for blockType=" + blockType.getId());
             }
         }

@@ -1,6 +1,6 @@
 package HyProTechTeam.machine;
 
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -368,7 +368,7 @@ public final class QuarryAreaManager {
             storeSnapshot(world, x, y, z, current);
         }
 
-        accessor.setBlock(x, y, z, MachinariumIds.BLOCK_QUARRY_BORDER, BORDER_ROTATION_INDEX);
+        accessor.setBlock(x, y, z, HyProTechIds.BLOCK_QUARRY_BORDER, BORDER_ROTATION_INDEX);
         BlockType borderType = accessor.getBlockType(x, y, z);
         if (isBorder(borderType)) {
             accessor.setBlockInteractionState(x, y, z, borderType, stateName, false);
@@ -460,7 +460,7 @@ public final class QuarryAreaManager {
         if (id == null) {
             return false;
         }
-        String baseId = MachinariumIds.BLOCK_QUARRY_BORDER;
+        String baseId = HyProTechIds.BLOCK_QUARRY_BORDER;
         return id.equalsIgnoreCase(baseId)
                 || id.regionMatches(true, 0, baseId, 0, baseId.length())
                 || containsIgnoreCase(id, baseId);
@@ -474,7 +474,7 @@ public final class QuarryAreaManager {
         if (id == null) {
             return false;
         }
-        String baseId = MachinariumIds.BLOCK_BORDER_TORCH;
+        String baseId = HyProTechIds.BLOCK_BORDER_TORCH;
         return id.equalsIgnoreCase(baseId)
                 || id.regionMatches(true, 0, baseId, 0, baseId.length())
                 || containsIgnoreCase(id, baseId);
@@ -485,7 +485,7 @@ public final class QuarryAreaManager {
             return false;
         }
         String id = blockType.getId();
-        return id != null && TieredIdUtil.isTieredId(id, MachinariumIds.BLOCK_QUARRY);
+        return id != null && TieredIdUtil.isTieredId(id, HyProTechIds.BLOCK_QUARRY);
     }
 
     private static Rotation getBlockYaw(World world, Vector3i origin) {

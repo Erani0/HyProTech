@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Silicon"
+                                      "ItemId":  "HyProTech_Ingot_Silicon"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Quartzite"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Quartzite_Volcanic.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Quartzite_Volcanic.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

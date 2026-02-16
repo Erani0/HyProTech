@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Uranium"
+                                      "ItemId":  "HyProTech_Ingot_Uranium"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -86,7 +86,7 @@
                                 "Uraninite"
                             ]
              },
-    "Icon":  "Icons/ItemsGenerated/Ore_Uraninite_Basalt.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Uraninite_Basalt.png",
     "IconProperties":  {
                            "Scale":  0.58823,
                            "Rotation":  [

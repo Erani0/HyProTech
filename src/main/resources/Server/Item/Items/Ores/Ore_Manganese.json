@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Manganese"
+                                      "ItemId":  "HyProTech_Ingot_Manganese"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Manganese.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Manganese.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Manganese.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

@@ -51,7 +51,7 @@ This section reflects the actual state of the project based on:
 - **Core plugin**
   - Registers components/systems/interactions, custom pages, commands
   - Hooks into break/place for upgrade persistence  
-  **Files:** `Machinarium.java`, `MachinariumCommand.java`
+  **Files:** `HyProTech.java`, `HyProTechCommand.java`
 
 - **Energy**
   - `EnergyNodeComponent` types: `SOLAR`, `CABLE`, `BATTERY`, `MACHINE`, `FURNACE`
@@ -102,10 +102,10 @@ This section reflects the actual state of the project based on:
   **Path:** `src/main/resources/Server/Item/Items`
 
 - **Models / Textures**
-  - Machinarium blocks: Alloy Smelter, BasicBattery, border, cable tiers,
+  - HyProTech blocks: Alloy Smelter, BasicBattery, border, cable tiers,
     ElectricalWorkbench, ElectricFurnace, OreCrusher, Quarry, SolarPanel  
   **Paths:**  
-  `src/main/resources/Common/Blocks/Machinarium`  
+  `src/main/resources/Common/Blocks/HyProTech`  
   `src/main/resources/Common/BlockTextures`
 
 - **Generated item icons**
@@ -125,7 +125,7 @@ This section reflects the actual state of the project based on:
 
 ## ⚠️ Coverage / Known mismatches (current status)
 
-- **Machinarium_Cable_Tool**
+- **HyProTech_Cable_Tool**
   - has server item JSON, **but missing Icon/Model/Texture** → asset mismatch
 
 - **Alloy Smelter + Ore Crusher**

@@ -1,6 +1,6 @@
 package HyProTechTeam.interaction;
 
-import HyProTechTeam.MachinariumComponents;
+import HyProTechTeam.HyProTechComponents;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import HyProTechTeam.item.ItemNodeComponent;
 import HyProTechTeam.ui.CableUpgradePage;
@@ -72,7 +72,7 @@ public class CableNetworkUpgradeInteraction extends SimpleBlockInteraction {
 
         CableUpgradePage.CableType cableType = resolveCableType(world, targetPos);
         if (cableType == null) {
-            player.sendMessage(Message.raw("Target is not a Machinarium cable."));
+            player.sendMessage(Message.raw("Target is not a HyProTech cable."));
             return;
         }
 
@@ -106,7 +106,7 @@ public class CableNetworkUpgradeInteraction extends SimpleBlockInteraction {
     }
 
     private CableUpgradePage.CableType resolveCableType(World world, Vector3i pos) {
-        if (MachinariumComponents.ENERGY == null || MachinariumComponents.ITEM == null) {
+        if (HyProTechComponents.ENERGY == null || HyProTechComponents.ITEM == null) {
             return null;
         }
         int y = pos.getY();
@@ -122,11 +122,11 @@ public class CableNetworkUpgradeInteraction extends SimpleBlockInteraction {
         int localX = ChunkUtil.localCoordinate((long) pos.getX());
         int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, y, localZ);
-        EnergyNodeComponent energyNode = blockComponents.getComponent(blockIndex, MachinariumComponents.ENERGY);
+        EnergyNodeComponent energyNode = blockComponents.getComponent(blockIndex, HyProTechComponents.ENERGY);
         if (energyNode != null && energyNode.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
             return CableUpgradePage.CableType.ENERGY;
         }
-        ItemNodeComponent itemNode = blockComponents.getComponent(blockIndex, MachinariumComponents.ITEM);
+        ItemNodeComponent itemNode = blockComponents.getComponent(blockIndex, HyProTechComponents.ITEM);
         if (itemNode != null) {
             return CableUpgradePage.CableType.ITEM;
         }

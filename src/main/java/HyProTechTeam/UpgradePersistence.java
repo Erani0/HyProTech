@@ -7,7 +7,7 @@ import HyProTechTeam.energy.SolarUpgradeConfig;
 import HyProTechTeam.energy.WindUpgradeConfig;
 import HyProTechTeam.furnace.FurnaceConfig;
 import HyProTechTeam.item.ItemNodeComponent;
-import HyProTechTeam.MachinariumComponents;
+import HyProTechTeam.HyProTechComponents;
 import com.hypixel.hytale.builtin.crafting.state.ProcessingBenchState;
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Holder;
@@ -40,8 +40,8 @@ import java.util.Map;
 import java.util.ArrayList;
 
 public final class UpgradePersistence {
-    public static final String META_ENERGY = "MachinariumEnergyNode";
-    public static final String META_ITEM = "MachinariumItemNode";
+    public static final String META_ENERGY = "HyProTechEnergyNode";
+    public static final String META_ITEM = "HyProTechItemNode";
     private static final boolean DEBUG_CABLE_UPGRADES = false;
     private static final boolean DEBUG_PERSISTENCE = false;
     private static final int PENDING_TTL_TICKS = 20;
@@ -58,18 +58,18 @@ public final class UpgradePersistence {
         if (blockId == null) {
             return false;
         }
-        return isIdOrState(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_WIND_TURBINE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_BATTERY)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+        return isIdOrState(blockId, HyProTechIds.BLOCK_SOLAR_PANEL)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_WIND_TURBINE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_BATTERY)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
     }
 
     public static ItemStack buildDropStack(World world, Vector3i pos, BlockType blockType, String blockId) {
@@ -80,7 +80,7 @@ public final class UpgradePersistence {
             if (usesEnergyNode(blockId)) {
                 energyNode = getEnergyNode(world, pos);
             }
-            if (isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)) {
+            if (isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)) {
                 itemNode = getItemNode(world, pos);
             }
             furnaceTierIndex = getFurnaceTierIndex(world, pos, blockId);
@@ -140,7 +140,7 @@ public final class UpgradePersistence {
         }
         boolean debug = DEBUG_CABLE_UPGRADES && isCableUpgradeId(newBlockId);
         if (debug) {
-            System.out.println("[Machinarium] queueBlockSwap cable pos=" + pos
+            System.out.println("[HyProTech] queueBlockSwap cable pos=" + pos
                     + " newId=" + newBlockId);
         }
         ItemStack stack = buildUpgradeStack(newBlockId, energyNode, itemNode);
@@ -153,14 +153,14 @@ public final class UpgradePersistence {
             BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
             if (accessor == null) {
                 if (debug) {
-                    System.out.println("[Machinarium] queueBlockSwap skipped (chunk not loaded) pos=" + pos);
+                    System.out.println("[HyProTech] queueBlockSwap skipped (chunk not loaded) pos=" + pos);
                 }
                 return;
             }
             BlockType current = accessor.getBlockType(pos.getX(), pos.getY(), pos.getZ());
             String currentId = current == null ? null : current.getId();
             if (debug) {
-                System.out.println("[Machinarium] queueBlockSwap currentId=" + currentId
+                System.out.println("[HyProTech] queueBlockSwap currentId=" + currentId
                         + " newId=" + newBlockId + " pos=" + pos);
             }
             if (currentId != null
@@ -168,7 +168,7 @@ public final class UpgradePersistence {
                             || isIdOrState(currentId, newBlockId)
                             || isCableTierMatch(currentId, newBlockId))) {
                 if (debug) {
-                    System.out.println("[Machinarium] queueBlockSwap skipped (already same) pos=" + pos);
+                    System.out.println("[HyProTech] queueBlockSwap skipped (already same) pos=" + pos);
                 }
                 return;
             }
@@ -178,7 +178,7 @@ public final class UpgradePersistence {
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
             if (debug) {
-                System.out.println("[Machinarium] queueBlockSwap setBlock done pos=" + pos
+                System.out.println("[HyProTech] queueBlockSwap setBlock done pos=" + pos
                         + " newId=" + newBlockId);
             }
         });
@@ -500,16 +500,16 @@ public final class UpgradePersistence {
         if (blockId == null) {
             return false;
         }
-        return isIdOrState(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_WIND_TURBINE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_BATTERY)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLACK)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BROWN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_THIN_CABLE_GREEN)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+        return isIdOrState(blockId, HyProTechIds.BLOCK_SOLAR_PANEL)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_WIND_TURBINE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_BATTERY)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
     }
 
     private static String resolveItemId(BlockType blockType, String blockId) {
@@ -525,62 +525,62 @@ public final class UpgradePersistence {
             EnergyNodeComponent energyNode,
             ItemNodeComponent itemNode,
             int furnaceTierIndex) {
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_SOLAR_PANEL)) {
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_SOLAR_PANEL)) {
             int tier = energyNode != null
                     ? SolarUpgradeConfig.clampTier(energyNode.getSolarTier())
-                    : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_SOLAR_PANEL);
+                    : TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_SOLAR_PANEL);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_SOLAR_PANEL, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_SOLAR_PANEL, tier);
             }
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_WIND_TURBINE)) {
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_WIND_TURBINE)) {
             int tier = energyNode != null
                     ? WindUpgradeConfig.clampTier(energyNode.getWindTier())
-                    : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_WIND_TURBINE);
+                    : TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_WIND_TURBINE);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_WIND_TURBINE, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_WIND_TURBINE, tier);
             }
         }
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)) {
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)) {
             int tier = energyNode != null
                     ? CableUpgradeConfig.clampTier(energyNode.getCableTier())
-                    : parseCableTierFromBlockId(blockId, MachinariumIds.BLOCK_ENERGY_CABLE);
+                    : parseCableTierFromBlockId(blockId, HyProTechIds.BLOCK_ENERGY_CABLE);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ENERGY_CABLE, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ENERGY_CABLE, tier);
             }
         }
-        if (isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE)) {
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)) {
             int tier = itemNode != null
                     ? CableUpgradeConfig.clampTier(itemNode.getCableTier())
-                    : parseCableTierFromBlockId(blockId, MachinariumIds.BLOCK_ITEM_CABLE);
+                    : parseCableTierFromBlockId(blockId, HyProTechIds.BLOCK_ITEM_CABLE);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ITEM_CABLE, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ITEM_CABLE, tier);
             }
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             int tier = furnaceTierIndex >= 0
                     ? furnaceTierIndex
-                    : TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE);
+                    : TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ELECTRIC_FURNACE, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ELECTRIC_FURNACE, tier);
             }
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)) {
-            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ORE_CRUSHER);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ORE_CRUSHER, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ORE_CRUSHER, tier);
             }
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)) {
-            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_ALLOY_SMELTER, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ALLOY_SMELTER, tier);
             }
         }
-        if (TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_BATTERY)) {
-            int tier = TieredIdUtil.parseTierSuffix(blockId, MachinariumIds.BLOCK_BATTERY);
+        if (TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_BATTERY)) {
+            int tier = TieredIdUtil.parseTierSuffix(blockId, HyProTechIds.BLOCK_BATTERY);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(MachinariumIds.BLOCK_BATTERY, tier);
+                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_BATTERY, tier);
             }
         }
         return null;
@@ -595,7 +595,7 @@ public final class UpgradePersistence {
         if (world == null || pos == null) {
             return -1;
         }
-        if (!TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+        if (!TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
             return -1;
         }
         ProcessingBenchState benchState = BlockModule.get().getComponent(
@@ -625,7 +625,7 @@ public final class UpgradePersistence {
         int localX = ChunkUtil.localCoordinate((long) pos.getX());
         int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
-        return blockComponents.getComponent(blockIndex, MachinariumComponents.ENERGY);
+        return blockComponents.getComponent(blockIndex, HyProTechComponents.ENERGY);
     }
 
     private static ItemNodeComponent getItemNode(World world, Vector3i pos) {
@@ -642,7 +642,7 @@ public final class UpgradePersistence {
         int localX = ChunkUtil.localCoordinate((long) pos.getX());
         int localZ = ChunkUtil.localCoordinate((long) pos.getZ());
         int blockIndex = ChunkUtil.indexBlockInColumn(localX, pos.getY(), localZ);
-        return blockComponents.getComponent(blockIndex, MachinariumComponents.ITEM);
+        return blockComponents.getComponent(blockIndex, HyProTechComponents.ITEM);
     }
 
     private static EnergyNodeComponent snapshotEnergy(EnergyNodeComponent node) {
@@ -801,7 +801,7 @@ public final class UpgradePersistence {
         if (!DEBUG_PERSISTENCE) {
             return;
         }
-        System.out.println("[Machinarium] PERSIST " + message);
+        System.out.println("[HyProTech] PERSIST " + message);
     }
 
     private static boolean isContainerEmpty(ItemContainer container) {
@@ -962,26 +962,26 @@ public final class UpgradePersistence {
             holder = ChunkStore.REGISTRY.newHolder();
         }
         boolean changed = false;
-        if (pending.energy != null && MachinariumComponents.ENERGY != null) {
+        if (pending.energy != null && HyProTechComponents.ENERGY != null) {
             if (ref != null) {
                 Store<ChunkStore> store = world.getChunkStore().getStore();
                 if (store != null) {
-                    store.putComponent(ref, MachinariumComponents.ENERGY, pending.energy);
+                    store.putComponent(ref, HyProTechComponents.ENERGY, pending.energy);
                 }
             } else if (holder != null) {
-                holder.putComponent(MachinariumComponents.ENERGY, pending.energy);
+                holder.putComponent(HyProTechComponents.ENERGY, pending.energy);
             }
             pending.energy = null;
             changed = true;
         }
-        if (pending.item != null && MachinariumComponents.ITEM != null) {
+        if (pending.item != null && HyProTechComponents.ITEM != null) {
             if (ref != null) {
                 Store<ChunkStore> store = world.getChunkStore().getStore();
                 if (store != null) {
-                    store.putComponent(ref, MachinariumComponents.ITEM, pending.item);
+                    store.putComponent(ref, HyProTechComponents.ITEM, pending.item);
                 }
             } else if (holder != null) {
-                holder.putComponent(MachinariumComponents.ITEM, pending.item);
+                holder.putComponent(HyProTechComponents.ITEM, pending.item);
             }
             pending.item = null;
             changed = true;
@@ -1042,8 +1042,8 @@ public final class UpgradePersistence {
     }
 
     private static boolean isCableUpgradeId(String blockId) {
-        return isIdOrState(blockId, MachinariumIds.BLOCK_ENERGY_CABLE)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ITEM_CABLE);
+        return isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE);
     }
 
     private static boolean isCableTierMatch(String currentId, String newBlockId) {
@@ -1051,10 +1051,10 @@ public final class UpgradePersistence {
             return false;
         }
         String baseId;
-        if (isIdOrState(newBlockId, MachinariumIds.BLOCK_ENERGY_CABLE)) {
-            baseId = MachinariumIds.BLOCK_ENERGY_CABLE;
-        } else if (isIdOrState(newBlockId, MachinariumIds.BLOCK_ITEM_CABLE)) {
-            baseId = MachinariumIds.BLOCK_ITEM_CABLE;
+        if (isIdOrState(newBlockId, HyProTechIds.BLOCK_ENERGY_CABLE)) {
+            baseId = HyProTechIds.BLOCK_ENERGY_CABLE;
+        } else if (isIdOrState(newBlockId, HyProTechIds.BLOCK_ITEM_CABLE)) {
+            baseId = HyProTechIds.BLOCK_ITEM_CABLE;
         } else {
             return false;
         }

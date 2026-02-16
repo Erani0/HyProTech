@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Nickel"
+                                      "ItemId":  "HyProTech_Ingot_Nickel"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Pentlandite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Pentlandite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Pentlandite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

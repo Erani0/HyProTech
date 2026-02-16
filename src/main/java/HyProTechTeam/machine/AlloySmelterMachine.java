@@ -1,7 +1,7 @@
 package HyProTechTeam.machine;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import HyProTechTeam.energy.EnergySide;
@@ -13,7 +13,7 @@ import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import java.util.List;
 
 public final class AlloySmelterMachine implements MachineDefinition {
-    public static final String ID = "machinarium:alloy_smelter";
+    public static final String ID = "HyProTech:alloy_smelter";
     private static final short INPUT_SLOT_START = 0;
     private static final int INPUT_SLOT_COUNT = AlloySmelterConfig.INPUT_SLOT_COUNT;
     private static final short OUTPUT_SLOT_START = (short) INPUT_SLOT_COUNT;
@@ -26,8 +26,8 @@ public final class AlloySmelterMachine implements MachineDefinition {
 
     @Override
     public boolean matchesBlockId(String blockId) {
-        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ALLOY_SMELTER);
+        return TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
     }
 
     @Override

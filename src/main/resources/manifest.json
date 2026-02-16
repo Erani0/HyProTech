@@ -17,6 +17,6 @@
         "Ellie:HyUI": "*"
     },
     "DisabledByDefault": false,
-    "Main": "HyProTechTeam.Machinarium",
+    "Main": "HyProTechTeam.HyProTech",
     "IncludesAssetPack": true
 }

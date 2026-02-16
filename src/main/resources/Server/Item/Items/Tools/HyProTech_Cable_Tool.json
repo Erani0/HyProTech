@@ -1,0 +1,18 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Cable_Tool.name",
+    "Description": "server.items.HyProTech_Cable_Tool.description"
+  },
+  "Parent": "Tool_Hammer_Crude",
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": {
+      "Interactions": [
+        {
+          "Type": "HyProTech_toggle_cable_side",
+          "UseLatestTarget": true
+        }
+      ]
+    }
+  }
+}

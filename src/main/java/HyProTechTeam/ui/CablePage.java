@@ -59,7 +59,7 @@ public class CablePage extends InteractiveCustomUIPage<SideToggleEvent> {
             UICommandBuilder uiCommandBuilder,
             UIEventBuilder uiEventBuilder,
             Store<EntityStore> store) {
-        uiCommandBuilder.append("Machinarium_Cable.ui");
+        uiCommandBuilder.append("HyProTech_Cable.ui");
         bindSideButtons(uiEventBuilder);
     }
 

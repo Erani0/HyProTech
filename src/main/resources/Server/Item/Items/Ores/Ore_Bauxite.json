@@ -15,7 +15,7 @@
                              ],
                    "Output":  [
                                   {
-                                      "ItemId":  "Machinarium_Ingot_Aluminum"
+                                      "ItemId":  "HyProTech_Ingot_Aluminum"
                                   }
                               ],
                    "BenchRequirement":  [
@@ -29,7 +29,7 @@
                },
     "Model":  "Items/CraftingItems/Ores/Ore.blockymodel",
     "Texture":  "Items/CraftingItems/Ores/Bauxite.png",
-    "Icon":  "Icons/ItemsGenerated/Ore_Bauxite.png",
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Bauxite.png",
     "ItemLevel":  1,
     "PlayerAnimationsId":  "Block",
     "IconProperties":  {

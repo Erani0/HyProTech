@@ -2,7 +2,7 @@ package HyProTechTeam.ui;
 
 import HyProTechTeam.energy.EnergyNodeComponent;
 import HyProTechTeam.energy.EnergyUnits;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import com.hypixel.hytale.builtin.crafting.state.ProcessingBenchState;
 import com.hypixel.hytale.builtin.crafting.window.BenchWindow;
@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FurnacePage extends InteractiveCustomUIPage<FurnacePage.FurnaceEventData> {
-    private static final String PAGE_LAYOUT = "Machinarium_Furnace.ui";
+    private static final String PAGE_LAYOUT = "HyProTech_Furnace.ui";
     private static final String ACTION_OPEN_STORAGE = "OpenStorage";
     private static final String ACTION_TOGGLE_POWER = "TogglePower";
 
@@ -311,7 +311,7 @@ public class FurnacePage extends InteractiveCustomUIPage<FurnacePage.FurnaceEven
             }
             if (TieredIdUtil.isTieredId(
                     benchWindow.getBlockType().getId(),
-                    MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+                    HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
                 return benchWindow;
             }
         }

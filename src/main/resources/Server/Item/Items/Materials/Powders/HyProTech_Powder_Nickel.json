@@ -1,0 +1,61 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Powder_Nickel.name",
+    "Description": "server.items.HyProTech_Powder_Nickel.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "HyProTech_Powder_Nickel",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "HyProTech_Ingot_Nickel"
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "Furnace"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
+  "Model": "Items/Models/Materials/Powders/PowderBag.blockymodel",
+  "Texture": "Items/Textures/Materials/Powders/Powder_Nickel.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Powders/Powder_Nickel.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true
+}

@@ -8,7 +8,7 @@ import HyProTechTeam.energy.SunlightUtil;
 import HyProTechTeam.energy.WindUpgradeConfig;
 import HyProTechTeam.energy.WindUtil;
 import HyProTechTeam.energy.CableUpgradeConfig;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.item.ItemNodeComponent;
 import HyProTechTeam.machine.MachineComponent;
@@ -570,7 +570,7 @@ public class PlayerUiSystem extends EntityTickingSystem<EntityStore> {
             if (benchWindow.getBlockType() != null
                     && TieredIdUtil.isTieredId(
                             benchWindow.getBlockType().getId(),
-                            MachinariumIds.BLOCK_ELECTRIC_FURNACE)) {
+                            HyProTechIds.BLOCK_ELECTRIC_FURNACE)) {
                 return benchWindow;
             }
         }

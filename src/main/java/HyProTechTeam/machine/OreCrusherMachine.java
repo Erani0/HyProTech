@@ -1,7 +1,7 @@
 package HyProTechTeam.machine;
 
 import HyProTechTeam.BlockIdUtil;
-import HyProTechTeam.MachinariumIds;
+import HyProTechTeam.HyProTechIds;
 import HyProTechTeam.TieredIdUtil;
 import HyProTechTeam.energy.EnergyNodeComponent;
 import HyProTechTeam.energy.EnergySide;
@@ -13,7 +13,7 @@ import com.doctorreborn.hytale.api.energy.v1.EnergyStorage;
 import java.util.List;
 
 public final class OreCrusherMachine implements MachineDefinition {
-    public static final String ID = "machinarium:ore_crusher";
+    public static final String ID = "HyProTech:ore_crusher";
     private static final short INPUT_SLOT = 0;
     private static final short OUTPUT_SLOT_START = 1;
     private static final int OUTPUT_SLOT_COUNT = OreCrusherConfig.OUTPUT_SLOT_COUNT;
@@ -25,8 +25,8 @@ public final class OreCrusherMachine implements MachineDefinition {
 
     @Override
     public boolean matchesBlockId(String blockId) {
-        return TieredIdUtil.isTieredId(blockId, MachinariumIds.BLOCK_ORE_CRUSHER)
-                || isIdOrState(blockId, MachinariumIds.BLOCK_ORE_CRUSHER);
+        return TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)
+                || isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER);
     }
 
     @Override

@@ -188,32 +188,32 @@ public final class OreCrusherConfig {
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Cobalt", 12),
                     new Requirement("Ingredient_Bar_Adamantite", 4),
-                    new Requirement("Machinarium_Slag", 12),
-                    new Requirement("Machinarium_Ore_Chips", 8),
-                    new Requirement("Machinarium_Powder_Cobalt", 10)
+                    new Requirement("HyProTech_Slag", 12),
+                    new Requirement("HyProTech_Ore_Chips", 8),
+                    new Requirement("HyProTech_Powder_Cobalt", 10)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 10),
                     new Requirement("Ingredient_Bar_Thorium", 6),
-                    new Requirement("Machinarium_Slag", 18),
-                    new Requirement("Machinarium_Ore_Chips", 12),
-                    new Requirement("Machinarium_Powder_Iron", 16)
+                    new Requirement("HyProTech_Slag", 18),
+                    new Requirement("HyProTech_Ore_Chips", 12),
+                    new Requirement("HyProTech_Powder_Iron", 16)
             },
             new Requirement[] {
                     new Requirement("Ingredient_Bar_Adamantite", 20),
                     new Requirement("Ingredient_Bar_Thorium", 10),
-                    new Requirement("Machinarium_Slag", 25),
-                    new Requirement("Machinarium_Ore_Chips", 18),
-                    new Requirement("Machinarium_Powder_Gold", 20)
+                    new Requirement("HyProTech_Slag", 25),
+                    new Requirement("HyProTech_Ore_Chips", 18),
+                    new Requirement("HyProTech_Powder_Gold", 20)
             },
             new Requirement[0]
     };
 
     private static final BonusDrop[] DEFAULT_BONUS_DROPS = {
-            new BonusDrop("Machinarium_Slag", 1, 0.50, 0.00),
-            new BonusDrop("Machinarium_Ore_Chips", 1, 0.10, 0.00),
-            new BonusDrop("Machinarium_Powder_Stone", 1, 0.50, 0.00),
-            new BonusDrop("Machinarium_Scrap", 1, 0.70, 0.00)
+            new BonusDrop("HyProTech_Slag", 1, 0.50, 0.00),
+            new BonusDrop("HyProTech_Ore_Chips", 1, 0.10, 0.00),
+            new BonusDrop("HyProTech_Powder_Stone", 1, 0.50, 0.00),
+            new BonusDrop("HyProTech_Scrap", 1, 0.70, 0.00)
     };
     private static final BonusDrop DEFAULT_POWDER_DROP = new BonusDrop("__ore_powder__", 1, 0.0, 0.20);
 
@@ -439,9 +439,9 @@ public final class OreCrusherConfig {
             return override;
         }
         if (base.startsWith("Ore_") && base.length() > 4) {
-            return "Machinarium_" + base.substring(4) + "_Powder";
+            return "HyProTech_" + base.substring(4) + "_Powder";
         }
-        if (normalized.startsWith("Machinarium_") && normalized.endsWith("_Ore")) {
+        if (normalized.startsWith("HyProTech_") && normalized.endsWith("_Ore")) {
             return normalized.substring(0, normalized.length() - 4) + "_Powder";
         }
         return null;
@@ -453,27 +453,27 @@ public final class OreCrusherConfig {
         }
         switch (oreId) {
             case "Ore_Bauxite":
-                return "Machinarium_Powder_Aluminum";
+                return "HyProTech_Powder_Aluminum";
             case "Ore_Cassiterite":
-                return "Machinarium_Powder_Tin";
+                return "HyProTech_Powder_Tin";
             case "Ore_Chromite":
-                return "Machinarium_Powder_Chromium";
+                return "HyProTech_Powder_Chromium";
             case "Ore_Ilmenite":
-                return "Machinarium_Powder_Titanium";
+                return "HyProTech_Powder_Titanium";
             case "Ore_Manganese":
-                return "Machinarium_Powder_Manganese";
+                return "HyProTech_Powder_Manganese";
             case "Ore_Pentlandite":
-                return "Machinarium_Powder_Nickel";
+                return "HyProTech_Powder_Nickel";
             case "Ore_Quartzite":
-                return "Machinarium_Powder_Silicon";
+                return "HyProTech_Powder_Silicon";
             case "Ore_Scheelite":
-                return "Machinarium_Powder_Tungsten";
+                return "HyProTech_Powder_Tungsten";
             case "Ore_Spodumene":
-                return "Machinarium_Powder_Lithium";
+                return "HyProTech_Powder_Lithium";
             case "Ore_Uraninite":
-                return "Machinarium_Powder_Uranium";
+                return "HyProTech_Powder_Uranium";
             case "Ore_Vanadinite":
-                return "Machinarium_Powder_Vanadium";
+                return "HyProTech_Powder_Vanadium";
             default:
                 return null;
         }
@@ -486,7 +486,7 @@ public final class OreCrusherConfig {
         if (oreId.startsWith("Ore_")) {
             return true;
         }
-        return oreId.startsWith("Machinarium_") && oreId.endsWith("_Ore");
+        return oreId.startsWith("HyProTech_") && oreId.endsWith("_Ore");
     }
 
     private static Requirement[][] mergeRequirements(Requirement[][] value, Requirement[][] defaults) {

@@ -17,7 +17,7 @@ public class FurnaceHud extends CustomUIHud {
 
     @Override
     protected void build(UICommandBuilder uiCommandBuilder) {
-        uiCommandBuilder.append("Machinarium_FurnaceHud.ui");
+        uiCommandBuilder.append("HyProTech_FurnaceHud.ui");
     }
 
     public void update(EnergyNodeComponent node) {
