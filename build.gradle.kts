@@ -3,7 +3,8 @@ plugins {
 }
 
 group = "HyProTechTeam"
-version = "1.4-SNAPSHOT"
+//version = "1.4.1-SNAPSHOT"
+version = "1.4.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25

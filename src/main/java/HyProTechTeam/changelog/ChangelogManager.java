@@ -14,8 +14,19 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 public final class ChangelogManager {
-    public static final String CHANGELOG_VERSION = "1.3.2";
+    public static final String CHANGELOG_VERSION = "1.4.0";
     public static final String CHANGELOG_TEXT = """
+Changelog
+Version 1.4.0 (from 1.3.2)
+
+IMPORTANT! THAT IS ALPHA VERSION.
+TO REPLACE ITEM PUT HIS IN BASE PLAYER INVENTORY AND RECONNECT TO SERVER.
+NOT IN HOTBAR OR BACKPACK!!!
+
+Also fixed:
+Powders: Adamantite, Onyxium and Prisma
+
+
 Changelog
 
 Version 1.3.2 (from 1.3.1)
