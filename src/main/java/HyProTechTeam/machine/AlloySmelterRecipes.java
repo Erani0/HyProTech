@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,17 @@ import java.util.Map;
 public final class AlloySmelterRecipes {
     private static volatile List<RecipeEntry> RECIPE_CACHE;
     private static volatile Field itemRecipeField;
+    private static HashSet<String> allowed_alloy = new HashSet<>();
+
+    static {
+        allowed_alloy.add("HyProTech_Ingot_High_Tier_Alloy");
+        allowed_alloy.add("HyProTech_Ingot_TiV");
+        allowed_alloy.add("HyProTech_Ingot_Superalloy");
+        allowed_alloy.add("HyProTech_Ingot_Composite_Alloy");
+        allowed_alloy.add("HyProTech_Ingot_Constantan");
+        allowed_alloy.add("HyProTech_Ingot_Invar");
+        allowed_alloy.add("HyProTech_Ingot_Steel");
+    }
 
     private AlloySmelterRecipes() {
     }
@@ -120,6 +132,7 @@ public final class AlloySmelterRecipes {
         if (!isAlloyOutput(output.getItemId())) {
             return;
         }
+        
         String outputId = output.getItemId();
         if (!byOutput.containsKey(outputId)) {
             if (!isKnownItemId(outputId) || !isKnownItemId(inputId)) {
@@ -159,14 +172,14 @@ public final class AlloySmelterRecipes {
                 new MaterialQuantity(tinId, null, null, 1, null)
         };
         MaterialQuantity[] outputs = new MaterialQuantity[] {
-                new MaterialQuantity(outputId, null, null, 1, null)
+                new MaterialQuantity(outputId, null, null, 4, null)
         };
         RecipeEntry entry = new RecipeEntry(
                 "fallback:" + outputId.toLowerCase(Locale.ROOT),
                 copperId,
                 3,
                 outputId,
-                1,
+                4,
                 inputs,
                 outputs);
         byOutput.put(outputId, entry);
@@ -229,29 +242,34 @@ public final class AlloySmelterRecipes {
         if (itemId.startsWith("HyProTech_Alloy_")) {
             return true;
         }
-        if (itemId.startsWith("HyProTech_Composite_Alloy")) {
-            return true;
-        }
+        // if (itemId.startsWith("HyProTech_Ingot_Composite_Alloy")) {
+        //     return true;
+        // }
         if ("Ingredient_Bar_Bronze".equalsIgnoreCase(itemId)) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("HyProTech_Ingot_TiV")) {
+        // if (itemId.equalsIgnoreCase("HyProTech_Ingot_TiV")) {
+        //     return true;
+        // }
+        // if (itemId.equalsIgnoreCase("HyProTech_Ingot_High_Tier_Alloy")) {
+        //     return true;
+        // }
+        // if (itemId.equalsIgnoreCase("HyProTech_Ingot_Superalloy")) {
+        //     return true;
+        // }
+        if (itemId.contains("_Ingot_")) {
             return true;
         }
-        if (itemId.equalsIgnoreCase("HyProTech_Ingot_High_Tier_Alloy")) {
-            return true;
-        }
-        if (itemId.equalsIgnoreCase("HyProTech_Ingot_Superalloy")) {
-            return true;
-        }
-        if (itemId.contains("_Alloy_")) {
-            return true;
-        }
-        return itemId.endsWith("_Alloy");
+
+        return allowed_alloy.contains(itemId); // TMP Need full rework
+        // if (itemId.contains("_Alloy_")) {
+        //     return true;
+        // }
+        // return itemId.endsWith("_Alloy");
     }
 
     private static boolean isPowder(String itemId) {
-        return itemId.endsWith("_Powder") || itemId.contains("_Powder_") || itemId.contains("_Powder");
+        return itemId.endsWith("_Powder") || itemId.contains("_Powder_") || itemId.contains("_Powder") || itemId.contains("Powder_");
     }
 
     private static boolean isKnownItemId(String itemId) {

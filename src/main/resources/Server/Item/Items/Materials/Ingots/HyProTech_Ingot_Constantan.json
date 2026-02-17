@@ -19,7 +19,8 @@
     ],
     "Output": [
       {
-        "ItemId": "HyProTech_Ingot_Constantan"
+        "ItemId": "HyProTech_Ingot_Constantan",
+        "Quantity": 2
       }
     ],
     "BenchRequirement": [

@@ -19,7 +19,8 @@
     ],
     "Output": [
       {
-        "ItemId": "HyProTech_Ingot_Electrum"
+        "ItemId": "HyProTech_Ingot_Electrum",
+        "Quantity": 2
       }
     ],
     "BenchRequirement": [

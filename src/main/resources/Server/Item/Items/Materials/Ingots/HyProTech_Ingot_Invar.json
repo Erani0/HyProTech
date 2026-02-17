@@ -19,7 +19,8 @@
     ],
     "Output": [
       {
-        "ItemId": "HyProTech_Ingot_Invar"
+        "ItemId": "HyProTech_Ingot_Invar",
+        "Quantity": 3
       }
     ],
     "BenchRequirement": [

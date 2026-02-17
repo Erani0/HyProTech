@@ -59,11 +59,11 @@ public final class AlloySmelterConfig {
 
     private static final int[] DEFAULT_OUTPUT_MULTIPLIER = {
             1,
-            2,
-            2,
-            2,
-            2,
-            2
+            1,
+            1,
+            1,
+            1,
+            1
     };
 
     private static final double[] DEFAULT_PROCESSING_SECONDS = {
