@@ -1,0 +1,8 @@
+{
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.import.gradle.java.home": "C:/Program Files/Java/jdk-25.0.2",
+    "cSpell.words": [
+        "Machinarium"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
