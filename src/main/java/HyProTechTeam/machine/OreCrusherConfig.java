@@ -439,10 +439,10 @@ public final class OreCrusherConfig {
             return override;
         }
         if (base.startsWith("Ore_") && base.length() > 4) {
-            return "HyProTech_" + base.substring(4) + "_Powder";
+            return "HyProTech_" + "Powder_" + base.substring(4);
         }
         if (normalized.startsWith("HyProTech_") && normalized.endsWith("_Ore")) {
-            return normalized.substring(0, normalized.length() - 4) + "_Powder";
+            return "Powder_" + normalized.substring(0, normalized.length() - 4);
         }
         return null;
     }
@@ -454,6 +454,8 @@ public final class OreCrusherConfig {
         switch (oreId) {
             case "Ore_Bauxite":
                 return "HyProTech_Powder_Aluminum";
+            case "Ore_Adamantite":
+                return "HyProTech_Powder_Adamantite";
             case "Ore_Cassiterite":
                 return "HyProTech_Powder_Tin";
             case "Ore_Chromite":
@@ -474,6 +476,10 @@ public final class OreCrusherConfig {
                 return "HyProTech_Powder_Uranium";
             case "Ore_Vanadinite":
                 return "HyProTech_Powder_Vanadium";
+            case "Ore_Prisma":
+                return "HyProTech_Powder_Prisma";
+            case "Ore_Onyxium":
+                return "HyProTech_Powder_Onyxium";
             default:
                 return null;
         }
