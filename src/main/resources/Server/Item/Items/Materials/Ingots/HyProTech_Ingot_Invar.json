@@ -1,0 +1,66 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Ingot_Invar.name",
+    "Description": "server.items.HyProTech_Ingot_Invar.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 2
+      },
+      {
+        "ItemId": "HyProTech_Ingot_Nickel",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "HyProTech_Ingot_Invar",
+        "Quantity": 3
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Processing",
+        "Id": "AlloySmelter"
+      }
+    ],
+    "OutputQuantity": 1,
+    "TimeSeconds": 10
+  },
+  "Model": "Items/Models/Materials/Ingots/Ingot_Alloy.blockymodel",
+  "Texture": "Items/Textures/Materials/Ingots/Ingot_Invar.png",
+  "Icon": "Icons/ItemsGenerated/Materials/Ingots/Ingot_Invar.png",
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Border_Torch.name",
+    "Description": "server.items.HyProTech_Border_Torch.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/Tools/Border_Torch.png",
+  "Categories": [
+    "Blocks.Misc"
+  ],
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Opacity": "Transparent",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/HyProTech/BorderTorch/borderTorch.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/HyProTech/BorderTorch/Torch_Texture.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#9d9d9d",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "HitboxType": "HyProTech_Border_Hit_None",
+    "InteractionHitboxType": "HyProTech_Border_Interact"
+  }
+}

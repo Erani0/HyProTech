@@ -1,0 +1,3297 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Cable_Copper_S3.name",
+    "Description": "server.items.HyProTech_Cable_Copper_S3.description"
+  },
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/Transfers/Cables_Energy/Cable_Energy_T3.png",
+  "Categories": [
+    "Blocks.Misc"
+  ],
+  "Recipe": {
+    "TimeSeconds": 0,
+    "Input": [
+      {
+        "ItemId": "HyProTech_Cable_Copper_S2",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Bar_Gold",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Cables"
+        ]
+      }
+    ]
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Opacity": "Transparent",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/cable_t3.png",
+        "Weight": 1
+      }
+    ],
+    "ParticleColor": "#9d9d9d",
+    "Supporting": {
+      "Up": [
+        {
+          "FaceType": "Full"
+        }
+      ]
+    },
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "BlockEntity": {
+      "Components": {
+        "HyProTech:energy_node": {
+          "NodeType": "Cable",
+          "Energy": 0,
+          "Capacity": 203440,
+          "MaxTransfer": 1160039,
+          "InputMask": 63,
+          "OutputMask": 63,
+          "CableTier": 3
+        }
+      }
+    },
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "OpenCustomUI",
+            "Page": {
+              "Id": "HyProTech_cable_page"
+            }
+          }
+        ]
+      }
+    },
+    "HitboxType": "HyProTech_Cable_Hit_00",
+    "InteractionHitboxType": "HyProTech_Cable_Interact_00",
+    "State": {
+      "Definitions": {
+        "Cable_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "CableInput_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "CableInput_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "CableInput_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "CableInput_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "CableInput_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "CableInput_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "CableOutput_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "CableOutput_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "CableOutput_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "CableOutput_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "CableOutput_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "CableOutput_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "CableInput_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "CableOutput_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "CableInput_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "CableOutput_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "CableInput_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "CableOutput_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "CableInput_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "CableOutput_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "CableInput_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "CableOutput_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "CableInput_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "CableOutput_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "CableInput_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "CableOutput_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "CableInput_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "CableOutput_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "CableInput_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "CableOutput_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "CableInput_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "CableOutput_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "CableInput_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "CableOutput_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "CableInput_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "CableOutput_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "CableInput_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "CableOutput_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "CableInput_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "CableOutput_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "CableInput_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "CableOutput_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "CableInput_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "CableOutput_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "CableInput_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "CableOutput_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "CableInput_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "CableOutput_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "CableInput_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "CableOutput_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "CableInput_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "CableOutput_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "CableInput_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "CableOutput_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "CableInput_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "CableOutput_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "CableInput_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "CableOutput_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "CableInput_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "CableOutput_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "CableInput_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "CableOutput_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "CableInput_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "CableOutput_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "CableInput_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "CableOutput_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "CableInput_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "CableOutput_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "CableInput_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "CableOutput_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "CableInput_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "CableOutput_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "CableInput_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "CableOutput_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "CableInput_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "CableOutput_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "CableInput_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "CableOutput_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "CableInput_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "CableOutput_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "CableInput_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "CableOutput_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "CableInput_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "CableOutput_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "CableInput_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "CableOutput_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "CableInput_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "CableOutput_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "CableInput_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "CableOutput_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "CableInput_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "CableOutput_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "CableInput_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "CableOutput_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "CableInput_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "CableOutput_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "CableInput_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "CableOutput_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "CableInput_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "CableOutput_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "CableInput_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "CableOutput_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "CableInput_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "CableOutput_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "CableInput_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "CableOutput_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "CableInput_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "CableOutput_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "CableInput_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "CableOutput_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "CableInput_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "CableOutput_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "CableInput_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "CableOutput_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "CableInput_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "CableOutput_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "CableInput_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "CableOutput_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "CableInput_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "CableOutput_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "CableInput_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "CableOutput_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "CableInput_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "CableOutput_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "CableInput_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "CableOutput_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "CableInput_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "CableOutput_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "CableIO_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "CableIO_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "CableIO_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "CableIO_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "CableIO_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "CableIO_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "CableIO_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "CableIO_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "CableIO_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "CableIO_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "CableIO_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "CableIO_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "CableIO_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "CableIO_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "CableIO_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "CableIO_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "CableIO_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "CableIO_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "CableIO_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "CableIO_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "CableIO_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "CableIO_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "CableIO_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "CableIO_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "CableIO_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "CableIO_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "CableIO_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "CableIO_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "CableIO_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "CableIO_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "CableIO_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "CableIO_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "CableIO_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "CableIO_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "CableIO_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "CableIO_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "CableIO_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "CableIO_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "CableIO_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "CableIO_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "CableIO_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "CableIO_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "CableIO_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "CableIO_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "CableIO_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "CableIO_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "CableIO_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "CableIO_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "CableIO_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "CableIO_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "CableIO_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "CableIO_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "CableIO_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "CableIO_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "CableIO_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "CableIO_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "CableIO_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "CableIO_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "CableIO_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "CableIO_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "CableIO_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "CableIO_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "CableIO_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "CableIO_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T0_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T0_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T0_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T0_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T0_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T0_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T0_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T0_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T0_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T0_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T0_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T0_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T0_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T0_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T0_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T0_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T0_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T0_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T0_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T0_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T0_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T0_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T0_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T0_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T0_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T0_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T0_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T0_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T0_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T0_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T0_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T0_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T0_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T0_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T0_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T0_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T0_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T0_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T0_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T0_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T0_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T0_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T0_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T0_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T0_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T0_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T0_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T0_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T0_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T0_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T0_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T0_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T0_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T0_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T0_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T0_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T0_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T0_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T0_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T0_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T0_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T0_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T0_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T0_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T1_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T1_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T1_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T1_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T1_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T1_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T1_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T1_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T1_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T1_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T1_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T1_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T1_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T1_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T1_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T1_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T1_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T1_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T1_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T1_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T1_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T1_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T1_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T1_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T1_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T1_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T1_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T1_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T1_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T1_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T1_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T1_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T1_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T1_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T1_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T1_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T1_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T1_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T1_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T1_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T1_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T1_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T1_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T1_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T1_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T1_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T1_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T1_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T1_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T1_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T1_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T1_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T1_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T1_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T1_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T1_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T1_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T1_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T1_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T1_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T1_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T1_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T1_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T1_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T2_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T2_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T2_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T2_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T2_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T2_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T2_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T2_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T2_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T2_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T2_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T2_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T2_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T2_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T2_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T2_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T2_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T2_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T2_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T2_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T2_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T2_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T2_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T2_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T2_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T2_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T2_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T2_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T2_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T2_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T2_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T2_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T2_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T2_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T2_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T2_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T2_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T2_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T2_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T2_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T2_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T2_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T2_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T2_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T2_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T2_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T2_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T2_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T2_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T2_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T2_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T2_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T2_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T2_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T2_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T2_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T2_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T2_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T2_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T2_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T2_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T2_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T2_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T2_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T3_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T3_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T3_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T3_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T3_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T3_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T3_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T3_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T3_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T3_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T3_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T3_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T3_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T3_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T3_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T3_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T3_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T3_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T3_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T3_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T3_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T3_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T3_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T3_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T3_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T3_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T3_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T3_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T3_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T3_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T3_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T3_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T3_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T3_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T3_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T3_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T3_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T3_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T3_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T3_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T3_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T3_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T3_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T3_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T3_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T3_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T3_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T3_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T3_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T3_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T3_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T3_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T3_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T3_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T3_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T3_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T3_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T3_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T3_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T3_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T3_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T3_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T3_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T3_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T4_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T4_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T4_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T4_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T4_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T4_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T4_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T4_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T4_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T4_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T4_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T4_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T4_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T4_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T4_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T4_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T4_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T4_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T4_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T4_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T4_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T4_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T4_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T4_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T4_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T4_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T4_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T4_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T4_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T4_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T4_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T4_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T4_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T4_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T4_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T4_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T4_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T4_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T4_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T4_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T4_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T4_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T4_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T4_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T4_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T4_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T4_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T4_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T4_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T4_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T4_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T4_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T4_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T4_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T4_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T4_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T4_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T4_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T4_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T4_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T4_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T4_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T4_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T4_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        },
+        "Cable_T5_00": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_00.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_00",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_00"
+        },
+        "Cable_T5_01": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_01.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_01",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_01"
+        },
+        "Cable_T5_02": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_02.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_02",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_02"
+        },
+        "Cable_T5_03": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_03.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_03",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_03"
+        },
+        "Cable_T5_04": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_04.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_04",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_04"
+        },
+        "Cable_T5_05": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_05.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_05",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_05"
+        },
+        "Cable_T5_06": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_06.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_06",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_06"
+        },
+        "Cable_T5_07": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_07.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_07",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_07"
+        },
+        "Cable_T5_08": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_08.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_08",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_08"
+        },
+        "Cable_T5_09": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_09.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_09",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_09"
+        },
+        "Cable_T5_10": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_10.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_10",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_10"
+        },
+        "Cable_T5_11": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_11.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_11",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_11"
+        },
+        "Cable_T5_12": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_12.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_12",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_12"
+        },
+        "Cable_T5_13": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_13.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_13",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_13"
+        },
+        "Cable_T5_14": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_14.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_14",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_14"
+        },
+        "Cable_T5_15": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_15.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_15",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_15"
+        },
+        "Cable_T5_16": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_16.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_16",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_16"
+        },
+        "Cable_T5_17": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_17.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_17",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_17"
+        },
+        "Cable_T5_18": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_18.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_18",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_18"
+        },
+        "Cable_T5_19": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_19.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_19",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_19"
+        },
+        "Cable_T5_20": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_20.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_20",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_20"
+        },
+        "Cable_T5_21": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_21.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_21",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_21"
+        },
+        "Cable_T5_22": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_22.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_22",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_22"
+        },
+        "Cable_T5_23": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_23.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_23",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_23"
+        },
+        "Cable_T5_24": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_24.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_24",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_24"
+        },
+        "Cable_T5_25": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_25.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_25",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_25"
+        },
+        "Cable_T5_26": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_26.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_26",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_26"
+        },
+        "Cable_T5_27": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_27.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_27",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_27"
+        },
+        "Cable_T5_28": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_28.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_28",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_28"
+        },
+        "Cable_T5_29": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_29.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_29",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_29"
+        },
+        "Cable_T5_30": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_30.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_30",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_30"
+        },
+        "Cable_T5_31": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_31.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_31",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_31"
+        },
+        "Cable_T5_32": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_32.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_32",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_32"
+        },
+        "Cable_T5_33": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_33.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_33",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_33"
+        },
+        "Cable_T5_34": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_34.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_34",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_34"
+        },
+        "Cable_T5_35": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_35.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_35",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_35"
+        },
+        "Cable_T5_36": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_36.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_36",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_36"
+        },
+        "Cable_T5_37": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_37.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_37",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_37"
+        },
+        "Cable_T5_38": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_38.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_38",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_38"
+        },
+        "Cable_T5_39": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_39.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_39",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_39"
+        },
+        "Cable_T5_40": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_40.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_40",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_40"
+        },
+        "Cable_T5_41": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_41.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_41",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_41"
+        },
+        "Cable_T5_42": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_42.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_42",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_42"
+        },
+        "Cable_T5_43": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_43.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_43",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_43"
+        },
+        "Cable_T5_44": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_44.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_44",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_44"
+        },
+        "Cable_T5_45": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_45.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_45",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_45"
+        },
+        "Cable_T5_46": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_46.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_46",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_46"
+        },
+        "Cable_T5_47": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_47.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_47",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_47"
+        },
+        "Cable_T5_48": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_48.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_48",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_48"
+        },
+        "Cable_T5_49": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_49.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_49",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_49"
+        },
+        "Cable_T5_50": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_50.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_50",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_50"
+        },
+        "Cable_T5_51": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_51.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_51",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_51"
+        },
+        "Cable_T5_52": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_52.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_52",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_52"
+        },
+        "Cable_T5_53": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_53.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_53",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_53"
+        },
+        "Cable_T5_54": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_54.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_54",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_54"
+        },
+        "Cable_T5_55": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_55.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_55",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_55"
+        },
+        "Cable_T5_56": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_56.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_56",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_56"
+        },
+        "Cable_T5_57": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_57.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_57",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_57"
+        },
+        "Cable_T5_58": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_58.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_58",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_58"
+        },
+        "Cable_T5_59": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_59.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_59",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_59"
+        },
+        "Cable_T5_60": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_60.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_60",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_60"
+        },
+        "Cable_T5_61": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_61.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_61",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_61"
+        },
+        "Cable_T5_62": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_62.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_62",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_62"
+        },
+        "Cable_T5_63": {
+          "CustomModel": "Blocks/HyProTech/Cable/Cable_63.blockymodel",
+          "HitboxType": "HyProTech_Cable_Hit_63",
+          "InteractionHitboxType": "HyProTech_Cable_Interact_63"
+        }
+      }
+    }
+  }
+}
+

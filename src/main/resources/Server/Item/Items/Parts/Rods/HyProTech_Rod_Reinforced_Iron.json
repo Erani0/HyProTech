@@ -1,0 +1,62 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Rod_Reinforced_Iron.name",
+    "Description": "server.items.HyProTech_Rod_Reinforced_Iron.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "HyProTech_Rod_Iron",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "HyProTech_Ingot_Steel",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Parts"
+        ]
+      }
+    ]
+  },
+  "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
+  "Texture": "Items/Textures/Parts/Rods/Rod_Reinforced_Iron.png",
+  "Icon": "Icons/ItemsGenerated/Parts/Rod_Reinforced_Iron.png",
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
+}

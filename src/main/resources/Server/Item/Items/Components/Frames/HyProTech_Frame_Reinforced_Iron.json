@@ -1,0 +1,94 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Frame_Reinforced_Iron.name",
+    "Description": "server.items.HyProTech_Frame_Reinforced_Iron.description"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Recipe": {
+    "TimeSeconds": 4,
+    "Input": [
+      {
+        "ItemId": "HyProTech_Frame_Iron",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "HyProTech_Rod_Reinforced_Iron",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "HyProTech_Plate_Reinforced_Iron",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Components"
+        ]
+      }
+    ]
+  },
+  "Model": "Blocks/HyProTech/MachineFrame/ReinforcedFrame_Base.blockymodel",
+  "Texture": "Blocks/HyProTech/MachineFrame/reinforcemachineframe.png",
+  "Icon": "Icons/ItemsGenerated/Components/Frame_Reinforced_Iron.png",
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": "Block_Secondary"
+  },
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Group": "Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "CustomModel": "Blocks/HyProTech/MachineFrame/ReinforcedFrame_Base.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/HyProTech/MachineFrame/reinforcemachineframe.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "ParticleColor": "#9d9d9d",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock"
+  },
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true,
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ]
+}

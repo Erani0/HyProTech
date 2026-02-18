@@ -1,0 +1,104 @@
+{
+    "TranslationProperties":  {
+                                  "Name":  "server.items.Ore_Pentlandite_Stone.name",
+                                  "Description":  "server.items.Ore_Pentlandite_Stone.description"
+                              },
+    "Categories":  [
+                       "Blocks.Ores"
+                   ],
+    "Recipe":  {
+                   "Input":  [
+                                 {
+                                     "ItemId":  "Ore_Pentlandite_Stone",
+                                     "Quantity":  1
+                                 }
+                             ],
+                   "Output":  [
+                                  {
+                                      "ItemId":  "HyProTech_Ingot_Nickel"
+                                  }
+                              ],
+                   "BenchRequirement":  [
+                                            {
+                                                "Id":  "Furnace",
+                                                "Type":  "Processing"
+                                            }
+                                        ],
+                   "OutputQuantity":  1,
+                   "TimeSeconds":  10
+               },
+    "BlockType":  {
+                      "Material":  "Solid",
+                      "DrawType":  "CubeWithModel",
+                      "CustomModel":  "Items/CraftingItems/Ores/Ore.blockymodel",
+                      "CustomModelTexture":  [
+                                                 {
+                                                     "Texture":  "Items/CraftingItems/Ores/Pentlandite.png",
+                                                     "Weight":  1
+                                                 }
+                                             ],
+                      "Group":  "OrePentlandite",
+                      "Flags":  {
+
+                                },
+                      "RandomRotation":  "YawStep90",
+                      "Gathering":  {
+                                        "Breaking":  {
+                                                         "GatherType":  "Rocks",
+                                                         "Quality":  2,
+                                                         "DropList":  {
+                                                                          "Container":  {
+                                                                                            "Type":  "Multiple",
+                                                                                            "Containers":  [
+                                                                                                               {
+                                                                                                                   "Type":  "Single",
+                                                                                                                   "Item":  {
+                                                                                                                                "ItemId":  "Ore_Pentlandite"
+                                                                                                                            }
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "Type":  "Single",
+                                                                                                                   "Item":  {
+                                                                                                                                "ItemId":  "Rock_Stone_Cobble"
+                                                                                                                            }
+                                                                                                               }
+                                                                                                           ]
+                                                                                        }
+                                                                      }
+                                                     }
+                                    },
+                      "BlockParticleSetId":  "Ore",
+                      "Textures":  [
+                                       {
+                                           "Weight":  1,
+                                           "All":  "BlockTextures/Rock_Stone.png"
+                                       }
+                                   ],
+                      "ParticleColor":  "#d2efec",
+                      "BlockSoundSetId":  "Ore"
+                  },
+    "PlayerAnimationsId":  "Block",
+    "Tags":  {
+                 "Type":  [
+                              "Ore"
+                          ],
+                 "Family":  [
+                                "Pentlandite"
+                            ]
+             },
+    "Icon":  "Icons/ItemsGenerated/Ores/Ore_Pentlandite_Stone.png",
+    "IconProperties":  {
+                           "Scale":  0.58823,
+                           "Rotation":  [
+                                            22.5,
+                                            45.0,
+                                            22.5
+                                        ],
+                           "Translation":  [
+                                               0.0,
+                                               -13.5
+                                           ]
+                       },
+    "MaxStack":  25,
+    "ItemSoundSetId":  "ISS_Blocks_Stone"
+}

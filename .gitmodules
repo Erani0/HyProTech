@@ -1,0 +1,3 @@
+[submodule "HyProTech-Resources"]
+	path = HyProTech-Resources
+	url = https://github.com/HyProTechTeam/HyProTech-Resources.git

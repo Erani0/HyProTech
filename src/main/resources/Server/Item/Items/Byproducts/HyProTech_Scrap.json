@@ -1,0 +1,39 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.HyProTech_Scrap.name"
+  },
+  "Categories": [
+    "Items"
+  ],
+  "Model": "Items/Models/Byproducts/Scrap.blockymodel",
+  "Texture": "Items/Textures/Byproducts/Scrap.png",
+  "Icon": "Icons/ItemsGenerated/Byproducts/Scrap.png",
+  "ResourceTypes": [
+    {
+      "Id": "Metal_Bars"
+    }
+  ],
+  "PlayerAnimationsId": "Item",
+  "IconProperties": {
+    "Scale": 1,
+    "Translation": [
+      0,
+      -3
+    ],
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ]
+  },
+  "Tags": {
+    "Type": [
+      "Ingredient"
+    ]
+  },
+  "ItemEntity": {
+    "ParticleSystemId": null
+  },
+  "ItemSoundSetId": "ISS_Items_Ingots",
+  "DropOnDeath": true
+}
