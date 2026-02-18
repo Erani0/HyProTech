@@ -55,7 +55,7 @@
     "CustomModel": "Blocks/HyProTech/MachineFrame/Frame_Base.blockymodel",
     "CustomModelTexture": [
       {
-        "Texture": "Items/Textures/Materials/Copper.png",
+        "Texture": "BlockTextures/Materials/Copper.png",
         "Weight": 1
       }
     ],

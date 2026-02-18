@@ -29,7 +29,7 @@
     ]
   },
   "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
-  "Texture": "Items/Textures/Parts/Rods/Rod_Iron.png",
+  "Texture": "Items/Textures/Materials/Copper.png",
   "Icon": "Icons/ItemsGenerated/Parts/Rod_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
