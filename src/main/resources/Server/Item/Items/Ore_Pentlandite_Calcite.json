@@ -71,7 +71,7 @@
                       "Textures":  [
                                        {
                                            "Weight":  1,
-                                           "All":  "BlockTextures/Rock_Calcite.png"
+                                           "All":  "BlockTextures/Calcite.png"
                                        }
                                    ],
                       "ParticleColor":  "#d2efec",

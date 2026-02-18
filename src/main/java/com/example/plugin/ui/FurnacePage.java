@@ -328,7 +328,8 @@ public class FurnacePage extends InteractiveCustomUIPage<FurnacePage.FurnaceEven
         }
 
         UUID playerId = uuidComponent.getUuid();
-        Map<UUID, ProcessingBenchWindow> windows = benchState.getWindows();
+        @SuppressWarnings("unchecked")
+        Map<UUID, ProcessingBenchWindow> windows = (Map<UUID, ProcessingBenchWindow>) (Object)  benchState.getWindows();
         ProcessingBenchWindow existing = windows.get(playerId);
         if (existing != null) {
             return existing;

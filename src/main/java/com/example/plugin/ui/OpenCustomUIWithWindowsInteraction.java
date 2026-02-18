@@ -197,7 +197,8 @@ public class OpenCustomUIWithWindowsInteraction extends SimpleInstantInteraction
         }
         UUID playerId = uuidComponent.getUuid();
 
-        Map<UUID, ProcessingBenchWindow> windows = benchState.getWindows();
+        @SuppressWarnings("unchecked")
+        Map<UUID, ProcessingBenchWindow> windows = (Map<UUID, ProcessingBenchWindow>) (Object)  benchState.getWindows();
         ProcessingBenchWindow existing = windows.get(playerId);
         if (existing != null) {
             return new Window[] { existing };
