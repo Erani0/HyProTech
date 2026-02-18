@@ -891,10 +891,10 @@ items.HyProTech_Valve.description = Um componente fabricado usado em receitas av
 server.items.HyProTech_Valve.name = Válvula
 server.items.HyProTech_Valve.description = Um componente fabricado usado em receitas avançadas.
 
-items.HyProTech_Bolts.name = Parafusos (Bolts)
-items.HyProTech_Bolts.description = Um componente fabricado usado em receitas avançadas.
-server.items.HyProTech_Bolts.name = Parafusos (Bolts)
-server.items.HyProTech_Bolts.description = Um componente fabricado usado em receitas avançadas.
+items.HyProTech_Bolts_Iron.name = Parafusos (Bolts)
+items.HyProTech_Bolts_Iron.description = Um componente fabricado usado em receitas avançadas.
+server.items.HyProTech_Bolts_Iron.name = Parafusos (Bolts)
+server.items.HyProTech_Bolts_Iron.description = Um componente fabricado usado em receitas avançadas.
 items.HyProTech_Rivets.name = Rebites
 items.HyProTech_Rivets.description = Um componente fabricado usado em receitas avançadas.
 server.items.HyProTech_Rivets.name = Rebites

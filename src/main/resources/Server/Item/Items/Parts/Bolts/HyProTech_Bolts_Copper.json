@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Bolts.name",
-    "Description": "server.items.HyProTech_Bolts.description"
+    "Name": "server.items.HyProTech_Bolts_Copper.name",
+    "Description": "server.items.HyProTech_Bolts_Copper.description"
   },
   "Categories": [
     "Items"
@@ -9,6 +9,30 @@
   "Model": "Items/PH.blockymodel",
   "Texture": "Items/PH.png",
   "Icon": "Icons/ItemsGenerated/PHI.png",
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "HyProTech_Rod_Reinforced_Iron",
+        "Quantity": 1
+      }
+    ],
+    "Output": [
+      {
+        "ItemId": "HyProTech_Bolts_Copper",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Parts"
+        ]
+      }
+    ]
+  },
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

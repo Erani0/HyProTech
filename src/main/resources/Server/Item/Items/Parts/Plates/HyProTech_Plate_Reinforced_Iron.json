@@ -11,11 +11,7 @@
     "Input": [
       {
         "ItemId": "HyProTech_Plate_Iron",
-        "Quantity": 1
-      },
-      {
-        "ItemId": "HyProTech_Ingot_Steel",
-        "Quantity": 1
+        "Quantity": 2
       }
     ],
     "BenchRequirement": [

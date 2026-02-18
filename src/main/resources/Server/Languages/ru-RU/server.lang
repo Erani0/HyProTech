@@ -891,10 +891,10 @@ items.HyProTech_Valve.description = A crafted component used in advanced recipes
 server.items.HyProTech_Valve.name = Valve
 server.items.HyProTech_Valve.description = A crafted component used in advanced recipes.
 
-items.HyProTech_Bolts.name = Bolts
-items.HyProTech_Bolts.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Bolts.name = Bolts
-server.items.HyProTech_Bolts.description = A crafted component used in advanced recipes.
+items.HyProTech_Bolts_Iron.name = Bolts
+items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Bolts_Iron.name = Bolts
+server.items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
 items.HyProTech_Rivets.name = Rivets
 items.HyProTech_Rivets.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Rivets.name = Rivets

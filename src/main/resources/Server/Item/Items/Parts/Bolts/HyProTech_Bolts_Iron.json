@@ -1,21 +1,26 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Rod_Reinforced_Iron.name",
-    "Description": "server.items.HyProTech_Rod_Reinforced_Iron.description"
+    "Name": "server.items.HyProTech_Bolts_Iron.name",
+    "Description": "server.items.HyProTech_Bolts_Iron.description"
   },
   "Categories": [
     "Items"
   ],
+  "Model": "Items/PH.blockymodel",
+  "Texture": "Items/PH.png",
+  "Icon": "Icons/ItemsGenerated/PHI.png",
   "Recipe": {
     "TimeSeconds": 2,
     "Input": [
       {
-        "ItemId": "HyProTech_Rod_Iron",
+        "ItemId": "HyProTech_Rod_Reinforced_Iron",
         "Quantity": 1
-      },
+      }
+    ],
+    "Output": [
       {
-        "ItemId": "HyProTech_Plate_Iron",
-        "Quantity": 1
+        "ItemId": "HyProTech_Bolts_Iron",
+        "Quantity": 2
       }
     ],
     "BenchRequirement": [
@@ -28,9 +33,6 @@
       }
     ]
   },
-  "Model": "Items/Models/Parts/Rods/Rod_Base.blockymodel",
-  "Texture": "Items/Textures/Parts/Rods/Rod_Reinforced_Iron.png",
-  "Icon": "Icons/ItemsGenerated/Parts/Rod_Reinforced_Iron.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

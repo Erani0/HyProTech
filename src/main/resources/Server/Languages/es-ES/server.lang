@@ -873,10 +873,10 @@ items.HyProTech_Valve.description = Un componente elaborado utilizado en recetas
 server.items.HyProTech_Valve.name = Válvula
 server.items.HyProTech_Valve.description = Un componente elaborado utilizado en recetas avanzadas.
 
-items.HyProTech_Bolts.name = Pernos
-items.HyProTech_Bolts.description = Un componente elaborado utilizado en recetas avanzadas.
-server.items.HyProTech_Bolts.name = Pernos
-server.items.HyProTech_Bolts.description = Un componente elaborado utilizado en recetas avanzadas.
+items.HyProTech_Bolts_Iron.name = Pernos
+items.HyProTech_Bolts_Iron.description = Un componente elaborado utilizado en recetas avanzadas.
+server.items.HyProTech_Bolts_Iron.name = Pernos
+server.items.HyProTech_Bolts_Iron.description = Un componente elaborado utilizado en recetas avanzadas.
 items.HyProTech_Rivets.name = Remaches
 items.HyProTech_Rivets.description = Un componente elaborado utilizado en recetas avanzadas.
 server.items.HyProTech_Rivets.name = Remaches
