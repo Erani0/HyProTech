@@ -6,9 +6,9 @@
   "Categories": [
     "Items"
   ],
-  "Model": "Items/Models/Materials/Powders/PowderBag.blockymodel",
-  "Texture": "Items/CraftingItems/textures/iron_powder.png",
-  "Icon": "Icons/ItemsGenerated/HyProTech_Ingot_Steel.png",
+  "Model": "Items/PH.blockymodel",
+  "Texture": "Items/PH.png",
+  "Icon": "Icons/ItemsGenerated/PHI.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

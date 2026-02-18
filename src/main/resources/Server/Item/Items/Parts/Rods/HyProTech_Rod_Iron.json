@@ -3,7 +3,6 @@
     "Name": "server.items.HyProTech_Rod_Iron.name",
     "Description": "server.items.HyProTech_Rod_Iron.description"
   },
-  "Id": "HyProTech_Rod_Iron",
   "Categories": [
     "Items"
   ],

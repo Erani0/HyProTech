@@ -32,7 +32,7 @@
     "OutputQuantity": 1,
     "TimeSeconds": 10
   },
-  "Model": "Items/Models/Materials/Powders/Ingot.blockymodel",
+  "Model": "Items/Models/Materials/Ingots/Ingot.blockymodel",
   "Texture": "Items/Textures/Materials/Ingots/Ingot_Bronze.png",
   "Icon": "Icons/ItemsGenerated/Materials/Ingots/Ingot_Bronze.png",
   "PlayerAnimationsId": "Item",

@@ -71,7 +71,7 @@
                       "Textures":  [
                                        {
                                            "Weight":  1,
-                                           "All":  "BlockTextures/Rock_Sandstone.png"
+                                           "All":  "BlockTextures/Rock_Sandstone_Side.png"
                                        }
                                    ],
                       "ParticleColor":  "#d2efec",

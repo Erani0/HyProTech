@@ -71,7 +71,7 @@
                       "Textures":  [
                                        {
                                            "Weight":  1,
-                                           "All":  "BlockTextures/Rock_Dry_Mud.png"
+                                           "All":  "BlockTextures/Soil_Mud_Dry.png"
                                        }
                                    ],
                       "ParticleColor":  "#d2efec",
