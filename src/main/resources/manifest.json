@@ -1,7 +1,7 @@
 {
     "Group": "HyProTechTeam",
     "Name": "HyProTech",
-    "Version": "1.4.0",
+    "Version": "1.4.1",
     "Description": "A Hytale Modern Technology mod!",
     "Authors": [
         {
@@ -9,7 +9,7 @@
         }
     ],
     "Website": "example.org",
-    "ServerVersion": "2026.02.17-255364b8e",
+    "ServerVersion": "2026.02.18-f3b8fff95",
     "Dependencies": {
         "DTAPGAMING:OreGenLibrary": "*"
     },
