@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Heavy_Spring.name",
-    "Description": "server.items.HyProTech_Heavy_Spring.description"
+    "Name": "server.items.HyProTech_Spring_Heavy_Iron.name",
+    "Description": "server.items.HyProTech_Spring_Heavy_Iron.description"
   },
   "Categories": [
     "Items"
@@ -26,7 +26,7 @@
   },
   "Model": "Items/CraftingItems/Spring/Spring.blockymodel",
   "Texture": "Items/CraftingItems/Spring/Spring.png",
-  "Icon": "Icons/ItemsGenerated/HyProTech_Heavy_Spring.png",
+  "Icon": "Icons/ItemsGenerated/Heavy_Spring.png",
   "PlayerAnimationsId": "Item",
   "IconProperties": {
     "Scale": 1,

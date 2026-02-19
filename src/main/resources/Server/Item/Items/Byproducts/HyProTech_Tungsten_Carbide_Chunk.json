@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Spring.name",
-    "Description": "server.items.HyProTech_Spring.description"
+    "Name": "server.items.HyProTech_Chunk_Tungsten_Carbide.name",
+    "Description": "server.items.HyProTech_Chunk_Tungsten_Carbide.description"
   },
   "Categories": [
     "Items"

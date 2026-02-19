@@ -1,11 +1,29 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Tungsten_Carbide_Chunk.name",
-    "Description": "server.items.HyProTech_Tungsten_Carbide_Chunk.description"
+    "Name": "server.items.HyProTech_Spring_Iron.name",
+    "Description": "server.items.HyProTech_Spring_Iron.description"
   },
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "HyProTech_Rod_Iron",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Parts"
+        ]
+      }
+    ]
+  },
   "Model": "Items/PH.blockymodel",
   "Texture": "Items/PH.png",
   "Icon": "Icons/ItemsGenerated/PHI.png",

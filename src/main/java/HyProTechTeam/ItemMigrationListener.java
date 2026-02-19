@@ -81,11 +81,22 @@ public class ItemMigrationListener {
         replace_map.put("Machinarium_Energy_Cable_T5",                    "HyProTech_Cable_Copper_S5");
         // Item cables
         replace_map.put("Machinarium_Item_Cable",                         "HyProTech_Item_Cable");
-        replace_map.put("Machinarium_Item_Cable_T1",                      "HyProTech_Item_Cable_S1");
-        replace_map.put("Machinarium_Item_Cable_T2",                      "HyProTech_Item_Cable_S2");
-        replace_map.put("Machinarium_Item_Cable_T3",                      "HyProTech_Item_Cable_S3");
-        replace_map.put("Machinarium_Item_Cable_T4",                      "HyProTech_Item_Cable_S4");
-        replace_map.put("Machinarium_Item_Cable_T5",                      "HyProTech_Item_Cable_S5");
+        replace_map.put("Machinarium_Item_Cable_T1",                      "HyProTech_Item_Cable_T1");
+        replace_map.put("Machinarium_Item_Cable_T2",                      "HyProTech_Item_Cable_T2");
+        replace_map.put("Machinarium_Item_Cable_T3",                      "HyProTech_Item_Cable_T3");
+        replace_map.put("Machinarium_Item_Cable_T4",                      "HyProTech_Item_Cable_T4");
+        replace_map.put("Machinarium_Item_Cable_T5",                      "HyProTech_Item_Cable_T5");
+        // Item cables Fix who already use
+        replace_map.put("HyProTech_Item_Cable",                           "HyProTech_Item_Cable");
+        replace_map.put("HyProTech_Item_Cable_S1",                        "HyProTech_Item_Cable_T1");
+        replace_map.put("HyProTech_Item_Cable_S2",                        "HyProTech_Item_Cable_T2");
+        replace_map.put("HyProTech_Item_Cable_S3",                        "HyProTech_Item_Cable_T3");
+        replace_map.put("HyProTech_Item_Cable_S4",                        "HyProTech_Item_Cable_T4");
+        replace_map.put("HyProTech_Item_Cable_S5",                        "HyProTech_Item_Cable_T5");
+        // Rods
+        replace_map.put("Machinarium_Heavy_Spring",                       "HyProTech_Spring_Heavy_Iron");
+        replace_map.put("Machinarium_Spring",                             "HyProTech_Spring_Iron");
+        replace_map.put("Machinarium_Circuit_Board",                      "HyProTech_Circuit_Board");
         // Rods
         replace_map.put("Machinarium_Metal_Rod",                          "HyProTech_Rod_Iron");
         replace_map.put("Machinarium_Rod_Iron",                           "HyProTech_Rod_Iron");
@@ -118,7 +129,7 @@ public class ItemMigrationListener {
         replace_map.put("Machinarium_Titanium_Ingot",                     "HyProTech_Ingot_Titanium");
         replace_map.put("Machinarium_Uranium_Ingot",                      "HyProTech_Ingot_Uranium");
         replace_map.put("Machinarium_Vanadium_Ingot",                     "HyProTech_Ingot_Vanadium");
-        replace_map.put("Machinarium_Bronze_Blend",                       "HyProTech_Ingot_Bronze");
+        replace_map.put("Machinarium_Bronze_Blend",                       "Ingredient_Bar_Bronze");
         replace_map.put("Machinarium_Titanium_Vanadium_Alloy",            "HyProTech_Ingot_TiV");
         replace_map.put("Machinarium_Composite_Alloy_Ingot",              "HyProTech_Ingot_Composite_Alloy");
         replace_map.put("Machinarium_Alloy_Steel",                        "HyProTech_Ingot_Steel");
@@ -154,6 +165,7 @@ public class ItemMigrationListener {
         replace_map.put("Machinarium_Titanium_Vanadium_Alloy_Powder",     "HyProTech_Powder_TiV");
         replace_map.put("Machinarium_Composite_Alloy_Powder",             "HyProTech_Powder_Composite_Alloy");
         replace_map.put("Machinarium_Ingot_Invar_Powder",                 "HyProTech_Powder_Invar");
+        replace_map.put("Machinarium_Alloy_Invar_Powder",                 "HyProTech_Powder_Invar");
         replace_map.put("Machinarium_Superalloy_Blend_Powder",            "HyProTech_Powder_Superalloy");
         replace_map.put("Machinarium_High_Tier_Alloy_Blend_Powder",       "HyProTech_Powder_High_Tier_Alloy");
         replace_map.put("Machinarium_Mithril_Powder",                     "HyProTech_Powder_Mithril");
@@ -163,6 +175,7 @@ public class ItemMigrationListener {
         replace_map.put("Machinarium_Ore_Chips",                          "HyProTech_Ore_Chips");
         replace_map.put("Machinarium_Slag",                               "HyProTech_Slag");
         replace_map.put("Machinarium_Scrap",                              "HyProTech_Scrap");
+        replace_map.put("Machinarium_Tungsten_Carbide_Chunk",             "HyProTech_Chunk_Tungsten_Carbide");
     }
 
     public static void onPlayerJoin(PlayerConnectEvent event) {
