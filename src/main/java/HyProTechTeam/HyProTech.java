@@ -282,6 +282,9 @@ public class HyProTech extends JavaPlugin {
                     if (world == null) {
                         return;
                     }
+                    UpgradePersistence.cleanupInvalidChunkReferences(world, pos);
+                    Vector3i cleanupPos = new Vector3i(pos);
+                    world.execute(() -> UpgradePersistence.cleanupInvalidChunkReferences(world, cleanupPos));
                     List<ItemStack> drops = UpgradePersistence.snapshotBreakDrops(world, pos);
                     UpgradePersistence.cacheBreakDrops(world, pos, drops);
                 });
@@ -295,14 +298,25 @@ public class HyProTech extends JavaPlugin {
                     BlockType blockType = event.getBlockType();
                     String blockId = blockType == null ? null : blockType.getId();
                     Vector3i pos = event.getTargetBlock();
+                    World world = null;
+                    if (pos != null) {
+                        world = UpgradePersistence.findWorld(pos, blockType);
+                        if (world == null) {
+                            world = UpgradePersistence.findWorld(pos, null);
+                        }
+                        if (world != null) {
+                            UpgradePersistence.cleanupInvalidChunkReferences(world, pos);
+                            World cleanupWorld = world;
+                            Vector3i cleanupPos = new Vector3i(pos);
+                            cleanupWorld.execute(() -> UpgradePersistence.cleanupInvalidChunkReferences(cleanupWorld, cleanupPos));
+                        }
+                    }
                     if (pos != null && blockId != null) {
-                        World world = UpgradePersistence.findWorld(pos, blockType);
                         if (world != null) {
                             stopMachineSound(world, pos, blockId);
                         }
                     }
                     if (pos != null && TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_QUARRY)) {
-                        World world = UpgradePersistence.findWorld(pos, blockType);
                         if (world != null) {
                             MachineComponent machine = getMachineAt(world, pos, machineType);
                             int width = machine == null ? 5 : machine.getAreaWidth();
@@ -316,7 +330,6 @@ public class HyProTech extends JavaPlugin {
                     if (pos == null) {
                         return;
                     }
-                    World world = UpgradePersistence.findWorld(pos, blockType);
                     if (world == null) {
                         world = UpgradePersistence.findWorld(pos, null);
                     }

@@ -40,6 +40,7 @@ import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayDeque;
@@ -123,6 +124,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         int chunkX = worldChunk.getX();
         int chunkZ = worldChunk.getZ();
+        IntArrayList invalidReferences = null;
 
         for (Int2ObjectMap.Entry<Holder<ChunkStore>> entry : blockComponents.getEntityHolders().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
@@ -140,6 +142,13 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         for (Int2ObjectMap.Entry<Ref<ChunkStore>> entry : blockComponents.getEntityReferences().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
             Ref<ChunkStore> ref = entry.getValue();
+            if (ref == null || !ref.isValid()) {
+                if (invalidReferences == null) {
+                    invalidReferences = new IntArrayList();
+                }
+                invalidReferences.add(blockIndex);
+                continue;
+            }
             EnergyNodeComponent node = blockComponents.getComponent(blockIndex, energyType);
             if (node == null) {
                 node = ensureFurnaceNode(
@@ -147,6 +156,21 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             }
             if (node != null) {
                 processNode(blockComponents, chunkStore, world, chunkX, chunkZ, blockIndex, node, sunlightFactor, delta, cableState);
+            }
+        }
+
+        if (invalidReferences != null && !invalidReferences.isEmpty()) {
+            boolean changed = false;
+            for (int i = 0; i < invalidReferences.size(); i++) {
+                int blockIndex = invalidReferences.getInt(i);
+                Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+                if (ref != null && !ref.isValid()) {
+                    blockComponents.removeEntityReference(blockIndex, ref);
+                    changed = true;
+                }
+            }
+            if (changed) {
+                blockComponents.markNeedsSaving();
             }
         }
     }

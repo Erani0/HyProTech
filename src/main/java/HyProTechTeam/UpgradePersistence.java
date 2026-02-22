@@ -33,6 +33,8 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.universe.world.meta.BlockStateModule;
 import com.hypixel.hytale.server.core.universe.world.meta.BlockState;
 import com.hypixel.hytale.server.core.universe.world.meta.state.ItemContainerState;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -177,6 +179,7 @@ public final class UpgradePersistence {
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
+            cleanupInvalidChunkReferences(world, pos);
             if (debug) {
                 System.out.println("[HyProTech] queueBlockSwap setBlock done pos=" + pos
                         + " newId=" + newBlockId);
@@ -215,6 +218,7 @@ public final class UpgradePersistence {
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
+            cleanupInvalidChunkReferences(world, pos);
             if (items != null && !items.isEmpty()) {
                 restoreContainerItems(world, pos.getX(), pos.getY(), pos.getZ(), items);
             }
@@ -252,6 +256,7 @@ public final class UpgradePersistence {
             setBlockWithRotation(accessor, pos.getX(), pos.getY(), pos.getZ(), newBlockId, rotationIndex);
             ensureBlockState(world, pos.getX(), pos.getY(), pos.getZ());
             applyPendingComponents(world, pos);
+            cleanupInvalidChunkReferences(world, pos);
             if (items != null && !items.isEmpty()) {
                 restoreBenchItems(world, pos.getX(), pos.getY(), pos.getZ(), items);
             }
@@ -294,21 +299,21 @@ public final class UpgradePersistence {
             if (accessor == null) {
                 return;
             }
-            if (expectedType != null) {
-                BlockType actual = accessor.getBlockType(pos.getX(), pos.getY(), pos.getZ());
-                if (!sameBlockId(actual, expectedType)) {
-                    if (actual == null || actual == BlockType.EMPTY) {
-                        // Allow drops if the block was already removed by the time this executes.
-                    } else {
+            BlockType actual = accessor.getBlockType(pos.getX(), pos.getY(), pos.getZ());
+            if (expectedType != null && !sameBlockId(actual, expectedType)) {
+                if (actual != null && actual != BlockType.EMPTY) {
                     return;
-                }
                 }
             }
             List<ItemStack> drops = finalDrops;
             if (drops == null || drops.isEmpty()) {
                 drops = snapshotBreakDrops(world, pos);
             }
-            accessor.setBlock(pos.getX(), pos.getY(), pos.getZ(), BlockType.EMPTY);
+            if (actual != null && actual != BlockType.EMPTY) {
+                accessor.setBlock(pos.getX(), pos.getY(), pos.getZ(), BlockType.EMPTY);
+            }
+            clearBlockComponents(world, pos);
+            cleanupInvalidChunkReferences(world, pos);
             spawnDrop(world, drop, pos);
             spawnDropsAt(world, drops, pos);
         });
@@ -926,6 +931,59 @@ public final class UpgradePersistence {
             blockComponents.removeEntityHolder(blockIndex);
         }
         if (ref != null || holder != null) {
+            blockComponents.markNeedsSaving();
+        }
+    }
+
+    public static void cleanupInvalidChunkReferences(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+        cleanupInvalidChunkReferences(world, chunkIndex);
+    }
+
+    public static void cleanupInvalidChunkReferences(World world, long chunkIndex) {
+        if (world == null) {
+            return;
+        }
+        ChunkStore chunkStore = world.getChunkStore();
+        if (chunkStore == null) {
+            return;
+        }
+        BlockComponentChunk blockComponents =
+                chunkStore.getChunkComponent(chunkIndex, BlockComponentChunk.getComponentType());
+        if (blockComponents == null) {
+            return;
+        }
+
+        IntArrayList invalid = null;
+        for (Int2ObjectMap.Entry<Ref<ChunkStore>> entry : blockComponents.getEntityReferences().int2ObjectEntrySet()) {
+            Ref<ChunkStore> ref = entry.getValue();
+            if (ref == null || !ref.isValid()) {
+                if (invalid == null) {
+                    invalid = new IntArrayList();
+                }
+                invalid.add(entry.getIntKey());
+            }
+        }
+
+        if (invalid == null || invalid.isEmpty()) {
+            return;
+        }
+
+        boolean changed = false;
+        for (int i = 0; i < invalid.size(); i++) {
+            int blockIndex = invalid.getInt(i);
+            Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+            if (ref == null || !ref.isValid()) {
+                if (ref != null) {
+                    blockComponents.removeEntityReference(blockIndex, ref);
+                }
+                changed = true;
+            }
+        }
+        if (changed) {
             blockComponents.markNeedsSaving();
         }
     }

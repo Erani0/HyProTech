@@ -25,7 +25,8 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.Rotation;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.RotationTuple;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
-import com.hypixel.hytale.server.core.inventory.transaction.MoveTransaction;
+import com.hypixel.hytale.server.core.inventory.transaction.ItemStackSlotTransaction;
+import com.hypixel.hytale.server.core.inventory.transaction.ItemStackTransaction;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
@@ -39,6 +40,7 @@ import HyProTechTeam.machine.OreCrusherConfig;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.lang.reflect.Field;
@@ -111,6 +113,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         int chunkX = worldChunk.getX();
         int chunkZ = worldChunk.getZ();
+        IntArrayList invalidReferences = null;
 
         for (it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry<Holder<ChunkStore>> entry
                 : blockComponents.getEntityHolders().int2ObjectEntrySet()) {
@@ -130,6 +133,13 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 : blockComponents.getEntityReferences().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
             Ref<ChunkStore> ref = entry.getValue();
+            if (ref == null || !ref.isValid()) {
+                if (invalidReferences == null) {
+                    invalidReferences = new IntArrayList();
+                }
+                invalidReferences.add(blockIndex);
+                continue;
+            }
             ItemNodeComponent node = blockComponents.getComponent(blockIndex, itemType);
             if (node == null) {
                 node = ensureItemCableNode(
@@ -137,6 +147,21 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             }
             if (node != null) {
                 processNode(blockComponents, world, chunkX, chunkZ, blockIndex, node, delta, cableState);
+            }
+        }
+
+        if (invalidReferences != null && !invalidReferences.isEmpty()) {
+            boolean changed = false;
+            for (int i = 0; i < invalidReferences.size(); i++) {
+                int blockIndex = invalidReferences.getInt(i);
+                Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+                if (ref != null && !ref.isValid()) {
+                    blockComponents.removeEntityReference(blockIndex, ref);
+                    changed = true;
+                }
+            }
+            if (changed) {
+                blockComponents.markNeedsSaving();
             }
         }
     }
@@ -861,7 +886,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 if (!canAccept(sink, stack)) {
                     continue;
                 }
-                if (tryMove(sourceContainer, slot, sink, stack)) {
+                if (tryMove(source, sourceContainer, slot, sink, stack)) {
                     cacheAfterMove(world, source, sink);
                     int nextIndex = (index + 1) % sinks.size();
                     setRoundRobinIndex(cableState, networkKey, priority, nextIndex);
@@ -906,7 +931,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                     break;
                 }
                 SinkEndpoint sink = sinks.get(bestIndex);
-                if (tryMove(sourceContainer, slot, sink, stack)) {
+                if (tryMove(source, sourceContainer, slot, sink, stack)) {
                     cacheAfterMove(world, source, sink);
                     return true;
                 }
@@ -1065,30 +1090,145 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         // Machine inventory is removed; no cache behavior needed here.
     }
 
-    private boolean tryMove(ItemContainer sourceContainer, short slot, SinkEndpoint sink, ItemStack stack) {
+    private boolean tryMove(
+            SourceEndpoint source,
+            ItemContainer sourceContainer,
+            short slot,
+            SinkEndpoint sink,
+            ItemStack stack) {
         if (sourceContainer == null || sink == null || sink.container == null || stack == null) {
             return false;
         }
+        return tryMoveSafely(sourceContainer, slot, sink, stack);
+    }
+
+    private boolean tryMoveSafely(
+            ItemContainer sourceContainer,
+            short sourceSlot,
+            SinkEndpoint sink,
+            ItemStack stack) {
+        if (sourceContainer == null || sink == null || sink.container == null || stack == null) {
+            return false;
+        }
+
         SlotRange range = sink.slotRange;
         if (range == null) {
-            MoveTransaction<?> transaction =
-                    sourceContainer.moveItemStackFromSlot(slot, 1, sink.container, false, false);
-            return transaction != null && transaction.succeeded();
+            return tryMoveOneAnySlotWithRollback(sourceContainer, sourceSlot, sink.container, stack);
         }
+
         short capacity = sink.container.getCapacity();
         short start = (short) Math.max(0, range.start);
         short end = (short) Math.min(capacity, range.start + range.count);
-        for (short target = start; target < end; target++) {
-            if (!sink.container.canAddItemStackToSlot(target, stack, false, false)) {
+        for (short targetSlot = start; targetSlot < end; targetSlot++) {
+            if (!sink.container.canAddItemStackToSlot(targetSlot, stack, false, false)) {
                 continue;
             }
-            MoveTransaction<?> transaction =
-                    sourceContainer.moveItemStackFromSlotToSlot(slot, 1, sink.container, target);
-            if (transaction != null && transaction.succeeded()) {
+            if (tryMoveOneToSlotWithRollback(sourceContainer, sourceSlot, sink.container, targetSlot)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean tryMoveOneAnySlotWithRollback(
+            ItemContainer sourceContainer,
+            short sourceSlot,
+            ItemContainer sinkContainer,
+            ItemStack stack) {
+        if (sourceContainer == null || sinkContainer == null || stack == null) {
+            return false;
+        }
+        ItemStack sourceStack = sourceContainer.getItemStack(sourceSlot);
+        if (sourceStack == null || ItemStack.isEmpty(sourceStack)) {
+            return false;
+        }
+        String itemId = sourceStack.getItemId();
+        if (itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        ItemStack moveStack = new ItemStack(sourceStack.getItemId(), 1, sourceStack.getMetadata());
+        if (!sinkContainer.canAddItemStack(moveStack)) {
+            return false;
+        }
+        int sourceCountBefore = countItemQuantity(sourceContainer, itemId);
+        int sinkCountBefore = countItemQuantity(sinkContainer, itemId);
+
+        ItemStackTransaction addTx = sinkContainer.addItemStack(moveStack);
+        if (addTx == null
+                || !addTx.succeeded()
+                || countItemQuantity(sinkContainer, itemId) < sinkCountBefore + 1) {
+            return false;
+        }
+
+        ItemStackSlotTransaction removeTx = sourceContainer.removeItemStackFromSlot(sourceSlot, 1);
+        if (removeTx == null
+                || !removeTx.succeeded()
+                || countItemQuantity(sourceContainer, itemId) > sourceCountBefore - 1) {
+            // Best-effort rollback; prevents source duplication if removal fails.
+            sinkContainer.removeItemStack(moveStack);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean tryMoveOneToSlotWithRollback(
+            ItemContainer sourceContainer,
+            short sourceSlot,
+            ItemContainer sinkContainer,
+            short targetSlot) {
+        if (sourceContainer == null || sinkContainer == null) {
+            return false;
+        }
+        ItemStack sourceStack = sourceContainer.getItemStack(sourceSlot);
+        if (sourceStack == null || ItemStack.isEmpty(sourceStack)) {
+            return false;
+        }
+        String itemId = sourceStack.getItemId();
+        if (itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        int sourceCountBefore = countItemQuantity(sourceContainer, itemId);
+        int sinkCountBefore = countItemQuantity(sinkContainer, itemId);
+
+        ItemStack moveStack = new ItemStack(sourceStack.getItemId(), 1, sourceStack.getMetadata());
+        if (!sinkContainer.canAddItemStackToSlot(targetSlot, moveStack, false, false)) {
+            return false;
+        }
+
+        ItemStackSlotTransaction addTx = sinkContainer.addItemStackToSlot(targetSlot, moveStack);
+        if (addTx == null
+                || !addTx.succeeded()
+                || countItemQuantity(sinkContainer, itemId) < sinkCountBefore + 1) {
+            return false;
+        }
+
+        ItemStackSlotTransaction removeTx = sourceContainer.removeItemStackFromSlot(sourceSlot, 1);
+        if (removeTx == null
+                || !removeTx.succeeded()
+                || countItemQuantity(sourceContainer, itemId) > sourceCountBefore - 1) {
+            // Best-effort rollback; prevents source duplication if removal fails.
+            sinkContainer.removeItemStackFromSlot(targetSlot, moveStack, 1, false, false);
+            return false;
+        }
+        return true;
+    }
+
+    private int countItemQuantity(ItemContainer container, String itemId) {
+        if (container == null || itemId == null || itemId.isEmpty()) {
+            return 0;
+        }
+        int total = 0;
+        short capacity = container.getCapacity();
+        for (short slot = 0; slot < capacity; slot++) {
+            ItemStack slotStack = container.getItemStack(slot);
+            if (slotStack == null || ItemStack.isEmpty(slotStack)) {
+                continue;
+            }
+            if (itemId.equals(slotStack.getItemId())) {
+                total += Math.max(0, slotStack.getQuantity());
+            }
+        }
+        return total;
     }
 
     private void sortEndpoints(CableNetwork network) {
