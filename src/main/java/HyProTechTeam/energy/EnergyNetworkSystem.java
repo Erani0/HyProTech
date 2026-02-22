@@ -40,6 +40,7 @@ import com.shailist.hytale.api.transfer.v1.transaction.TransactionContext;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayDeque;
@@ -123,6 +124,7 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
 
         int chunkX = worldChunk.getX();
         int chunkZ = worldChunk.getZ();
+        IntArrayList invalidReferences = null;
 
         for (Int2ObjectMap.Entry<Holder<ChunkStore>> entry : blockComponents.getEntityHolders().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
@@ -140,6 +142,13 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         for (Int2ObjectMap.Entry<Ref<ChunkStore>> entry : blockComponents.getEntityReferences().int2ObjectEntrySet()) {
             int blockIndex = entry.getIntKey();
             Ref<ChunkStore> ref = entry.getValue();
+            if (ref == null || !ref.isValid()) {
+                if (invalidReferences == null) {
+                    invalidReferences = new IntArrayList();
+                }
+                invalidReferences.add(blockIndex);
+                continue;
+            }
             EnergyNodeComponent node = blockComponents.getComponent(blockIndex, energyType);
             if (node == null) {
                 node = ensureFurnaceNode(
@@ -147,6 +156,22 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             }
             if (node != null) {
                 processNode(blockComponents, chunkStore, world, chunkX, chunkZ, blockIndex, node, sunlightFactor, delta, cableState);
+            }
+        }
+
+        if (invalidReferences != null && !invalidReferences.isEmpty()) {
+            boolean changed = false;
+            for (int i = 0; i < invalidReferences.size(); i++) {
+                int blockIndex = invalidReferences.getInt(i);
+                Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
+                if (ref != null && !ref.isValid()) {
+                    blockComponents.removeEntityReference(blockIndex, ref);
+                    disableTickingAt(world, chunkX, chunkZ, blockIndex);
+                    changed = true;
+                }
+            }
+            if (changed) {
+                blockComponents.markNeedsSaving();
             }
         }
     }
@@ -169,6 +194,11 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
         int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
         int worldY = localY;
+
+        if (node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
+            // Keep cable blocks out of vanilla ticking queues to avoid stale refs on break.
+            disableTickingAt(world, chunkX, chunkZ, blockIndex);
+        }
 
         boolean changed = UpgradePersistence.applyEnergyUpgrade(world, worldX, worldY, worldZ, node);
         if (node.getNodeType() == EnergyNodeComponent.NodeType.CABLE) {
@@ -469,6 +499,27 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         }
 
         return accessor.getBlockType(worldX, worldY, worldZ);
+    }
+
+    private void disableTickingAt(World world, int chunkX, int chunkZ, int blockIndex) {
+        if (world == null) {
+            return;
+        }
+        int localX = ChunkUtil.xFromBlockInColumn(blockIndex);
+        int localY = ChunkUtil.yFromBlockInColumn(blockIndex);
+        int localZ = ChunkUtil.zFromBlockInColumn(blockIndex);
+        int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
+        int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        try {
+            accessor.setTicking(worldX, localY, worldZ, false);
+        } catch (Exception ignored) {
+            // Best-effort only: invalid refs can remain in ticking queues after rapid break/place.
+        }
     }
 
     private EnergyNodeComponent createFurnaceNode() {
@@ -1189,12 +1240,17 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int localBaseMask = rotateMaskToLocal(visualMask, rotation);
             int tier = CableUpgradeConfig.clampTier(node.getCableTier());
             String stateName = cableStateName(localBaseMask, tier);
+            if (stateName.equals(node.getLastCableState())) {
+                continue;
+            }
 
             try {
                 accessor.setBlockInteractionState(cable.x, cable.y, cable.z, blockType, stateName, false);
+                node.setLastCableState(stateName);
             } catch (Exception e) {
                 // aspo?? jednou zaloguj, a?? m???? d??kaz
                 System.out.println("[HyProTech] Cable state '" + stateName + "' not found for blockType=" + blockType.getId());
+                node.setLastCableState("");
             }
         }
     }
@@ -1663,13 +1719,20 @@ public class EnergyNetworkSystem extends EntityTickingSystem<ChunkStore> {
         if (desiredTier <= 0) {
             return false;
         }
-        String upgradedId = TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ENERGY_CABLE, desiredTier);
+        String upgradedId = buildEnergyCableTieredId(desiredTier);
         upgradedId = TieredIdUtil.applyNamespace(blockId, HyProTechIds.BLOCK_ENERGY_CABLE, upgradedId);
         if (isIdOrState(blockId, upgradedId)) {
             return false;
         }
         UpgradePersistence.queueBlockSwap(world, new Vector3i(worldX, worldY, worldZ), upgradedId, node, null);
         return true;
+    }
+
+    private String buildEnergyCableTieredId(int tier) {
+        if (tier <= 0) {
+            return HyProTechIds.BLOCK_ENERGY_CABLE;
+        }
+        return HyProTechIds.BLOCK_ENERGY_CABLE + "_S" + tier;
     }
 
     private void syncTieredMachineState(

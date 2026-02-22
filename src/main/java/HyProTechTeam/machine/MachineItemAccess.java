@@ -24,7 +24,6 @@ public final class MachineItemAccess {
     private static final short ORE_CRUSHER_STORAGE_CAPACITY = 7;
     private static final short ALLOY_SMELTER_STORAGE_CAPACITY =
             (short) (AlloySmelterConfig.INPUT_SLOT_COUNT + AlloySmelterConfig.OUTPUT_SLOT_COUNT);
-    private static final String HyProTech_PREFIX = "HyProTech_";
 
     private MachineItemAccess() {
     }
@@ -198,9 +197,32 @@ public final class MachineItemAccess {
             int y,
             int z,
             ItemContainerState state) {
-        ensureQuarryContainer(world, x, y, z, state);
-        ensureOreCrusherContainer(world, x, y, z, state);
-        ensureAlloySmelterContainer(world, x, y, z, state);
+        if (world == null || state == null) {
+            return;
+        }
+        BlockType blockType = world.getBlockType(x, y, z);
+        if (blockType == null || blockType == BlockType.EMPTY) {
+            return;
+        }
+        String blockId = blockType.getId();
+        if (blockId == null || blockId.isEmpty()) {
+            return;
+        }
+
+        if (isQuarryBorder(blockId)) {
+            return;
+        }
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_QUARRY)) {
+            ensureQuarryContainer(world, x, y, z, state);
+            return;
+        }
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)) {
+            ensureOreCrusherContainer(world, x, y, z, state);
+            return;
+        }
+        if (isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER)) {
+            ensureAlloySmelterContainer(world, x, y, z, state);
+        }
     }
 
     private static void ensureQuarryContainer(
@@ -292,11 +314,7 @@ public final class MachineItemAccess {
 
 
     private static boolean isIdOrState(String blockId, String baseId) {
-        if (blockId == null) {
-            return false;
-        }
-        return BlockIdUtil.isIdOrState(blockId, baseId)
-                || blockId.regionMatches(true, 0, HyProTech_PREFIX, 0, HyProTech_PREFIX.length());
+        return BlockIdUtil.isIdOrState(blockId, baseId);
     }
 
     private static boolean isQuarryBorder(String blockId) {
