@@ -125,6 +125,16 @@ items.HyProTech_Plutonium_Slurry.description = A crafted component used in advan
 server.items.HyProTech_Plutonium_Slurry.name = Plutonium Slurry
 server.items.HyProTech_Plutonium_Slurry.description = A crafted component used in advanced recipes.
 
+items.HyProTech_Breeder_Reactor_Module.name = Breeder Reactor Module
+items.HyProTech_Breeder_Reactor_Module.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Breeder_Reactor_Module.name = Breeder Reactor Module
+server.items.HyProTech_Breeder_Reactor_Module.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Armor_Plating.name = Armor Plating
+items.HyProTech_Armor_Plating.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Armor_Plating.name = Armor Plating
+server.items.HyProTech_Armor_Plating.description = A crafted component used in advanced recipes.
+
 items.HyProTech_Precision_Drill_Head.name = Precision Drill Head
 items.HyProTech_Precision_Drill_Head.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Precision_Drill_Head.name = Precision Drill Head
@@ -475,3 +485,110 @@ items.HyProTech_Combustion_Chamber.name = Combustion Chamber
 items.HyProTech_Combustion_Chamber.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Combustion_Chamber.name = Combustion Chamber
 server.items.HyProTech_Combustion_Chamber.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Reprocessing_Plant.name = Reprocessing Plant
+items.HyProTech_Reprocessing_Plant.description = Placeholder machine for future processing.
+server.items.HyProTech_Reprocessing_Plant.name = Reprocessing Plant
+server.items.HyProTech_Reprocessing_Plant.description = Placeholder machine for future processing.
+items.HyProTech_Chemical_Leacher.name = Chemical Leacher
+items.HyProTech_Chemical_Leacher.description = Placeholder machine for future processing.
+server.items.HyProTech_Chemical_Leacher.name = Chemical Leacher
+server.items.HyProTech_Chemical_Leacher.description = Placeholder machine for future processing.
+
+
+items.HyProTech_Nichrome_Coil.name = Nichrome Coil
+items.HyProTech_Nichrome_Coil.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Nichrome_Coil.name = Nichrome Coil
+server.items.HyProTech_Nichrome_Coil.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Power_Conduit.name = Power Conduit
+items.HyProTech_Power_Conduit.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Power_Conduit.name = Power Conduit
+server.items.HyProTech_Power_Conduit.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Acid_Solution.name = Acid Solution
+items.HyProTech_Acid_Solution.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Acid_Solution.name = Acid Solution
+server.items.HyProTech_Acid_Solution.description = An industrial fluid used in advanced processing.
+items.HyProTech_Coolant_Fluid.name = Coolant Fluid
+items.HyProTech_Coolant_Fluid.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Coolant_Fluid.name = Coolant Fluid
+server.items.HyProTech_Coolant_Fluid.description = An industrial fluid used in advanced processing.
+items.HyProTech_Electrolyte_Gel.name = Electrolyte Gel
+items.HyProTech_Electrolyte_Gel.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Electrolyte_Gel.name = Electrolyte Gel
+server.items.HyProTech_Electrolyte_Gel.description = An industrial fluid used in advanced processing.
+
+items.HyProTech_Core_Stabilizer.name = Core Stabilizer
+items.HyProTech_Core_Stabilizer.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Core_Stabilizer.name = Core Stabilizer
+server.items.HyProTech_Core_Stabilizer.description = A crafted component used in advanced recipes.
+items.HyProTech_Data_Bus_Cable.name = Data Bus Cable
+items.HyProTech_Data_Bus_Cable.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Data_Bus_Cable.name = Data Bus Cable
+server.items.HyProTech_Data_Bus_Cable.description = A crafted component used in advanced recipes.
+items.HyProTech_Structural_Beam.name = Structural Beam
+items.HyProTech_Structural_Beam.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Structural_Beam.name = Structural Beam
+server.items.HyProTech_Structural_Beam.description = A crafted component used in advanced recipes.
+items.HyProTech_Supercritical_Fuel_Cell.name = Supercritical Fuel Cell
+items.HyProTech_Supercritical_Fuel_Cell.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Supercritical_Fuel_Cell.name = Supercritical Fuel Cell
+server.items.HyProTech_Supercritical_Fuel_Cell.description = A crafted component used in advanced recipes.
+items.HyProTech_Support_Bracket.name = Support Bracket
+items.HyProTech_Support_Bracket.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Support_Bracket.name = Support Bracket
+server.items.HyProTech_Support_Bracket.description = A crafted component used in advanced recipes.
+items.HyProTech_Thermal_Insulation.name = Thermal Insulation
+items.HyProTech_Thermal_Insulation.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Thermal_Insulation.name = Thermal Insulation
+server.items.HyProTech_Thermal_Insulation.description = A crafted component used in advanced recipes.
+items.HyProTech_Thermal_Regulator.name = Thermal Regulator
+items.HyProTech_Thermal_Regulator.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Thermal_Regulator.name = Thermal Regulator
+server.items.HyProTech_Thermal_Regulator.description = A crafted component used in advanced recipes.
+items.HyProTech_Thruster_Nozzle.name = Thruster Nozzle
+items.HyProTech_Thruster_Nozzle.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Thruster_Nozzle.name = Thruster Nozzle
+server.items.HyProTech_Thruster_Nozzle.description = A crafted component used in advanced recipes.
+items.HyProTech_Cooling_Cell.name = Cooling Cell
+items.HyProTech_Cooling_Cell.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Cooling_Cell.name = Cooling Cell
+server.items.HyProTech_Cooling_Cell.description = A crafted component used in advanced recipes.
+items.HyProTech_Filter.name = Filter
+items.HyProTech_Filter.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Filter.name = Filter
+server.items.HyProTech_Filter.description = A crafted component used in advanced recipes.
+items.HyProTech_Fluid_Sensor.name = Fluid Sensor
+items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Fluid_Sensor.name = Fluid Sensor
+server.items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced recipes.
+
+
+items.HyProTech_Enriched_Uranium.name = Enriched Uranium
+items.HyProTech_Enriched_Uranium.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Enriched_Uranium.name = Enriched Uranium
+server.items.HyProTech_Enriched_Uranium.description = A crafted component used in advanced recipes.
+
+
+items.HyProTech_Superconductive_Rod.name = Superconductive Rod
+items.HyProTech_Superconductive_Rod.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Superconductive_Rod.name = Superconductive Rod
+server.items.HyProTech_Superconductive_Rod.description = A crafted component used in advanced recipes.
+
+
+
+
+items.HyProTech_Reinforced_Engine_Parts.name = Reinforced Engine Parts
+items.HyProTech_Reinforced_Engine_Parts.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Reinforced_Engine_Parts.name = Reinforced Engine Parts
+server.items.HyProTech_Reinforced_Engine_Parts.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Bolted_Frame.name = Bolted Frame
+items.HyProTech_Bolted_Frame.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Bolted_Frame.name = Bolted Frame
+server.items.HyProTech_Bolted_Frame.description = A crafted component used in advanced recipes.
+items.HyProTech_Aerospace_Frame.name = Aerospace Frame
+items.HyProTech_Aerospace_Frame.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Aerospace_Frame.name = Aerospace Frame
+server.items.HyProTech_Aerospace_Frame.description = A crafted component used in advanced recipes.

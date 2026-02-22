@@ -3,6 +3,10 @@ items.HyProTech_Electrical_Workbench.name = Electrical Workbench
 items.HyProTech_Electrical_Workbench.description = Crafts HyProTech components.
 items.HyProTech_Cable_Tool.name = Cable Tool
 items.HyProTech_Cable_Tool.description = Toggles cable sides between input and output.
+items.HyProTech_Cable_Upgrade_Tool.name = Wrench
+items.HyProTech_Cable_Upgrade_Tool.description = Upgrades all cables in a connected network.
+server.items.HyProTech_Cable_Upgrade_Tool.name = Wrench
+server.items.HyProTech_Cable_Upgrade_Tool.description = Upgrades all cables in a connected network.
 
 # Quarry and other 
 items.HyProTech_Quarry.name = Quarry
@@ -23,23 +27,9 @@ items.HyProTech_Border_Torch.description = Marks quarry border corners.
 server.items.HyProTech_Border_Torch.name = Border Torch
 server.items.HyProTech_Border_Torch.description = Marks quarry border corners.
 
-# 
-items.HyProTech_Cable_Copper.name = Basic Energy Cable
-items.HyProTech_Cable_Copper.description = Carries power between machines.
-items.HyProTech_Item_Cable.name = Basic Item Cable
-items.HyProTech_Item_Cable.description = Carries items between machines.
-items.HyProTech_Battery_Rack_S.name = Battery
-items.HyProTech_Battery_Rack_S.description = Stores energy for later use.
-items.HyProTech_Electric_Furnace.name = Electric Furnace
-items.HyProTech_Electric_Furnace.description = Smelts using stored energy.
-items.HyProTech_Ore_Crusher.name = Ore Crusher
-items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
-server.items.HyProTech_Ore_Crusher.name = Ore Crusher
-server.items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
+# Alloy_Smelter
 items.HyProTech_Alloy_Smelter.name = Alloy Smelter
 items.HyProTech_Alloy_Smelter.description = Smelts alloys using energy.
-server.items.HyProTech_Alloy_Smelter.name = Alloy Smelter
-server.items.HyProTech_Alloy_Smelter.description = Smelts alloys using energy.
 items.HyProTech_Alloy_Smelter_T1.name = Alloy Smelter - Reinforced
 items.HyProTech_Alloy_Smelter_T1.description = Smelts alloys using energy.
 items.HyProTech_Alloy_Smelter_T2.name = Alloy Smelter - Industrial
@@ -50,6 +40,8 @@ items.HyProTech_Alloy_Smelter_T4.name = Alloy Smelter - Precision
 items.HyProTech_Alloy_Smelter_T4.description = Smelts alloys using energy.
 items.HyProTech_Alloy_Smelter_T5.name = Alloy Smelter - Quantum
 items.HyProTech_Alloy_Smelter_T5.description = Smelts alloys using energy.
+server.items.HyProTech_Alloy_Smelter.name = Alloy Smelter
+server.items.HyProTech_Alloy_Smelter.description = Smelts alloys using energy.
 server.items.HyProTech_Alloy_Smelter_T1.name = Alloy Smelter - Reinforced
 server.items.HyProTech_Alloy_Smelter_T1.description = Smelts alloys using energy.
 server.items.HyProTech_Alloy_Smelter_T2.name = Alloy Smelter - Industrial
@@ -61,6 +53,7 @@ server.items.HyProTech_Alloy_Smelter_T4.description = Smelts alloys using energy
 server.items.HyProTech_Alloy_Smelter_T5.name = Alloy Smelter - Quantum
 server.items.HyProTech_Alloy_Smelter_T5.description = Smelts alloys using energy.
 
+# Solar_Panel
 items.HyProTech_Solar_Panel.name = Solar Panel
 items.HyProTech_Solar_Panel.description = Generates energy from sunlight.
 items.HyProTech_Solar_Panel_T1.name = Solar Panel - Reinforced
@@ -73,6 +66,30 @@ items.HyProTech_Solar_Panel_T4.name = Solar Panel - Precision
 items.HyProTech_Solar_Panel_T4.description = Generates energy from sunlight.
 items.HyProTech_Solar_Panel_T5.name = Solar Panel - Quantum
 items.HyProTech_Solar_Panel_T5.description = Generates energy from sunlight.
+
+# Ore Crusher
+items.HyProTech_Ore_Crusher.name = Ore Crusher
+items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher.name = Ore Crusher
+server.items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
+
+# Wind Turbine
+items.HyProTech_Wind_Turbine.name = Wind Turbine
+items.HyProTech_Wind_Turbine.description = Generates energy from wind.
+items.HyProTech_Wind_Turbine_T1.name = Wind Turbine - Reinforced
+items.HyProTech_Wind_Turbine_T1.description = Generates energy from wind.
+items.HyProTech_Wind_Turbine_T2.name = Wind Turbine - Industrial
+items.HyProTech_Wind_Turbine_T2.description = Generates energy from wind.
+items.HyProTech_Wind_Turbine_T3.name = Wind Turbine - Advanced
+items.HyProTech_Wind_Turbine_T3.description = Generates energy from wind.
+items.HyProTech_Wind_Turbine_T4.name = Wind Turbine - Precision
+items.HyProTech_Wind_Turbine_T4.description = Generates energy from wind.
+items.HyProTech_Wind_Turbine_T5.name = Wind Turbine - Quantum
+items.HyProTech_Wind_Turbine_T5.description = Generates energy from wind.
+
+# Energy Cable
+items.HyProTech_Cable_Copper.name = Basic Energy Cable
+items.HyProTech_Cable_Copper.description = Carries power between machines.
 items.HyProTech_Cable_Copper_S1.name = Energy Cable - Reinforced
 items.HyProTech_Cable_Copper_S1.description = Carries power between machines.
 items.HyProTech_Cable_Copper_S2.name = Energy Cable - Industrial
@@ -83,6 +100,10 @@ items.HyProTech_Cable_Copper_S4.name = Energy Cable - Precision
 items.HyProTech_Cable_Copper_S4.description = Carries power between machines.
 items.HyProTech_Cable_Copper_S5.name = Energy Cable - Quantum
 items.HyProTech_Cable_Copper_S5.description = Carries power between machines.
+
+# Item Cable
+items.HyProTech_Item_Cable.name = Basic Item Cable
+items.HyProTech_Item_Cable.description = Carries items between machines.
 items.HyProTech_Item_Cable_T1.name = Item Cable - Reinforced
 items.HyProTech_Item_Cable_T1.description = Carries items between machines.
 items.HyProTech_Item_Cable_T2.name = Item Cable - Industrial
@@ -93,6 +114,10 @@ items.HyProTech_Item_Cable_T4.name = Item Cable - Precision
 items.HyProTech_Item_Cable_T4.description = Carries items between machines.
 items.HyProTech_Item_Cable_T5.name = Item Cable - Quantum
 items.HyProTech_Item_Cable_T5.description = Carries items between machines.
+
+# Electric Furnace
+items.HyProTech_Electric_Furnace.name = Electric Furnace
+items.HyProTech_Electric_Furnace.description = Smelts using stored energy.
 items.HyProTech_Electric_Furnace_T1.name = Electric Furnace - Reinforced
 items.HyProTech_Electric_Furnace_T1.description = Smelts using stored energy.
 items.HyProTech_Electric_Furnace_T2.name = Electric Furnace - Industrial
@@ -103,6 +128,10 @@ items.HyProTech_Electric_Furnace_T4.name = Electric Furnace - Precision
 items.HyProTech_Electric_Furnace_T4.description = Smelts using stored energy.
 items.HyProTech_Electric_Furnace_T5.name = Electric Furnace - Quantum
 items.HyProTech_Electric_Furnace_T5.description = Smelts using stored energy.
+
+# Battery Rack Small
+items.HyProTech_Battery_Rack_S.name = Battery
+items.HyProTech_Battery_Rack_S.description = Stores energy for later use.
 items.HyProTech_Battery_Rack_S_T1.name = Battery - Reinforced
 items.HyProTech_Battery_Rack_S_T1.description = Stores energy for later use.
 items.HyProTech_Battery_Rack_S_T2.name = Battery - Industrial
@@ -113,11 +142,68 @@ items.HyProTech_Battery_Rack_S_T4.name = Battery - Precision
 items.HyProTech_Battery_Rack_S_T4.description = Stores energy for later use.
 items.HyProTech_Battery_Rack_S_T5.name = Battery - Quantum
 items.HyProTech_Battery_Rack_S_T5.description = Stores energy for later use.
-items.HyProTech_Cable_Upgrade_Tool.name = Wrench
-items.HyProTech_Cable_Upgrade_Tool.description = Upgrades all cables in a connected network.
-server.items.HyProTech_Cable_Upgrade_Tool.name = Wrench
-server.items.HyProTech_Cable_Upgrade_Tool.description = Upgrades all cables in a connected network.
 
+# Battery Rack Large
+items.HyProTech_Battery_Rack_L.name = Large Battery
+items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
+server.items.HyProTech_Battery_Rack_L.name = Large Battery
+server.items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
+
+# Press
+items.HyProTech_Press.name = Press
+items.HyProTech_Press.description = A HyProTech press used to shape metal plates.
+server.items.HyProTech_Press.name = Press
+server.items.HyProTech_Press.description = A HyProTech press used to shape metal plates.
+
+# Pump
+items.HyProTech_Pump.name = Pump
+items.HyProTech_Pump.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Pump.name = Pump
+server.items.HyProTech_Pump.description = A crafted component used in advanced recipes.
+
+# Arc Furnace
+items.HyProTech_Arc_Furnace.name = Arc Furnace
+items.HyProTech_Arc_Furnace.description = Placeholder machine for future processing.
+server.items.HyProTech_Arc_Furnace.name = Arc Furnace
+server.items.HyProTech_Arc_Furnace.description = Placeholder machine for future processing.
+
+# Electrolyzer
+items.HyProTech_Electrolyzer.name = Electrolyzer
+items.HyProTech_Electrolyzer.description = Placeholder machine for future processing.
+server.items.HyProTech_Electrolyzer.name = Electrolyzer
+server.items.HyProTech_Electrolyzer.description = Placeholder machine for future processing.
+
+# Distillation Column
+items.HyProTech_Distillation_Column.name = Distillation Column
+items.HyProTech_Distillation_Column.description = Placeholder machine for future processing.
+server.items.HyProTech_Distillation_Column.name = Distillation Column
+server.items.HyProTech_Distillation_Column.description = Placeholder machine for future processing.
+
+# Sifter
+items.HyProTech_Sifter.name = Sifter
+items.HyProTech_Sifter.description = Placeholder machine for future processing.
+server.items.HyProTech_Sifter.name = Sifter
+server.items.HyProTech_Sifter.description = Placeholder machine for future processing.
+
+# Ore Washer
+items.HyProTech_Ore_Washer.name = Ore Washer
+items.HyProTech_Ore_Washer.description = Placeholder machine for future processing.
+server.items.HyProTech_Ore_Washer.name = Ore Washer
+server.items.HyProTech_Ore_Washer.description = Placeholder machine for future processing.
+
+# Centrifuge
+items.HyProTech_Centrifuge.name = Centrifuge
+items.HyProTech_Centrifuge.description = Placeholder machine for future processing.
+server.items.HyProTech_Centrifuge.name = Centrifuge
+server.items.HyProTech_Centrifuge.description = Placeholder machine for future processing.
+
+# Grinder
+items.HyProTech_Grinder.name = Grinder
+items.HyProTech_Grinder.description = Placeholder machine for future processing.
+server.items.HyProTech_Grinder.name = Grinder
+server.items.HyProTech_Grinder.description = Placeholder machine for future processing.
+
+# Powders
 items.HyProTech_Powder_Iron.name = Iron Powder
 items.HyProTech_Powder_Iron.description = A fine powder used for crafting.
 server.items.HyProTech_Powder_Iron.name = Iron Powder
@@ -146,6 +232,87 @@ items.HyProTech_Powder_Thorium.name = Thorium Powder
 items.HyProTech_Powder_Thorium.description = A fine powder used for crafting.
 server.items.HyProTech_Powder_Thorium.name = Thorium Powder
 server.items.HyProTech_Powder_Thorium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Stone.name = Stone Dust
+items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.
+server.items.HyProTech_Powder_Stone.name = Stone Dust
+server.items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.items.HyProTech_Powder_Aluminum.name = Aluminum Powder
+items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Aluminum.name = Aluminum Powder
+server.items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
+items.HyProTech_Powder_Tin.name = Tin Powder
+items.HyProTech_Powder_Tin.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Tin.name = Tin Powder
+server.items.HyProTech_Powder_Tin.description = A fine powder used for crafting.
+items.HyProTech_Powder_Chromium.name = Chromium Powder
+items.HyProTech_Powder_Chromium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Chromium.name = Chromium Powder
+server.items.HyProTech_Powder_Chromium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Titanium.name = Titanium Powder
+items.HyProTech_Powder_Titanium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Titanium.name = Titanium Powder
+server.items.HyProTech_Powder_Titanium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Manganese.name = Manganese Powder
+items.HyProTech_Powder_Manganese.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Manganese.name = Manganese Powder
+server.items.HyProTech_Powder_Manganese.description = A fine powder used for crafting.
+items.HyProTech_Powder_Nickel.name = Nickel Powder
+items.HyProTech_Powder_Nickel.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Nickel.name = Nickel Powder
+server.items.HyProTech_Powder_Nickel.description = A fine powder used for crafting.
+items.HyProTech_Powder_Silicon.name = Silicon Powder
+items.HyProTech_Powder_Silicon.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Silicon.name = Silicon Powder
+server.items.HyProTech_Powder_Silicon.description = A fine powder used for crafting.
+items.HyProTech_Powder_Tungsten.name = Tungsten Powder
+items.HyProTech_Powder_Tungsten.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Tungsten.name = Tungsten Powder
+server.items.HyProTech_Powder_Tungsten.description = A fine powder used for crafting.
+items.HyProTech_Powder_Lithium.name = Lithium Powder
+items.HyProTech_Powder_Lithium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Lithium.name = Lithium Powder
+server.items.HyProTech_Powder_Lithium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Uranium.name = Uranium Powder
+items.HyProTech_Powder_Uranium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Uranium.name = Uranium Powder
+server.items.HyProTech_Powder_Uranium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Vanadium.name = Vanadium Powder
+items.HyProTech_Powder_Vanadium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Vanadium.name = Vanadium Powder
+server.items.HyProTech_Powder_Vanadium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Electrum.name = Electrum Alloy Powder
+items.HyProTech_Powder_Electrum.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Electrum.name = Electrum Alloy Powder
+server.items.HyProTech_Powder_Electrum.description = A fine powder used for crafting.
+items.HyProTech_Powder_Steel.name = Steel Alloy Powder
+items.HyProTech_Powder_Steel.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Steel.name = Steel Alloy Powder
+server.items.HyProTech_Powder_Steel.description = A fine powder used for crafting.
+items.HyProTech_Powder_Invar.name = Invar Alloy Powder
+items.HyProTech_Powder_Invar.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Invar.name = Invar Alloy Powder
+server.items.HyProTech_Powder_Invar.description = A fine powder used for crafting.
+items.HyProTech_Powder_Constantan.name = Constantan Alloy Powder
+items.HyProTech_Powder_Constantan.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Constantan.name = Constantan Alloy Powder
+server.items.HyProTech_Powder_Constantan.description = A fine powder used for crafting.
+items.HyProTech_Powder_High_Tier_Alloy.name = High-Tier Alloy Blend Powder
+items.HyProTech_Powder_High_Tier_Alloy.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_High_Tier_Alloy.name = High-Tier Alloy Blend Powder
+server.items.HyProTech_Powder_High_Tier_Alloy.description = A fine powder used for crafting.
+items.HyProTech_Powder_Composite_Alloy.name = Composite Alloy Powder
+items.HyProTech_Powder_Composite_Alloy.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Composite_Alloy.name = Composite Alloy Powder
+server.items.HyProTech_Powder_Composite_Alloy.description = A fine powder used for crafting.
+items.HyProTech_Powder_Superalloy.name = Superalloy Blend Powder
+items.HyProTech_Powder_Superalloy.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Superalloy.name = Superalloy Blend Powder
+server.items.HyProTech_Powder_Superalloy.description = A fine powder used for crafting.
+items.HyProTech_Powder_TiV.name = Titanium-Vanadium Alloy Powder
+items.HyProTech_Powder_TiV.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_TiV.name = Titanium-Vanadium Alloy Powder
+server.items.HyProTech_Powder_TiV.description = A fine powder used for crafting.
+
+# Byproducts
 items.HyProTech_Scrap.name = Scrap
 items.HyProTech_Scrap.description = A mix of crushed metal scraps.
 server.items.HyProTech_Scrap.name = Scrap
@@ -158,11 +325,12 @@ items.HyProTech_Ore_Chips.name = Ore Chips
 items.HyProTech_Ore_Chips.description = Jagged chips left from crushing.
 server.items.HyProTech_Ore_Chips.name = Ore Chips
 server.items.HyProTech_Ore_Chips.description = Jagged chips left from crushing.
-items.HyProTech_Powder_Stone.name = Stone Dust
-items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.
-server.items.HyProTech_Powder_Stone.name = Stone Dust
-server.items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.
+items.HyProTech_Tungsten_Carbide_Chunk.name = Tungsten Carbide Chunk
+items.HyProTech_Tungsten_Carbide_Chunk.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Tungsten_Carbide_Chunk.name = Tungsten Carbide Chunk
+server.items.HyProTech_Tungsten_Carbide_Chunk.description = A crafted component used in advanced recipes.
 
+# Ingots
 items.HyProTech_Ingot_Electrum.name = Electrum Alloy
 items.HyProTech_Ingot_Electrum.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Ingot_Electrum.name = Electrum Alloy
@@ -179,40 +347,10 @@ items.HyProTech_Ingot_Constantan.name = Constantan Alloy
 server.items.HyProTech_Ingot_Constantan.name = Constantan Alloy
 items.HyProTech_Ingot_Constantan.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Ingot_Constantan.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Wind_Turbine.name = Wind Turbine
-items.HyProTech_Wind_Turbine.description = Generates energy from wind.
-items.HyProTech_Wind_Turbine_T1.name = Wind Turbine - Reinforced
-items.HyProTech_Wind_Turbine_T1.description = Generates energy from wind.
-items.HyProTech_Wind_Turbine_T2.name = Wind Turbine - Industrial
-items.HyProTech_Wind_Turbine_T2.description = Generates energy from wind.
-items.HyProTech_Wind_Turbine_T3.name = Wind Turbine - Advanced
-items.HyProTech_Wind_Turbine_T3.description = Generates energy from wind.
-items.HyProTech_Wind_Turbine_T4.name = Wind Turbine - Precision
-items.HyProTech_Wind_Turbine_T4.description = Generates energy from wind.
-items.HyProTech_Wind_Turbine_T5.name = Wind Turbine - Quantum
-items.HyProTech_Wind_Turbine_T5.description = Generates energy from wind.
-
 items.HyProTech_Ingot_Aluminum.name = Aluminum Ingot
 items.HyProTech_Ingot_Aluminum.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Aluminum.name = Aluminum Ingot
 server.items.HyProTech_Ingot_Aluminum.description = A refined material used in crafting.
-items.HyProTech_Armor_Plating.name = Armor Plating
-items.HyProTech_Armor_Plating.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Armor_Plating.name = Armor Plating
-server.items.HyProTech_Armor_Plating.description = A crafted component used in advanced recipes.
-items.HyProTech_Basic_Circuits.name = Basic Circuits
-items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Basic_Circuits.name = Basic Circuits
-server.items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
-items.HyProTech_Battery_Cell.name = Battery Cell
-items.HyProTech_Battery_Cell.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Battery_Cell.name = Battery Cell
-server.items.HyProTech_Battery_Cell.description = A crafted component used in advanced recipes.
-items.HyProTech_Breeder_Reactor_Module.name = Breeder Reactor Module
-items.HyProTech_Breeder_Reactor_Module.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Breeder_Reactor_Module.name = Breeder Reactor Module
-server.items.HyProTech_Breeder_Reactor_Module.description = A crafted component used in advanced recipes.
 items.HyProTech_Ingot_Bronze.name = Bronze Blend
 items.HyProTech_Ingot_Bronze.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Ingot_Bronze.name = Bronze Blend
@@ -221,90 +359,30 @@ items.HyProTech_Ingot_Chromium.name = Chromium Ingot
 items.HyProTech_Ingot_Chromium.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Chromium.name = Chromium Ingot
 server.items.HyProTech_Ingot_Chromium.description = A refined material used in crafting.
-
-items.HyProTech_Electronic_Chip.name = Electronic Chip
-items.HyProTech_Electronic_Chip.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Electronic_Chip.name = Electronic Chip
-server.items.HyProTech_Electronic_Chip.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Energy_Storage_Pack.name = Energy Storage Pack
-items.HyProTech_Energy_Storage_Pack.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Energy_Storage_Pack.name = Energy Storage Pack
-server.items.HyProTech_Energy_Storage_Pack.description = A crafted component used in advanced recipes.
-items.HyProTech_Enriched_Uranium.name = Enriched Uranium
-items.HyProTech_Enriched_Uranium.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Enriched_Uranium.name = Enriched Uranium
-server.items.HyProTech_Enriched_Uranium.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Glass_Fiber.name = Glass Fiber
-items.HyProTech_Glass_Fiber.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Glass_Fiber.name = Glass Fiber
-server.items.HyProTech_Glass_Fiber.description = A crafted component used in advanced recipes.
-
 items.HyProTech_Ingot_High_Tier_Alloy.name = High-Tier Alloy Blend
 items.HyProTech_Ingot_High_Tier_Alloy.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Ingot_High_Tier_Alloy.name = High-Tier Alloy Blend
 server.items.HyProTech_Ingot_High_Tier_Alloy.description = A crafted component used in advanced recipes.
-
 items.HyProTech_Ingot_Lithium.name = Lithium Ingot
 items.HyProTech_Ingot_Lithium.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Lithium.name = Lithium Ingot
 server.items.HyProTech_Ingot_Lithium.description = A refined material used in crafting.
-items.HyProTech_Frame_Iron.name = Machine Frame
-items.HyProTech_Frame_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Frame_Iron.name = Machine Frame
-server.items.HyProTech_Frame_Iron.description = A crafted component used in advanced recipes.
 items.HyProTech_Ingot_Manganese.name = Manganese Ingot
 items.HyProTech_Ingot_Manganese.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Manganese.name = Manganese Ingot
 server.items.HyProTech_Ingot_Manganese.description = A refined material used in crafting.
-items.HyProTech_Nichrome_Coil.name = Nichrome Coil
-items.HyProTech_Nichrome_Coil.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Nichrome_Coil.name = Nichrome Coil
-server.items.HyProTech_Nichrome_Coil.description = A crafted component used in advanced recipes.
 items.HyProTech_Ingot_Nickel.name = Nickel Ingot
 items.HyProTech_Ingot_Nickel.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Nickel.name = Nickel Ingot
 server.items.HyProTech_Ingot_Nickel.description = A refined material used in crafting.
-
 items.HyProTech_Ingot_Plutonium.name = Plutonium Ingot
 items.HyProTech_Ingot_Plutonium.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Plutonium.name = Plutonium Ingot
 server.items.HyProTech_Ingot_Plutonium.description = A refined material used in crafting.
-items.HyProTech_Power_Conduit.name = Power Conduit
-items.HyProTech_Power_Conduit.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Power_Conduit.name = Power Conduit
-server.items.HyProTech_Power_Conduit.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Reinforced_Engine_Parts.name = Reinforced Engine Parts
-items.HyProTech_Reinforced_Engine_Parts.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Reinforced_Engine_Parts.name = Reinforced Engine Parts
-server.items.HyProTech_Reinforced_Engine_Parts.description = A crafted component used in advanced recipes.
-items.HyProTech_Gear_Reinforced_Iron.name = Reinforced Gears
-items.HyProTech_Gear_Reinforced_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Gear_Reinforced_Iron.name = Reinforced Gears
-server.items.HyProTech_Gear_Reinforced_Iron.description = A crafted component used in advanced recipes.
-
 items.HyProTech_Ingot_Silicon.name = Silicon
 items.HyProTech_Ingot_Silicon.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Silicon.name = Silicon
 server.items.HyProTech_Ingot_Silicon.description = A refined material used in crafting.
-items.HyProTech_Silicon_Wafer.name = Silicon Wafer
-items.HyProTech_Silicon_Wafer.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Silicon_Wafer.name = Silicon Wafer
-server.items.HyProTech_Silicon_Wafer.description = A crafted component used in advanced recipes.
-items.HyProTech_Solar_Cell_Component.name = Solar Cell Component
-items.HyProTech_Solar_Cell_Component.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Solar_Cell_Component.name = Solar Cell Component
-server.items.HyProTech_Solar_Cell_Component.description = A crafted component used in advanced recipes.
-items.HyProTech_Solder_Wire.name = Solder Wire
-items.HyProTech_Solder_Wire.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Solder_Wire.name = Solder Wire
-server.items.HyProTech_Solder_Wire.description = A crafted component used in advanced recipes.
-items.HyProTech_Superconductive_Rod.name = Superconductive Rod
-items.HyProTech_Superconductive_Rod.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Superconductive_Rod.name = Superconductive Rod
-server.items.HyProTech_Superconductive_Rod.description = A crafted component used in advanced recipes.
 items.HyProTech_Ingot_Tin.name = Tin Ingot
 items.HyProTech_Ingot_Tin.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Tin.name = Tin Ingot
@@ -329,6 +407,269 @@ items.HyProTech_Ingot_Vanadium.name = Vanadium Ingot
 items.HyProTech_Ingot_Vanadium.description = A refined material used in crafting.
 server.items.HyProTech_Ingot_Vanadium.name = Vanadium Ingot
 server.items.HyProTech_Ingot_Vanadium.description = A refined material used in crafting.
+items.HyProTech_Ingot_Composite_Alloy.name = Composite Alloy Ingot
+items.HyProTech_Ingot_Composite_Alloy.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Ingot_Composite_Alloy.name = Composite Alloy Ingot
+server.items.HyProTech_Ingot_Composite_Alloy.description = A crafted component used in advanced recipes.
+items.HyProTech_Ingot_Superalloy.name = Superalloy Blend
+items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Ingot_Superalloy.name = Superalloy Blend
+server.items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
+items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
+items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
+server.items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
+
+# Frames
+items.HyProTech_Frame_Iron.name = Frame - Iron
+items.HyProTech_Frame_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Frame_Iron.name = Frame - Iron
+server.items.HyProTech_Frame_Iron.description = A crafted component used in advanced recipes.
+items.HyProTech_Frame_Copper.name = Frame - Copper
+items.HyProTech_Frame_Copper.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Frame_Copper.name = Frame - Copper
+server.items.HyProTech_Frame_Copper.description = A crafted component used in advanced recipes.
+
+# Frames Reinforced
+items.HyProTech_Frame_Reinforced_Iron.name = Reinforced Frame - Iron
+items.HyProTech_Frame_Reinforced_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Frame_Reinforced_Iron.name = Reinforced Frame - Iron
+server.items.HyProTech_Frame_Reinforced_Iron.description = A crafted component used in advanced recipes.
+
+# Circuits
+items.HyProTech_Basic_Circuits.name = Basic Circuits
+items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Basic_Circuits.name = Basic Circuits
+server.items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
+items.HyProTech_Advanced_Circuit.name = Advanced Circuit
+items.HyProTech_Advanced_Circuit.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Advanced_Circuit.name = Advanced Circuit
+server.items.HyProTech_Advanced_Circuit.description = A crafted component used in advanced recipes.
+
+# Circuits Parts
+items.HyProTech_Electronic_Chip.name = Electronic Chip
+items.HyProTech_Electronic_Chip.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Electronic_Chip.name = Electronic Chip
+server.items.HyProTech_Electronic_Chip.description = A crafted component used in advanced recipes.
+items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
+items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
+server.items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
+items.HyProTech_Circuit_Board.name = Circuit Board
+items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Circuit_Board.name = Circuit Board
+server.items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
+
+# Battery parts
+items.HyProTech_Battery_Cell.name = Battery Cell
+items.HyProTech_Battery_Cell.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Battery_Cell.name = Battery Cell
+server.items.HyProTech_Battery_Cell.description = A crafted component used in advanced recipes.
+items.HyProTech_Battery_Casing.name = Battery Casing
+items.HyProTech_Battery_Casing.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Battery_Casing.name = Battery Casing
+server.items.HyProTech_Battery_Casing.description = A crafted component used in advanced recipes.
+items.HyProTech_Battery_Pack.name = Battery Pack
+items.HyProTech_Battery_Pack.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Battery_Pack.name = Battery Pack
+server.items.HyProTech_Battery_Pack.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Lithium_Battery.name = Lithium Battery
+items.HyProTech_Lithium_Battery.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Lithium_Battery.name = Lithium Battery
+server.items.HyProTech_Lithium_Battery.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Energy_Storage_Pack.name = Energy Storage Pack
+items.HyProTech_Energy_Storage_Pack.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Energy_Storage_Pack.name = Energy Storage Pack
+server.items.HyProTech_Energy_Storage_Pack.description = A crafted component used in advanced recipes.
+
+# Fibers 
+items.HyProTech_Glass_Fiber.name = Glass Fiber
+items.HyProTech_Glass_Fiber.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Glass_Fiber.name = Glass Fiber
+server.items.HyProTech_Glass_Fiber.description = A crafted component used in advanced recipes.
+
+# Plates
+items.HyProTech_Plate_Iron.name = Plate - Iron
+items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Iron.name = Plate - Iron
+server.items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
+items.HyProTech_Plate_Titanium.name = Plate - Titanium
+items.HyProTech_Plate_Titanium.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Titanium.name = Plate - Titanium
+server.items.HyProTech_Plate_Titanium.description = A crafted component used in advanced recipes.
+items.HyProTech_Plate_Tungsten.name = Plate - Tungsten
+items.HyProTech_Plate_Tungsten.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Tungsten.name = Plate - Tungsten
+server.items.HyProTech_Plate_Tungsten.description = A crafted component used in advanced recipes.
+
+# Plates Reinforced
+items.HyProTech_Plate_Reinforced_Iron.name = Reinforced Plate - Iron
+items.HyProTech_Plate_Reinforced_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Reinforced_Iron.name = Reinforced Plate - Iron
+server.items.HyProTech_Plate_Reinforced_Iron.description = A crafted component used in advanced recipes.
+
+# Plates Dense
+items.HyProTech_Plate_Dense_Composite.name = Dense Composite Plate
+items.HyProTech_Plate_Dense_Composite.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Dense_Composite.name = Dense Composite Plate
+server.items.HyProTech_Plate_Dense_Composite.description = A crafted component used in advanced recipes.
+
+# Rods
+items.HyProTech_Rod_Iron.name = Rod - Iron
+items.HyProTech_Rod_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Rod_Iron.name = Rod - Iron
+server.items.HyProTech_Rod_Iron.description = A crafted component used in advanced recipes.
+
+# Rods Reinforced
+items.HyProTech_Rod_Reinforced_Iron.name = Reinforced Rod - Iron
+items.HyProTech_Rod_Reinforced_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Rod_Reinforced_Iron.name = Reinforced Rod - Iron
+server.items.HyProTech_Rod_Reinforced_Iron.description = A crafted component used in advanced recipes.
+
+# Bolts
+items.HyProTech_Bolts_Iron.name = Bolts - Iron
+items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Bolts_Iron.name = Bolts - Iron
+server.items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
+
+# Spring
+items.HyProTech_Spring_Iron.name = Spring - Iron
+items.HyProTech_Spring_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Spring_Iron.name = Spring - Iron
+server.items.HyProTech_Spring_Iron.description = A crafted component used in advanced recipes.
+items.HyProTech_Spring_Heavy_Iron.name = Heavy Spring - Iron
+items.HyProTech_Spring_Heavy_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Spring_Heavy_Iron.name = Heavy Spring - Iron
+server.items.HyProTech_Spring_Heavy_Iron.description = A crafted component used in advanced recipes.
+
+# Gears
+items.HyProTech_Gear_Iron.name = Gear - Iron
+items.HyProTech_Gear_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Gear_Iron.name = Gear - Iron
+server.items.HyProTech_Gear_Iron.description = A crafted component used in advanced recipes.
+# Gears Reinforced
+items.HyProTech_Gear_Reinforced_Iron.name = Reinforced Gear - Iron
+items.HyProTech_Gear_Reinforced_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Gear_Reinforced_Iron.name = Reinforced Gear - Iron
+server.items.HyProTech_Gear_Reinforced_Iron.description = A crafted component used in advanced recipes.
+
+# Bearings
+items.HyProTech_Bearing.name = Bearing
+items.HyProTech_Bearing.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Bearing.name = Bearing
+server.items.HyProTech_Bearing.description = A crafted component used in advanced recipes.
+
+# Wires
+items.HyProTech_Copper_Wire.name = Copper Wire
+items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Copper_Wire.name = Copper Wire
+server.items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
+
+# Gearbox
+items.HyProTech_Gearbox.name = Gearbox
+items.HyProTech_Gearbox.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Gearbox.name = Gearbox
+server.items.HyProTech_Gearbox.description = A crafted component used in advanced recipes.
+
+
+
+items.HyProTech_Silicon_Wafer.name = Silicon Wafer
+items.HyProTech_Silicon_Wafer.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Silicon_Wafer.name = Silicon Wafer
+server.items.HyProTech_Silicon_Wafer.description = A crafted component used in advanced recipes.
+items.HyProTech_Solder_Wire.name = Solder Wire
+items.HyProTech_Solder_Wire.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Solder_Wire.name = Solder Wire
+server.items.HyProTech_Solder_Wire.description = A crafted component used in advanced recipes.
+
+items.HyProTech_High_Capacity_Battery.name = High-Capacity Battery
+items.HyProTech_High_Capacity_Battery.description = A crafted component used in advanced recipes.
+server.items.HyProTech_High_Capacity_Battery.name = High-Capacity Battery
+server.items.HyProTech_High_Capacity_Battery.description = A crafted component used in advanced recipes.
+items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
+items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
+server.items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
+items.HyProTech_Industrial_Shaft.name = Industrial Shaft
+items.HyProTech_Industrial_Shaft.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Industrial_Shaft.name = Industrial Shaft
+server.items.HyProTech_Industrial_Shaft.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Solar_Cell_Component.name = Solar Cell Component
+items.HyProTech_Solar_Cell_Component.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Solar_Cell_Component.name = Solar Cell Component
+server.items.HyProTech_Solar_Cell_Component.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Turbine_Blade.name = Turbine Blade
+items.HyProTech_Turbine_Blade.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Turbine_Blade.name = Turbine Blade
+server.items.HyProTech_Turbine_Blade.description = A crafted component used in advanced recipes.
+
+
+
+items.HyProTech_Lubricant.name = Lubricant
+items.HyProTech_Lubricant.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Lubricant.name = Lubricant
+server.items.HyProTech_Lubricant.description = An industrial fluid used in advanced processing.
+
+items.HyProTech_Motor_Rotor.name = Motor Rotor
+items.HyProTech_Motor_Rotor.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Motor_Rotor.name = Motor Rotor
+server.items.HyProTech_Motor_Rotor.description = A crafted component used in advanced recipes.
+items.HyProTech_Motor_Stator.name = Motor Stator
+items.HyProTech_Motor_Stator.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Motor_Stator.name = Motor Stator
+server.items.HyProTech_Motor_Stator.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Polymer_Resin.name = Polymer Resin
+items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Polymer_Resin.name = Polymer Resin
+server.items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
+
+items.HyProTech_Processor_Unit.name = Processor Unit
+items.HyProTech_Processor_Unit.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Processor_Unit.name = Processor Unit
+server.items.HyProTech_Processor_Unit.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Advanced_Processor.name = Advanced Processor
+items.HyProTech_Advanced_Processor.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Advanced_Processor.name = Advanced Processor
+server.items.HyProTech_Advanced_Processor.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Motor.name = Motor
+items.HyProTech_Motor.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Motor.name = Motor
+server.items.HyProTech_Motor.description = A crafted component used in advanced recipes.
+items.HyProTech_Processor.name = Processor
+items.HyProTech_Processor.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Processor.name = Processor
+server.items.HyProTech_Processor.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Screws.name = Screws
+items.HyProTech_Screws.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Screws.name = Screws
+server.items.HyProTech_Screws.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Rivets.name = Rivets
+items.HyProTech_Rivets.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Rivets.name = Rivets
+server.items.HyProTech_Rivets.description = A crafted component used in advanced recipes.
+
+
+items.HyProTech_Transformer_Unit.name = Transformer Unit
+items.HyProTech_Transformer_Unit.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Transformer_Unit.name = Transformer Unit
+server.items.HyProTech_Transformer_Unit.description = A crafted component used in advanced recipes.
+
+items.HyProTech_Electrolyzer_Membrane.name = Electrolyzer Membrane
+items.HyProTech_Electrolyzer_Membrane.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Electrolyzer_Membrane.name = Electrolyzer Membrane
+server.items.HyProTech_Electrolyzer_Membrane.description = A crafted component used in advanced recipes.
+
+
+# ORES
 items.Ore_Bauxite.name = Bauxite Ore
 items.Ore_Bauxite.description = A raw ore used for processing.
 server.items.Ore_Bauxite.name = Bauxite Ore
@@ -373,278 +714,6 @@ items.Ore_Vanadinite.name = Vanadinite Ore
 items.Ore_Vanadinite.description = A raw ore used for processing.
 server.items.Ore_Vanadinite.name = Vanadinite Ore
 server.items.Ore_Vanadinite.description = A raw ore used for processing.
-
-items.HyProTech_Acid_Solution.name = Acid Solution
-items.HyProTech_Acid_Solution.description = An industrial fluid used in advanced processing.
-server.items.HyProTech_Acid_Solution.name = Acid Solution
-server.items.HyProTech_Acid_Solution.description = An industrial fluid used in advanced processing.
-items.HyProTech_Advanced_Circuit.name = Advanced Circuit
-items.HyProTech_Advanced_Circuit.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Advanced_Circuit.name = Advanced Circuit
-server.items.HyProTech_Advanced_Circuit.description = A crafted component used in advanced recipes.
-items.HyProTech_Aerospace_Frame.name = Aerospace Frame
-items.HyProTech_Aerospace_Frame.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Aerospace_Frame.name = Aerospace Frame
-server.items.HyProTech_Aerospace_Frame.description = A crafted component used in advanced recipes.
-items.HyProTech_Battery_Casing.name = Battery Casing
-items.HyProTech_Battery_Casing.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Battery_Casing.name = Battery Casing
-server.items.HyProTech_Battery_Casing.description = A crafted component used in advanced recipes.
-items.HyProTech_Battery_Pack.name = Battery Pack
-items.HyProTech_Battery_Pack.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Battery_Pack.name = Battery Pack
-server.items.HyProTech_Battery_Pack.description = A crafted component used in advanced recipes.
-items.HyProTech_Bearing.name = Bearing
-items.HyProTech_Bearing.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Bearing.name = Bearing
-server.items.HyProTech_Bearing.description = A crafted component used in advanced recipes.
-items.HyProTech_Bolted_Frame.name = Bolted Frame
-items.HyProTech_Bolted_Frame.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Bolted_Frame.name = Bolted Frame
-server.items.HyProTech_Bolted_Frame.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Ingot_Composite_Alloy.name = Composite Alloy Ingot
-items.HyProTech_Ingot_Composite_Alloy.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Ingot_Composite_Alloy.name = Composite Alloy Ingot
-server.items.HyProTech_Ingot_Composite_Alloy.description = A crafted component used in advanced recipes.
-items.HyProTech_Coolant_Fluid.name = Coolant Fluid
-items.HyProTech_Coolant_Fluid.description = An industrial fluid used in advanced processing.
-server.items.HyProTech_Coolant_Fluid.name = Coolant Fluid
-server.items.HyProTech_Coolant_Fluid.description = An industrial fluid used in advanced processing.
-items.HyProTech_Copper_Wire.name = Copper Wire
-items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Copper_Wire.name = Copper Wire
-server.items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
-items.HyProTech_Core_Stabilizer.name = Core Stabilizer
-items.HyProTech_Core_Stabilizer.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Core_Stabilizer.name = Core Stabilizer
-server.items.HyProTech_Core_Stabilizer.description = A crafted component used in advanced recipes.
-items.HyProTech_Data_Bus_Cable.name = Data Bus Cable
-items.HyProTech_Data_Bus_Cable.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Data_Bus_Cable.name = Data Bus Cable
-server.items.HyProTech_Data_Bus_Cable.description = A crafted component used in advanced recipes.
-items.HyProTech_Plate_Dense_Composite.name = Dense Composite Plate
-items.HyProTech_Plate_Dense_Composite.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Dense_Composite.name = Dense Composite Plate
-server.items.HyProTech_Plate_Dense_Composite.description = A crafted component used in advanced recipes.
-items.HyProTech_Electrolyte_Gel.name = Electrolyte Gel
-items.HyProTech_Electrolyte_Gel.description = An industrial fluid used in advanced processing.
-server.items.HyProTech_Electrolyte_Gel.name = Electrolyte Gel
-server.items.HyProTech_Electrolyte_Gel.description = An industrial fluid used in advanced processing.
-items.HyProTech_Gearbox.name = Gearbox
-items.HyProTech_Gearbox.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Gearbox.name = Gearbox
-server.items.HyProTech_Gearbox.description = A crafted component used in advanced recipes.
-items.HyProTech_High_Capacity_Battery.name = High-Capacity Battery
-items.HyProTech_High_Capacity_Battery.description = A crafted component used in advanced recipes.
-server.items.HyProTech_High_Capacity_Battery.name = High-Capacity Battery
-server.items.HyProTech_High_Capacity_Battery.description = A crafted component used in advanced recipes.
-items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
-items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
-server.items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
-items.HyProTech_Industrial_Shaft.name = Industrial Shaft
-items.HyProTech_Industrial_Shaft.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Industrial_Shaft.name = Industrial Shaft
-server.items.HyProTech_Industrial_Shaft.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Lithium_Battery.name = Lithium Battery
-items.HyProTech_Lithium_Battery.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Lithium_Battery.name = Lithium Battery
-server.items.HyProTech_Lithium_Battery.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Lubricant.name = Lubricant
-items.HyProTech_Lubricant.description = An industrial fluid used in advanced processing.
-server.items.HyProTech_Lubricant.name = Lubricant
-server.items.HyProTech_Lubricant.description = An industrial fluid used in advanced processing.
-
-items.HyProTech_Plate_Iron.name = Metal Plate
-items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Iron.name = Metal Plate
-server.items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Rod_Iron.name = Rod - Iron
-items.HyProTech_Rod_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Rod_Iron.name = Rod - Iron
-server.items.HyProTech_Rod_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Motor_Rotor.name = Motor Rotor
-items.HyProTech_Motor_Rotor.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Motor_Rotor.name = Motor Rotor
-server.items.HyProTech_Motor_Rotor.description = A crafted component used in advanced recipes.
-items.HyProTech_Motor_Stator.name = Motor Stator
-items.HyProTech_Motor_Stator.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Motor_Stator.name = Motor Stator
-server.items.HyProTech_Motor_Stator.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Polymer_Resin.name = Polymer Resin
-items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
-server.items.HyProTech_Polymer_Resin.name = Polymer Resin
-server.items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
-
-items.HyProTech_Processor_Unit.name = Processor Unit
-items.HyProTech_Processor_Unit.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Processor_Unit.name = Processor Unit
-server.items.HyProTech_Processor_Unit.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Plate_Reinforced_Iron.name = Reinforced Plate
-items.HyProTech_Plate_Reinforced_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Reinforced_Iron.name = Reinforced Plate
-server.items.HyProTech_Plate_Reinforced_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Rod_Reinforced_Iron.name = Reinforced Rod
-items.HyProTech_Rod_Reinforced_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Rod_Reinforced_Iron.name = Reinforced Rod
-server.items.HyProTech_Rod_Reinforced_Iron.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Structural_Beam.name = Structural Beam
-items.HyProTech_Structural_Beam.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Structural_Beam.name = Structural Beam
-server.items.HyProTech_Structural_Beam.description = A crafted component used in advanced recipes.
-items.HyProTech_Ingot_Superalloy.name = Superalloy Blend
-items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Ingot_Superalloy.name = Superalloy Blend
-server.items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
-items.HyProTech_Supercritical_Fuel_Cell.name = Supercritical Fuel Cell
-items.HyProTech_Supercritical_Fuel_Cell.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Supercritical_Fuel_Cell.name = Supercritical Fuel Cell
-server.items.HyProTech_Supercritical_Fuel_Cell.description = A crafted component used in advanced recipes.
-items.HyProTech_Support_Bracket.name = Support Bracket
-items.HyProTech_Support_Bracket.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Support_Bracket.name = Support Bracket
-server.items.HyProTech_Support_Bracket.description = A crafted component used in advanced recipes.
-items.HyProTech_Thermal_Insulation.name = Thermal Insulation
-items.HyProTech_Thermal_Insulation.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Thermal_Insulation.name = Thermal Insulation
-server.items.HyProTech_Thermal_Insulation.description = A crafted component used in advanced recipes.
-items.HyProTech_Thermal_Regulator.name = Thermal Regulator
-items.HyProTech_Thermal_Regulator.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Thermal_Regulator.name = Thermal Regulator
-server.items.HyProTech_Thermal_Regulator.description = A crafted component used in advanced recipes.
-items.HyProTech_Thruster_Nozzle.name = Thruster Nozzle
-items.HyProTech_Thruster_Nozzle.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Thruster_Nozzle.name = Thruster Nozzle
-server.items.HyProTech_Thruster_Nozzle.description = A crafted component used in advanced recipes.
-items.HyProTech_Plate_Titanium.name = Titanium Plate
-items.HyProTech_Plate_Titanium.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Titanium.name = Titanium Plate
-server.items.HyProTech_Plate_Titanium.description = A crafted component used in advanced recipes.
-items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
-items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
-server.items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
-items.HyProTech_Tungsten_Carbide_Chunk.name = Tungsten Carbide Chunk
-items.HyProTech_Tungsten_Carbide_Chunk.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Tungsten_Carbide_Chunk.name = Tungsten Carbide Chunk
-server.items.HyProTech_Tungsten_Carbide_Chunk.description = A crafted component used in advanced recipes.
-items.HyProTech_Plate_Tungsten.name = Tungsten Plate
-items.HyProTech_Plate_Tungsten.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Tungsten.name = Tungsten Plate
-server.items.HyProTech_Plate_Tungsten.description = A crafted component used in advanced recipes.
-items.HyProTech_Turbine_Blade.name = Turbine Blade
-items.HyProTech_Turbine_Blade.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Turbine_Blade.name = Turbine Blade
-server.items.HyProTech_Turbine_Blade.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Advanced_Processor.name = Advanced Processor
-items.HyProTech_Advanced_Processor.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Advanced_Processor.name = Advanced Processor
-server.items.HyProTech_Advanced_Processor.description = A crafted component used in advanced recipes.
-items.HyProTech_Cooling_Cell.name = Cooling Cell
-items.HyProTech_Cooling_Cell.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Cooling_Cell.name = Cooling Cell
-server.items.HyProTech_Cooling_Cell.description = A crafted component used in advanced recipes.
-items.HyProTech_Filter.name = Filter
-items.HyProTech_Filter.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Filter.name = Filter
-server.items.HyProTech_Filter.description = A crafted component used in advanced recipes.
-items.HyProTech_Fluid_Sensor.name = Fluid Sensor
-items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Fluid_Sensor.name = Fluid Sensor
-server.items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced recipes.
-items.HyProTech_Gear_Iron.name = Gears
-items.HyProTech_Gear_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Gear_Iron.name = Gears
-server.items.HyProTech_Gear_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Motor.name = Motor
-items.HyProTech_Motor.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Motor.name = Motor
-server.items.HyProTech_Motor.description = A crafted component used in advanced recipes.
-items.HyProTech_Processor.name = Processor
-items.HyProTech_Processor.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Processor.name = Processor
-server.items.HyProTech_Processor.description = A crafted component used in advanced recipes.
-items.HyProTech_Pump.name = Pump
-items.HyProTech_Pump.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Pump.name = Pump
-server.items.HyProTech_Pump.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Screws.name = Screws
-items.HyProTech_Screws.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Screws.name = Screws
-server.items.HyProTech_Screws.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Bolts_Iron.name = Bolts - Iron
-items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Bolts_Iron.name = Bolts - Iron
-server.items.HyProTech_Bolts_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Rivets.name = Rivets
-items.HyProTech_Rivets.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Rivets.name = Rivets
-server.items.HyProTech_Rivets.description = A crafted component used in advanced recipes.
-items.HyProTech_Frame_Reinforced_Iron.name = Reinforced Frame
-items.HyProTech_Frame_Reinforced_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Frame_Reinforced_Iron.name = Reinforced Frame
-server.items.HyProTech_Frame_Reinforced_Iron.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Transformer_Unit.name = Transformer Unit
-items.HyProTech_Transformer_Unit.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Transformer_Unit.name = Transformer Unit
-server.items.HyProTech_Transformer_Unit.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Copper_Cable.name = Copper Cable
-items.HyProTech_Copper_Cable.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Copper_Cable.name = Copper Cable
-server.items.HyProTech_Copper_Cable.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Electrolyzer_Membrane.name = Electrolyzer Membrane
-items.HyProTech_Electrolyzer_Membrane.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Electrolyzer_Membrane.name = Electrolyzer Membrane
-server.items.HyProTech_Electrolyzer_Membrane.description = A crafted component used in advanced recipes.
-
-items.HyProTech_Arc_Furnace.name = Arc Furnace
-items.HyProTech_Arc_Furnace.description = Placeholder machine for future processing.
-server.items.HyProTech_Arc_Furnace.name = Arc Furnace
-server.items.HyProTech_Arc_Furnace.description = Placeholder machine for future processing.
-items.HyProTech_Reprocessing_Plant.name = Reprocessing Plant
-items.HyProTech_Reprocessing_Plant.description = Placeholder machine for future processing.
-server.items.HyProTech_Reprocessing_Plant.name = Reprocessing Plant
-server.items.HyProTech_Reprocessing_Plant.description = Placeholder machine for future processing.
-items.HyProTech_Chemical_Leacher.name = Chemical Leacher
-items.HyProTech_Chemical_Leacher.description = Placeholder machine for future processing.
-server.items.HyProTech_Chemical_Leacher.name = Chemical Leacher
-server.items.HyProTech_Chemical_Leacher.description = Placeholder machine for future processing.
-items.HyProTech_Electrolyzer.name = Electrolyzer
-items.HyProTech_Electrolyzer.description = Placeholder machine for future processing.
-server.items.HyProTech_Electrolyzer.name = Electrolyzer
-server.items.HyProTech_Electrolyzer.description = Placeholder machine for future processing.
-items.HyProTech_Distillation_Column.name = Distillation Column
-items.HyProTech_Distillation_Column.description = Placeholder machine for future processing.
-server.items.HyProTech_Distillation_Column.name = Distillation Column
-server.items.HyProTech_Distillation_Column.description = Placeholder machine for future processing.
-items.HyProTech_Sifter.name = Sifter
-items.HyProTech_Sifter.description = Placeholder machine for future processing.
-server.items.HyProTech_Sifter.name = Sifter
-server.items.HyProTech_Sifter.description = Placeholder machine for future processing.
-items.HyProTech_Ore_Washer.name = Ore Washer
-items.HyProTech_Ore_Washer.description = Placeholder machine for future processing.
-server.items.HyProTech_Ore_Washer.name = Ore Washer
-server.items.HyProTech_Ore_Washer.description = Placeholder machine for future processing.
-items.HyProTech_Centrifuge.name = Centrifuge
-items.HyProTech_Centrifuge.description = Placeholder machine for future processing.
-server.items.HyProTech_Centrifuge.name = Centrifuge
-server.items.HyProTech_Centrifuge.description = Placeholder machine for future processing.
-items.HyProTech_Grinder.name = Grinder
-items.HyProTech_Grinder.description = Placeholder machine for future processing.
-server.items.HyProTech_Grinder.name = Grinder
-server.items.HyProTech_Grinder.description = Placeholder machine for future processing.
 
 items.Ore_Bauxite_Stone.name = Bauxite Ore (Stone)
 server.items.Ore_Bauxite_Stone.name = Bauxite Ore (Stone)
@@ -845,107 +914,7 @@ server.items.Ore_Vanadinite_Dry_Mud.name = Vanadinite Ore (Dry Mud)
 items.Ore_Vanadinite_Magma.name = Vanadinite Ore (Magma)
 server.items.Ore_Vanadinite_Magma.name = Vanadinite Ore (Magma)
 
-items.HyProTech_Circuit_Board.name = Circuit Board
-items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Circuit_Board.name = Circuit Board
-server.items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
-items.HyProTech_Spring_Heavy_Iron.name = Heavy Spring
-items.HyProTech_Spring_Heavy_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Spring_Heavy_Iron.name = Heavy Spring
-server.items.HyProTech_Spring_Heavy_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
-items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
-server.items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
-items.HyProTech_Spring_Iron.name = Spring
-items.HyProTech_Spring_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Spring_Iron.name = Spring
-server.items.HyProTech_Spring_Iron.description = A crafted component used in advanced recipes.
-items.HyProTech_Plate_Iron_Press.name = Metal Plate Press
-items.HyProTech_Plate_Iron_Press.description = A HyProTech press used to shape metal plates.
-server.items.HyProTech_Plate_Iron_Press.name = Metal Plate Press
-server.items.HyProTech_Plate_Iron_Press.description = A HyProTech press used to shape metal plates.
-items.HyProTech_Battery_Rack_L.name = Large Battery
-items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
-server.items.HyProTech_Battery_Rack_L.name = Large Battery
-server.items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
-items.HyProTech_Powder_Aluminum.name = Aluminum Powder
-items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Aluminum.name = Aluminum Powder
-server.items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
-items.HyProTech_Powder_Tin.name = Tin Powder
-items.HyProTech_Powder_Tin.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Tin.name = Tin Powder
-server.items.HyProTech_Powder_Tin.description = A fine powder used for crafting.
-items.HyProTech_Powder_Chromium.name = Chromium Powder
-items.HyProTech_Powder_Chromium.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Chromium.name = Chromium Powder
-server.items.HyProTech_Powder_Chromium.description = A fine powder used for crafting.
-items.HyProTech_Powder_Titanium.name = Titanium Powder
-items.HyProTech_Powder_Titanium.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Titanium.name = Titanium Powder
-server.items.HyProTech_Powder_Titanium.description = A fine powder used for crafting.
-items.HyProTech_Powder_Manganese.name = Manganese Powder
-items.HyProTech_Powder_Manganese.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Manganese.name = Manganese Powder
-server.items.HyProTech_Powder_Manganese.description = A fine powder used for crafting.
-items.HyProTech_Powder_Nickel.name = Nickel Powder
-items.HyProTech_Powder_Nickel.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Nickel.name = Nickel Powder
-server.items.HyProTech_Powder_Nickel.description = A fine powder used for crafting.
-items.HyProTech_Powder_Silicon.name = Silicon Powder
-items.HyProTech_Powder_Silicon.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Silicon.name = Silicon Powder
-server.items.HyProTech_Powder_Silicon.description = A fine powder used for crafting.
-items.HyProTech_Powder_Tungsten.name = Tungsten Powder
-items.HyProTech_Powder_Tungsten.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Tungsten.name = Tungsten Powder
-server.items.HyProTech_Powder_Tungsten.description = A fine powder used for crafting.
-items.HyProTech_Powder_Lithium.name = Lithium Powder
-items.HyProTech_Powder_Lithium.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Lithium.name = Lithium Powder
-server.items.HyProTech_Powder_Lithium.description = A fine powder used for crafting.
-items.HyProTech_Powder_Uranium.name = Uranium Powder
-items.HyProTech_Powder_Uranium.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Uranium.name = Uranium Powder
-server.items.HyProTech_Powder_Uranium.description = A fine powder used for crafting.
-items.HyProTech_Powder_Vanadium.name = Vanadium Powder
-items.HyProTech_Powder_Vanadium.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Vanadium.name = Vanadium Powder
-server.items.HyProTech_Powder_Vanadium.description = A fine powder used for crafting.
-items.HyProTech_Powder_Electrum.name = Electrum Alloy Powder
-items.HyProTech_Powder_Electrum.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Electrum.name = Electrum Alloy Powder
-server.items.HyProTech_Powder_Electrum.description = A fine powder used for crafting.
-items.HyProTech_Powder_Steel.name = Steel Alloy Powder
-items.HyProTech_Powder_Steel.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Steel.name = Steel Alloy Powder
-server.items.HyProTech_Powder_Steel.description = A fine powder used for crafting.
-items.HyProTech_Powder_Invar.name = Invar Alloy Powder
-items.HyProTech_Powder_Invar.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Invar.name = Invar Alloy Powder
-server.items.HyProTech_Powder_Invar.description = A fine powder used for crafting.
-items.HyProTech_Powder_Constantan.name = Constantan Alloy Powder
-items.HyProTech_Powder_Constantan.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Constantan.name = Constantan Alloy Powder
-server.items.HyProTech_Powder_Constantan.description = A fine powder used for crafting.
-items.HyProTech_Powder_High_Tier_Alloy.name = High-Tier Alloy Blend Powder
-items.HyProTech_Powder_High_Tier_Alloy.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_High_Tier_Alloy.name = High-Tier Alloy Blend Powder
-server.items.HyProTech_Powder_High_Tier_Alloy.description = A fine powder used for crafting.
-items.HyProTech_Powder_Composite_Alloy.name = Composite Alloy Powder
-items.HyProTech_Powder_Composite_Alloy.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Composite_Alloy.name = Composite Alloy Powder
-server.items.HyProTech_Powder_Composite_Alloy.description = A fine powder used for crafting.
-items.HyProTech_Powder_Superalloy.name = Superalloy Blend Powder
-items.HyProTech_Powder_Superalloy.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_Superalloy.name = Superalloy Blend Powder
-server.items.HyProTech_Powder_Superalloy.description = A fine powder used for crafting.
-items.HyProTech_Powder_TiV.name = Titanium-Vanadium Alloy Powder
-items.HyProTech_Powder_TiV.description = A fine powder used for crafting.
-server.items.HyProTech_Powder_TiV.name = Titanium-Vanadium Alloy Powder
-server.items.HyProTech_Powder_TiV.description = A fine powder used for crafting.
-
+# Interactions
 interactionHints.HyProTech_open_electric_furnace = Press [{key}] to open Electric Furnace
 interactionHints.HyProTech_open_ore_crusher = Press [{key}] to open Ore Crusher
 interactionHints.HyProTech_open_alloy_smelter = Press [{key}] to open Alloy Smelter
