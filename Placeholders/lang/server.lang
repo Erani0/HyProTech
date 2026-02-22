@@ -564,6 +564,11 @@ items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced 
 server.items.HyProTech_Fluid_Sensor.name = Fluid Sensor
 server.items.HyProTech_Fluid_Sensor.description = A crafted component used in advanced recipes.
 
+items.HyProTech_Tin_Plating.name = Tin Plating
+items.HyProTech_Tin_Plating.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Tin_Plating.name = Tin Plating
+server.items.HyProTech_Tin_Plating.description = A crafted component used in advanced recipes.
+
 
 items.HyProTech_Enriched_Uranium.name = Enriched Uranium
 items.HyProTech_Enriched_Uranium.description = A crafted component used in advanced recipes.
@@ -577,6 +582,17 @@ server.items.HyProTech_Superconductive_Rod.name = Superconductive Rod
 server.items.HyProTech_Superconductive_Rod.description = A crafted component used in advanced recipes.
 
 
+items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
+items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Hydraulic_Piston.name = Hydraulic Piston
+server.items.HyProTech_Hydraulic_Piston.description = A crafted component used in advanced recipes.
+
+
+
+items.HyProTech_Polymer_Resin.name = Polymer Resin
+items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
+server.items.HyProTech_Polymer_Resin.name = Polymer Resin
+server.items.HyProTech_Polymer_Resin.description = An industrial fluid used in advanced processing.
 
 
 items.HyProTech_Reinforced_Engine_Parts.name = Reinforced Engine Parts
