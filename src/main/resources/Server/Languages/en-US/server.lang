@@ -150,23 +150,23 @@ items.HyProTech_Electric_Furnace_T5.name = Electric Furnace - Quantum
 items.HyProTech_Electric_Furnace_T5.description = Smelts using stored energy.
 
 # Battery Rack Small
-items.HyProTech_Battery_Rack_S.name = Battery
+items.HyProTech_Battery_Rack_S.name = Battery Rack: Small
 items.HyProTech_Battery_Rack_S.description = Stores energy for later use.
-items.HyProTech_Battery_Rack_S_T1.name = Battery - Reinforced
+items.HyProTech_Battery_Rack_S_T1.name = Battery Rack: Small - Reinforced
 items.HyProTech_Battery_Rack_S_T1.description = Stores energy for later use.
-items.HyProTech_Battery_Rack_S_T2.name = Battery - Industrial
+items.HyProTech_Battery_Rack_S_T2.name = Battery Rack: Small - Industrial
 items.HyProTech_Battery_Rack_S_T2.description = Stores energy for later use.
-items.HyProTech_Battery_Rack_S_T3.name = Battery - Advanced
+items.HyProTech_Battery_Rack_S_T3.name = Battery Rack: Small - Advanced
 items.HyProTech_Battery_Rack_S_T3.description = Stores energy for later use.
-items.HyProTech_Battery_Rack_S_T4.name = Battery - Precision
+items.HyProTech_Battery_Rack_S_T4.name = Battery Rack: Small - Precision
 items.HyProTech_Battery_Rack_S_T4.description = Stores energy for later use.
-items.HyProTech_Battery_Rack_S_T5.name = Battery - Quantum
+items.HyProTech_Battery_Rack_S_T5.name = Battery Rack: Small - Quantum
 items.HyProTech_Battery_Rack_S_T5.description = Stores energy for later use.
 
 # Battery Rack Large
-items.HyProTech_Battery_Rack_L.name = Large Battery
+items.HyProTech_Battery_Rack_L.name = Battery Rack: Large
 items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
-server.items.HyProTech_Battery_Rack_L.name = Large Battery
+server.items.HyProTech_Battery_Rack_L.name = Battery Rack: Large
 server.items.HyProTech_Battery_Rack_L.description = A large energy storage unit.
 
 # Press
