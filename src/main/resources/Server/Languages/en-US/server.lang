@@ -70,8 +70,28 @@ items.HyProTech_Solar_Panel_T5.description = Generates energy from sunlight.
 # Ore Crusher
 items.HyProTech_Ore_Crusher.name = Ore Crusher
 items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
+items.HyProTech_Ore_Crusher_T1.name = Ore Crusher - Reinforced
+items.HyProTech_Ore_Crusher_T1.description = Crushes ore into powder and byproducts.
+items.HyProTech_Ore_Crusher_T2.name = Ore Crusher - Industrial
+items.HyProTech_Ore_Crusher_T2.description = Crushes ore into powder and byproducts.
+items.HyProTech_Ore_Crusher_T3.name = Ore Crusher - Advanced
+items.HyProTech_Ore_Crusher_T3.description = Crushes ore into powder and byproducts.
+items.HyProTech_Ore_Crusher_T4.name = Ore Crusher - Precision
+items.HyProTech_Ore_Crusher_T4.description = Crushes ore into powder and byproducts.
+items.HyProTech_Ore_Crusher_T5.name = Ore Crusher - Quantum
+items.HyProTech_Ore_Crusher_T5.description = Crushes ore into powder and byproducts.
 server.items.HyProTech_Ore_Crusher.name = Ore Crusher
 server.items.HyProTech_Ore_Crusher.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher_T1.name = Ore Crusher - Reinforced
+server.items.HyProTech_Ore_Crusher_T1.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher_T2.name = Ore Crusher - Industrial
+server.items.HyProTech_Ore_Crusher_T2.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher_T3.name = Ore Crusher - Advanced
+server.items.HyProTech_Ore_Crusher_T3.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher_T4.name = Ore Crusher - Precision
+server.items.HyProTech_Ore_Crusher_T4.description = Crushes ore into powder and byproducts.
+server.items.HyProTech_Ore_Crusher_T5.name = Ore Crusher - Quantum
+server.items.HyProTech_Ore_Crusher_T5.description = Crushes ore into powder and byproducts.
 
 # Wind Turbine
 items.HyProTech_Wind_Turbine.name = Wind Turbine
