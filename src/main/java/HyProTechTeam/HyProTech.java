@@ -595,11 +595,7 @@ public class HyProTech extends JavaPlugin {
             return false;
         }
         return BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
-                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)
-                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
-                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
-                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
-                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN);
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE);
     }
 
     private static void disableBlockTicking(World world, Vector3i pos) {

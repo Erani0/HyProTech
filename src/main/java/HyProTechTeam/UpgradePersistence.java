@@ -64,10 +64,6 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, HyProTechIds.BLOCK_WIND_TURBINE)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_BATTERY)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ELECTRIC_FURNACE)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)
@@ -509,10 +505,6 @@ public final class UpgradePersistence {
                 || isIdOrState(blockId, HyProTechIds.BLOCK_WIND_TURBINE)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_BATTERY)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
-                || isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ORE_CRUSHER)
                 || isIdOrState(blockId, HyProTechIds.BLOCK_ALLOY_SMELTER);
     }
