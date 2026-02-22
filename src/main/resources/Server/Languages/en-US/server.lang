@@ -255,7 +255,8 @@ server.items.HyProTech_Powder_Thorium.description = A fine powder used for craft
 items.HyProTech_Powder_Stone.name = Stone Dust
 items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.
 server.items.HyProTech_Powder_Stone.name = Stone Dust
-server.items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.items.HyProTech_Powder_Aluminum.name = Aluminum Powder
+server.items.HyProTech_Powder_Stone.description = Fine dust from pulverized stone.
+items.HyProTech_Powder_Aluminum.name = Aluminum Powder
 items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
 server.items.HyProTech_Powder_Aluminum.name = Aluminum Powder
 server.items.HyProTech_Powder_Aluminum.description = A fine powder used for crafting.
