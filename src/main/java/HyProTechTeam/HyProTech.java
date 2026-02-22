@@ -61,6 +61,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.accessor.BlockAccessor;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.math.util.ChunkUtil;
@@ -282,6 +283,12 @@ public class HyProTech extends JavaPlugin {
                     if (world == null) {
                         return;
                     }
+                    if (isCableBlockId(blockId)) {
+                        disableBlockTicking(world, pos);
+                        Vector3i disablePos = new Vector3i(pos);
+                        world.execute(() -> disableBlockTicking(world, disablePos));
+                        return;
+                    }
                     UpgradePersistence.cleanupInvalidChunkReferences(world, pos);
                     Vector3i cleanupPos = new Vector3i(pos);
                     world.execute(() -> UpgradePersistence.cleanupInvalidChunkReferences(world, cleanupPos));
@@ -304,17 +311,22 @@ public class HyProTech extends JavaPlugin {
                         if (world == null) {
                             world = UpgradePersistence.findWorld(pos, null);
                         }
-                        if (world != null) {
-                            UpgradePersistence.cleanupInvalidChunkReferences(world, pos);
-                            World cleanupWorld = world;
-                            Vector3i cleanupPos = new Vector3i(pos);
-                            cleanupWorld.execute(() -> UpgradePersistence.cleanupInvalidChunkReferences(cleanupWorld, cleanupPos));
-                        }
                     }
                     if (pos != null && blockId != null) {
                         if (world != null) {
                             stopMachineSound(world, pos, blockId);
                         }
+                    }
+                    if (isCableBlockId(blockId)) {
+                        if (world != null && pos != null) {
+                            disableBlockTicking(world, pos);
+                            UpgradePersistence.clearBreakDrops(world, pos);
+                            schedulePostBreakReferenceCleanup(world, pos);
+                            World disableWorld = world;
+                            Vector3i disablePos = new Vector3i(pos);
+                            disableWorld.execute(() -> disableBlockTicking(disableWorld, disablePos));
+                        }
+                        return;
                     }
                     if (pos != null && TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_QUARRY)) {
                         if (world != null) {
@@ -346,6 +358,7 @@ public class HyProTech extends JavaPlugin {
                     }
                     event.setCancelled(true);
                     UpgradePersistence.queueBreakAndDrop(world, pos, blockType, drop, extraDrops);
+                    schedulePostBreakReferenceCleanup(world, pos);
                 });
 
         getEventRegistry().registerGlobal(
@@ -364,6 +377,13 @@ public class HyProTech extends JavaPlugin {
                         return;
                     }
                     String blockId = stack.getBlockKey();
+                    if (isCableBlockId(blockId)) {
+                        Vector3i disablePos = new Vector3i(pos);
+                        world.execute(() -> {
+                            disableBlockTicking(world, disablePos);
+                            world.execute(() -> disableBlockTicking(world, disablePos));
+                        });
+                    }
                     if (!TieredIdUtil.isTieredId(blockId, HyProTechIds.BLOCK_WIND_TURBINE)) {
                         if (isBlockedByWindTurbine(world, pos)) {
                             event.setCancelled(true);
@@ -567,6 +587,60 @@ public class HyProTech extends JavaPlugin {
                     HyProTechSounds.EVENT_ELECTRIC_FURNACE,
                     HyProTechSounds.FILE_ELECTRIC_FURNACE);
             return;
+        }
+    }
+
+    private static boolean isCableBlockId(String blockId) {
+        if (blockId == null || blockId.isEmpty()) {
+            return false;
+        }
+        return BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_ENERGY_CABLE)
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLACK)
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BROWN)
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_BLUE)
+                || BlockIdUtil.isIdOrState(blockId, HyProTechIds.BLOCK_THIN_CABLE_GREEN);
+    }
+
+    private static void disableBlockTicking(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ());
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        try {
+            accessor.setTicking(pos.getX(), pos.getY(), pos.getZ(), false);
+        } catch (Exception ignored) {
+            // Best-effort guard against stale ticking refs on immediate block break.
+        }
+    }
+
+    private static void schedulePostBreakReferenceCleanup(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        Vector3i cleanupPos = new Vector3i(pos);
+        world.execute(() -> {
+            cleanupInvalidReferencesNear(world, cleanupPos);
+            world.execute(() -> cleanupInvalidReferencesNear(world, cleanupPos));
+        });
+    }
+
+    private static void cleanupInvalidReferencesNear(World world, Vector3i pos) {
+        if (world == null || pos == null) {
+            return;
+        }
+        int[] offsets = {-32, -16, 0, 16, 32};
+        for (int xOffset : offsets) {
+            for (int zOffset : offsets) {
+                long chunkIndex = ChunkUtil.indexChunkFromBlock(
+                        pos.getX() + xOffset,
+                        pos.getZ() + zOffset);
+                UpgradePersistence.cleanupInvalidChunkReferences(world, chunkIndex);
+            }
         }
     }
 

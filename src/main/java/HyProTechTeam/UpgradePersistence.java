@@ -551,7 +551,7 @@ public final class UpgradePersistence {
                     ? CableUpgradeConfig.clampTier(energyNode.getCableTier())
                     : parseCableTierFromBlockId(blockId, HyProTechIds.BLOCK_ENERGY_CABLE);
             if (tier >= 0) {
-                return TieredIdUtil.buildTieredId(HyProTechIds.BLOCK_ENERGY_CABLE, tier);
+                return buildEnergyCableTieredId(tier);
             }
         }
         if (isIdOrState(blockId, HyProTechIds.BLOCK_ITEM_CABLE)) {
@@ -1123,6 +1123,13 @@ public final class UpgradePersistence {
         }
         int currentTier = parseCableTierFromBlockId(currentId, baseId);
         return currentTier >= 0 && currentTier == desiredTier;
+    }
+
+    private static String buildEnergyCableTieredId(int tier) {
+        if (tier <= 0) {
+            return HyProTechIds.BLOCK_ENERGY_CABLE;
+        }
+        return HyProTechIds.BLOCK_ENERGY_CABLE + "_S" + tier;
     }
 
     @SuppressWarnings("removal")

@@ -157,6 +157,7 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
                 Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
                 if (ref != null && !ref.isValid()) {
                     blockComponents.removeEntityReference(blockIndex, ref);
+                    disableTickingAt(world, chunkX, chunkZ, blockIndex);
                     changed = true;
                 }
             }
@@ -228,6 +229,27 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         return accessor.getBlockType(worldX, worldY, worldZ);
     }
 
+    private void disableTickingAt(World world, int chunkX, int chunkZ, int blockIndex) {
+        if (world == null) {
+            return;
+        }
+        int localX = ChunkUtil.xFromBlockInColumn(blockIndex);
+        int localY = ChunkUtil.yFromBlockInColumn(blockIndex);
+        int localZ = ChunkUtil.zFromBlockInColumn(blockIndex);
+        int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
+        int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        try {
+            accessor.setTicking(worldX, localY, worldZ, false);
+        } catch (Exception ignored) {
+            // Best-effort only.
+        }
+    }
+
     private void processNode(
             BlockComponentChunk blockComponents,
             World world,
@@ -244,6 +266,9 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
         int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
         int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
         int worldY = localY;
+
+        // Keep cable blocks out of vanilla ticking queues to avoid stale refs on break.
+        disableTickingAt(world, chunkX, chunkZ, blockIndex);
 
         boolean changed = UpgradePersistence.applyItemUpgrade(world, worldX, worldY, worldZ, node);
         changed |= syncCableTierFromBlockId(world, worldX, worldY, worldZ, node);
@@ -542,12 +567,17 @@ public class ItemNetworkSystem extends EntityTickingSystem<ChunkStore> {
             int localBaseMask = rotateMaskToLocal(connectedMask, rotation);
             int tier = CableUpgradeConfig.clampTier(cable.node.getCableTier());
             String stateName = cableStateName(localBaseMask, tier);
+            if (stateName.equals(cable.node.getLastCableState())) {
+                continue;
+            }
 
             try {
                 accessor.setBlockInteractionState(cable.x, cable.y, cable.z, blockType, stateName, false);
+                cable.node.setLastCableState(stateName);
             } catch (Exception e) {
                 System.out.println("[HyProTech] Item cable state '" + stateName
                         + "' not found for blockType=" + blockType.getId());
+                cable.node.setLastCableState("");
             }
         }
     }

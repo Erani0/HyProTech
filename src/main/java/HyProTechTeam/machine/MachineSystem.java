@@ -117,6 +117,7 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
                 Ref<ChunkStore> ref = blockComponents.getEntityReference(blockIndex);
                 if (ref != null && !ref.isValid()) {
                     blockComponents.removeEntityReference(blockIndex, ref);
+                    disableTickingAt(world, chunkX, chunkZ, blockIndex);
                     referencesChanged = true;
                 }
             }
@@ -131,6 +132,27 @@ public class MachineSystem extends EntityTickingSystem<ChunkStore> {
 
         if (referencesChanged) {
             blockComponents.markNeedsSaving();
+        }
+    }
+
+    private void disableTickingAt(World world, int chunkX, int chunkZ, int blockIndex) {
+        if (world == null) {
+            return;
+        }
+        int localX = ChunkUtil.xFromBlockInColumn(blockIndex);
+        int localY = ChunkUtil.yFromBlockInColumn(blockIndex);
+        int localZ = ChunkUtil.zFromBlockInColumn(blockIndex);
+        int worldX = ChunkUtil.worldCoordFromLocalCoord(chunkX, localX);
+        int worldZ = ChunkUtil.worldCoordFromLocalCoord(chunkZ, localZ);
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(worldX, worldZ);
+        BlockAccessor accessor = world.getChunkIfLoaded(chunkIndex);
+        if (accessor == null) {
+            return;
+        }
+        try {
+            accessor.setTicking(worldX, localY, worldZ, false);
+        } catch (Exception ignored) {
+            // Best-effort only.
         }
     }
 
