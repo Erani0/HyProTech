@@ -432,9 +432,9 @@ items.HyProTech_Ingot_Superalloy.name = Superalloy Ingot
 items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Ingot_Superalloy.name = Superalloy Ingot
 server.items.HyProTech_Ingot_Superalloy.description = A crafted component used in advanced recipes.
-items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
+items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Ingot
 items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Alloy
+server.items.HyProTech_Ingot_TiV.name = Titanium-Vanadium Ingot
 server.items.HyProTech_Ingot_TiV.description = A crafted component used in advanced recipes.
 
 # Frames
@@ -454,9 +454,9 @@ server.items.HyProTech_Frame_Reinforced_Iron.name = Reinforced Frame - Iron
 server.items.HyProTech_Frame_Reinforced_Iron.description = A crafted component used in advanced recipes.
 
 # Circuits
-items.HyProTech_Basic_Circuits.name = Basic Circuits
+items.HyProTech_Basic_Circuits.name = Basic Circuit
 items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Basic_Circuits.name = Basic Circuits
+server.items.HyProTech_Basic_Circuits.name = Basic Circuit
 server.items.HyProTech_Basic_Circuits.description = A crafted component used in advanced recipes.
 items.HyProTech_Advanced_Circuit.name = Advanced Circuit
 items.HyProTech_Advanced_Circuit.description = A crafted component used in advanced recipes.
