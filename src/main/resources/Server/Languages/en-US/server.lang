@@ -484,10 +484,6 @@ items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
 items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Printed_Circuit_Board.name = Printed Circuit Board
 server.items.HyProTech_Printed_Circuit_Board.description = A crafted component used in advanced recipes.
-items.HyProTech_Circuit_Board.name = Circuit Board
-items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Circuit_Board.name = Circuit Board
-server.items.HyProTech_Circuit_Board.description = A crafted component used in advanced recipes.
 
 # Battery parts
 items.HyProTech_Battery_Cell.name = Battery Cell
