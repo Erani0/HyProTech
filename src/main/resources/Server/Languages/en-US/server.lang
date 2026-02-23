@@ -248,6 +248,18 @@ items.HyProTech_Powder_Adamantite.name = Adamantite Powder
 items.HyProTech_Powder_Adamantite.description = A fine powder used for crafting.
 server.items.HyProTech_Powder_Adamantite.name = Adamantite Powder
 server.items.HyProTech_Powder_Adamantite.description = A fine powder used for crafting.
+items.HyProTech_Powder_Onyxium.name = Onyxium Powder
+items.HyProTech_Powder_Onyxium.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Onyxium.name = Onyxium Powder
+server.items.HyProTech_Powder_Onyxium.description = A fine powder used for crafting.
+items.HyProTech_Powder_Mithril.name = Mithril Powder
+items.HyProTech_Powder_Mithril.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Mithril.name = Mithril Powder
+server.items.HyProTech_Powder_Mithril.description = A fine powder used for crafting.
+items.HyProTech_Powder_Prisma.name = Prisma Powder
+items.HyProTech_Powder_Prisma.description = A fine powder used for crafting.
+server.items.HyProTech_Powder_Prisma.name = Prisma Powder
+server.items.HyProTech_Powder_Prisma.description = A fine powder used for crafting.
 items.HyProTech_Powder_Thorium.name = Thorium Powder
 items.HyProTech_Powder_Thorium.description = A fine powder used for crafting.
 server.items.HyProTech_Powder_Thorium.name = Thorium Powder
@@ -602,6 +614,12 @@ items.HyProTech_Gearbox.description = A crafted component used in advanced recip
 server.items.HyProTech_Gearbox.name = Gearbox
 server.items.HyProTech_Gearbox.description = A crafted component used in advanced recipes.
 
+# Raw Materials
+items.HyProTech_Rubber.name = Rubber
+items.HyProTech_Rubber.description = Highly elastic, flexible, and waterproof material used in thousands of products.
+server.items.HyProTech_Rubber.name = Rubber
+server.items.HyProTech_Rubber.description = Highly elastic, flexible, and waterproof material used in thousands of products.
+
 
 
 items.HyProTech_Silicon_Wafer.name = Silicon Wafer
@@ -934,6 +952,25 @@ server.items.Ore_Vanadinite_Dry_Mud.name = Vanadinite Ore (Dry Mud)
 items.Ore_Vanadinite_Magma.name = Vanadinite Ore (Magma)
 server.items.Ore_Vanadinite_Magma.name = Vanadinite Ore (Magma)
 
+# Plants
+items.Plant_Crop_Rubber_Dandelion_StageFinal.name = Rubber Dandelion
+server.items.Plant_Crop_Rubber_Dandelion_StageFinal.name = Rubber Dandelion
+
+items.Plant_Crop_Rubber_Dandelion_Root.name = Rubber Dandelion Root
+items.Plant_Crop_Rubber_Dandelion_Root.description = Root of Rubber Dandelion with a high rubber content.
+server.items.Plant_Crop_Rubber_Dandelion_Root.name = Rubber Dandelion Root
+server.items.Plant_Crop_Rubber_Dandelion_Root.description = Root of Rubber Dandelion with a high rubber content.
+
+# Seeds
+items.Plant_Seeds_Rubber_Dandelion.name = Rubber Dandelion Seeds
+items.Plant_Seeds_Rubber_Dandelion.description = Seeds Rubber Dandelion to grow on farmlands.
+items.Plant_Seeds_Rubber_Dandelion_Eternal.name = Rubber Dandelion Eternal Seeds
+items.Plant_Seeds_Rubber_Dandelion_Eternal.description = Seeds Rubber Dandelion to grow on farmlands.
+server.items.Plant_Seeds_Rubber_Dandelion.name = Rubber Dandelion Seeds
+server.items.Plant_Seeds_Rubber_Dandelion.description = Seeds Rubber Dandelion to grow on farmlands.
+server.items.Plant_Seeds_Rubber_Dandelion_Eternal.name = Rubber Dandelion Eternal Seeds
+server.items.Plant_Seeds_Rubber_Dandelion_Eternal.description = Seeds Rubber Dandelion to grow on farmlands.
+
 # Interactions
 interactionHints.HyProTech_open_electric_furnace = Press [{key}] to open Electric Furnace
 interactionHints.HyProTech_open_ore_crusher = Press [{key}] to open Ore Crusher
@@ -944,4 +981,5 @@ server.benchCategories.hyprotech.crafting = Base Crafts
 server.benchCategories.hyprotech.crafting_cables = Cables
 server.benchCategories.hyprotech.crafting_parts = Parts
 server.benchCategories.hyprotech.crafting_components = Components
+server.benchCategories.hyprotech.crafting_recycle = Recycle
 server.benchCategories.hyprotech.crafting_generators = Generators
