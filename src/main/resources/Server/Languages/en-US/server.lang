@@ -977,6 +977,12 @@ interactionHints.HyProTech_open_ore_crusher = Press [{key}] to open Ore Crusher
 interactionHints.HyProTech_open_alloy_smelter = Press [{key}] to open Alloy Smelter
 
 # Electric Workbench Tabs
+benchCategories.hyprotech.crafting = Base Crafts
+benchCategories.hyprotech.crafting_cables = Cables
+benchCategories.hyprotech.crafting_parts = Parts
+benchCategories.hyprotech.crafting_components = Components
+benchCategories.hyprotech.crafting_recycle = Recycle
+benchCategories.hyprotech.crafting_generators = Generators
 server.benchCategories.hyprotech.crafting = Base Crafts
 server.benchCategories.hyprotech.crafting_cables = Cables
 server.benchCategories.hyprotech.crafting_parts = Parts
