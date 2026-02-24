@@ -4,6 +4,7 @@
   },
   "Parent": "Template_Crop_Block",
   "BlockType": {
+    "CustomModel": "Resources/Plants/Rubber_Dandelion/Rubber_Dandelion_0.blockymodel",
     "CustomModelTexture": [
       {
         "Texture": "Resources/Plants/Rubber_Dandelion/Rubber_Dandelion_0.png",
