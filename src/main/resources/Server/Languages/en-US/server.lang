@@ -516,14 +516,18 @@ server.items.HyProTech_Glass_Fiber.name = Glass Fiber
 server.items.HyProTech_Glass_Fiber.description = A crafted component used in advanced recipes.
 
 # Plates
-items.HyProTech_Plate_Iron.name = Plate - Iron
-items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Plate_Iron.name = Plate - Iron
-server.items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
+items.HyProTech_Plate_Rubber.name = Plate - Rubber
+items.HyProTech_Plate_Rubber.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Rubber.name = Plate - Rubber
+server.items.HyProTech_Plate_Rubber.description = A crafted component used in advanced recipes.
 items.HyProTech_Plate_Copper.name = Plate - Copper
 items.HyProTech_Plate_Copper.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Plate_Copper.name = Plate - Copper
 server.items.HyProTech_Plate_Copper.description = A crafted component used in advanced recipes.
+items.HyProTech_Plate_Iron.name = Plate - Iron
+items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Plate_Iron.name = Plate - Iron
+server.items.HyProTech_Plate_Iron.description = A crafted component used in advanced recipes.
 items.HyProTech_Plate_Titanium.name = Plate - Titanium
 items.HyProTech_Plate_Titanium.description = A crafted component used in advanced recipes.
 server.items.HyProTech_Plate_Titanium.name = Plate - Titanium
@@ -603,10 +607,10 @@ server.items.HyProTech_Bearing.name = Bearing
 server.items.HyProTech_Bearing.description = A crafted component used in advanced recipes.
 
 # Wires
-items.HyProTech_Copper_Wire.name = Copper Wire
-items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
-server.items.HyProTech_Copper_Wire.name = Copper Wire
-server.items.HyProTech_Copper_Wire.description = A crafted component used in advanced recipes.
+items.HyProTech_Wire_Copper.name = Wire - Copper
+items.HyProTech_Wire_Copper.description = A crafted component used in advanced recipes.
+server.items.HyProTech_Wire_Copper.name = Wire - Copper
+server.items.HyProTech_Wire_Copper.description = A crafted component used in advanced recipes.
 
 # Gearbox
 items.HyProTech_Gearbox.name = Gearbox
@@ -620,7 +624,9 @@ items.HyProTech_Rubber.description = Highly elastic, flexible, and waterproof ma
 server.items.HyProTech_Rubber.name = Rubber
 server.items.HyProTech_Rubber.description = Highly elastic, flexible, and waterproof material used in thousands of products.
 
-
+# Wastes
+server.items.HyProTech_Wastes_Rubber.name = Wastes - Rubber
+server.items.HyProTech_Wastes_Rubber.description = Wastes - Rubber
 
 items.HyProTech_Silicon_Wafer.name = Silicon Wafer
 items.HyProTech_Silicon_Wafer.description = A crafted component used in advanced recipes.
