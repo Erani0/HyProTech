@@ -12,12 +12,12 @@
     "TimeSeconds": 0,
     "Input": [
       {
-        "ItemId": "Ingredient_Bar_Copper",
-        "Quantity": 1
+        "ItemId": "HyProTech_Wire_Copper",
+        "Quantity": 2
       },
       {
-        "ResourceTypeId": "Rock",
-        "Quantity": 5
+        "ResourceTypeId": "HyProTech_Plate_Rubber",
+        "Quantity": 1
       }
     ],
     "BenchRequirement": [
