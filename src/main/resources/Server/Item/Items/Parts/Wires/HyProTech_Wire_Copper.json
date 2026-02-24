@@ -1,11 +1,33 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.HyProTech_Copper_Wire.name",
-    "Description": "server.items.HyProTech_Copper_Wire.description"
+    "Name": "server.items.HyProTech_Wire_Copper.name",
+    "Description": "server.items.HyProTech_Wire_Copper.description"
   },
   "Categories": [
     "Items"
   ],
+  "Recipe": {
+    "TimeSeconds": 0,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 1
+      }
+    ],
+  "PrimaryOutput": {
+    "ItemId": "HyProTech_Wire_Copper",
+    "Quantity": 2
+  },
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "HyProTech_Workbench",
+        "Categories": [
+          "HyProTech_Parts"
+        ]
+      }
+    ]
+  },
   "Model": "Items/PH.blockymodel",
   "Texture": "Items/PH.png",
   "Icon": "Icons/ItemsGenerated/PHI.png",
