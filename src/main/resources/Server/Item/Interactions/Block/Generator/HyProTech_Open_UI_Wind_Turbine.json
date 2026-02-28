@@ -1,6 +1,8 @@
 {
-  "Type": "OpenCustomUI",
-  "Page": {
-	  "Id": "HyProTech_wind_page"
+  "Interactions": {
+    "Type": "OpenCustomUI",
+    "Page": {
+      "Id": "HyProTech_wind_page"
+    }
   }
 }
