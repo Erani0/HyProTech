@@ -1,1 +1,5 @@
-
+items.HyProTech_Electrical_Workbench.name=Elektrische Werkbank
+items.HyProTech_Electrical_Workbench.description=Stellt HyProTech-Komponenten her.
+items.HyProTech_Cable_Tool.name=Kabelwerkzeug
+items.HyProTech_Cable_Tool.description=Wechselt die Kabelseiten zwischen Eingang und Ausgang.
+items.HyProTech_Cable_Upgrade_Tool.name=Schraubenschlüssel
